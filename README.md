@@ -16,4 +16,4 @@ npm install
 ionic serve
 ```
 
-* Try the app!
+Try the app!
