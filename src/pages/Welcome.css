@@ -1,0 +1,42 @@
+/* 1rem = 18px */
+
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  
+    margin: auto;
+  }
+  
+  .img {
+    width: 148px;
+    height: 164px;
+  
+    /* Centralizar imagem */
+    display: block;
+    margin: 2rem auto;
+  }
+  
+  .button {
+    font: 700 1.22rem "Archivo", sans-serif;
+    border-radius: 8px;
+
+    /* remover o CAPS LOCK GRITANDO AAAAAAAAAAAAAAA */
+    text-transform: none;
+  }
+  
+  #signup-button, #login-button {
+    width: 48%;
+    height: 5rem;
+  }
+
+  #guest-button {
+      height: 2.77rem;
+  }
+  
+  .title {
+    font: 700 50px "Archivo", sans-serif;
+    margin-bottom: 2rem;
+  }
+  
