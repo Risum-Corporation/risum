@@ -1,71 +1,63 @@
 /* 1rem = 18px */
 
 .page {
-
   position: relative;
 }
-  
-  .img {
 
-    position: absolute;
-    left: 30.28%;
-    right: 28.61%;
-    top: 13%;
-    bottom: 64.16%;
-  }
+.img {
+  position: absolute;
+  left: 30.28%;
+  right: 28.61%;
+  top: 13%;
+  bottom: 64.16%;
+}
 
-  .title {
+.title {
+  font: 900 50px "Archivo", sans-serif;
+  position: absolute;
+  left: 20.28%;
+  right: 18.89%;
+  top: 34.89%;
+  bottom: 52.72%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-shadow: 0px 0px 40px rgba(0, 0, 0, 0.5);
+}
 
-    font: 900 50px "Archivo", sans-serif;
-    position: absolute;
-    left: 20.28%;
-    right: 18.89%;
-    top: 34.89%;
-    bottom: 52.72%;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    text-shadow: 0px 0px 40px rgba(0, 0, 0, 0.5);
-    }
-  
-  .button {
+.button {
+  font: 700 1.3rem "Archivo", sans-serif;
+  border-radius: 8px;
 
-    font: 700 1.30rem "Archivo", sans-serif;
-    border-radius: 8px;
+  text-transform: none; /* remove CAPS LOCK */
+}
 
-    text-transform: none; /* remove CAPS LOCK */
-  }
-  
-  #signup-button {
+#signup-button {
+  position: absolute;
+  left: 5.83%;
+  right: 52.77%;
+  top: 52.05%;
+  bottom: 31.01%;
+  height: 13%;
+  align-items: center;
+  border-radius: 7.30446px;
 
-    position: absolute;
-    left: 5.83%;
-    right: 52.77%;
-    top: 52.05%;
-    bottom: 31.01%;
-    height: 13%;
-    align-items: center;
-    border-radius: 7.30446px;
+  font: 800 1.4rem "Archivo", sans-serif;
+}
 
-    font: 800 1.4rem "Archivo", sans-serif;
-  }
+#login-button {
+  position: absolute;
+  left: 53.61%;
+  right: 5.56%;
+  top: 52.05%;
+  bottom: 31.04%;
+  height: 13%;
+  border-radius: 7.30446px;
 
-  #login-button {
-
-
-    position: absolute;
-    left: 53.61%;
-    right: 5.56%;
-    top: 52.05%;
-    bottom: 31.04%;
-    height: 13%;
-    border-radius: 7.30446px;
-
-    font: 800 1.4rem "Archivo", sans-serif;
+  font: 800 1.4rem "Archivo", sans-serif;
 }
 
 #guest-button {
-
   position: absolute;
   width: 88%;
   height: 8%;
@@ -73,29 +65,27 @@
   top: 68.05%;
   margin: 6%;
   list-style: none;
- 
+
   border: 1.66667px solid #4444440e;
   border-radius: 6.66667px;
 
   font: 800 1.25rem "Archivo", sans-serif;
 }
 
-.welcome {
+.home {
+  align-items: center;
+  padding: 12px 88px;
+  width: 100%;
+  height: 7%;
 
-align-items: center;
-padding: 12px 88px;
-width: 100%;
-height: 7%;
+  position: absolute;
 
-position: absolute;
+  bottom: -0.1%;
+  background: #242424;
+  box-shadow: 0px 0px 13.3333px 3.33333px rgba(0, 0, 0, 0.5);
 
-bottom: -0.1%;;
-background: #242424;
-box-shadow: 0px 0px 13.3333px 3.33333px rgba(0, 0, 0, 0.5);
-
-text-align: center;
-display: block;
-font: 500 1.2rem "Archivo", sans-serif;
-color: var(--ion-color-tertiary)
-
+  text-align: center;
+  display: block;
+  font: 500 1.2rem "Archivo", sans-serif;
+  color: var(--ion-color-tertiary);
 }

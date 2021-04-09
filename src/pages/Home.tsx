@@ -4,7 +4,6 @@ import {
     IonHeader,
     IonPage,
     IonTitle,
-    IonToolbar,
     IonImg,
     IonLabel,
   } from "@ionic/react";
@@ -46,8 +45,7 @@ import {
             id="guest-button"
           > Entrar como convidado </IonButton>
 
-          <IonLabel className="welcome">Bem vindo!</IonLabel>
-  
+          <IonLabel className="home">Bem vindo!</IonLabel>
         </IonContent>
       </IonPage>
     );
