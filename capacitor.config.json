@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "Risum",
+  "appName": "risum",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

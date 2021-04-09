@@ -1,8 +1,7 @@
 {
-  "name": "Risum",
+  "name": "risum",
   "integrations": {
     "capacitor": {}
   },
-  "type": "react",
-  "id": "8ed8ee4a"
+  "type": "react"
 }

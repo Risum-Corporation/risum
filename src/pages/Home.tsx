@@ -6,10 +6,11 @@ import {
     IonTitle,
     IonToolbar,
     IonImg,
+    IonLabel,
   } from "@ionic/react";
-  import "./Welcome.css";
+  import "./Home.css";
   
-  const Welcome: React.FC = () => {
+  const Home: React.FC = () => {
     return (
       <IonPage className="page">
         <IonHeader>
@@ -19,9 +20,7 @@ import {
         <IonContent fullscreen>
           <IonImg src={"assets/icon/icon.svg"} className="img" />
   
-          <IonTitle className="title" color="primary">
-            Risum
-          </IonTitle>
+          <IonTitle className="title" color="primary"> Risum </IonTitle>
   
           <IonButton
             color="secondary"
@@ -29,17 +28,15 @@ import {
             id="signup-button"
             className="button"
           >
-            Create<br />account
+            Criar<br />conta
           </IonButton>
   
           <IonButton
-            size="large"
+
             id="login-button"
             className="button"
             color="primary"
-          >
-            Login
-          </IonButton>
+          > Login </IonButton>
   
           <IonButton
             color="tertiary"
@@ -47,17 +44,14 @@ import {
             fill="outline"
             className="button"
             id="guest-button"
-          >
-            Entrar como convidado
-          </IonButton>
+          > Entrar como convidado </IonButton>
+
+          <IonLabel className="welcome">Bem vindo!</IonLabel>
   
-          <IonToolbar>
-            <IonTitle>Welcome to Risum</IonTitle>
-          </IonToolbar>
         </IonContent>
       </IonPage>
     );
   };
   
-  export default Welcome;
+  export default Home;
   
