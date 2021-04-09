@@ -13,7 +13,7 @@ cd risum
 
 npm install
 
-ionic serve
+ionic lab
 ```
 
 Try the app!
