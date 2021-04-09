@@ -11,9 +11,9 @@ import {
 import { Redirect, Route } from "react-router-dom";
 import { person, settings, star } from "ionicons/icons";
 import Home from "../pages/Home";
-import Tab1 from "../pages/Tab1";
-import Tab2 from "../pages/Tab2";
-import Tab3 from "../pages/Tab3";
+import Tab1 from "../pages/Tabs/Tab1";
+import Tab2 from "../pages/Tabs/Tab2";
+import Tab3 from "../pages/Tabs/Tab3";
 
 const Toolbar: React.FC = () => {
   return (

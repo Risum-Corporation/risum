@@ -12,10 +12,6 @@ import {
   const Home: React.FC = () => {
     return (
       <IonPage className="page">
-        <IonHeader>
-  
-        </IonHeader>
-  
         <IonContent fullscreen>
           <IonImg src={"assets/icon/icon.svg"} className="img" />
   
@@ -45,7 +41,7 @@ import {
             id="guest-button"
           > Entrar como convidado </IonButton>
 
-          <IonLabel className="home">Bem vindo!</IonLabel>
+          <IonLabel className="footer">Bem vindo!</IonLabel>
         </IonContent>
       </IonPage>
     );

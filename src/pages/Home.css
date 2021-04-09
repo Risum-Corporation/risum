@@ -1,91 +1,57 @@
 /* 1rem = 18px */
 
 .page {
-  position: relative;
+  display: flex;
+  text-align: center;
+  margin: auto;
 }
 
 .img {
-  position: absolute;
-  left: 30.28%;
-  right: 28.61%;
-  top: 13%;
-  bottom: 64.16%;
-}
+  width: 148px;
+  height: 164px;
 
-.title {
-  font: 900 50px "Archivo", sans-serif;
-  position: absolute;
-  left: 20.28%;
-  right: 18.89%;
-  top: 34.89%;
-  bottom: 52.72%;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  text-shadow: 0px 0px 40px rgba(0, 0, 0, 0.5);
+  /* Centralizar imagem */
+  display: block;
+  margin: 4rem auto 2rem auto;
 }
 
 .button {
-  font: 700 1.3rem "Archivo", sans-serif;
+  font: 700 1.22rem "Archivo", sans-serif;
   border-radius: 8px;
 
-  text-transform: none; /* remove CAPS LOCK */
+  /* remover o CAPS LOCK GRITANDO AAAAAAAAAAAAAAA */
+  text-transform: none;
 }
 
-#signup-button {
-  position: absolute;
-  left: 5.83%;
-  right: 52.77%;
-  top: 52.05%;
-  bottom: 31.01%;
-  height: 13%;
-  align-items: center;
-  border-radius: 7.30446px;
-
-  font: 800 1.4rem "Archivo", sans-serif;
-}
-
+#signup-button,
 #login-button {
-  position: absolute;
-  left: 53.61%;
-  right: 5.56%;
-  top: 52.05%;
-  bottom: 31.04%;
-  height: 13%;
-  border-radius: 7.30446px;
+  width: 8.33rem;
+  height: 4.94rem;
 
-  font: 800 1.4rem "Archivo", sans-serif;
+  margin: 1.6rem 0.28rem;
 }
 
 #guest-button {
-  position: absolute;
-  width: 88%;
-  height: 8%;
-  align-items: center;
-  top: 68.05%;
-  margin: 6%;
-  list-style: none;
-
-  border: 1.66667px solid #4444440e;
-  border-radius: 6.66667px;
-
-  font: 800 1.25rem "Archivo", sans-serif;
+  height: 2.77rem;
 }
 
-.home {
-  align-items: center;
-  padding: 12px 88px;
-  width: 100%;
-  height: 7%;
+.title {
+  font: 700 2.77rem "Archivo", sans-serif;
+  margin-bottom: 1rem;
+}
 
+.footer {
+  display: block;
   position: absolute;
+  justify-content: center;
+  align-items: center;
+
+  background: #242424;
+  width: 100%;
+  height: 3rem;
+  padding: 0.66rem 4.88rem;
 
   bottom: -0.1%;
-  background: #242424;
-  box-shadow: 0px 0px 13.3333px 3.33333px rgba(0, 0, 0, 0.5);
-
-  text-align: center;
-  display: block;
   font: 500 1.2rem "Archivo", sans-serif;
   color: var(--ion-color-tertiary);
 }
