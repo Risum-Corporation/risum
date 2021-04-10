@@ -17,31 +17,15 @@ import {
   
           <IonTitle className="title" color="primary"> Risum </IonTitle>
   
-          <IonButton
-            color="secondary"
-            size="large"
-            id="signup-button"
-            className="button"
-          >
-            Criar<br />conta
-          </IonButton>
+          <IonButton color="secondary" id="signup-button" className="button" >Criar<br />conta</IonButton>
+  
+          <IonButton color="primary" id="login-button" className="button">Login</IonButton>
   
           <IonButton
 
-            id="login-button"
-            className="button"
-            color="primary"
-          > Login </IonButton>
-  
-          <IonButton
-            color="tertiary"
-            expand="block"
-            fill="outline"
-            className="button"
-            id="guest-button"
-          > Entrar como convidado </IonButton>
+            className="button" id="guest-button">Entrar como convidado </IonButton>
 
-          <IonLabel className="footer">Bem vindo!</IonLabel>
+          <IonLabel className="footer">Bem vindo ao Risum!</IonLabel>
         </IonContent>
       </IonPage>
     );
