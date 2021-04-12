@@ -1,4 +1,3 @@
-
 /* 1rem = 18px */
 
 .page {
@@ -17,10 +16,9 @@
 }
 
 .title {
-  font: 700 2.90rem "Archivo", sans-serif;
+  font: 700 2.9rem "Archivo", sans-serif;
   margin-bottom: 1rem;
 }
-
 
 .button {
   font: 700 1.22rem "Archivo", sans-serif;
@@ -40,20 +38,16 @@
 }
 
 #guest-button {
-
   height: 3.3rem;
   width: 90%;
   align-items: center;
   border-style: solid;
-  color:  #8F8F8F;
+  color: #8f8f8f;
   border-color: #444444;
   border-width: 0.125rem;
   --margin-top: 7rem;
   --background: none;
-  
-
 }
-
 
 .footer {
   display: block;
@@ -62,7 +56,7 @@
   background: #141414;
   width: 100%;
   height: 3rem;
-  padding: 0.66rem ;
+  padding: 0.66rem;
 
   bottom: -0.1%;
   font: 500 1.2rem "Archivo", sans-serif;
