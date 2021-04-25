@@ -1,4 +1,5 @@
-// Colocar isso no App.tsx mais pra frente, coloquei no componente separado para trabalhar nas telas de cadastro e login por enquanto
+// Colocar isso no App.tsx mais pra frente, coloquei no componente separado para
+// trabalhar nas telas de cadastro e login por enquanto
 
 import {
   IonIcon,

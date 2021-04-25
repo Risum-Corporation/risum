@@ -14,7 +14,7 @@ import {
   IonLabel,
   IonButton,
 } from "@ionic/react";
-import "./Tab2.css";
+import "./Tab2.scss";
 import { pin, wifi, wine, warning, walk } from "ionicons/icons";
 
 const Tab2: React.FC = () => {

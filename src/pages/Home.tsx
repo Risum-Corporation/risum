@@ -6,12 +6,12 @@ import {
   IonImg,
   IonLabel,
 } from "@ionic/react";
-import "./Home.css";
+import "./Home.scss";
 
 const Home: React.FC = () => {
   return (
     <IonPage className="page">
-      <IonContent fullscreen>
+      <IonContent fullscreen className="gg">
         <IonImg src={"assets/icon/icon.svg"} className="img" />
 
         <IonTitle className="title" color="primary">
