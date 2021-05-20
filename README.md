@@ -15,7 +15,7 @@ git clone https://github.com/Risum-Corporation/risum.git
 cd risum
 
 # Install the dependencies
-npm install
+yarn
 
 # Start Expo
 expo start
