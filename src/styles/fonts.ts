@@ -1,5 +1,6 @@
 export default {
-    heading: 'Jost_600SemiBold',
-    text: 'Jost_400Regular',
-    complement: 'Jost_400Regular'
+    heading: 'Archivo_700Bold',
+    subtitle: 'Archivo_500Medium',
+    text: 'Roboto_400Regular',
+    complement: 'Poppins_400Regular'
 };

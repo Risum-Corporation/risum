@@ -3,13 +3,24 @@ import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import {
   useFonts,
+  Archivo_700Bold,
+  Archivo_500Medium
+} from "@expo-google-fonts/archivo";
 
-  //the fonts have already been imported, archivo, poppins and roboto. We just need to put them here
-} from "@expo-google-fonts/jost";
+import {
+  Poppins_400Regular
+} from "@expo-google-fonts/poppins";
+
+import {
+  Roboto_400Regular
+} from "@expo-google-fonts/roboto";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    //Fonts here
+    Archivo_700Bold,
+    Archivo_500Medium,
+    Poppins_400Regular,
+    Roboto_400Regular,
   });
 
   if (!fontsLoaded) {

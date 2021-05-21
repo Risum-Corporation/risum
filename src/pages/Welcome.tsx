@@ -10,10 +10,12 @@ import {
 } from "react-native";
 import risumIcon from "../assets/risumIcon.png";
 import colors from "../styles/colors";
+import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/core";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
+  
   function handleRegister() {
     navigation.navigate("RegisterStg1");
   }
@@ -33,7 +35,9 @@ export function Welcome() {
             activeOpacity={0.7}
             onPress={handleRegister}
           >
-            <Text>Criar {"\n"} Conta</Text>
+            <Text style={[styles.text, { color: colors.white }]}>
+              Criar{"\n"}Conta
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -41,17 +45,24 @@ export function Welcome() {
             activeOpacity={0.7}
             onPress={handleLogin}
           >
-            <Text>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.guestButton]}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.text}>Entrar como Convidado</Text>
+            <Text style={[styles.text, { color: colors.background }]}>
+              Login
+            </Text>
           </TouchableOpacity>
         </View>
+
+        <View>
+          <TouchableOpacity style={styles.guestButton} activeOpacity={0.7}>
+            <Text style={[styles.text, { color: colors.text }]}>
+              Entrar como Convidado
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.footer}>
-          <Text style={styles.text}>Bem vindo ao Risum!</Text>
+          <Text style={[styles.text, { color: colors.text }]}>
+            Bem vindo ao Risum!
+          </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -71,18 +82,20 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 50,
-    fontWeight: "bold",
+    fontFamily: fonts.heading,
     textAlign: "center",
     color: colors.green,
     marginTop: -80,
+    marginBottom: -80,
   },
   footer: {
-    color: colors.text,
     backgroundColor: colors.lightBackground,
     width: "120%",
     height: 50,
     justifyContent: "center",
     alignItems: "center",
+    position: 'absolute',
+    bottom: 0,
   },
   image: {
     height: Dimensions.get("window").width * 0.9,
@@ -104,26 +117,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.green,
   },
   buttonBox: {
-    flex: 1,
     width: "97%",
     flexDirection: "row",
     marginTop: "20%",
   },
   guestButton: {
-    height: 10,
+    height: 20,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 20,
-
-    outlineStyle: "solid",
-    outlineColor: colors.outlineGray,
-    outlineWidth: 1,
+    padding: 20,
     borderRadius: 7,
+
+    borderColor: colors.outlineGray,
+    borderWidth: 2,
   },
   text: {
-    color: colors.text,
-  },
-  guestBox: {
-    width: "90%",
+    fontSize: 20,
+    fontFamily: fonts.heading,
   },
 });

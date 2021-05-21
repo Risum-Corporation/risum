@@ -3,11 +3,12 @@ export default {
   purple: '#790FFA',
   background: '#1B1B1B',
   lightBackground: '#242424',
+  inputBackground: '#2C2C2C',
 
-  heading: '#FFFFFF',
+  white: '#FFFFFF',
   text: '#8F8F8F',
   lightText: '#B3C0B8',
-  inputText: '#E4E4E4',
+  inputText: '#E3E3E3',
 
   outlineGray: '#444444'
 }

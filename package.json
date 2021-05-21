@@ -18,6 +18,7 @@
     "@react-navigation/stack": "^5.14.5",
     "expo": "~41.0.1",
     "expo-app-loading": "^1.0.3",
+    "expo-font": "~9.1.0",
     "expo-status-bar": "~1.0.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -26,6 +27,8 @@
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-svg": "^12.1.1",
+    "react-native-svg-transformer": "^0.14.3",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
