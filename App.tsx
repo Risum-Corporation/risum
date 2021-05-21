@@ -9,7 +9,7 @@ import {
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    //the fonts have already been imported, archivo, poppins and roboto. We just need to put them here
+    //Fonts here
   });
 
   if (!fontsLoaded) {

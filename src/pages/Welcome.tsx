@@ -8,13 +8,12 @@ import {
   Dimensions,
   View,
 } from "react-native";
-import risumIconImg from "../assets/risumIcon.png";
+import risumIcon from "../assets/risumIcon.png";
 import colors from "../styles/colors";
-import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/core";
 
 export function Welcome() {
-  const navigation = useNavigation(); // go to next screen
+  const navigation = useNavigation(); // Navigation between screen
   function handleRegister() {
     navigation.navigate("RegisterStg1");
   }
@@ -25,16 +24,12 @@ export function Welcome() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <Image
-          source={risumIconImg}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        <Image source={risumIcon} style={styles.image} resizeMode="contain" />
         <Text style={styles.title}>Risum</Text>
 
-        <View style={styles.btnBox}>
+        <View style={styles.buttonBox}>
           <TouchableOpacity
-            style={[styles.button, styles.singUpBtn]}
+            style={[styles.button, styles.signUpButton]}
             activeOpacity={0.7}
             onPress={handleRegister}
           >
@@ -42,23 +37,22 @@ export function Welcome() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.button, styles.singInBtn]}
+            style={[styles.button, styles.signInButton]}
             activeOpacity={0.7}
             onPress={handleLogin}
           >
             <Text>Login</Text>
           </TouchableOpacity>
-        </View>
-        <View style={styles.guestBox}>
           <TouchableOpacity
-            style={styles.guestBtn}
+            style={[styles.button, styles.guestButton]}
             activeOpacity={0.7}
-            onPress={handleLogin}
           >
-            <Text>Entrar como Convidado</Text>
+            <Text style={styles.text}>Entrar como Convidado</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.footer}>Bem vindo ao Risum!</Text>
+        <View style={styles.footer}>
+          <Text style={styles.text}>Bem vindo ao Risum!</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -82,36 +76,52 @@ const styles = StyleSheet.create({
     color: colors.green,
     marginTop: -80,
   },
-  footer: {},
+  footer: {
+    color: colors.text,
+    backgroundColor: colors.lightBackground,
+    width: "120%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   image: {
     height: Dimensions.get("window").width * 0.9,
+    width: 164,
   },
   button: {
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 7.3,
+    borderRadius: 8,
     height: 90,
     width: "100%",
     flex: 1,
   },
-  singUpBtn: {
+  signUpButton: {
     backgroundColor: colors.purple,
     marginRight: 20,
   },
-  singInBtn: {
+  signInButton: {
     backgroundColor: colors.green,
   },
-  btnBox: {
+  buttonBox: {
     flex: 1,
     width: "97%",
     flexDirection: "row",
     marginTop: "20%",
   },
-  guestBtn: {
+  guestButton: {
     height: 10,
     justifyContent: "center",
     alignItems: "center",
     fontSize: 20,
+
+    outlineStyle: "solid",
+    outlineColor: colors.outlineGray,
+    outlineWidth: 1,
+    borderRadius: 7,
+  },
+  text: {
+    color: colors.text,
   },
   guestBox: {
     width: "90%",
