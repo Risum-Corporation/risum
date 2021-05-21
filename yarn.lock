@@ -1178,10 +1178,6 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/archivo/-/archivo-0.1.0.tgz#3ed76d5ef3c6ceb711646fda0a5e6eeda8d08def"
   integrity sha512-OWevCTcQOKDJHWpLbnDEonGSbs4RjxrahbQY/n7XdZm+ys0NQkdk9mL2m4+Ivpi3RYsJRaWv5ISNCi00OjmfcA==
 
-"@expo-google-fonts/jost@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/jost/-/jost-0.1.0.tgz#a7c604cdc0beeae4c12078d6fdc1ad74f43548ba"
-  integrity sha512-XNNcBUtiLkpHXuKsUcZKElvyLB5B4huWhZiNPH8d4EOqhAVF80H9vqslmFWOnB0REIZR1r9iD9papf8SR1wJbg==
 
 "@expo-google-fonts/poppins@^0.1.0":
   version "0.1.0"

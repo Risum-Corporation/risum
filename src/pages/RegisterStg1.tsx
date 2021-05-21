@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import colors from "../styles/colors";
-
 import risumIcon from "../assets/tinyIcon.png";
 import fonts from "../styles/fonts";
+import { ConfirmButton } from "../components/ConfirmButton";
 
 export function RegisterStg1() {
   return (
@@ -24,7 +24,7 @@ export function RegisterStg1() {
         </View>
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Nome de usuário{"\n"}e E-mail</Text>
+          <Text style={styles.title}>E-mail{"\n"}e RisumTag</Text>
         </View>
 
         <View style={styles.form}>
@@ -40,9 +40,7 @@ export function RegisterStg1() {
           />
         </View>
 
-        <TouchableOpacity style={styles.confirmButton}>
-          <Text style={styles.buttonText}>Confirmar</Text>
-        </TouchableOpacity>
+        <ConfirmButton title="Confirmar" />
       </View>
     </SafeAreaView>
   );
@@ -68,8 +66,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   heading: {
-    textAlign: 'left',
-    width: '100%',
+    textAlign: "left",
+    width: "100%",
   },
   tinyLogo: {
     width: 24,
@@ -95,14 +93,5 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: fonts.subtitle,
     fontSize: 16,
-  },
-  confirmButton: {
-    backgroundColor: colors.green,
-    borderRadius: 8,
-    width: "100%",
-    height: 56,
-
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

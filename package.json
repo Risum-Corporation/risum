@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@expo-google-fonts/archivo": "^0.1.0",
-    "@expo-google-fonts/jost": "^0.1.0",
     "@expo-google-fonts/poppins": "^0.1.0",
     "@expo-google-fonts/roboto": "^0.1.0",
     "@expo/vector-icons": "^12.0.0",

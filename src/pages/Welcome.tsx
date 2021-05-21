@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/core";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
-  
+
   function handleRegister() {
     navigation.navigate("RegisterStg1");
   }
@@ -26,9 +26,12 @@ export function Welcome() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <Image source={risumIcon} style={styles.image} resizeMode="contain" />
-        <Text style={styles.title}>Risum</Text>
-
+        <View style={styles.imageBox}>
+          <Image source={risumIcon} style={styles.image} resizeMode="contain" />
+        </View>
+        <View style={styles.titleBox}>
+          <Text style={styles.title}>Risum</Text>
+        </View>
         <View style={styles.buttonBox}>
           <TouchableOpacity
             style={[styles.button, styles.signUpButton]}
@@ -51,7 +54,7 @@ export function Welcome() {
           </TouchableOpacity>
         </View>
 
-        <View>
+        <View style={styles.guestBox}>
           <TouchableOpacity style={styles.guestButton} activeOpacity={0.7}>
             <Text style={[styles.text, { color: colors.text }]}>
               Entrar como Convidado
@@ -80,26 +83,33 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: colors.background,
   },
+  imageBox: {
+    flex: 1,
+    marginTop: "15%",
+  },
+  titleBox: {
+    flex: 1,
+    marginTop: "25%",
+  },
+  buttonBox: {
+    flex: 1,
+    width: "97%",
+    flexDirection: "row",
+    marginTop: "-16%",
+  },
+  guestBox: {
+    flex: 1,
+    width: "97%",
+    marginTop: "-18%",
+  },
+  image: {
+    height: Dimensions.get("window").width * 0.9,
+  },
   title: {
     fontSize: 50,
     fontFamily: fonts.heading,
     textAlign: "center",
     color: colors.green,
-    marginTop: -80,
-    marginBottom: -80,
-  },
-  footer: {
-    backgroundColor: colors.lightBackground,
-    width: "120%",
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    position: 'absolute',
-    bottom: 0,
-  },
-  image: {
-    height: Dimensions.get("window").width * 0.9,
-    width: 164,
   },
   button: {
     justifyContent: "center",
@@ -111,26 +121,32 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     backgroundColor: colors.purple,
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 20,
   },
   signInButton: {
     backgroundColor: colors.green,
-  },
-  buttonBox: {
-    width: "97%",
-    flexDirection: "row",
-    marginTop: "20%",
   },
   guestButton: {
     height: 20,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: 25,
     borderRadius: 7,
 
     borderColor: colors.outlineGray,
     borderWidth: 2,
+  },
+  footer: {
+    backgroundColor: colors.lightBackground,
+    width: "120%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0,
   },
   text: {
     fontSize: 20,
