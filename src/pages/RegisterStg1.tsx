@@ -13,6 +13,10 @@ import risumIcon from "../assets/tinyIcon.png";
 import fonts from "../styles/fonts";
 import { ConfirmButton } from "../components/ConfirmButton";
 
+import googleWhite from "../assets/googleWhite.png";
+import appleWhite from "../assets/appleWhite.png";
+import facebookWhite from "../assets/facebookWhite.png";
+
 export function RegisterStg1() {
   return (
     <SafeAreaView style={styles.container}>
@@ -30,17 +34,37 @@ export function RegisterStg1() {
         <View style={styles.form}>
           <TextInput
             placeholder={"alekprincipebra@mail.com"}
-            placeholderTextColor={colors.inputText}
+            placeholderTextColor={colors.placeholderText}
             style={styles.input}
           />
           <TextInput
-            placeholder={"Roberto_dos_memes"}
-            placeholderTextColor={colors.inputText}
+            placeholder={"RobertoMemeiro"}
+            placeholderTextColor={colors.placeholderText}
+            
             style={styles.input}
           />
         </View>
+        <View style={styles.buttonBox}>
+          <ConfirmButton title="Confirmar" />
+        </View>
+        <View style={styles.orBox}>
+        <Text style={styles.subtitle}>OU</Text>
+        </View>
 
-        <ConfirmButton title="Confirmar" />
+        <View style={styles.socialRegister}>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Image source={googleWhite} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{ marginLeft: "25%", marginRight: "25%" }}
+          >
+            <Image source={appleWhite} />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Image source={facebookWhite} />
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -65,13 +89,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  heading: {
-    textAlign: "left",
-    width: "100%",
-  },
   tinyLogo: {
     width: 24,
     height: 24,
+  },
+  heading: {
+    textAlign: "left",
+    width: "100%",
+    marginTop: "-5%",
   },
   title: {
     fontFamily: fonts.heading,
@@ -79,10 +104,17 @@ const styles = StyleSheet.create({
     fontSize: 27,
     lineHeight: 50,
   },
+  subtitle: {
+    fontFamily: fonts.heading,
+    color: colors.white,
+    fontSize: 20,
+    lineHeight: 50,
+  },
   form: {
     backgroundColor: colors.inputBackground,
     borderRadius: 8,
     width: "100%",
+    marginTop: "-10%",
   },
   input: {
     height: 64,
@@ -90,8 +122,24 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     color: colors.green,
   },
+  buttonBox: {
+    width: "100%",
+    marginTop: "-0%"
+  },
   buttonText: {
     fontFamily: fonts.subtitle,
     fontSize: 16,
+  },
+  orBox: {
+    marginTop: "-10%",
+    marginBottom: "-10%"
+
+  },
+  socialRegister: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "80%",
+    marginBottom: "5%"
   },
 });
