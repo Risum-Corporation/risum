@@ -13,18 +13,7 @@ import risumIcon from "../assets/tinyIcon.png";
 import fonts from "../styles/fonts";
 import { ConfirmButton } from "../components/ConfirmButton";
 
-import googleWhite from "../assets/googleWhite.png";
-import appleWhite from "../assets/appleWhite.png";
-import facebookWhite from "../assets/facebookWhite.png";
-import { useNavigation } from "@react-navigation/core";
-
-export function RegisterStg1() {
-  const navigation = useNavigation()
-
-  function handleConfirm() {
-    navigation.navigate('RegisterStg2')
-  }
-
+export function RegisterStg2() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -35,40 +24,36 @@ export function RegisterStg1() {
         </View>
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Email e{"\n"}Username</Text>
+          <Text style={styles.title}>Verifique{"\n"}o seu Email</Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            placeholder={"alekprincipebra@mail.com"}
+            placeholder={"##-##-##-##"}
             placeholderTextColor={colors.lightText}
             style={styles.input}
           />
-          <TextInput
-            placeholder={"RobertoMemeiro"}
-            placeholderTextColor={colors.lightText}
-            style={styles.input}
-          />
+          <Text style={styles.redAdvertisement}>
+            Favor não usar Email temporário :)
+          </Text>
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleConfirm} />
-        </View>
-        <View style={styles.orBox}>
-          <Text style={styles.subtitle}>OU</Text>
-        </View>
-
-        <View style={styles.socialRegister}>
-          <TouchableOpacity activeOpacity={0.7}>
-            <Image source={googleWhite} />
-          </TouchableOpacity>
           <TouchableOpacity
+            style={[styles.button, styles.reSendButton]}
             activeOpacity={0.7}
-            style={{ marginLeft: "25%", marginRight: "25%" }}
           >
-            <Image source={appleWhite} />
+            <Text style={[styles.text, { color: colors.white }]}>
+              Reenviar{"\n"}Email
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
-            <Image source={facebookWhite} />
+
+          <TouchableOpacity
+            style={[styles.button, styles.verifyButton]}
+            activeOpacity={0.7}
+          >
+            <Text style={[styles.text, { color: colors.background }]}>
+              Verificar
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -117,34 +102,48 @@ const styles = StyleSheet.create({
     lineHeight: 50,
   },
   form: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: 8,
     width: "100%",
     marginTop: "-10%",
   },
   input: {
+    backgroundColor: colors.inputBackground,
+    borderRadius: 8,
+
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
     color: colors.green,
   },
+  redAdvertisement: {
+    color: colors.pastelRed,
+    fontFamily: fonts.heading,
+    fontSize: 10,
+    marginTop: 4,
+  },
   buttonBox: {
-    width: "100%",
-    marginTop: "-0%",
-  },
-  buttonText: {
-    fontFamily: fonts.subtitle,
-    fontSize: 16,
-  },
-  orBox: {
-    marginTop: "-10%",
-    marginBottom: "-10%",
-  },
-  socialRegister: {
+    width: "97%",
     flexDirection: "row",
+    marginTop: "-10%",
+  },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    height: 90,
+    width: "100%",
+    flex: 1,
+  },
+  reSendButton: {
+    backgroundColor: colors.purple,
     alignItems: "center",
     justifyContent: "center",
-    width: "80%",
-    marginBottom: "5%",
+    marginRight: 20,
+  },
+  verifyButton: {
+    backgroundColor: colors.green,
+  },
+  text: {
+    fontSize: 20,
+    fontFamily: fonts.heading,
   },
 });

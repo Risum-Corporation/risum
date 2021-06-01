@@ -19,6 +19,7 @@ export function Welcome() {
   function handleRegister() {
     navigation.navigate("RegisterStg1");
   }
+  
   function handleLogin() {
     navigation.navigate("Login");
   }

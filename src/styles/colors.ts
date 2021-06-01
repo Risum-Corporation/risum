@@ -9,7 +9,8 @@ export default {
   text: '#8F8F8F',
   lightText: '#B3C0B8',
   inputText: '#E3E3E3',
-  placeholderText: '#E4E4E4',
+  placeholderText: '#E3E3E3',
 
-  outlineGray: '#444444'
+  outlineGray: '#444444',
+  pastelRed: '#FF7A7A'
 }
