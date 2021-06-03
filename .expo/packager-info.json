@@ -1,10 +1,10 @@
 {
-  "expoServerPort": 19000,
   "devToolsPort": 19002,
-  "packagerPort": 19000,
+  "expoServerPort": null,
+  "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": "https://fa-6at.anonymous.risum.exp.direct",
-  "packagerNgrokUrl": "https://packager.fa-6at.anonymous.risum.exp.direct",
-  "ngrokPid": 11476,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
