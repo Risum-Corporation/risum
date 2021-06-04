@@ -9,11 +9,11 @@ import {
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-interface ButtonProps extends TouchableOpacityProps {
+interface ConfirmButtonProps extends TouchableOpacityProps {
   title: string;
 }
 
-export function ConfirmButton({ title, ...rest }: ButtonProps) {
+export function ConfirmButton({ title, ...rest }: ConfirmButtonProps) {
   return (
     <TouchableOpacity style={styles.container} {...rest}>
       <Text style={styles.text}>{title}</Text>
