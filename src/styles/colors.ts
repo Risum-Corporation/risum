@@ -5,7 +5,7 @@ export default {
   lightBackground: '#242424',
   inputBackground: '#2C2C2C',
 
-  white: '#FFFFFF',
+  white: '#F4F4F4',
   text: '#8F8F8F',
   lightText: '#B3C0B8',
   inputText: '#E3E3E3',

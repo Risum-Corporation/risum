@@ -79,12 +79,13 @@ export function Welcome() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center', alignContent: 'center'
+    justifyContent:'center', 
+    alignContent: 'center'
   },
   wrapper: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "center",
     paddingHorizontal: 20,
     backgroundColor: colors.background,
   },
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get("window").height * 0.01,
   },
   titleBox: {
-    marginTop: -80,
+    marginTop: "-20%",
   },
   buttonBox: {
     width: '97%',

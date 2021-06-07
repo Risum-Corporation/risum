@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
-    color: colors.green,
+    color: colors.white,
   },
   redAdvertisement: {
     color: colors.pastelRed,
