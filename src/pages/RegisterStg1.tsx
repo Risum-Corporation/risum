@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import colors from "../styles/colors";
 import risumIcon from "../assets/tinyIcon.png";
@@ -17,12 +18,29 @@ import googleWhite from "../assets/googleWhite.png";
 import appleWhite from "../assets/appleWhite.png";
 import facebookWhite from "../assets/facebookWhite.png";
 import { useNavigation } from "@react-navigation/core";
+import { useState } from "react";
 
 export function RegisterStg1() {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const [email, setEmail] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [isFilled, setIsFilled] = useState(false);
+
+  function handleEmailInputChange(value: string) {
+    setEmail(value);
+    setIsFilled(!!value);
+  }
+
+  function handleUserNameInputChange(value: string) {
+    setUserName(value);
+    setIsFilled(!!value);
+  }
 
   function handleConfirm() {
-    navigation.navigate('RegisterStg2')
+    if (!email || !userName) {
+      return Alert.alert("Email ou Username inválido!");
+    }
+    navigation.navigate("RegisterStg2");
   }
 
   return (
@@ -40,14 +58,16 @@ export function RegisterStg1() {
 
         <View style={styles.form}>
           <TextInput
-            placeholder={"alekprincipebra@mail.com"}
+            placeholder="alekprincipebra@mail.com"
             placeholderTextColor={colors.lightText}
             style={styles.input}
+            onChangeText={handleEmailInputChange}
           />
           <TextInput
-            placeholder={"RobertoMemeiro"}
+            placeholder="RobertoMemeiro"
             placeholderTextColor={colors.lightText}
             style={styles.input}
+            onChangeText={handleUserNameInputChange}
           />
         </View>
         <View style={styles.buttonBox}>
@@ -146,5 +166,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "80%",
     marginBottom: "5%",
+  },
+  redAdvertisement: {
+    color: colors.pastelRed,
+    fontFamily: fonts.heading,
+    fontSize: 10,
+    marginTop: 4,
   },
 });
