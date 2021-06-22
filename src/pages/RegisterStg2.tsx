@@ -7,13 +7,57 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import colors from "../styles/colors";
 import risumIcon from "../assets/tinyIcon.png";
 import fonts from "../styles/fonts";
-import { ConfirmButton } from "../components/ConfirmButton";
+import { useNavigation } from "@react-navigation/core";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export function RegisterStg2() {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState<string>("");
+  const [randomCode, setRandomCode] = useState<number>();
+  const [codeInput, setCodeInput] = useState<number>();
+  const [isFilled, setIsFilled] = useState(false);
+
+  useEffect(() => {
+    async function loadStoragedData() {
+      const emailSaved = await AsyncStorage.getItem("@risum:email");
+      setEmail(String(emailSaved));
+    }
+
+    function generateRandomCode() {
+      const randomNumber = Math.floor(100000 + Math.random() * 900000); // 6-digit code
+      setRandomCode(randomNumber);
+
+      Alert.alert(`Pssiu, o seu código é: ${randomNumber}`);
+    }
+
+    loadStoragedData();
+    generateRandomCode();
+  }, []);
+
+  function handleResendEmail() {
+    return Alert.alert(`Email reenviado com sucesso para: ${email}`);
+  }
+
+  function handleConfirm() {
+    if (codeInput === randomCode && isFilled) {
+      return navigation.navigate("RegisterStg3");
+    } else {
+      Alert.alert(`Código inválido!`);
+    }
+  }
+
+  function handleInputChange(value: string) {
+    setCodeInput(Number(value));
+    setIsFilled(!!codeInput);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -29,9 +73,11 @@ export function RegisterStg2() {
 
         <View style={styles.form}>
           <TextInput
-            placeholder={"##-##-##-##"}
+            placeholder={"###-###"}
             placeholderTextColor={colors.lightText}
             style={styles.input}
+            onChangeText={handleInputChange}
+            keyboardType={"number-pad"}
           />
           <Text style={styles.redAdvertisement}>
             Favor não usar Email temporário :)
@@ -39,8 +85,9 @@ export function RegisterStg2() {
         </View>
         <View style={styles.buttonBox}>
           <TouchableOpacity
-            style={[styles.button, styles.reSendButton]}
+            style={[styles.button, styles.resendButton]}
             activeOpacity={0.7}
+            onPress={handleResendEmail}
           >
             <Text style={[styles.text, { color: colors.white }]}>
               Reenviar{"\n"}Email
@@ -50,6 +97,7 @@ export function RegisterStg2() {
           <TouchableOpacity
             style={[styles.button, styles.verifyButton]}
             activeOpacity={0.7}
+            onPress={handleConfirm}
           >
             <Text style={[styles.text, { color: colors.background }]}>
               Verificar
@@ -133,7 +181,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
   },
-  reSendButton: {
+  resendButton: {
     backgroundColor: colors.purple,
     alignItems: "center",
     justifyContent: "center",

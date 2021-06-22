@@ -9,51 +9,13 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import colors from "../styles/colors";
-import risumIcon from "../assets/tinyIcon.png";
-import fonts from "../styles/fonts";
 import { ConfirmButton } from "../components/ConfirmButton";
+import colors from "../styles/colors";
+import fonts from "../styles/fonts";
 
-import googleWhite from "../assets/googleWhite.png";
-import appleWhite from "../assets/appleWhite.png";
-import facebookWhite from "../assets/facebookWhite.png";
-import { useNavigation } from "@react-navigation/core";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import risumIcon from "../assets/tinyIcon.png";
 
-export function RegisterStg1() {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
-  const [isFilled, setIsFilled] = useState(false);
-
-  function handleEmailInputChange(value: string) {
-    setEmail(value);
-    setIsFilled(!!value);
-  }
-
-  function handleUserNameInputChange(value: string) {
-    setUserName(value);
-    setIsFilled(!!value);
-  }
-
-  async function handleConfirm() {
-    if (!email || !userName) {
-      return Alert.alert("Email ou Username inválido!");
-    }
-
-    try {
-      await AsyncStorage.setItem("@risum:email", email);
-      await AsyncStorage.setItem("@risum:user", userName);
-
-      navigation.navigate("RegisterStg2");
-    } catch {
-      Alert.alert(
-        "Não foi possível salvar o seu e-mail, tente novamente mais tarde."
-      );
-    }
-  }
-
+export function RegisterStg3() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -64,43 +26,25 @@ export function RegisterStg1() {
         </View>
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Email e{"\n"}Username</Text>
+          <Text style={styles.title}>Digite uma{"\n"}nova senha</Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            placeholder="alekprincipebra@mail.com"
+            placeholder="Senha"
             placeholderTextColor={colors.lightText}
             style={styles.input}
-            onChangeText={handleEmailInputChange}
+            secureTextEntry={true}
           />
           <TextInput
-            placeholder="RobertoMemeiro"
+            placeholder="Confirme a senha"
             placeholderTextColor={colors.lightText}
             style={styles.input}
-            onChangeText={handleUserNameInputChange}
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleConfirm} />
-        </View>
-        <View style={styles.orBox}>
-          <Text style={styles.subtitle}>OU</Text>
-        </View>
-
-        <View style={styles.socialRegister}>
-          <TouchableOpacity activeOpacity={0.7}>
-            <Image source={googleWhite} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{ marginLeft: "25%", marginRight: "25%" }}
-          >
-            <Image source={appleWhite} />
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
-            <Image source={facebookWhite} />
-          </TouchableOpacity>
+          <ConfirmButton title="Confirmar" />
         </View>
       </View>
     </SafeAreaView>
