@@ -6,16 +6,36 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  TouchableOpacity,
-  Alert,
 } from "react-native";
 import { ConfirmButton } from "../components/ConfirmButton";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
 import risumIcon from "../assets/tinyIcon.png";
+import { useState } from "react";
 
 export function RegisterStg3() {
+  const [pwd, setPwd] = useState<string>();
+  const [pwdConfirm, setPwdConfirm] = useState<string>();
+  const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
+
+  function handlePwdCreate(pwd1: string) {
+    setPwd(String(pwd1));
+  }
+
+  function handlePwdChange(pwd2: string) {
+    setPwdConfirm(String(pwd2));
+  }
+
+  function handleSubmit() {
+    if (pwd == pwdConfirm) {
+      setIsPwdIncorrect(false);
+      // salvar senha e navegação
+    } else {
+      setIsPwdIncorrect(true);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
@@ -34,17 +54,22 @@ export function RegisterStg3() {
             placeholder="Senha"
             placeholderTextColor={colors.lightText}
             style={styles.input}
-            secureTextEntry={true}
+            onChangeText={handlePwdCreate}
+            secureTextEntry={false}
           />
           <TextInput
             placeholder="Confirme a senha"
             placeholderTextColor={colors.lightText}
             style={styles.input}
-            secureTextEntry={true}
+            secureTextEntry={false}
+            onChangeText={handlePwdChange}
           />
+          {isPwdIncorrect && (
+            <Text style={styles.redAdvertisement}>As senhas não coincidem</Text>
+          )}
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" />
+          <ConfirmButton title="Confirmar" onPress={handleSubmit} />
         </View>
       </View>
     </SafeAreaView>

@@ -60,7 +60,7 @@ export function Welcome() {
 
         <View style={styles.guestBox}>
           <TouchableOpacity style={styles.guestButton} activeOpacity={0.7}>
-            <Text style={[styles.text, { color: colors.text }]}>
+            <Text style={styles.text}>
               Entrar como Convidado
             </Text>
           </TouchableOpacity>
@@ -155,5 +155,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontFamily: fonts.heading,
+    color: colors.text,
   },
 });

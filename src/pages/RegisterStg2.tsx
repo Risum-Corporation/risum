@@ -23,6 +23,7 @@ export function RegisterStg2() {
   const [randomCode, setRandomCode] = useState<number>();
   const [codeInput, setCodeInput] = useState<number>();
   const [isFilled, setIsFilled] = useState(false);
+  const [isCodeIncorrect, setIsCodeIncorrect] = useState(false);
 
   useEffect(() => {
     async function loadStoragedData() {
@@ -49,7 +50,7 @@ export function RegisterStg2() {
     if (codeInput === randomCode && isFilled) {
       return navigation.navigate("RegisterStg3");
     } else {
-      Alert.alert(`Código inválido!`);
+      setIsCodeIncorrect(true);
     }
   }
 
@@ -79,9 +80,11 @@ export function RegisterStg2() {
             onChangeText={handleInputChange}
             keyboardType={"number-pad"}
           />
-          <Text style={styles.redAdvertisement}>
-            Favor não usar Email temporário :)
-          </Text>
+          {isCodeIncorrect && (
+            <Text style={styles.redAdvertisement}>
+              Código inválido!
+            </Text>
+          )}
         </View>
         <View style={styles.buttonBox}>
           <TouchableOpacity
