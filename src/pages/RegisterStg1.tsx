@@ -10,9 +10,9 @@ import {
   Alert,
 } from "react-native";
 import colors from "../styles/colors";
-import risumIcon from "../assets/tinyIcon.png";
 import fonts from "../styles/fonts";
 import { ConfirmButton } from "../components/ConfirmButton";
+import { RegisterProgressBar } from "../components/RegisterProgressBar";
 
 import googleWhite from "../assets/googleWhite.png";
 import appleWhite from "../assets/appleWhite.png";
@@ -25,16 +25,13 @@ export function RegisterStg1() {
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
-  const [isFilled, setIsFilled] = useState(false);
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
-    setIsFilled(!!value);
   }
 
   function handleUserNameInputChange(value: string) {
     setUserName(value);
-    setIsFilled(!!value);
   }
 
   async function handleConfirm() {
@@ -49,7 +46,7 @@ export function RegisterStg1() {
       navigation.navigate("RegisterStg2");
     } catch {
       Alert.alert(
-        "Não foi possível salvar o seu e-mail, tente novamente mais tarde."
+        "Não foi possível salvar o seu e-mail e/ou usuário, tente novamente mais tarde."
       );
     }
   }
@@ -57,11 +54,7 @@ export function RegisterStg1() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <View style={styles.progressBar}>
-          <Image source={risumIcon} style={styles.tinyLogo} />
-          <Image source={risumIcon} style={styles.tinyLogo} />
-          <Image source={risumIcon} style={styles.tinyLogo} />
-        </View>
+        <RegisterProgressBar position={25} />
 
         <View style={styles.heading}>
           <Text style={styles.title}>Email e{"\n"}Username</Text>
@@ -117,18 +110,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingHorizontal: 20,
     backgroundColor: colors.background,
-  },
-  progressBar: {
-    backgroundColor: colors.white,
-    width: "100%",
-    height: 4,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  tinyLogo: {
-    width: 24,
-    height: 24,
   },
   heading: {
     textAlign: "left",

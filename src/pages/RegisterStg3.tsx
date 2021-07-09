@@ -6,18 +6,22 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  Alert,
 } from "react-native";
 import { ConfirmButton } from "../components/ConfirmButton";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-import risumIcon from "../assets/tinyIcon.png";
+import { RegisterProgressBar } from "../components/RegisterProgressBar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export function RegisterStg3() {
   const [pwd, setPwd] = useState<string>();
   const [pwdConfirm, setPwdConfirm] = useState<string>();
   const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
+  const navigation = useNavigation();
 
   function handlePwdCreate(pwd1: string) {
     setPwd(String(pwd1));
@@ -27,10 +31,17 @@ export function RegisterStg3() {
     setPwdConfirm(String(pwd2));
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (pwd == pwdConfirm) {
       setIsPwdIncorrect(false);
-      // salvar senha e navegação
+      try {
+        await AsyncStorage.setItem("@risum:password", pwd);
+        return navigation.navigate("Feed")
+      } catch {
+        Alert.alert(
+          "Não foi possível salvar a sua senha, tente novamente mais tarde."
+        );
+      }
     } else {
       setIsPwdIncorrect(true);
     }
@@ -39,11 +50,7 @@ export function RegisterStg3() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <View style={styles.progressBar}>
-          <Image source={risumIcon} style={styles.tinyLogo} />
-          <Image source={risumIcon} style={styles.tinyLogo} />
-          <Image source={risumIcon} style={styles.tinyLogo} />
-        </View>
+        <RegisterProgressBar position={75} />
 
         <View style={styles.heading}>
           <Text style={styles.title}>Digite uma{"\n"}nova senha</Text>
@@ -87,18 +94,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: colors.background,
   },
-  progressBar: {
-    backgroundColor: colors.white,
-    width: "100%",
-    height: 4,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  tinyLogo: {
-    width: 24,
-    height: 24,
-  },
   heading: {
     textAlign: "left",
     width: "100%",
@@ -117,12 +112,12 @@ const styles = StyleSheet.create({
     lineHeight: 50,
   },
   form: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: 8,
     width: "100%",
     marginTop: "-10%",
   },
   input: {
+    backgroundColor: colors.inputBackground,
+    borderRadius: 8,
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
