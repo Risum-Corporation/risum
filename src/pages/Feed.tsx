@@ -1,18 +1,21 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import colors from "../styles/colors";
-import fonts from "../styles/fonts";
 
+import { FeedBar } from "../components/FeedBar";
 import { MemeCard } from '../components/MemeCard'
+import { ToolBar } from "../components/ToolBar";
 
 export function Feed() {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Feed</Text>
+            <FeedBar />
+
 
             <MemeCard />
             <MemeCard />
 
+            <ToolBar />
         </View>
     )
 }
@@ -23,10 +26,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         color: colors.background,
-    },
-    title: {
-        fontSize: 24,
-        fontFamily: fonts.heading,
-        color: colors.green,
     }
 })

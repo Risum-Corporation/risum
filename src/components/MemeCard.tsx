@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   memeInfo: {
     backgroundColor: colors.lightBackground,
-    height: 34,
+    height: 40,
     padding: 10,
     flexDirection: "row",
     alignItems: "center",

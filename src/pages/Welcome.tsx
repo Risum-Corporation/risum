@@ -8,9 +8,12 @@ import {
   Dimensions,
   View,
 } from "react-native";
+
 import risumIcon from "../assets/risumIcon.png";
+
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+
 import { useNavigation } from "@react-navigation/core";
 
 export function Welcome() {
@@ -32,7 +35,7 @@ export function Welcome() {
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View style={styles.imageBox}>
-          <Image source={risumIcon} style={styles.image} resizeMode="contain" />
+          <Image source={risumIcon} style={styles.image} />
         </View>
         <View style={styles.titleBox}>
           <Text style={styles.title}>Risum</Text>
@@ -69,7 +72,7 @@ export function Welcome() {
         </View>
 
         <View style={styles.footer}>
-          <Text style={[styles.text, { color: colors.text }]}>
+          <Text style={styles.text}>
             Bem vindo ao Risum!
           </Text>
         </View>
@@ -108,7 +111,9 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   image: {
+    width: 153,
     height: Dimensions.get("window").width * 0.9,
+    resizeMode: "contain",
   },
   title: {
     fontSize: 50,
