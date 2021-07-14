@@ -10,6 +10,7 @@ export default {
   lightText: '#B3C0B8',
   inputText: '#E3E3E3',
   placeholderText: '#E3E3E3',
+  dividerColor: '#505050',
 
   outlineGray: '#444444',
   pastelRed: '#FF7A7A'

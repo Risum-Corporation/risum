@@ -19,9 +19,13 @@ export function Welcome() {
   function handleRegister() {
     navigation.navigate("RegisterStg1");
   }
-  
+
   function handleLogin() {
     navigation.navigate("Login");
+  }
+
+  function handleEnterAsGuest() {
+    navigation.navigate("Feed");
   }
 
   return (
@@ -39,12 +43,8 @@ export function Welcome() {
             activeOpacity={0.7}
             onPress={handleRegister}
           >
-            <Text style={[styles.text, { color: colors.white }]}>
-            Criar 
-            </Text>
-            <Text style={[styles.text, { color: colors.white }]}>
-            Conta 
-            </Text>
+            <Text style={[styles.text, { color: colors.white }]}>Criar</Text>
+            <Text style={[styles.text, { color: colors.white }]}>Conta</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -59,10 +59,12 @@ export function Welcome() {
         </View>
 
         <View style={styles.guestBox}>
-          <TouchableOpacity style={styles.guestButton} activeOpacity={0.7}>
-            <Text style={styles.text}>
-              Entrar como Convidado
-            </Text>
+          <TouchableOpacity
+            style={styles.guestButton}
+            activeOpacity={0.7}
+            onPress={handleEnterAsGuest}
+          >
+            <Text style={styles.text}>Entrar como Convidado</Text>
           </TouchableOpacity>
         </View>
 
@@ -79,8 +81,8 @@ export function Welcome() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center', 
-    alignContent: 'center'
+    justifyContent: "center",
+    alignContent: "center",
   },
   wrapper: {
     flex: 1,
@@ -96,13 +98,13 @@ const styles = StyleSheet.create({
     marginTop: "-20%",
   },
   buttonBox: {
-    width: '97%',
+    width: "97%",
     flexDirection: "row",
     marginTop: 70,
   },
   guestBox: {
     flex: 1,
-    width: '97%',
+    width: "97%",
     marginTop: 50,
   },
   image: {
@@ -121,7 +123,6 @@ const styles = StyleSheet.create({
     height: 90,
     width: "100%",
     flex: 1,
-    
   },
   signUpButton: {
     backgroundColor: colors.purple,

@@ -62,13 +62,13 @@ export function RegisterStg3() {
             placeholderTextColor={colors.lightText}
             style={styles.input}
             onChangeText={handlePwdCreate}
-            secureTextEntry={false}
+            secureTextEntry={true}
           />
           <TextInput
             placeholder="Confirme a senha"
             placeholderTextColor={colors.lightText}
             style={styles.input}
-            secureTextEntry={false}
+            secureTextEntry={true}
             onChangeText={handlePwdChange}
           />
           {isPwdIncorrect && (
