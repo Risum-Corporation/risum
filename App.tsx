@@ -1,27 +1,24 @@
-import React from "react";
-import Routes from "./src/routes";
-import AppLoading from "expo-app-loading";
-import {
-  useFonts,
-  Archivo_700Bold,
-  Archivo_500Medium,
-} from "@expo-google-fonts/archivo";
+import 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Poppins_400Regular, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
-
-import { Roboto_400Regular } from "@expo-google-fonts/roboto";
+import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './hooks/useColorScheme';
+import Navigation from './navigation';
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    Archivo_700Bold,
-    Archivo_500Medium,
-    Poppins_400Regular,
-    Roboto_400Regular,
-    Poppins_600SemiBold,
-  });
+  const isLoadingComplete = useCachedResources();
+  const colorScheme = useColorScheme();
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
+  if (!isLoadingComplete) {
+    return null;
+  } else {
+    return (
+      <SafeAreaProvider>
+        <Navigation colorScheme={colorScheme} />
+        <StatusBar />
+      </SafeAreaProvider>
+    );
   }
-  return <Routes />;
 }
