@@ -4,6 +4,8 @@ import { AntDesign, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import { Roboto_400Regular } from "@expo-google-fonts/roboto";
+import { Poppins_400Regular } from "@expo-google-fonts/poppins";
 
 export function MemeCard() {
   return (
@@ -99,11 +101,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontFamily: fonts.text,
+    fontFamily: 'Poppins-Regular',  
     color: colors.white,
   },
   userText: {
-    fontFamily: fonts.userText,
+    fontFamily: 'Poppins_400Regular',
     color: colors.white,
   },
   userImg: {

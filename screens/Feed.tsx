@@ -7,14 +7,16 @@ import colors from "../styles/colors";
 
 import { FeedBar } from "../components/FeedBar";
 import { MemeCard } from '../components/MemeCard';
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
 
 export default function Feed() {
   return (
     <View style={styles.container}>
       <View style={styles.headingPadding}></View>
 
-            <MemeCard />
-            <MemeCard />
+
+
+            <><Text style={{fontFamily: 'subtitle'}}>Oi</Text></>
 
 
     <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
