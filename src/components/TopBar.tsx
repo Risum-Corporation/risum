@@ -1,25 +1,24 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-export function FeedBar() {
+export function TopBar({ name }: TopBarProps) {
+  function handleClickBurger() {}
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <TouchableOpacity>
-          <Image
-            source={{ uri: "https://source.unsplash.com/random" }}
-            style={styles.img}
-          />
+        <TouchableOpacity onPress={handleClickBurger}>
+          <AntDesign name="bars" size={30} color={colors.white} />
         </TouchableOpacity>
 
-        <Text style={styles.title}>Feed</Text>
+        <Text style={styles.title}>{name}</Text>
 
         <TouchableOpacity>
-          <AntDesign name={"search1"} size={36} color={colors.white} />
+          <AntDesign name={"search1"} size={30} color={colors.white} />
         </TouchableOpacity>
       </View>
     </View>
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     marginTop: 25,
-    position: 'absolute',
+    position: "absolute",
     top: 1,
     backgroundColor: colors.background,
   },

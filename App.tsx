@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import {
@@ -7,9 +7,13 @@ import {
   Archivo_500Medium,
 } from "@expo-google-fonts/archivo";
 
-import { Poppins_400Regular, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
+import {
+  Poppins_400Regular,
+  Poppins_600SemiBold,
+} from "@expo-google-fonts/poppins";
 
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
+import { useEffect } from "react";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -23,5 +27,6 @@ export default function App() {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
+
   return <Routes />;
 }

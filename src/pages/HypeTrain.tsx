@@ -2,16 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import colors from "../styles/colors";
 
-import { FeedBar } from "../components/FeedBar";
-import { MemeCard } from "../components/MemeCard";
-import { ToolBar } from "../components/ToolBar";
+import { TopBar } from "../components/TopBar";
 
 export function HypeTrain() {
   return (
     <View style={styles.container}>
-      <FeedBar />
-
-      <MemeCard />
+      <TopBar name="HypeTrain" />
     </View>
   );
 }

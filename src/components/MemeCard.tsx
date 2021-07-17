@@ -1,13 +1,20 @@
-import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { AntDesign, MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Share,
+} from "react-native";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-export function MemeCard() {
-  // Guardadinha pra mais tarde, boa sorte no back end 👍
-  interface PostProps {
+interface PostProps {
+  postData: {
     id: number;
     author: string;
     memeUrl: string;
@@ -16,85 +23,90 @@ export function MemeCard() {
     tags: string[];
     profilePhoto: string;
     comments: number;
+  };
+}
+
+export function MemeCard({ postData }: PostProps) {
+  const [isLikePressed, setIsLikePressed] = useState<boolean>(false);
+  const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>(false);
+
+  function toggleLikePress() {
+    setIsLikePressed(!isLikePressed);
+
+    if (isLikePressed) {
+      postData.likes--;
+    } else {
+      postData.likes++;
+    }
   }
 
-  const posts = [
-    {
-      id: 1,
-      author: "Sapeka",
-      meme_url: "https://source.unsplash.com/random/",
-      likes: 43,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "comedia"],
-      perfilPhoto: "https://source.unsplash.com/random/50x50",
-      comments: 17,
-    },
-    {
-      id: 2,
-      author: "Sapeka",
-      meme_url: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "memeskk", "hurdur"],
-      perfilPhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 3,
-      author: "Sapeka",
-      meme_url: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      perfilPhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-  ];
+  function toggleBookmarkPress() {
+    setIsBookmarkPressed(!isBookmarkPressed);
+  }
+
+  async function shareMeme() {
+    const shareOptions = {
+      message: `Se liga nesse meme do Risum 😂: ${postData.memeUrl}`,
+    };
+
+    try {
+      await Share.share(shareOptions);
+    } catch (error) {
+      console.log("Erro => ", error);
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <View>
-        <Image
-          source={{ uri: "https://source.unsplash.com/random/400x300" }}
-          style={styles.img}
-        />
+    <SafeAreaView>
+      <View style={styles.container}>
+        <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
+      </View>
 
-        <View style={styles.memeInfo}>
-          <View style={styles.buttonBox}>
-            <TouchableOpacity style={styles.button}>
-              <AntDesign name="like2" size={20} color={colors.white} />
-            </TouchableOpacity>
-            <Text style={styles.text}>43</Text>
+      <View style={styles.footer}>
+        <View style={styles.buttonBox}>
+          <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
+            <AntDesign
+              name={isLikePressed ? "like1" : "like2"}
+              size={24}
+              color={isLikePressed ? colors.green : colors.white}
+            />
+          </TouchableOpacity>
+          <Text style={styles.memeStats}>{postData.likes}</Text>
 
-            <TouchableOpacity style={styles.button}>
-              <MaterialCommunityIcons
-                name="comment-multiple-outline"
-                size={20}
-                color="white"
-              />
-            </TouchableOpacity>
-            <Text style={styles.text}>17</Text>
+          <TouchableOpacity style={styles.button}>
+            <Ionicons
+              name="md-chatbox-ellipses-outline"
+              size={24}
+              color={colors.white}
+            />
+          </TouchableOpacity>
+          <Text style={styles.memeStats}>{postData.comments}</Text>
 
-            <TouchableOpacity style={styles.button}>
-              <AntDesign name="sharealt" size={20} color={colors.white} />
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={toggleBookmarkPress}>
+            <Ionicons
+              name={isBookmarkPressed ? "md-bookmark" : "md-bookmark-outline"}
+              size={24}
+              color={isBookmarkPressed ? colors.green : colors.white}
+            />
+          </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button}>
-              <Feather name="bookmark" size={20} color="white" />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.button} onPress={shareMeme}>
+            <Ionicons
+              name="md-share-social-outline"
+              size={24}
+              color={colors.white}
+            />
+          </TouchableOpacity>
+        </View>
 
-          <View style={styles.userBox}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.userText}>Educg550</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button}>
-              <Image
-                source={{ uri: "https://source.unsplash.com/random/40x40" }}
-                style={styles.userImg}
-              />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.userInfoContainer}>
+          <Text style={styles.authorName}>{postData.author}</Text>
+          <TouchableOpacity>
+            <Image
+              source={{ uri: postData.profilePhoto }}
+              style={styles.userImg}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -102,57 +114,76 @@ export function MemeCard() {
         style={{
           borderBottomColor: colors.dividerColor,
           borderBottomWidth: 1,
-          marginTop: 16,
+          marginVertical: 25,
+          marginHorizontal: 15,
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 25,
-    marginBottom: 16,
-    borderRadius: 4,
+    alignItems: "center",
   },
-  img: {
-    width: 325,
-    height: 260,
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
+  memeUrl: {
+    width: "92.3%",
+    marginHorizontal: 15,
+    height: 350,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     resizeMode: "cover", // object-fit
   },
-  memeInfo: {
-    backgroundColor: colors.lightBackground,
-    height: 40,
-    padding: 10,
+  footer: {
+    maxWidth: "92.3%",
     flexDirection: "row",
+
+    backgroundColor: colors.lightBackground,
+
+    marginHorizontal: 15,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    padding: 7.5,
+
     alignItems: "center",
     justifyContent: "space-between",
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
   },
   button: {
     marginHorizontal: 5,
   },
   buttonBox: {
-    flexDirection: "row", // Use 'column' for Hype Train
-  },
-  userBox: {
     flexDirection: "row",
-    alignItems: "center",
   },
-  text: {
+  memeStats: {
     fontFamily: fonts.text,
+    margin: 4,
     color: colors.white,
   },
-  userText: {
-    fontFamily: fonts.userText,
-    color: colors.white,
+  tags: {
+    color: "#002D5E",
   },
   userImg: {
     width: 40,
     height: 40,
     borderRadius: 20,
+    marginHorizontal: 5,
+  },
+  authorName: {
+    fontFamily: fonts.userText,
+    fontSize: 14,
+    textAlign: "center",
+
+    color: colors.white,
+    maxWidth: 90,
+  },
+  userInfoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  wrapper: {
+    backgroundColor: colors.background,
+  },
+  memeList: {
+    marginTop: 110,
   },
 });

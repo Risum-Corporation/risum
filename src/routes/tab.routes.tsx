@@ -18,7 +18,7 @@ export default function BottomTabNavigator() {
       initialRouteName="Feed"
       tabBarOptions={{
         activeTintColor: colors.green,
-        style: { backgroundColor: colors.lightBackground, height: 50 },
+        style: { backgroundColor: colors.lightBackground },
       }}
     >
       <BottomTab.Screen
@@ -63,8 +63,6 @@ export default function BottomTabNavigator() {
   );
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
   color: string;
