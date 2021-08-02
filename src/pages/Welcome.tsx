@@ -72,9 +72,7 @@ export function Welcome() {
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.text}>
-            Bem vindo ao Risum!
-          </Text>
+          <Text style={styles.text}>Bem vindo ao Risum!</Text>
         </View>
       </View>
     </SafeAreaView>

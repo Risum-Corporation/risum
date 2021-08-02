@@ -23,8 +23,10 @@ import { useState } from "react";
 
 export function RegisterStg1() {
   const navigation = useNavigation();
-  const [email, setEmail] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
+  const [email, setEmail] = useState<string>();
+  const [userName, setUserName] = useState<string>();
+  const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
+    useState<boolean>();
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
@@ -36,7 +38,7 @@ export function RegisterStg1() {
 
   async function handleConfirm() {
     if (!email || !userName) {
-      return Alert.alert("Email ou Username inválido!");
+      return setIsEmailOrUsernameInvalid(true);
     }
 
     try {
@@ -64,15 +66,26 @@ export function RegisterStg1() {
           <TextInput
             placeholder="alekprincipebra@mail.com"
             placeholderTextColor={colors.lightText}
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
+            ]}
             onChangeText={handleEmailInputChange}
           />
           <TextInput
             placeholder="RobertoMemeiro"
             placeholderTextColor={colors.lightText}
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
+            ]}
             onChangeText={handleUserNameInputChange}
           />
+          {isEmailOrUsernameInvalid && (
+            <Text style={styles.redAdvertisement}>
+              Email ou senha inválidos
+            </Text>
+          )}
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton title="Confirmar" onPress={handleConfirm} />
@@ -114,7 +127,6 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: "left",
     width: "100%",
-    marginTop: "-5%",
   },
   title: {
     fontFamily: fonts.heading,
@@ -129,28 +141,25 @@ const styles = StyleSheet.create({
     lineHeight: 50,
   },
   form: {
-    backgroundColor: colors.inputBackground,
-    borderRadius: 8,
     width: "100%",
-    marginTop: "-10%",
+    marginVertical: 5
   },
   input: {
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
     color: colors.white,
+    backgroundColor: colors.inputBackground,
   },
   buttonBox: {
     width: "100%",
-    marginTop: "-0%",
   },
   buttonText: {
     fontFamily: fonts.subtitle,
     fontSize: 16,
   },
   orBox: {
-    marginTop: "-10%",
-    marginBottom: "-10%",
+    marginVertical: "-10%"
   },
   socialRegister: {
     flexDirection: "row",

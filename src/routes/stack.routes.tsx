@@ -9,6 +9,7 @@ import { RegisterStg2 } from "../pages/RegisterStg2";
 import { RegisterStg3 } from "../pages/RegisterStg3";
 
 import { Login } from "../pages/Login";
+import { ForgotPasswordStg1 } from "../pages/ForgotPasswordStg1";
 
 import { Feed } from "../pages/Feed";
 import { HypeTrain } from "../pages/HypeTrain";
@@ -34,7 +35,9 @@ const AppRoutes: React.FC = () => (
     <stackRoutes.Screen name="RegisterStg3" component={RegisterStg3} />
 
     <stackRoutes.Screen name="Login" component={Login} />
-    
+    <stackRoutes.Screen name="ForgotPasswordStg1" component={ForgotPasswordStg1} />
+
+
     <stackRoutes.Screen name="Feed" component={AuthRoutes} />
     <stackRoutes.Screen name="HypeTrain" component={HypeTrain} />
     <stackRoutes.Screen name="WolfPack" component={WolfPack} />

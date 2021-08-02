@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-export function TopBar({ name }: TopBarProps) {
+export function TopBar({ name }: string) {
   function handleClickBurger() {}
 
   return (

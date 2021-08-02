@@ -4,7 +4,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   TextInput,
   Alert,
 } from "react-native";
@@ -32,18 +31,18 @@ export function RegisterStg3() {
   }
 
   async function handleSubmit() {
-    if (pwd == pwdConfirm) {
+    if (pwd == pwdConfirm && !!pwd) {
       setIsPwdIncorrect(false);
       try {
         await AsyncStorage.setItem("@risum:password", pwd);
-        return navigation.navigate("Feed")
+        return navigation.navigate("Feed");
       } catch {
         Alert.alert(
           "Não foi possível salvar a sua senha, tente novamente mais tarde."
         );
       }
     } else {
-      setIsPwdIncorrect(true);
+      return setIsPwdIncorrect(true);
     }
   }
 
@@ -60,19 +59,25 @@ export function RegisterStg3() {
           <TextInput
             placeholder="Senha"
             placeholderTextColor={colors.lightText}
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
+            ]}
             onChangeText={handlePwdCreate}
             secureTextEntry={true}
           />
           <TextInput
             placeholder="Confirme a senha"
             placeholderTextColor={colors.lightText}
-            style={styles.input}
+            style={[
+              styles.input,
+              { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
+            ]}
             secureTextEntry={true}
             onChangeText={handlePwdChange}
           />
           {isPwdIncorrect && (
-            <Text style={styles.redAdvertisement}>As senhas não coincidem</Text>
+            <Text style={styles.redAdvertisement}>Senhas inválidas</Text>
           )}
         </View>
         <View style={styles.buttonBox}>
@@ -117,7 +122,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: colors.inputBackground,
-    borderRadius: 8,
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
