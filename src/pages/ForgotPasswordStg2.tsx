@@ -4,7 +4,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   TextInput,
   TouchableOpacity,
   Alert,
@@ -12,13 +11,12 @@ import {
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/core";
-import { RegisterProgressBar } from "../components/RegisterProgressBar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { useState } from "react";
 
-export function RegisterStg2() {
+export function ForgotPasswordStg2() {
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
   const [randomCode, setRandomCode] = useState<number>();
@@ -49,7 +47,7 @@ export function RegisterStg2() {
 
   function handleConfirm() {
     if (codeInput === randomCode && isFilled) {
-      return navigation.navigate("RegisterStg3");
+      return navigation.navigate("ForgotPasswordStg3");
     } else {
       setIsCodeIncorrect(true);
     }
@@ -63,8 +61,6 @@ export function RegisterStg2() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <RegisterProgressBar position={50} />
-
         <View style={styles.heading}>
           <Text style={styles.title}>Verifique{"\n"}o seu Email</Text>
         </View>

@@ -7,36 +7,41 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import { ConfirmButton } from "../components/ConfirmButton";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import { ConfirmButton } from "../components/ConfirmButton";
-import { useNavigation } from "@react-navigation/core";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
-export function ForgotPasswordStg1() {
+export function ForgotPasswordStg3() {
+  const [pwd, setPwd] = useState<string>();
+  const [pwdConfirm, setPwdConfirm] = useState<string>();
+  const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
   const navigation = useNavigation();
-  const [email, setEmail] = useState<string>();
-  const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
-    useState<boolean>();
 
-  function handleEmailInputChange(value: string) {
-    setEmail(value);
+  function handlePwdCreate(pwd1: string) {
+    setPwd(String(pwd1));
   }
 
-  async function handleConfirm() {
-    if (!email) {
-      return setIsEmailOrUsernameInvalid(true);
-    }
+  function handlePwdChange(pwd2: string) {
+    setPwdConfirm(String(pwd2));
+  }
 
-    try {
-      await AsyncStorage.setItem("@risum:email", email);
-
-      navigation.navigate("ForgotPasswordStg2");
-    } catch {
-      Alert.alert(
-        "Não foi possível salvar o seu e-mail e/ou usuário, tente novamente mais tarde."
-      );
+  async function handleSubmit() {
+    if (pwd == pwdConfirm && !!pwd) {
+      setIsPwdIncorrect(false);
+      try {
+        await AsyncStorage.setItem("@risum:password", pwd);
+        return navigation.navigate("Feed");
+      } catch {
+        Alert.alert(
+          "Não foi possível salvar a sua senha, tente novamente mais tarde."
+        );
+      }
+    } else {
+      return setIsPwdIncorrect(true);
     }
   }
 
@@ -44,27 +49,36 @@ export function ForgotPasswordStg1() {
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <View style={styles.heading}>
-          <Text style={styles.title}>Digite seu{"\n"}Email</Text>
+          <Text style={styles.title}>Digite uma{"\n"}nova senha</Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            placeholder="alekprincipebra@mail.com"
+            placeholder="Senha"
             placeholderTextColor={colors.lightText}
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
             ]}
-            onChangeText={handleEmailInputChange}
+            onChangeText={handlePwdCreate}
+            secureTextEntry={true}
           />
-          {isEmailOrUsernameInvalid && (
-            <Text style={styles.redAdvertisement}>
-              Email ou senha inválidos
-            </Text>
+          <TextInput
+            placeholder="Confirme a senha"
+            placeholderTextColor={colors.lightText}
+            style={[
+              styles.input,
+              { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
+            ]}
+            secureTextEntry={true}
+            onChangeText={handlePwdChange}
+          />
+          {isPwdIncorrect && (
+            <Text style={styles.redAdvertisement}>Senhas inválidas</Text>
           )}
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleConfirm} />
+          <ConfirmButton title="Confirmar" onPress={handleSubmit} />
         </View>
       </View>
     </SafeAreaView>
@@ -85,6 +99,7 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: "left",
     width: "100%",
+    marginTop: "-5%",
   },
   title: {
     fontFamily: fonts.heading,
@@ -100,24 +115,26 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    marginVertical: 5,
+    marginTop: "-10%",
   },
   input: {
+    backgroundColor: colors.inputBackground,
     height: 64,
     padding: 20,
-    borderRadius: 8,
+    borderBottomWidth: 1,
     color: colors.white,
-    backgroundColor: colors.inputBackground,
   },
   buttonBox: {
     width: "100%",
+    marginTop: "-0%",
   },
   buttonText: {
     fontFamily: fonts.subtitle,
     fontSize: 16,
   },
   orBox: {
-    marginVertical: "-10%",
+    marginTop: "-10%",
+    marginBottom: "-10%",
   },
   socialRegister: {
     flexDirection: "row",

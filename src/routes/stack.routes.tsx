@@ -2,20 +2,11 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import colors from "../styles/colors";
-import { Welcome } from "../pages/Welcome";
 
-import { RegisterStg1 } from "../pages/RegisterStg1";
-import { RegisterStg2 } from "../pages/RegisterStg2";
-import { RegisterStg3 } from "../pages/RegisterStg3";
-
-import { Login } from "../pages/Login";
-import { ForgotPasswordStg1 } from "../pages/ForgotPasswordStg1";
-
-import { Feed } from "../pages/Feed";
 import { HypeTrain } from "../pages/HypeTrain";
 import { WolfPack } from "../pages/WolfPack";
 import { AddMeme } from "../pages/AddMeme";
-import AuthRoutes from "./tab.routes";
+import AuthRoutes from "./tab.routes"; // Bottom Tabbar
 
 const stackRoutes = createStackNavigator();
 
@@ -28,15 +19,6 @@ const AppRoutes: React.FC = () => (
       },
     }}
   >
-    <stackRoutes.Screen name="Welcome" component={Welcome} />
-
-    <stackRoutes.Screen name="RegisterStg1" component={RegisterStg1} />
-    <stackRoutes.Screen name="RegisterStg2" component={RegisterStg2} />
-    <stackRoutes.Screen name="RegisterStg3" component={RegisterStg3} />
-
-    <stackRoutes.Screen name="Login" component={Login} />
-    <stackRoutes.Screen name="ForgotPasswordStg1" component={ForgotPasswordStg1} />
-
 
     <stackRoutes.Screen name="Feed" component={AuthRoutes} />
     <stackRoutes.Screen name="HypeTrain" component={HypeTrain} />

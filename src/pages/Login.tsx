@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -16,9 +16,12 @@ import googleWhite from "../assets/googleWhite.png";
 import appleWhite from "../assets/appleWhite.png";
 import facebookWhite from "../assets/facebookWhite.png";
 import { useNavigation } from "@react-navigation/core";
-import { useState } from "react";
+
+import AuthContext from "../contexts/Auth";
 
 export function Login() {
+  const {signed, user, login} = useContext(AuthContext)
+
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
   const [userName, setUserName] = useState<string>();
@@ -37,13 +40,13 @@ export function Login() {
     if (!email || !userName) {
       return setIsEmailOrUsernameInvalid(true);
     }
-
     // Verificação da existência da conta no banco de dados
-    navigation.navigate("Feed");
+
+    login() // Eba funcionou ^^
   }
 
   function handleForgotPwd() {
-    navigation.navigate("ForgotPasswordStg1")
+    navigation.navigate("ForgotPasswordStg1");
   }
 
   return (

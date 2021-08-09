@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
+import { AuthProvider } from "./src/contexts/Auth";
 import {
   useFonts,
   Archivo_700Bold,
@@ -13,7 +14,7 @@ import {
 } from "@expo-google-fonts/poppins";
 
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
-import { useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -28,5 +29,11 @@ export default function App() {
     return <AppLoading />;
   }
 
-  return <Routes />;
+  return (
+    <NavigationContainer>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
+    </NavigationContainer>
+  );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   SafeAreaView,
   Text,
@@ -16,12 +16,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
+import AuthContext from "../contexts/Auth";
+
 export function RegisterStg3() {
+  const {login} = useContext(AuthContext)
+
   const [pwd, setPwd] = useState<string>();
   const [pwdConfirm, setPwdConfirm] = useState<string>();
   const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
-  const navigation = useNavigation();
-
+ 
   function handlePwdCreate(pwd1: string) {
     setPwd(String(pwd1));
   }
@@ -35,7 +38,7 @@ export function RegisterStg3() {
       setIsPwdIncorrect(false);
       try {
         await AsyncStorage.setItem("@risum:password", pwd);
-        return navigation.navigate("Feed");
+        return login()
       } catch {
         Alert.alert(
           "Não foi possível salvar a sua senha, tente novamente mais tarde."

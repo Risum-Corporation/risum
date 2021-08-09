@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   SafeAreaView,
   Text,
@@ -15,20 +15,22 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
 import { useNavigation } from "@react-navigation/core";
+import AuthContext from "../contexts/Auth";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
+  const {login} = useContext(AuthContext)
 
   function handleRegister() {
-    navigation.navigate("RegisterStg1");
+    return navigation.navigate("RegisterStg1");
   }
 
   function handleLogin() {
-    navigation.navigate("Login");
+    return navigation.navigate("Login");
   }
 
   function handleEnterAsGuest() {
-    navigation.navigate("Feed");
+    return login()
   }
 
   return (
