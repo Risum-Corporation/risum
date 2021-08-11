@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   memeList: {
-    marginTop: 110,
+    marginTop: 80,
   },
 });

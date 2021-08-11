@@ -7,16 +7,16 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import { ConfirmButton } from "../components/ConfirmButton";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
+import { ConfirmButton } from "../../components/ConfirmButton";
+import colors from "../../styles/colors";
+import fonts from "../../styles/fonts";
 
-import { RegisterProgressBar } from "../components/RegisterProgressBar";
+import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import AuthContext from "../contexts/Auth";
+import AuthContext from "../../contexts/Auth";
 
 export function RegisterStg3() {
   const {login} = useContext(AuthContext)

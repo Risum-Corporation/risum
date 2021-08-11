@@ -11,8 +11,7 @@ const Routes = () => {
   // if (loading) {
   // Lottie
   // }
-
-  return signed ? <StackRoutes /> : <AuthRoutes />
+  return signed ? <StackRoutes /> : <AuthRoutes />;
 };
 
 export default Routes;

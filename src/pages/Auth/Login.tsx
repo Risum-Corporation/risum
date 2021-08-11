@@ -8,16 +8,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
-import { ConfirmButton } from "../components/ConfirmButton";
+import colors from "../../styles/colors";
+import fonts from "../../styles/fonts";
+import { ConfirmButton } from "../../components/ConfirmButton";
 
-import googleWhite from "../assets/googleWhite.png";
-import appleWhite from "../assets/appleWhite.png";
-import facebookWhite from "../assets/facebookWhite.png";
+import googleWhite from "../../assets/googleWhite.png";
+import appleWhite from "../../assets/appleWhite.png";
+import facebookWhite from "../../assets/facebookWhite.png";
 import { useNavigation } from "@react-navigation/core";
 
-import AuthContext from "../contexts/Auth";
+import AuthContext from "../../contexts/Auth";
 
 export function Login() {
   const {signed, user, login} = useContext(AuthContext)

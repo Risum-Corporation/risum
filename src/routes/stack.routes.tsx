@@ -6,6 +6,7 @@ import colors from "../styles/colors";
 import { HypeTrain } from "../pages/HypeTrain";
 import { WolfPack } from "../pages/WolfPack";
 import { AddMeme } from "../pages/AddMeme";
+
 import AuthRoutes from "./tab.routes"; // Bottom Tabbar
 
 const stackRoutes = createStackNavigator();

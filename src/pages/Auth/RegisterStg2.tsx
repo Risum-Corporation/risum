@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
+import colors from "../../styles/colors";
+import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/core";
-import { RegisterProgressBar } from "../components/RegisterProgressBar";
+import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";

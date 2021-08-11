@@ -1,16 +1,16 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { Welcome } from "../pages/Welcome";
+import { Welcome } from "../pages/Auth/Welcome";
 
-import { RegisterStg1 } from "../pages/RegisterStg1";
-import { RegisterStg2 } from "../pages/RegisterStg2";
-import { RegisterStg3 } from "../pages/RegisterStg3";
+import { RegisterStg1 } from "../pages/Auth/RegisterStg1";
+import { RegisterStg2 } from "../pages/Auth/RegisterStg2";
+import { RegisterStg3 } from "../pages/Auth/RegisterStg3";
 
-import { Login } from "../pages/Login";
-import { ForgotPasswordStg1 } from "../pages/ForgotPasswordStg1";
-import { ForgotPasswordStg2 } from "../pages/ForgotPasswordStg2";
-import { ForgotPasswordStg3 } from "../pages/ForgotPasswordStg3";
+import { Login } from "../pages/Auth/Login";
+import { ForgotPasswordStg1 } from "../pages/Auth/ForgotPasswordStg1";
+import { ForgotPasswordStg2 } from "../pages/Auth/ForgotPasswordStg2";
+import { ForgotPasswordStg3 } from "../pages/Auth/ForgotPasswordStg3";
 
 const AuthStack = createStackNavigator();
 

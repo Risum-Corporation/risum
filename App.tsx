@@ -2,6 +2,7 @@ import React from "react";
 import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import { AuthProvider } from "./src/contexts/Auth";
+import { StatusBar } from "react-native";
 import {
   useFonts,
   Archivo_700Bold,
@@ -31,6 +32,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <StatusBar animated={true} barStyle="light-content" />
       <AuthProvider>
         <Routes />
       </AuthProvider>

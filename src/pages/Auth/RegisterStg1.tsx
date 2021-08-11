@@ -4,19 +4,27 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
   TextInput,
+  TouchableOpacity,
   Alert,
 } from "react-native";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
-import { ConfirmButton } from "../components/ConfirmButton";
+import colors from "../../styles/colors";
+import fonts from "../../styles/fonts";
+import { ConfirmButton } from "../../components/ConfirmButton";
+import { RegisterProgressBar } from "../../components/RegisterProgressBar";
+
+import googleWhite from "../../assets/googleWhite.png";
+import appleWhite from "../../assets/appleWhite.png";
+import facebookWhite from "../../assets/facebookWhite.png";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-export function ForgotPasswordStg1() {
+export function RegisterStg1() {
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
+  const [userName, setUserName] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
 
@@ -24,15 +32,20 @@ export function ForgotPasswordStg1() {
     setEmail(value);
   }
 
+  function handleUserNameInputChange(value: string) {
+    setUserName(value);
+  }
+
   async function handleConfirm() {
-    if (!email) {
+    if (!email || !userName) {
       return setIsEmailOrUsernameInvalid(true);
     }
 
     try {
       await AsyncStorage.setItem("@risum:email", email);
+      await AsyncStorage.setItem("@risum:user", userName);
 
-      navigation.navigate("ForgotPasswordStg2");
+      navigation.navigate("RegisterStg2");
     } catch {
       Alert.alert(
         "Não foi possível salvar o seu e-mail e/ou usuário, tente novamente mais tarde."
@@ -43,8 +56,10 @@ export function ForgotPasswordStg1() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
+        <RegisterProgressBar position={25} />
+
         <View style={styles.heading}>
-          <Text style={styles.title}>Digite seu{"\n"}Email</Text>
+          <Text style={styles.title}>Email e{"\n"}Username</Text>
         </View>
 
         <View style={styles.form}>
@@ -57,6 +72,15 @@ export function ForgotPasswordStg1() {
             ]}
             onChangeText={handleEmailInputChange}
           />
+          <TextInput
+            placeholder="RobertoMemeiro"
+            placeholderTextColor={colors.lightText}
+            style={[
+              styles.input,
+              { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
+            ]}
+            onChangeText={handleUserNameInputChange}
+          />
           {isEmailOrUsernameInvalid && (
             <Text style={styles.redAdvertisement}>
               Email ou senha inválidos
@@ -65,6 +89,24 @@ export function ForgotPasswordStg1() {
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton title="Confirmar" onPress={handleConfirm} />
+        </View>
+        <View style={styles.orBox}>
+          <Text style={styles.subtitle}>OU</Text>
+        </View>
+
+        <View style={styles.socialRegister}>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Image source={googleWhite} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{ marginLeft: "25%", marginRight: "25%" }}
+          >
+            <Image source={appleWhite} />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Image source={facebookWhite} />
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -100,12 +142,12 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    marginVertical: 5,
+    marginVertical: 5
   },
   input: {
     height: 64,
     padding: 20,
-    borderRadius: 8,
+    borderBottomWidth: 1,
     color: colors.white,
     backgroundColor: colors.inputBackground,
   },
@@ -117,7 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   orBox: {
-    marginVertical: "-10%",
+    marginVertical: "-10%"
   },
   socialRegister: {
     flexDirection: "row",

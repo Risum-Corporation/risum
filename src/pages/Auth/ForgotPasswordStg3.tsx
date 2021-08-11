@@ -7,15 +7,19 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import { ConfirmButton } from "../components/ConfirmButton";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
+import { ConfirmButton } from "../../components/ConfirmButton";
+import colors from "../../styles/colors";
+import fonts from "../../styles/fonts";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+
+import { useState, useContext } from "react";
+import AuthContext from "../../contexts/Auth";
+
 import { useNavigation } from "@react-navigation/native";
 
 export function ForgotPasswordStg3() {
+  const {login} = useContext(AuthContext)
   const [pwd, setPwd] = useState<string>();
   const [pwdConfirm, setPwdConfirm] = useState<string>();
   const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
@@ -34,7 +38,7 @@ export function ForgotPasswordStg3() {
       setIsPwdIncorrect(false);
       try {
         await AsyncStorage.setItem("@risum:password", pwd);
-        return navigation.navigate("Feed");
+        return login()
       } catch {
         Alert.alert(
           "Não foi possível salvar a sua senha, tente novamente mais tarde."

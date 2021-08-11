@@ -9,13 +9,13 @@ import {
   View,
 } from "react-native";
 
-import risumIcon from "../assets/risumIcon.png";
+import risumIcon from "../../assets/risumIcon.png";
 
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
+import colors from "../../styles/colors";
+import fonts from "../../styles/fonts";
 
 import { useNavigation } from "@react-navigation/core";
-import AuthContext from "../contexts/Auth";
+import AuthContext from "../../contexts/Auth";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
