@@ -14,11 +14,6 @@ const stackRoutes = createStackNavigator();
 const AppRoutes: React.FC = () => (
   <stackRoutes.Navigator
     headerMode="none"
-    screenOptions={{
-      cardStyle: {
-        backgroundColor: colors.background,
-      },
-    }}
   >
 
     <stackRoutes.Screen name="Feed" component={AuthRoutes} />

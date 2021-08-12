@@ -17,7 +17,7 @@ export default function BottomTabNavigator() {
       initialRouteName="Feed"
       tabBarOptions={{
         activeTintColor: colors.green,
-        style: { backgroundColor: colors.lightBackground },
+        style: {backgroundColor: '#1B1A1A'}
       }}
     >
       <BottomTab.Screen
