@@ -2,11 +2,15 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import colors from "../styles/colors";
 
-export function RegisterProgressBar(position: object) {
+interface PositionProps {
+  position: number;
+}
+
+export function RegisterProgressBar(props: PositionProps) {
   return (
     <View style={styles.progressBackground}>
       <View
-        style={[styles.currentProgress, { width: `${position.position}%` }]}
+        style={[styles.currentProgress, { width: `${props.position}%` }]}
       />
     </View>
   );

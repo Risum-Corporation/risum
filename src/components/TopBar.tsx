@@ -1,45 +1,30 @@
-import React, { useRef } from "react";
+import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
-
-import { Modalize } from "react-native-modalize";
 
 import { AntDesign } from "@expo/vector-icons";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-export function TopBar({ name }: string) {
-  const modalizeRef = useRef(null);
+interface TopBarProps {
+  name: string;
+}
 
-  function handleClickProfile() {
-    modalizeRef.current?.open();
-  }
+export function TopBar(props: TopBarProps) {
 
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <TouchableOpacity onPress={handleClickProfile}>
+        <TouchableOpacity>
           <Image
             source={require("../assets/profilePicture.png")}
             style={styles.profileImg}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.title}>{props.name}</Text>
         <TouchableOpacity>
           <AntDesign name={"search1"} size={30} color={colors.white} />
         </TouchableOpacity>
-        <Modalize ref={modalizeRef} snapPoint={180}>
-          <View style={styles.modal}>
-            <TouchableOpacity>
-              <AntDesign name={"user"} size={30} color={colors.white} />
-              <Text style={styles.title}>Perfil</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <AntDesign name={"setting"} size={30} color={colors.white} />
-              <Text style={styles.title}>Configurações</Text>
-            </TouchableOpacity>
-          </View>
-        </Modalize>
       </View>
     </View>
   );

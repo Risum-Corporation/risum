@@ -17,8 +17,12 @@ export default function BottomTabNavigator() {
       initialRouteName="Feed"
       tabBarOptions={{
         activeTintColor: colors.green,
-        style: {backgroundColor: '#1B1A1A',  borderTopWidth: 0}
-       
+        style: {
+          backgroundColor: colors.background,
+          borderTopWidth: 0,
+          height: 50,
+          padding: 5,
+        },
       }}
     >
       <BottomTab.Screen
@@ -67,5 +71,5 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
   color: string;
 }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Ionicons size={30} {...props} />;
 }
