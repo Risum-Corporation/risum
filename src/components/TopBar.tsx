@@ -1,72 +1,78 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image, Platform, TextInput} from "react-native";
+import Constants from 'expo-constants';
 
-import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons';
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Searchbar } from 'react-native-paper';
+import { useState } from "react";
+
+const statusBarHeight = Platform.OS === 'android' ? Constants.statusBarHeight : 0
+
 
 interface TopBarProps {
   name: string;
 }
 
+interface SearchBarProps {
+  placeholder: string
+}
+
 export function TopBar(props: TopBarProps) {
 
+  const MyComponent = () => {
+    const [searchQuery, setSearchQuery] = React.useState('');
+  
+    const onChangeSearch = (query: React.SetStateAction<string>) => setSearchQuery(query);
+  
+    return (
+      <Searchbar
+        placeholder="Pesquise por: Alcateias, perfis, memes..."
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        re
+
+      />
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <TouchableOpacity>
-          <Image
-            source={require("../assets/profilePicture.png")}
-            style={styles.profileImg}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>{props.name}</Text>
-        <TouchableOpacity>
-          <AntDesign name={"search1"} size={30} color={colors.white} />
-        </TouchableOpacity>
-      </View>
-    </View>
+    <SafeAreaView  style={[styles.container, {}]}>
+    <TouchableOpacity style={styles.avatar}></TouchableOpacity>
+    <MyComponent />
+
+
+    </SafeAreaView >
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
-    width: "100%",
-    marginTop: 25,
-    position: "absolute",
-    top: 1,
-    backgroundColor: colors.background,
-  },
-  wrapper: {
-    marginHorizontal: 25,
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    alignItems: "center",
-    height: 5,
-    marginVertical: 10,
-    flexDirection: "row",
+    paddingHorizontal: 15,
+    marginTop: 10,
+    paddingBottom: Platform.OS === 'ios' ? -12 : 18
   },
-  title: {
-    fontSize: 24,
-    fontFamily: fonts.heading,
-    color: colors.green,
+  avatar: {
+    backgroundColor: 'white',
+    width: 55,
+    height: 55,
+    borderRadius: 30
   },
-  img: {
-    width: 36,
-    height: 36,
-    borderRadius: 5,
-  },
-  profileImg: {
-    width: 30,
+  inputSearch: {
+    width: 263,
     height: 30,
-    borderRadius: 7.5,
-  },
-  modal: {
-    flex: 1,
-    height: 180,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    backgroundColor: colors.lightBackground,
-  },
+    backgroundColor: '#292929',
+    borderRadius: 4,
+    
+
+  }
+
+  
 });

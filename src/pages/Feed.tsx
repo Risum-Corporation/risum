@@ -47,7 +47,6 @@ export function Feed() {
         data={posts}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => <MemeCard postData={item} />}
-        style={styles.memeList}
       />
     </View>
   );
@@ -56,8 +55,5 @@ export function Feed() {
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: colors.background,
-  },
-  memeList: {
-    marginTop: 80,
   },
 });
