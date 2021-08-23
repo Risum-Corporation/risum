@@ -50,7 +50,7 @@ export function ForgotPasswordStg1() {
         <View style={styles.form}>
           <TextInput
             placeholder="alekprincipebra@mail.com"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },

@@ -65,7 +65,7 @@ export function RegisterStg1() {
         <View style={styles.form}>
           <TextInput
             placeholder="alekprincipebra@mail.com"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
@@ -74,7 +74,7 @@ export function RegisterStg1() {
           />
           <TextInput
             placeholder="RobertoMemeiro"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },

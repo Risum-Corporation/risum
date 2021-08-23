@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   Text,
@@ -19,12 +19,12 @@ import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../../contexts/Auth";
 
 export function RegisterStg3() {
-  const {login} = useContext(AuthContext)
+  const { login } = useContext(AuthContext);
 
   const [pwd, setPwd] = useState<string>();
   const [pwdConfirm, setPwdConfirm] = useState<string>();
   const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
- 
+
   function handlePwdCreate(pwd1: string) {
     setPwd(String(pwd1));
   }
@@ -38,7 +38,7 @@ export function RegisterStg3() {
       setIsPwdIncorrect(false);
       try {
         await AsyncStorage.setItem("@risum:password", pwd);
-        return login()
+        return login();
       } catch {
         Alert.alert(
           "Não foi possível salvar a sua senha, tente novamente mais tarde."
@@ -61,7 +61,7 @@ export function RegisterStg3() {
         <View style={styles.form}>
           <TextInput
             placeholder="Senha"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
@@ -71,7 +71,7 @@ export function RegisterStg3() {
           />
           <TextInput
             placeholder="Confirme a senha"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },

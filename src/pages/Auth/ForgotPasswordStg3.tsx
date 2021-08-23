@@ -19,7 +19,7 @@ import AuthContext from "../../contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
 
 export function ForgotPasswordStg3() {
-  const {login} = useContext(AuthContext)
+  const { login } = useContext(AuthContext);
   const [pwd, setPwd] = useState<string>();
   const [pwdConfirm, setPwdConfirm] = useState<string>();
   const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
@@ -38,7 +38,7 @@ export function ForgotPasswordStg3() {
       setIsPwdIncorrect(false);
       try {
         await AsyncStorage.setItem("@risum:password", pwd);
-        return login()
+        return login();
       } catch {
         Alert.alert(
           "Não foi possível salvar a sua senha, tente novamente mais tarde."
@@ -59,7 +59,7 @@ export function ForgotPasswordStg3() {
         <View style={styles.form}>
           <TextInput
             placeholder="Senha"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
@@ -69,7 +69,7 @@ export function ForgotPasswordStg3() {
           />
           <TextInput
             placeholder="Confirme a senha"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },

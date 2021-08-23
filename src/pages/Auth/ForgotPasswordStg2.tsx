@@ -68,7 +68,7 @@ export function ForgotPasswordStg2() {
         <View style={styles.form}>
           <TextInput
             placeholder={"###-###"}
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={styles.input}
             onChangeText={handleInputChange}
             keyboardType={"number-pad"}

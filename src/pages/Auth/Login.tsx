@@ -20,7 +20,7 @@ import { useNavigation } from "@react-navigation/core";
 import AuthContext from "../../contexts/Auth";
 
 export function Login() {
-  const {signed, user, login} = useContext(AuthContext)
+  const { signed, user, login } = useContext(AuthContext);
 
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
@@ -42,7 +42,7 @@ export function Login() {
     }
     // Verificação da existência da conta no banco de dados
 
-    login() // Eba funcionou ^^
+    login(); // Eba funcionou ^^
   }
 
   function handleForgotPwd() {
@@ -59,7 +59,7 @@ export function Login() {
         <View style={styles.form}>
           <TextInput
             placeholder="alekprincipebra@mail.com"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
@@ -68,7 +68,7 @@ export function Login() {
           />
           <TextInput
             placeholder="********"
-            placeholderTextColor={colors.lightText}
+            placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
