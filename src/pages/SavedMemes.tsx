@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../styles/colors";
 
 
-export function Settings() {
+export function SavedMemes() {
   
   return (
     <View style={styles.container}>
-        <Text style={{color: 'white'}}>Settings</Text>
+        <Text style={{color: 'white'}}>SavedMemes</Text>
     </View>
   );
 }

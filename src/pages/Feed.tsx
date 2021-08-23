@@ -5,6 +5,8 @@ import colors from "../styles/colors";
 
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
+import { useNavigation } from "@react-navigation/core";
+
 
 export function Feed() {
   const posts = [
@@ -43,11 +45,16 @@ export function Feed() {
   return (
     <View style={styles.wrapper}>
       <TopBar name="Feed" />
+
+      
+
       <FlatList
         data={posts}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => <MemeCard postData={item} />}
       />
+
+
     </View>
   );
 }

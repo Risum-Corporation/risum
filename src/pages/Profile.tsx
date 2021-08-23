@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../styles/colors";
 
 
-export function Settings() {
+export function Profile() {
   
   return (
     <View style={styles.container}>
-        <Text style={{color: 'white'}}>Settings</Text>
+        <Text style={{color: 'white'}}>Profile</Text>
     </View>
   );
 }
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    backgroundColor: colors.background,
-    color:  colors.text
+    backgroundColor: colors.background
   },
 });

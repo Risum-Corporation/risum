@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
+
 import { Welcome } from "../pages/Auth/Welcome";
 
 import { RegisterStg1 } from "../pages/Auth/RegisterStg1";
@@ -11,6 +12,8 @@ import { Login } from "../pages/Auth/Login";
 import { ForgotPasswordStg1 } from "../pages/Auth/ForgotPasswordStg1";
 import { ForgotPasswordStg2 } from "../pages/Auth/ForgotPasswordStg2";
 import { ForgotPasswordStg3 } from "../pages/Auth/ForgotPasswordStg3";
+
+
 
 const AuthStack = createStackNavigator();
 
