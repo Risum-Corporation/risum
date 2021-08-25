@@ -27,8 +27,8 @@ interface PostProps {
 }
 
 export function MemeCard({ postData }: PostProps) {
-  const [isLikePressed, setIsLikePressed] = useState<boolean>(false);
-  const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>(false);
+  const [isLikePressed, setIsLikePressed] = useState<boolean>();
+  const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
 
   function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
@@ -112,7 +112,7 @@ export function MemeCard({ postData }: PostProps) {
 
       <View // Divider between memes
         style={{
-          borderBottomColor: colors.dividerColor,
+          borderBottomColor: colors.divider,
           borderBottomWidth: 1,
           marginVertical: 25,
           marginHorizontal: 15,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     height: 350,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    resizeMode: "cover", // object-fit
+    resizeMode: "cover", 
   },
   footer: {
     maxWidth: "92.3%",

@@ -9,7 +9,7 @@ export default {
   text: "#8F8F8F",
   placeholderText: "#B3C0B8",
   inputText: "#E3E3E3",
-  dividerColor: "#505050",
+  divider: "#505050",
   searchBarColor: "#292929",
 
   outlineGray: "#444444",

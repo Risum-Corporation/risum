@@ -6,7 +6,7 @@ import {
   Image,
   Platform,
   View,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 
 import { Searchbar, Menu, Divider, Provider } from "react-native-paper";
@@ -76,14 +76,18 @@ export function TopBar(props: TopBarProps) {
           >
             <Menu.Item
               icon={() => (
-                <Ionicons name="person-circle-outline" size={24} color="white" />
+                <Ionicons
+                  name="person-circle-outline"
+                  size={24}
+                  color="white"
+                />
               )}
               onPress={handleProfile}
               title="Perfil"
               titleStyle={styles.itemTitle}
               style={styles.item}
             />
-            <Divider />
+
             <Menu.Item
               icon={() => (
                 <Ionicons name="settings-outline" size={24} color="white" />
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: Platform.OS === "ios" ? 15 : 0,
     marginBottom: Platform.OS === "ios" ? 20 : 11,
-    alignContent: 'center',
+    alignContent: "center",
   },
   avatar: {
     width: 40,
@@ -159,9 +163,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: fonts.heading,
     color: colors.green,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: Platform.OS === "ios" ? 6 : 0
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: Platform.OS === "ios" ? 6 : 0,
   },
   searchBar: {
     backgroundColor: colors.searchBarColor,
@@ -171,7 +175,6 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: colors.lightBackground,
     color: colors.white,
-
   },
   itemTitle: {
     color: colors.white,
