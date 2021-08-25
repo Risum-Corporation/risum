@@ -43,7 +43,7 @@ export function Feed() {
   return (
     <View style={styles.wrapper}>
       <TopBar name="Feed" />
-      <FlatList
+     <FlatList
         data={posts}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => <MemeCard postData={item} />}

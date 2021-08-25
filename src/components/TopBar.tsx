@@ -6,6 +6,7 @@ import {
   Image,
   Platform,
   View,
+  SafeAreaView
 } from "react-native";
 
 import { Searchbar, Menu, Divider, Provider } from "react-native-paper";
@@ -13,7 +14,7 @@ import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 import { useState } from "react";
 
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 
 interface TopBarProps {
@@ -52,7 +53,7 @@ export function TopBar(props: TopBarProps) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View>
         <Provider>
           <Menu
@@ -60,8 +61,9 @@ export function TopBar(props: TopBarProps) {
             onDismiss={closeMenu}
             style={{
               width: 200,
-              marginTop: Platform.OS === "ios" ? 40 : 11,
+              marginTop: Platform.OS === "ios" ? 2 : 5,
               position: "absolute",
+              marginLeft: -13,
             }}
             anchor={
               <TouchableOpacity onLongPress={openMenu} onPress={handleProfile}>
@@ -72,9 +74,10 @@ export function TopBar(props: TopBarProps) {
               </TouchableOpacity>
             }
           >
-            {/*https://materialdesignicons.com/*/}
             <Menu.Item
-              icon="account-circle"
+              icon={() => (
+                <Ionicons name="person-circle-outline" size={24} color="white" />
+              )}
               onPress={handleProfile}
               title="Perfil"
               titleStyle={styles.itemTitle}
@@ -82,7 +85,9 @@ export function TopBar(props: TopBarProps) {
             />
             <Divider />
             <Menu.Item
-              icon="cog"
+              icon={() => (
+                <Ionicons name="settings-outline" size={24} color="white" />
+              )}
               onPress={handleConfig}
               title="Configurações"
               titleStyle={styles.itemTitle}
@@ -90,7 +95,9 @@ export function TopBar(props: TopBarProps) {
             />
 
             <Menu.Item
-              icon="star"
+              icon={() => (
+                <Ionicons name="md-bookmark-outline" size={24} color="white" />
+              )}
               onPress={handleSavedMemes}
               title="Memes Salvos"
               titleStyle={styles.itemTitle}
@@ -122,7 +129,7 @@ export function TopBar(props: TopBarProps) {
           autoFocus
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -133,9 +140,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 15,
     marginTop: 10,
-    paddingBottom: Platform.OS === "ios" ? -12 : 18,
-
-    width: '100%'
+    marginHorizontal: Platform.OS === "ios" ? 15 : 0,
+    marginBottom: Platform.OS === "ios" ? 20 : 11,
+    alignContent: 'center',
   },
   avatar: {
     width: 40,
@@ -152,6 +159,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: fonts.heading,
     color: colors.green,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Platform.OS === "ios" ? 6 : 0
   },
   searchBar: {
     backgroundColor: colors.searchBarColor,
@@ -161,6 +171,7 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: colors.lightBackground,
     color: colors.white,
+
   },
   itemTitle: {
     color: colors.white,
