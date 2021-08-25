@@ -138,7 +138,7 @@ export function Profile() {
             source={require("../assets/profilePicture.png")}
             style={styles.profilePicture}
           />
-          <View>
+          <View style={{marginTop: 20, paddingLeft: 8}}>
             <Text style={styles.userName}>Usuário</Text>
             <Text style={styles.userId}>#1234</Text>
           </View>
@@ -146,13 +146,13 @@ export function Profile() {
 
         <View>
           <View style={styles.lineText}>
-            <Text style={styles.greenText}>15</Text>
             <Text style={styles.text}>Seguindo</Text>
+            <Text style={styles.greenText}>15</Text>
           </View>
 
           <View style={styles.lineText}>
-            <Text style={styles.greenText}>37</Text>
             <Text style={styles.text}>Seguidores</Text>
+            <Text style={styles.greenText}>37</Text>
           </View>
         </View>
       </View>
@@ -222,7 +222,7 @@ export function Profile() {
           />
         )}
       </View>
-      <GoBackButton onPress={() => navigation.goBack()} />
+      <View style={styles.backButton}><GoBackButton onPress={() => navigation.goBack()} /></View>
     </View>
   );
 }
@@ -231,19 +231,22 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flex: 1,
-    backgroundColor: colors.background,
-    paddingHorizontal: 10,
+    backgroundColor: colors.background, 
   },
   text: {
     color: colors.white,
     marginHorizontal: 5,
+    fontWeight: 'bold',
+
   },
   greenText: {
     color: colors.green,
+    fontWeight: 'bold',
   },
   lineText: {
-    flexDirection: "row",
     marginHorizontal: 5,
+    flexDirection: 'row-reverse'
+
   },
   userWallpaper: {
     resizeMode: "cover", // IMPORTANTE! NÃO REMOVER
@@ -263,12 +266,15 @@ const styles = StyleSheet.create({
   userNameImgBox: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop: -20
   },
   profileInfo: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
+    paddingHorizontal: 10,
+    marginBottom: 10
   },
   profilePicture: {
     width: 100,
@@ -278,17 +284,24 @@ const styles = StyleSheet.create({
   filterIconsBox: {
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,
+    paddingHorizontal: 40,
 
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
 
-    paddingHorizontal: 15,
     paddingVertical: 7.5,
   },
   content: {
     width: "100%",
     marginTop: 18.5,
+    paddingHorizontal: 30
   },
+  backButton: {
+    position: 'absolute',
+    marginTop: 20,
+    flexDirection: 'row-reverse',
+
+  }
 });

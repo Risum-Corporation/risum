@@ -3,6 +3,7 @@ import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import { AuthProvider } from "./src/contexts/Auth";
 import { StatusBar } from "react-native";
+import firebase from "./src/firebaseConnection";
 import {
   useFonts,
   Archivo_700Bold,
