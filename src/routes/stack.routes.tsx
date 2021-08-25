@@ -1,13 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import colors from "../styles/colors";
-
 import { HypeTrain } from "../pages/HypeTrain";
 import { WolfPack } from "../pages/WolfPack";
 import { AddMeme } from "../pages/AddMeme";
 
-import AuthRoutes from "./tab.routes"; // Bottom Tabbar
+import AuthRoutes from "./tab.routes"; // Bottom Tab
 import { Profile } from "../pages/Profile";
 import { Settings } from "../pages/Settings";
 import { SavedMemes } from "../pages/SavedMemes";

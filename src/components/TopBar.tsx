@@ -5,19 +5,16 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  View
+  View,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Searchbar, Button, Menu, Divider, Provider } from "react-native-paper";
+import { Searchbar, Menu, Divider, Provider } from "react-native-paper";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 import { useState } from "react";
 
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
-
-
 
 interface TopBarProps {
   name: string;
@@ -35,17 +32,11 @@ export function TopBar(props: TopBarProps) {
   }
 
   // For the menu, when pressing the profile picture
-
-  const [visible, setVisible] = React.useState(false);
-
+  const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
-
   const closeMenu = () => setVisible(false);
 
-  
-
   // For menu navigation
-  
   const navigation = useNavigation();
 
   function handleProfile() {
@@ -61,17 +52,16 @@ export function TopBar(props: TopBarProps) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Provider>
-        <View>
+    <View style={styles.container}>
+      <View>
+        <Provider>
           <Menu
             visible={visible}
             onDismiss={closeMenu}
             style={{
-              width: 210,
+              width: 200,
               marginTop: Platform.OS === "ios" ? 40 : 11,
-              position: 'absolute'
- 
+              position: "absolute",
             }}
             anchor={
               <TouchableOpacity onLongPress={openMenu} onPress={handleProfile}>
@@ -79,21 +69,40 @@ export function TopBar(props: TopBarProps) {
                   source={require("../assets/profilePicture.png")}
                   style={styles.avatar}
                 />
-              </TouchableOpacity>}>
-
+              </TouchableOpacity>
+            }
+          >
             {/*https://materialdesignicons.com/*/}
-            <Menu.Item icon="account-circle" onPress={handleProfile}  title=" Perfil" />
+            <Menu.Item
+              icon="account-circle"
+              onPress={handleProfile}
+              title="Perfil"
+              titleStyle={styles.itemTitle}
+              style={styles.item}
+            />
             <Divider />
-            <Menu.Item icon="cog" onPress={handleConfig} title="Configurações" />
+            <Menu.Item
+              icon="cog"
+              onPress={handleConfig}
+              title="Configurações"
+              titleStyle={styles.itemTitle}
+              style={styles.item}
+            />
 
-            <Menu.Item icon="star" onPress={handleSavedMemes} title="Memes Salvos" />
+            <Menu.Item
+              icon="star"
+              onPress={handleSavedMemes}
+              title="Memes Salvos"
+              titleStyle={styles.itemTitle}
+              style={styles.item}
+            />
           </Menu>
-        </View>
-      </Provider>
+        </Provider>
+      </View>
 
       {!isSearchPressed && <Text style={styles.title}>{props.name}</Text>}
 
-      <TouchableOpacity onPress={handleSearchClick}>
+      <TouchableOpacity onPress={handleSearchClick} style={{ marginRight: 5 }}>
         <AntDesign
           name={isSearchPressed ? "close" : "search1"}
           size={30}
@@ -113,7 +122,7 @@ export function TopBar(props: TopBarProps) {
           autoFocus
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -125,6 +134,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginTop: 10,
     paddingBottom: Platform.OS === "ios" ? -12 : 18,
+
+    width: '100%'
   },
   avatar: {
     width: 40,
@@ -141,11 +152,18 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: fonts.heading,
     color: colors.green,
-    marginRight: "35%" // Interim Solution
   },
   searchBar: {
     backgroundColor: colors.searchBarColor,
-    width: "75%",
     color: colors.white,
+    maxWidth: "75%",
+  },
+  item: {
+    backgroundColor: colors.lightBackground,
+    color: colors.white,
+  },
+  itemTitle: {
+    color: colors.white,
+    fontFamily: fonts.subtitle,
   },
 });

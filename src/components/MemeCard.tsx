@@ -159,9 +159,6 @@ const styles = StyleSheet.create({
     margin: 4,
     color: colors.white,
   },
-  tags: {
-    color: "#002D5E",
-  },
   userImg: {
     width: 40,
     height: 40,
