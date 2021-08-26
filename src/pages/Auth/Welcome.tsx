@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   Text,
@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   Dimensions,
   View,
+  Platform,
 } from "react-native";
+
+import { Button } from "react-native-paper";
 
 import risumIcon from "../../assets/risumIcon.png";
 
@@ -16,10 +19,11 @@ import fonts from "../../styles/fonts";
 
 import { useNavigation } from "@react-navigation/core";
 import AuthContext from "../../contexts/Auth";
+import { color } from "react-native-reanimated";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
-  const {login} = useContext(AuthContext)
+  const { login } = useContext(AuthContext);
 
   function handleRegister() {
     return navigation.navigate("RegisterStg1");
@@ -30,7 +34,7 @@ export function Welcome() {
   }
 
   function handleEnterAsGuest() {
-    return login()
+    return login();
   }
 
   return (
@@ -63,15 +67,31 @@ export function Welcome() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.guestBox}>
-          <TouchableOpacity
-            style={styles.guestButton}
-            activeOpacity={0.7}
-            onPress={handleEnterAsGuest}
-          >
-            <Text style={styles.text}>Entrar como Convidado</Text>
-          </TouchableOpacity>
-        </View>
+        {Platform.OS === "android" && (
+          <View style={styles.guestBox}>
+            <TouchableOpacity
+              style={[styles.guestButton, {}]}
+              activeOpacity={0.7}
+              onPress={handleEnterAsGuest}
+            >
+              <Text style={styles.text}>Entrar como Convidado</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {Platform.OS === "ios" && (
+          <View style={styles.guestBox}>
+            <Button
+              mode="outlined"
+              onPress={handleEnterAsGuest}
+              color={colors.text}
+              uppercase={false}
+              contentStyle={{}}
+              style={styles.iosGuestButton}
+            >
+              <Text style={styles.text}>Entrar como Convidado</Text>
+            </Button>
+          </View>
+        )}
 
         <View style={styles.footer}>
           <Text style={styles.text}>Bem vindo ao Risum!</Text>
@@ -162,5 +182,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: fonts.heading,
     color: colors.text,
+  },
+  iosGuestButton: {
+    borderColor: colors.outlineGray,
+    borderWidth: 2,
+    width: 300,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: '10.5%'
+
   },
 });
