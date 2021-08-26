@@ -56,7 +56,7 @@ export function Profile() {
     },
     {
       id: 3,
-      author: "DunkerJeJeNiño",
+      author: "Dunker",
       memeUrl: "https://source.unsplash.com/random/",
       likes: 1223,
       memeTitle: "Tio patinhas 👃",
@@ -66,7 +66,7 @@ export function Profile() {
     },
     {
       id: 4,
-      author: "DunkerJeJeNiño",
+      author: "Bataton",
       memeUrl: "https://source.unsplash.com/random/",
       likes: 1223,
       memeTitle: "Tio patinhas 👃",
@@ -76,8 +76,8 @@ export function Profile() {
     },
     {
       id: 5,
-      author: "DunkerJeJeNiño",
-      memeUrl: "https://source.unsplash.com/random/",
+      author: "Jiraya",
+      memeUrl: "https://source.unsplash.com/random/50x50",
       likes: 1223,
       memeTitle: "Tio patinhas 👃",
       tags: ["shipost", "ggboy", "cringe"],
@@ -96,7 +96,7 @@ export function Profile() {
     },
     {
       id: 7,
-      author: "DunkerJeJeNiño",
+      author: "Yudi",
       memeUrl: "https://source.unsplash.com/random/",
       likes: 1223,
       memeTitle: "Tio patinhas 👃",
@@ -138,7 +138,7 @@ export function Profile() {
             source={require("../assets/profilePicture.png")}
             style={styles.profilePicture}
           />
-          <View style={{marginTop: 20, paddingLeft: 8}}>
+          <View style={{ marginTop: 20, paddingLeft: 8 }}>
             <Text style={styles.userName}>Usuário</Text>
             <Text style={styles.userId}>#1234</Text>
           </View>
@@ -214,15 +214,15 @@ export function Profile() {
       </View>
       <View style={styles.content}>
         {(isSmilePressed || isPostPressed) && (
-          <FlatList
-            data={posts}
-            keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => <MemeCardSecondary postData={item} />}
-            numColumns={3}
-          />
+            <FlatList
+              data={posts}
+              keyExtractor={(item) => String(item.id)}
+              renderItem={({ item }) => <MemeCardSecondary postData={item} />}
+              numColumns={1}
+            />
         )}
       </View>
-      <View style={styles.backButton}><GoBackButton onPress={() => navigation.goBack()} /></View>
+      <GoBackButton onPress={() => navigation.goBack()} />
     </View>
   );
 }
@@ -231,22 +231,20 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flex: 1,
-    backgroundColor: colors.background, 
+    backgroundColor: colors.background,
   },
   text: {
     color: colors.white,
     marginHorizontal: 5,
-    fontWeight: 'bold',
-
+    fontWeight: "bold",
   },
   greenText: {
     color: colors.green,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   lineText: {
     marginHorizontal: 5,
-    flexDirection: 'row-reverse'
-
+    flexDirection: "row-reverse",
   },
   userWallpaper: {
     resizeMode: "cover", // IMPORTANTE! NÃO REMOVER
@@ -266,7 +264,7 @@ const styles = StyleSheet.create({
   userNameImgBox: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: -20
+    marginTop: -20,
   },
   profileInfo: {
     flexDirection: "row",
@@ -274,7 +272,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     paddingHorizontal: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   profilePicture: {
     width: 100,
@@ -284,24 +282,22 @@ const styles = StyleSheet.create({
   filterIconsBox: {
     borderBottomWidth: 1,
     borderBottomColor: colors.divider,
-    paddingHorizontal: 40,
 
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100%",
+    width: "84%",
 
     paddingVertical: 7.5,
   },
   content: {
     width: "100%",
     marginTop: 18.5,
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     marginTop: 20,
-    flexDirection: 'row-reverse',
-
-  }
+    flexDirection: "row-reverse",
+  },
 });

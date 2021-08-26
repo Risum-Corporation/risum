@@ -3,6 +3,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   TouchableOpacityProps,
+  Platform,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     height: 30,
 
     position: "absolute",
-    top: 20,
+    top: Platform.OS === "ios" ? 45 : 11,
     left: 15,
 
     justifyContent: "center",
