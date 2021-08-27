@@ -94,6 +94,7 @@ export function RegisterStg3() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background
   },
   wrapper: {
     flex: 1,

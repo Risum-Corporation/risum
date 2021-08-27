@@ -116,6 +116,7 @@ export function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background
   },
   wrapper: {
     flex: 1,
@@ -172,12 +173,15 @@ const styles = StyleSheet.create({
     color: colors.pastelRed,
     fontFamily: fonts.heading,
     fontSize: 10,
-    marginTop: 4,
+    marginTop: 10,
+    paddingLeft: 5
+
   },
   text: {
     fontSize: 14,
     fontFamily: fonts.heading,
     color: colors.white,
+    padding: 9
   },
   textBox: {
     flexDirection: "row",

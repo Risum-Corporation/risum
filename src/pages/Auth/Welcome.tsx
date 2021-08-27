@@ -67,18 +67,6 @@ export function Welcome() {
           </TouchableOpacity>
         </View>
 
-        {Platform.OS === "android" && (
-          <View style={styles.guestBox}>
-            <TouchableOpacity
-              style={[styles.guestButton, {}]}
-              activeOpacity={0.7}
-              onPress={handleEnterAsGuest}
-            >
-              <Text style={styles.text}>Entrar como Convidado</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {Platform.OS === "ios" && (
           <View style={styles.guestBox}>
             <Button
               mode="outlined"
@@ -86,12 +74,12 @@ export function Welcome() {
               color={colors.text}
               uppercase={false}
               contentStyle={{}}
-              style={styles.iosGuestButton}
+              style={styles.guestButton}
             >
               <Text style={styles.text}>Entrar como Convidado</Text>
             </Button>
           </View>
-        )}
+
 
         <View style={styles.footer}>
           <Text style={styles.text}>Bem vindo ao Risum!</Text>
@@ -106,6 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignContent: "center",
+    backgroundColor: colors.background
   },
   wrapper: {
     flex: 1,
@@ -127,8 +116,8 @@ const styles = StyleSheet.create({
   },
   guestBox: {
     flex: 1,
-    width: "97%",
     marginTop: 50,
+    opacity: 0.7
   },
   image: {
     width: 153,
@@ -158,17 +147,6 @@ const styles = StyleSheet.create({
   signInButton: {
     backgroundColor: colors.green,
   },
-  guestButton: {
-    height: 20,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 25,
-    borderRadius: 7,
-
-    borderColor: colors.outlineGray,
-    borderWidth: 2,
-  },
   footer: {
     backgroundColor: colors.lightBackground,
     width: "120%",
@@ -183,13 +161,10 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     color: colors.text,
   },
-  iosGuestButton: {
+  guestButton: {
     borderColor: colors.outlineGray,
     borderWidth: 2,
-    width: 300,
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: '10.5%'
+    paddingHorizontal: '6%'
 
   },
 });
