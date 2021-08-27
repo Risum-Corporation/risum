@@ -17,6 +17,7 @@ import {
 
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { NavigationContainer } from "@react-navigation/native";
+import colors from "./src/styles/colors";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -33,7 +34,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <StatusBar animated={true} barStyle="light-content" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
       <AuthProvider>
         <Routes />
       </AuthProvider>

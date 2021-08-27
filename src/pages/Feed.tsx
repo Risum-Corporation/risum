@@ -1,51 +1,58 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import colors from "../styles/colors";
 
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
+import { Loading } from "../components/Loading";
 
 export function Feed() {
-  const posts = [
-    {
-      id: 1,
-      author: "Sapeka",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 43,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "comedia"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 17,
-    },
-    {
-      id: 2,
-      author: "Educg550",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "memeskk", "hurdur"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 3,
-      author: "DunkerJeJeNiño",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-  ];
+  const [feed, setFeed] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function loadPage(pageNumber = page, shouldRefresh = false) {
+    if (total && pageNumber > total) return;
+
+    const response = await fetch(
+      `http:localhost:3000/feed?expand=author&_limit=5&_page=${pageNumber}`
+    );
+
+    const data = await response.json();
+    const totalItems = Number(response.headers.get("X-Total-Count"));
+
+    setTotal(Math.floor(totalItems / 5));
+    setFeed(shouldRefresh ? data : [...feed, ...data]);
+    setPage(pageNumber + 1);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadPage();
+  }, []);
+
+  async function refreshList() {
+    setRefreshing(true);
+
+    await loadPage(1, true);
+
+    setRefreshing(false);
+  }
 
   return (
     <View style={styles.wrapper}>
       <TopBar name="Feed" />
       <FlatList
-        data={posts}
-        keyExtractor={(item) => String(item.id)}
+        data={feed}
+        keyExtractor={(post) => String(post.id)}
+        onEndReached={() => loadPage()}
+        onEndReachedThreshold={0.1}
+        onRefresh={refreshList}
+        refreshing={refreshing}
+        ListFooterComponent={loading && <Loading />}
         renderItem={({ item }) => <MemeCard postData={item} />}
       />
     </View>

@@ -21,7 +21,7 @@ interface PostProps {
     likes: number;
     memeTitle: string;
     tags: string[];
-    profilePhoto: string;
+    avatar: string;
     comments: number;
   };
 }
@@ -102,10 +102,7 @@ export function MemeCard({ postData }: PostProps) {
         <View style={styles.userInfoContainer}>
           <Text style={styles.authorName}>{postData.author}</Text>
           <TouchableOpacity>
-            <Image
-              source={{ uri: postData.profilePhoto }}
-              style={styles.userImg}
-            />
+            <Image source={{ uri: postData.avatar }} style={styles.userImg} />
           </TouchableOpacity>
         </View>
       </View>
@@ -132,7 +129,7 @@ const styles = StyleSheet.create({
     height: 350,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    resizeMode: "cover", 
+    resizeMode: "cover",
   },
   footer: {
     maxWidth: "92.3%",

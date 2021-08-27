@@ -13,10 +13,7 @@ import { SavedMemes } from "../pages/SavedMemes";
 const stackRoutes = createStackNavigator();
 
 const AppRoutes: React.FC = () => (
-  <stackRoutes.Navigator
-    headerMode="none"
-  >
-
+  <stackRoutes.Navigator headerMode="none">
     <stackRoutes.Screen name="Feed" component={AuthRoutes} />
     <stackRoutes.Screen name="HypeTrain" component={HypeTrain} />
     <stackRoutes.Screen name="WolfPack" component={WolfPack} />
@@ -25,8 +22,6 @@ const AppRoutes: React.FC = () => (
     <stackRoutes.Screen name="Profile" component={Profile} />
     <stackRoutes.Screen name="Settings" component={Settings} />
     <stackRoutes.Screen name="SavedMemes" component={SavedMemes} />
-
-
   </stackRoutes.Navigator>
 );
 

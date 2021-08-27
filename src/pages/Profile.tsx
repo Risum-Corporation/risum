@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import { GoBackButton } from "../components/GoBackButton";
 import fonts from "../styles/fonts";
 
 import { useNavigation } from "@react-navigation/native";
+import { Loading } from "../components/Loading";
 
 export function Profile() {
   const navigation = useNavigation();
@@ -24,6 +25,39 @@ export function Profile() {
   const [isPostPressed, setIsPostPressed] = useState<boolean>();
   const [isCommentPressed, setIsCommentPressed] = useState<boolean>();
   const [isInfoPressed, setIsInfoPressed] = useState<boolean>();
+  const [feed, setFeed] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function loadPage(pageNumber = page, shouldRefresh = false) {
+    if (total && pageNumber > total) return;
+
+    const response = await fetch(
+      `http:localhost:3000/feed?expand=author&_limit=5&_page=${pageNumber}`
+    );
+
+    const data = await response.json();
+    const totalItems = Number(response.headers.get("X-Total-Count"));
+
+    setTotal(Math.floor(totalItems / 5));
+    setFeed(shouldRefresh ? data : [...feed, ...data]);
+    setPage(pageNumber + 1);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadPage();
+  }, []);
+
+  async function refreshList() {
+    setRefreshing(true);
+
+    await loadPage(1, true);
+
+    setRefreshing(false);
+  }
 
   function setIconsFalse() {
     setIsSmilePressed(false);
@@ -214,12 +248,16 @@ export function Profile() {
       </View>
       <View style={styles.content}>
         {(isSmilePressed || isPostPressed) && (
-            <FlatList
-              data={posts}
-              keyExtractor={(item) => String(item.id)}
-              renderItem={({ item }) => <MemeCardSecondary postData={item} />}
-              numColumns={1}
-            />
+          <FlatList
+            data={feed}
+            keyExtractor={(post) => String(post.id)}
+            onEndReached={() => loadPage()}
+            onEndReachedThreshold={0.1}
+            onRefresh={refreshList}
+            refreshing={refreshing}
+            ListFooterComponent={loading && <Loading />}
+            renderItem={({ item }) => <MemeCardSecondary postData={item} />}
+          />
         )}
       </View>
       <GoBackButton onPress={() => navigation.goBack()} />

@@ -21,7 +21,7 @@ interface PostProps {
     likes: number;
     memeTitle: string;
     tags: string[];
-    profilePhoto: string;
+    avatar: string;
     comments: number;
   };
 }
@@ -102,10 +102,7 @@ export function MemeCardSecondary({ postData }: PostProps) {
         <View style={styles.userInfoContainer}>
           <Text style={styles.authorName}>{postData.author}</Text>
           <TouchableOpacity>
-            <Image
-              source={{ uri: postData.profilePhoto }}
-              style={styles.userImg}
-            />
+            <Image source={{ uri: postData.avatar }} style={styles.userImg} />
           </TouchableOpacity>
         </View>
       </View>
@@ -115,7 +112,7 @@ export function MemeCardSecondary({ postData }: PostProps) {
           borderBottomColor: colors.divider,
           borderBottomWidth: 1,
           marginVertical: 15,
-          marginHorizontal: '2%',
+          marginHorizontal: "2%",
         }}
       />
     </SafeAreaView>
@@ -132,12 +129,11 @@ const styles = StyleSheet.create({
     height: 250,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    resizeMode: "cover", 
+    resizeMode: "cover",
   },
   footer: {
     width: "100%",
     flexDirection: "row",
-    
 
     backgroundColor: colors.lightBackground,
 
@@ -148,7 +144,7 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "space-between",
-    marginLeft: 0
+    marginLeft: 0,
   },
   button: {
     marginHorizontal: 5,
@@ -182,8 +178,7 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: colors.background,
   },
-    memeList: {
+  memeList: {
     marginTop: 110,
   },
-
 });

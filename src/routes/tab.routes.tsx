@@ -19,7 +19,7 @@ export default function BottomTabNavigator() {
         activeTintColor: colors.green,
         style: {
           backgroundColor: colors.background,
-          borderTopWidth: 0
+          borderTopWidth: 0,
         },
       }}
     >
