@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import colors from "../styles/colors";
 
+import { posts } from "../database/fakeData";
+
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import { MemeCardSecondary } from "../components/MemeCardSecondary";
@@ -25,24 +27,17 @@ export function Profile() {
   const [isPostPressed, setIsPostPressed] = useState<boolean>();
   const [isCommentPressed, setIsCommentPressed] = useState<boolean>();
   const [isInfoPressed, setIsInfoPressed] = useState<boolean>();
-  const [feed, setFeed] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  async function loadPage(pageNumber = page, shouldRefresh = false) {
+  function loadPage(pageNumber = page, shouldRefresh = false) {
     if (total && pageNumber > total) return;
 
-    const response = await fetch(
-      `http:localhost:3000/feed?expand=author&_limit=5&_page=${pageNumber}`
-    );
-
-    const data = await response.json();
-    const totalItems = Number(response.headers.get("X-Total-Count"));
+    const totalItems = posts.length;
 
     setTotal(Math.floor(totalItems / 5));
-    setFeed(shouldRefresh ? data : [...feed, ...data]);
     setPage(pageNumber + 1);
     setLoading(false);
   }
@@ -51,10 +46,10 @@ export function Profile() {
     loadPage();
   }, []);
 
-  async function refreshList() {
+  function refreshList() {
     setRefreshing(true);
 
-    await loadPage(1, true);
+    loadPage(1, true);
 
     setRefreshing(false);
   }
@@ -65,100 +60,6 @@ export function Profile() {
     setIsCommentPressed(false);
     setIsInfoPressed(false);
   }
-
-  // Fake posts
-  const posts = [
-    {
-      id: 1,
-      author: "Sapeka",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 43,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "comedia"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 17,
-    },
-    {
-      id: 2,
-      author: "Educg550",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "memeskk", "hurdur"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 3,
-      author: "Dunker",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 4,
-      author: "Bataton",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 5,
-      author: "Jiraya",
-      memeUrl: "https://source.unsplash.com/random/50x50",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 6,
-      author: "DunkerJeJeNiño",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 7,
-      author: "Yudi",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 8,
-      author: "DunkerJeJeNiño",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-    {
-      id: 9,
-      author: "DunkerJeJeNiño",
-      memeUrl: "https://source.unsplash.com/random/",
-      likes: 1223,
-      memeTitle: "Tio patinhas 👃",
-      tags: ["shipost", "ggboy", "cringe"],
-      profilePhoto: "https://source.unsplash.com/random/50x50",
-      comments: 20,
-    },
-  ];
 
   return (
     <View style={styles.container}>
@@ -249,7 +150,7 @@ export function Profile() {
       <View style={styles.content}>
         {(isSmilePressed || isPostPressed) && (
           <FlatList
-            data={feed}
+            data={posts}
             keyExtractor={(post) => String(post.id)}
             onEndReached={() => loadPage()}
             onEndReachedThreshold={0.1}

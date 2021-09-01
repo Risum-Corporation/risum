@@ -14,6 +14,8 @@ import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 
+import firebase from "../../firebaseConnection";
+
 import googleWhite from "../../assets/googleWhite.png";
 import appleWhite from "../../assets/appleWhite.png";
 import facebookWhite from "../../assets/facebookWhite.png";
@@ -24,26 +26,27 @@ import { useState } from "react";
 export function RegisterStg1() {
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
-  const [userName, setUserName] = useState<string>();
-  const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
+  const [password, setPassword] = useState<string>();
+  const [isEmailOrPasswordInvalid, setIsEmailOrPasswordInvalid] =
     useState<boolean>();
+  const [errorMessage, setErrorMessage] = useState("Email ou senha inválidos");
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
   }
 
-  function handleUserNameInputChange(value: string) {
-    setUserName(value);
+  function handlePasswordInputChange(value: string) {
+    setPassword(value);
   }
 
   async function handleConfirm() {
-    if (!email || !userName) {
-      return setIsEmailOrUsernameInvalid(true);
+    if (!email || !password) {
+      return setIsEmailOrPasswordInvalid(true);
     }
 
     try {
       await AsyncStorage.setItem("@risum:email", email);
-      await AsyncStorage.setItem("@risum:user", userName);
+      await AsyncStorage.setItem("@risum:password", password);
 
       navigation.navigate("RegisterStg2");
     } catch {
@@ -59,12 +62,12 @@ export function RegisterStg1() {
         <RegisterProgressBar position={25} />
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Email e{"\n"}Username</Text>
+          <Text style={styles.title}>Email e{"\n"}Senha</Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            placeholder="alekprincipebra@mail.com"
+            placeholder="Email"
             placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
@@ -73,18 +76,17 @@ export function RegisterStg1() {
             onChangeText={handleEmailInputChange}
           />
           <TextInput
-            placeholder="RobertoMemeiro"
+            placeholder="Senha"
             placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
             ]}
-            onChangeText={handleUserNameInputChange}
+            onChangeText={handlePasswordInputChange}
+            secureTextEntry={true}
           />
-          {isEmailOrUsernameInvalid && (
-            <Text style={styles.redAdvertisement}>
-              Email ou senha inválidos
-            </Text>
+          {isEmailOrPasswordInvalid && (
+            <Text style={styles.redAdvertisement}>{errorMessage}</Text>
           )}
         </View>
         <View style={styles.buttonBox}>
@@ -116,7 +118,7 @@ export function RegisterStg1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    marginVertical: 5
+    marginVertical: 5,
   },
   input: {
     height: 64,
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   orBox: {
-    marginVertical: "-10%"
+    marginVertical: "-10%",
   },
   socialRegister: {
     flexDirection: "row",

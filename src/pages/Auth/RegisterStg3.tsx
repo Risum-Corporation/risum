@@ -14,38 +14,25 @@ import fonts from "../../styles/fonts";
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 
 import AuthContext from "../../contexts/Auth";
 
 export function RegisterStg3() {
   const { login } = useContext(AuthContext);
+  const [userName, setUserName] = useState<string>();
 
-  const [pwd, setPwd] = useState<string>();
-  const [pwdConfirm, setPwdConfirm] = useState<string>();
-  const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
-
-  function handlePwdCreate(pwd1: string) {
-    setPwd(String(pwd1));
-  }
-
-  function handlePwdChange(pwd2: string) {
-    setPwdConfirm(String(pwd2));
+  function handleUserNameCreate(userName1: string) {
+    setUserName(String(userName1));
   }
 
   async function handleSubmit() {
-    if (pwd == pwdConfirm && !!pwd) {
-      setIsPwdIncorrect(false);
-      try {
-        await AsyncStorage.setItem("@risum:password", pwd);
-        return login();
-      } catch {
-        Alert.alert(
-          "Não foi possível salvar a sua senha, tente novamente mais tarde."
-        );
-      }
-    } else {
-      return setIsPwdIncorrect(true);
+    try {
+      await AsyncStorage.setItem("@risum:userName", String(userName));
+      return login();
+    } catch {
+      Alert.alert(
+        "Não foi possível salvar a sua senha, tente novamente mais tarde."
+      );
     }
   }
 
@@ -55,33 +42,20 @@ export function RegisterStg3() {
         <RegisterProgressBar position={75} />
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Digite uma{"\n"}nova senha</Text>
+          <Text style={styles.title}>Insira seu{"\n"}nome de usuário</Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            placeholder="Senha"
+            placeholder="Nome de usuário"
             placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
             ]}
-            onChangeText={handlePwdCreate}
-            secureTextEntry={true}
+            onChangeText={handleUserNameCreate}
           />
-          <TextInput
-            placeholder="Confirme a senha"
-            placeholderTextColor={colors.placeholderText}
-            style={[
-              styles.input,
-              { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
-            ]}
-            secureTextEntry={true}
-            onChangeText={handlePwdChange}
-          />
-          {isPwdIncorrect && (
-            <Text style={styles.redAdvertisement}>Senhas inválidas</Text>
-          )}
+          {/* Avatar do perfil */}
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton title="Confirmar" onPress={handleSubmit} />
@@ -94,7 +68,7 @@ export function RegisterStg3() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
@@ -149,11 +123,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "80%",
     marginBottom: "5%",
-  },
-  redAdvertisement: {
-    color: colors.pastelRed,
-    fontFamily: fonts.heading,
-    fontSize: 10,
-    marginTop: 4,
   },
 });
