@@ -20,8 +20,10 @@ const styles = StyleSheet.create({
   progressBackground: {
     backgroundColor: colors.white,
     width: "100%",
-    marginTop: 5,
     height: 5,
+    position: 'absolute',
+    top: 30,
+    
   },
   currentProgress: {
     backgroundColor: colors.green,

@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     fontSize: 10,
     marginTop: 4,
+    paddingLeft: 2
   },
   buttonBox: {
     width: "97%",

@@ -116,7 +116,7 @@ export function TopBar(props: TopBarProps) {
       <TouchableOpacity onPress={handleSearchClick} style={{ marginRight: 5 }}>
         <AntDesign
           name={isSearchPressed ? "close" : "search1"}
-          size={30}
+          size={27}
           color={colors.white}
         />
       </TouchableOpacity>

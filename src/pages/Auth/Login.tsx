@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     fontSize: 10,
     marginTop: 10,
-    paddingLeft: 5
+    paddingLeft: 2
 
   },
   text: {

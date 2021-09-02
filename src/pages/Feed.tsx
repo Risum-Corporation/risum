@@ -47,7 +47,6 @@ export function Feed() {
         onEndReachedThreshold={0.1}
         onRefresh={refreshList}
         refreshing={refreshing}
-        ListFooterComponent={loading && <Loading />}
         renderItem={({ item }) => <MemeCard postData={item} />}
         maxToRenderPerBatch={5}
       />
