@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 
 import { Profile } from "../pages/Drawer/Profile";
 import { SavedMemes } from "../pages/Drawer/SavedMemes";
@@ -77,6 +77,7 @@ const drawerAndTabScreen = () => (
             color={focused ? colors.white : colors.green}
           />
         ),
+    
       }}
     />
   </drawerRoutes.Navigator>

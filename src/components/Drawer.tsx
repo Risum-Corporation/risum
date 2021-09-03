@@ -1,14 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity} from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
 
 import colors from "../styles/colors";
-
-import { Ionicons } from "@expo/vector-icons";
 import fonts from "../styles/fonts";
+import AuthRoutes from "../routes/auth.routes";
+import { Welcome } from "../pages/Auth/Welcome";
+
 
 export function Drawer(props) {
   return (
@@ -43,6 +44,11 @@ export function Drawer(props) {
             </View>
           </View>
         </View>
+        <TouchableOpacity onPress={Welcome}>
+        <View style={styles.logout}>
+        <Text style={styles.logoutText}>Sair</Text>
+        </View>
+        </TouchableOpacity>
       </DrawerContentScrollView>
     </View>
   );
@@ -95,4 +101,20 @@ const styles = StyleSheet.create({
   itemList: {
     marginVertical: 5,
   },
+  logout:{
+    backgroundColor: colors.pastelRed,
+    marginHorizontal: 100,
+    borderRadius: 5,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20
+  },
+  logoutText: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: fonts.subtitle,
+    fontWeight: 'bold'
+
+  }
 });
