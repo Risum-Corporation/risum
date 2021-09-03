@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
   },
   userWallpaper: {
-    resizeMode: "cover", // IMPORTANTE! NÃO REMOVER
+    resizeMode: "cover", // IMPORTANTE! NÃO REMOVER 
     height: 160,
     width: "105%",
   },

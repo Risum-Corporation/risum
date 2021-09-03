@@ -9,9 +9,9 @@ import { Loading } from "../components/Loading";
 const Routes = () => {
   const { signed, loading } = useContext(AuthContext);
 
-  if (loading) {
-    return <Loading />;
-  }
+  // if (loading) {
+  //   return <Loading />;
+  // }
 
   return signed ? <StackRoutes /> : <AuthRoutes />;
 };

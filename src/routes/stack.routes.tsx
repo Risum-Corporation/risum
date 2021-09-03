@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Ionicons } from "@expo/vector-icons";
 
 import { Profile } from "../pages/Drawer/Profile";
 import { SavedMemes } from "../pages/Drawer/SavedMemes";
@@ -10,16 +11,74 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import TabRoutes from "./tab.routes"; // Bottom Tab
 import { Drawer } from "../components/Drawer"; // Custom Drawer
+import colors from "../styles/colors";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
 
 const drawerAndTabScreen = () => (
-  <drawerRoutes.Navigator drawerContent={Drawer}>
-    <drawerRoutes.Screen name="Início" component={TabRoutes} />
-    <drawerRoutes.Screen name="Perfil" component={Profile} />
-    <drawerRoutes.Screen name="Memes Salvos" component={SavedMemes} />
-    <drawerRoutes.Screen name="Configurações" component={Settings} />
+  <drawerRoutes.Navigator
+    drawerContent={Drawer}
+    drawerStyle={{ borderRadius: 40 }}
+  >
+    <drawerRoutes.Screen
+      name="Início"
+      component={TabRoutes}
+      options={{
+        title: "Início",
+        drawerIcon: ({ focused, size }) => (
+          <Ionicons
+            name="md-home"
+            size={size}
+            color={focused ? colors.white : colors.green}
+          />
+        ),
+      }}
+    />
+    <drawerRoutes.Screen
+      name="Perfil"
+      component={Profile}
+      options={{
+        title: "Perfil",
+        drawerIcon: ({ focused, size }) => (
+          <Ionicons
+            name="ios-person-circle-outline"
+            size={26}
+            color={focused ? colors.white : colors.green}
+          />
+        ),
+      }}
+    />
+
+    <drawerRoutes.Screen
+      name="SavedMemes"
+      component={SavedMemes}
+      options={{
+        title: "Memes Salvos",
+        drawerIcon: ({ focused, size }) => (
+          <Ionicons
+            name="bookmark"
+            size={size}
+            color={focused ? colors.white : colors.green}
+          />
+        ),
+      }}
+    />
+
+    <drawerRoutes.Screen
+      name="Settings"
+      component={Settings}
+      options={{
+        title: "Configurações",
+        drawerIcon: ({ focused, size }) => (
+          <Ionicons
+            name="settings"
+            size={size}
+            color={focused ? colors.white : colors.green}
+          />
+        ),
+      }}
+    />
   </drawerRoutes.Navigator>
 );
 

@@ -40,17 +40,13 @@ export function TopBar(props: TopBarProps) {
   // For menu navigation
   const navigation = useNavigation();
 
-  function handleProfile() {
-    return navigation.navigate("Profile");
-  }
-
   function handleDrawer() {
     return navigation.openDrawer();
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity onPress={handleProfile} onLongPress={handleDrawer}>
+      <TouchableOpacity onPress={handleDrawer}>
         <Image
           source={require("../assets/profilePicture.png")}
           style={styles.avatar}

@@ -15,7 +15,7 @@ import { Banner } from "react-native-paper";
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
 import { Loading } from "../components/Loading";
-import { EmbledWP } from "../components/EmbledWP";
+import { EmbledWP } from "../components/EmbledHC";
 
 export function WolfPack() {
   return (
