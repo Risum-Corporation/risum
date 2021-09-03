@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Feed } from "../pages/Feed";
 import { HypeTrain } from "../pages/HypeTrain";
-import { WolfPack } from "../pages/WolfPack";
+import { WolfPack } from "../pages/HyenaClan";
 import { AddMeme } from "../pages/AddMeme";
 
 import colors from "../styles/colors";

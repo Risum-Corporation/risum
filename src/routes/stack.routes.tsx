@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { HypeTrain } from "../pages/HypeTrain";
-import { WolfPack } from "../pages/WolfPack";
+import { WolfPack } from "../pages/HyenaClan";
 import { AddMeme } from "../pages/AddMeme";
 
 import AuthRoutes from "./tab.routes"; // Bottom Tab

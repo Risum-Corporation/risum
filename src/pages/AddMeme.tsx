@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { TextInput} from "react-native-paper";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { TextInput } from "react-native-paper";
 import colors from "../styles/colors";
 import { ConfirmButton } from "../components/ConfirmButton";
+import { Input } from "react-native-elements";
 
 import { TopBar } from "../components/TopBar";
 
@@ -18,8 +13,6 @@ import fonts from "../styles/fonts";
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = React.useState("");
   const [tags, setTags] = React.useState("");
-
-
 
   return (
     <View style={styles.wrapper}>
@@ -40,24 +33,20 @@ export function AddMeme() {
         </TouchableOpacity>
 
         <View style={styles.form}>
-          <TextInput
+          <Input
+            placeholder="Telegram 2 - O Retorno?"
             label="Nome do Meme"
-            placeholder="Homem Telegram - O Retorno?"
-            value={memeTitle}
             style={styles.input}
-            selectionColor={colors.green}
-
-
-            onChangeText={(memeTitle) => setMemeTitle(memeTitle)}
           />
-          <TextInput
+          <Input
+            placeholder="Separe as tags por vírgula"
             label="Tags"
-            placeholder="Adicione as tags separando-as por vírgula"
-            value={tags}
             style={styles.input}
-            onChangeText={(tags) => setTags(tags)}
           />
-          <View style={styles.button}><ConfirmButton title="Pronto!" /></View> 
+
+          <View style={styles.button}>
+            <ConfirmButton title="Pronto!" />
+          </View>
         </View>
       </View>
     </View>
@@ -97,14 +86,14 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    marginTop: 25
+    marginTop: 40,
   },
   input: {
     marginTop: 25,
-    tintColor: colors.background
+    color: colors.white,
   },
   button: {
     marginTop: 40,
-    paddingHorizontal: 100
-  }
+    paddingHorizontal: 100,
+  },
 });
