@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { posts } from "../database/fakeData";
 
 import colors from "../styles/colors";
-
+import { Image } from 'react-native';
+import { Banner } from 'react-native-paper';
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
 import { Loading } from "../components/Loading";
@@ -37,9 +38,13 @@ export function Feed() {
     setRefreshing(false);
   }
 
+  const [visible, setVisible] = React.useState(true);
+
   return (
+    
     <View style={styles.wrapper}>
       <TopBar name="Feed" />
+
       <FlatList
         data={posts}
         keyExtractor={(post) => String(post.id)}
@@ -50,6 +55,7 @@ export function Feed() {
         renderItem={({ item }) => <MemeCard postData={item} />}
         maxToRenderPerBatch={5}
       />
+
     </View>
   );
 }
@@ -58,4 +64,5 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: colors.background,
   },
+
 });

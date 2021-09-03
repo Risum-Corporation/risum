@@ -1,21 +1,60 @@
-import React, { useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import colors from "../styles/colors";
 
-import { TopBar } from "../components/TopBar";
-import AuthContext from "../contexts/Auth";
+import { HypeTrainCard } from "../components/HypeTrainCard";
+
+import { posts } from "../database/fakeData";
 
 export function HypeTrain() {
-  const { signOut } = useContext(AuthContext);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  function loadPage(pageNumber = page) {
+    if (total && pageNumber > total) return;
+
+    const totalItems = posts.length;
+
+    setTotal(Math.floor(totalItems / 5));
+    setPage(pageNumber + 1);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadPage();
+  }, []);
+
+  function refreshList() {
+    setRefreshing(true);
+
+    loadPage(1);
+
+    setRefreshing(false);
+  }
+
+  const [visible, setVisible] = React.useState(true);
   return (
     <View style={styles.container}>
-      <TopBar name="HypeTrain" />
-      <TouchableOpacity
-        onPress={signOut}
-        style={{ backgroundColor: colors.pastelRed }}
-      >
-        <Text>Logout</Text>
-      </TouchableOpacity>
+      <FlatList
+        data={posts}
+        keyExtractor={(post) => String(post.id)}
+        onEndReached={() => loadPage()}
+        horizontal={true}
+        onEndReachedThreshold={0.1}
+        onRefresh={refreshList}
+        refreshing={refreshing}
+        renderItem={({ item }) => <HypeTrainCard postData={item} />}
+        maxToRenderPerBatch={5}
+      />
     </View>
   );
 }

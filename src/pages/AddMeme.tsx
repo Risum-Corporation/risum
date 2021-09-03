@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { TextInput } from "react-native-paper";
+import { TextInput} from "react-native-paper";
 import colors from "../styles/colors";
 import { ConfirmButton } from "../components/ConfirmButton";
 
@@ -23,7 +23,7 @@ export function AddMeme() {
 
   return (
     <View style={styles.wrapper}>
-      <TopBar name="Feed" />
+      <TopBar name="Postar Meme" />
 
       <View style={styles.container}>
         <TouchableOpacity style={{ marginTop: 25 }}>
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderBottomEndRadius: 1,
     padding: 35,
+
     borderStyle: "dashed",
     borderRadius: 28,
   },

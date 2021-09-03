@@ -9,7 +9,7 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import { Searchbar, Menu, Divider, Provider } from "react-native-paper";
+import { Searchbar, Menu, Provider } from "react-native-paper";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 import { useState } from "react";
@@ -32,6 +32,8 @@ export function TopBar(props: TopBarProps) {
     setIsSearchPressed(!isSearchPressed);
   }
 
+
+
   // For the menu, when pressing the profile picture
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
@@ -44,72 +46,15 @@ export function TopBar(props: TopBarProps) {
     return navigation.navigate("Profile");
   }
 
-  function handleConfig() {
-    return navigation.navigate("Settings");
-  }
-
-  function handleSavedMemes() {
-    return navigation.navigate("SavedMemes");
-  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Provider>
-          <Menu
-            visible={visible}
-            onDismiss={closeMenu}
-            style={{
-              width: 200,
-              marginTop: Platform.OS === "ios" ? 2 : 5,
-              position: "absolute",
-              marginLeft: -13,
-            }}
-            anchor={
-              <TouchableOpacity onLongPress={openMenu} onPress={handleProfile}>
-                <Image
-                  source={require("../assets/profilePicture.png")}
-                  style={styles.avatar}
-                />
-              </TouchableOpacity>
-            }
-          >
-            <Menu.Item
-              icon={() => (
-                <Ionicons
-                  name="person-circle-outline"
-                  size={24}
-                  color="white"
-                />
-              )}
-              onPress={handleProfile}
-              title="Perfil"
-              titleStyle={styles.itemTitle}
-              style={styles.item}
-            />
-
-            <Menu.Item
-              icon={() => (
-                <Ionicons name="settings-outline" size={24} color="white" />
-              )}
-              onPress={handleConfig}
-              title="Configurações"
-              titleStyle={styles.itemTitle}
-              style={styles.item}
-            />
-
-            <Menu.Item
-              icon={() => (
-                <Ionicons name="md-bookmark-outline" size={24} color="white" />
-              )}
-              onPress={handleSavedMemes}
-              title="Memes Salvos"
-              titleStyle={styles.itemTitle}
-              style={styles.item}
-            />
-          </Menu>
-        </Provider>
-      </View>
+      <TouchableOpacity  onPress={handleProfile} >
+        <Image
+          source={require("../assets/profilePicture.png")}
+          style={styles.avatar}
+        />
+      </TouchableOpacity>
 
       {!isSearchPressed && <Text style={styles.title}>{props.name}</Text>}
 
