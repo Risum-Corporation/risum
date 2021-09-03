@@ -9,12 +9,12 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import { Searchbar, Menu, Provider } from "react-native-paper";
+import { Searchbar } from "react-native-paper";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 import { useState } from "react";
 
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 
 interface TopBarProps {
@@ -32,8 +32,6 @@ export function TopBar(props: TopBarProps) {
     setIsSearchPressed(!isSearchPressed);
   }
 
-
-
   // For the menu, when pressing the profile picture
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
@@ -46,10 +44,13 @@ export function TopBar(props: TopBarProps) {
     return navigation.navigate("Profile");
   }
 
+  function handleDrawer() {
+    return navigation.openDrawer();
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity  onPress={handleProfile} >
+      <TouchableOpacity onPress={handleProfile} onLongPress={handleDrawer}>
         <Image
           source={require("../assets/profilePicture.png")}
           style={styles.avatar}

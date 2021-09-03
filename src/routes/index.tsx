@@ -1,25 +1,19 @@
 import React, { useContext } from "react";
-import { Fragment } from "react";
 
 import AuthContext from "../contexts/Auth";
 
 import StackRoutes from "./stack.routes";
 import AuthRoutes from "./auth.routes";
-import DrawerRoutes from "./drawer.routes";
+import { Loading } from "../components/Loading";
 
 const Routes = () => {
   const { signed, loading } = useContext(AuthContext);
 
-  // if (loading) {
-  // Lottie
-  // }
-  return signed ? (
-    <>
-  <StackRoutes/> 
-  {/* DrawerRoutes */}
-  </>
- 
-  ) : <AuthRoutes />;
+  if (loading) {
+    return <Loading />;
+  }
+
+  return signed ? <StackRoutes /> : <AuthRoutes />;
 };
 
 export default Routes;

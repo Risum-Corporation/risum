@@ -1,13 +1,11 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import colors from "../styles/colors";
-
+import colors from "../../styles/colors";
 
 export function SavedMemes() {
-  
   return (
     <View style={styles.container}>
-        <Text style={{color: 'white'}}>SavedMemes</Text>
+      <Text style={{ color: "white" }}>SavedMemes</Text>
     </View>
   );
 }
@@ -18,6 +16,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     backgroundColor: colors.background,
-    color:  colors.text
+    color: colors.text,
   },
 });

@@ -7,19 +7,19 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 
-import { posts } from "../database/fakeData";
+import { posts } from "../../database/fakeData";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-import { MemeCardSecondary } from "../components/MemeCardSecondary";
+import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 
-import { GoBackButton } from "../components/GoBackButton";
-import fonts from "../styles/fonts";
+import { GoBackButton } from "../../components/GoBackButton";
+import fonts from "../../styles/fonts";
 
 import { useNavigation } from "@react-navigation/native";
-import { Loading } from "../components/Loading";
+import { Loading } from "../../components/Loading";
 
 export function Profile() {
   const navigation = useNavigation();
@@ -64,13 +64,13 @@ export function Profile() {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/wallpaper.jpg")}
+        source={require("../../assets/wallpaper.jpg")}
         style={styles.userWallpaper}
       />
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
           <Image
-            source={require("../assets/profilePicture.png")}
+            source={require("../../assets/profilePicture.png")}
             style={styles.profilePicture}
           />
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
