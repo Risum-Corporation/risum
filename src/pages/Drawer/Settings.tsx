@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.subtitle,
     fontWeight: "bold",
     fontSize: 18,
-    marginLeft: 5,
+    marginLeft: 20,
   },
   item: {
     flexDirection: "row",

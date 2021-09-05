@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginTop: 10,
     marginHorizontal: Platform.OS === "ios" ? 15 : 0,
-    marginBottom: Platform.OS === "ios" ? 20 : 11,
+    marginBottom: Platform.OS === "ios" ? 15 : 11,
     alignContent: "center",
   },
   avatar: {

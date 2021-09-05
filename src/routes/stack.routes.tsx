@@ -22,8 +22,8 @@ const drawerAndTabScreen = () => (
     drawerContent={Drawer}
     drawerStyle={{
       borderRadius: 30,
-      height: 410,
-      marginTop: Platform.OS === 'ios' ? 50 : 10,
+      height: Platform.OS === 'ios' ? 310 : 350 ,
+      marginTop: '45%',
     }}
   >
     <drawerRoutes.Screen
