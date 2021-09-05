@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Platform } from "react-native";
 
 import { Profile } from "../pages/Drawer/Profile";
 import { SavedMemes } from "../pages/Drawer/SavedMemes";
@@ -19,7 +20,11 @@ const drawerRoutes = createDrawerNavigator();
 const drawerAndTabScreen = () => (
   <drawerRoutes.Navigator
     drawerContent={Drawer}
-    drawerStyle={{ borderRadius: 40 }}
+    drawerStyle={{
+      borderRadius: 30,
+      height: 410,
+      marginTop: Platform.OS === 'ios' ? 50 : 10,
+    }}
   >
     <drawerRoutes.Screen
       name="Início"

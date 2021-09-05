@@ -14,4 +14,9 @@ export default {
 
   outlineGray: "#444444",
   pastelRed: "#FF7A7A",
+  
+  yellow: "#ffdc8a",
+  cyan: "#04D3C9",
+  pink: "#f091ff"
+
 };

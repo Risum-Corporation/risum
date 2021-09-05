@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, Platform} from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -44,11 +44,6 @@ export function Drawer(props) {
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress={Welcome}>
-        <View style={styles.logout}>
-        <Text style={styles.logoutText}>Sair</Text>
-        </View>
-        </TouchableOpacity>
       </DrawerContentScrollView>
     </View>
   );
@@ -59,14 +54,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     width: "100%",
-    borderRadius: 30,
+    borderRadius: 20,
   },
   userWallpaper: {
     height: 100,
     width: "100%",
     resizeMode: "cover",
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    marginTop: Platform.OS === 'ios' ? -55 : -5
   },
   userPicture: {
     height: 70,
