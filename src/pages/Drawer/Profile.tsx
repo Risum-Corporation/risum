@@ -21,6 +21,8 @@ import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { Loading } from "../../components/Loading";
 
+import SwitchMode from "../../styles/SwitchMode";
+
 export function Profile() {
   const navigation = useNavigation();
   const [isSmilePressed, setIsSmilePressed] = useState<boolean>(true);
@@ -61,8 +63,18 @@ export function Profile() {
     setIsInfoPressed(false);
   }
 
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        isSwitchOn
+          ? { backgroundColor: colors.backgroundLight }
+          : { backgroundColor: colors.background },
+      ]}
+    >
       <Image
         source={require("../../assets/wallpaper.jpg")}
         style={styles.userWallpaper}
@@ -74,24 +86,85 @@ export function Profile() {
             style={styles.profilePicture}
           />
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
-            <Text style={styles.userName}>Usuário</Text>
-            <Text style={styles.userId}>#1234</Text>
+            <Text
+              style={[
+                styles.userName,
+                isSwitchOn
+                  ? { color: colors.whiteLight }
+                  : { color: colors.white },
+              ]}
+            >
+              Usuário
+            </Text>
+            <Text
+              style={[
+                styles.userId,
+                isSwitchOn
+                  ? { color: colors.placeholderTextLight }
+                  : { color: colors.placeholderText },
+              ]}
+            >
+              #1234
+            </Text>
           </View>
         </View>
 
         <View>
           <View style={styles.lineText}>
-            <Text style={styles.text}>Seguindo</Text>
-            <Text style={styles.greenText}>15</Text>
+            <Text
+              style={[
+                styles.text,
+                isSwitchOn
+                  ? { color: colors.whiteLight }
+                  : { color: colors.white },
+              ]}
+            >
+              Seguindo
+            </Text>
+            <Text
+              style={[
+                styles.greenText,
+                isSwitchOn
+                  ? { color: colors.greenLight }
+                  : { color: colors.green },
+              ]}
+            >
+              15
+            </Text>
           </View>
 
           <View style={styles.lineText}>
-            <Text style={styles.text}>Seguidores</Text>
-            <Text style={styles.greenText}>37</Text>
+            <Text
+              style={[
+                styles.text,
+                isSwitchOn
+                  ? { color: colors.whiteLight }
+                  : { color: colors.white },
+              ]}
+            >
+              Seguidores
+            </Text>
+            <Text
+              style={[
+                styles.greenText,
+                isSwitchOn
+                  ? { color: colors.greenLight }
+                  : { color: colors.green },
+              ]}
+            >
+              37
+            </Text>
           </View>
         </View>
       </View>
-      <View style={styles.filterIconsBox}>
+      <View
+        style={[
+          styles.filterIconsBox,
+          isSwitchOn
+            ? { borderBottomColor: colors.dividerLight }
+            : { borderBottomColor: colors.divider },
+        ]}
+      >
         <TouchableOpacity
           onPress={() => {
             setIconsFalse();
@@ -100,7 +173,15 @@ export function Profile() {
         >
           <AntDesign
             name={isSmilePressed ? "smile-circle" : "smileo"}
-            color={isSmilePressed ? colors.green : colors.white}
+            color={
+              isSwitchOn
+                ? isSmilePressed
+                  ? colors.greenLight
+                  : colors.whiteLight
+                : isSmilePressed
+                ? colors.green
+                : colors.white
+            }
             size={30}
           />
         </TouchableOpacity>
@@ -112,7 +193,15 @@ export function Profile() {
         >
           <Ionicons
             name={isPostPressed ? "image" : "image-outline"}
-            color={isPostPressed ? colors.green : colors.white}
+            color={
+              isSwitchOn
+                ? isPostPressed
+                  ? colors.greenLight
+                  : colors.whiteLight
+                : isPostPressed
+                ? colors.green
+                : colors.white
+            }
             size={30}
           />
         </TouchableOpacity>
@@ -126,7 +215,15 @@ export function Profile() {
             name={
               isCommentPressed ? "chatbox-ellipses" : "chatbox-ellipses-outline"
             }
-            color={isCommentPressed ? colors.green : colors.white}
+            color={
+              isSwitchOn
+                ? isCommentPressed
+                  ? colors.greenLight
+                  : colors.whiteLight
+                : isCommentPressed
+                ? colors.green
+                : colors.white
+            }
             size={30}
           />
         </TouchableOpacity>
@@ -142,7 +239,15 @@ export function Profile() {
                 ? "information-circle"
                 : "information-circle-outline"
             }
-            color={isInfoPressed ? colors.green : colors.white}
+            color={
+              isSwitchOn
+                ? isInfoPressed
+                  ? colors.greenLight
+                  : colors.whiteLight
+                : isInfoPressed
+                ? colors.green
+                : colors.white
+            }
             size={30}
           />
         </TouchableOpacity>
@@ -156,7 +261,6 @@ export function Profile() {
             onEndReachedThreshold={0.1}
             onRefresh={refreshList}
             refreshing={refreshing}
-            ListFooterComponent={loading && <Loading />}
             renderItem={({ item }) => <MemeCardSecondary postData={item} />}
           />
         )}
@@ -170,7 +274,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flex: 1,
-    backgroundColor: colors.background,
   },
   text: {
     color: colors.white,
@@ -186,7 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
   },
   userWallpaper: {
-    resizeMode: "cover", // IMPORTANTE! NÃO REMOVER 
+    resizeMode: "cover", // IMPORTANTE! NÃO REMOVER
     height: 160,
     width: "105%",
   },
@@ -198,7 +301,6 @@ const styles = StyleSheet.create({
   userId: {
     fontFamily: fonts.subtitle,
     fontSize: 12,
-    color: colors.placeholderText,
   },
   userNameImgBox: {
     flexDirection: "row",
@@ -220,7 +322,6 @@ const styles = StyleSheet.create({
   },
   filterIconsBox: {
     borderBottomWidth: 1,
-    borderBottomColor: colors.divider,
 
     flexDirection: "row",
     alignItems: "center",

@@ -13,6 +13,8 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
+import SwitchMode from "../styles/SwitchMode";
+
 interface PostProps {
   postData: {
     id: number;
@@ -56,37 +58,40 @@ export function MemeCardSecondary({ postData }: PostProps) {
     }
   }
 
+    // Theme
+    let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
         <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
       </View>
 
-      <View style={styles.footer}>
+      <View style={isSwitchOn ? styles.footerLight : styles.footer}>
         <View style={styles.buttonBox}>
-          <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
+        <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
             <AntDesign
               name={isLikePressed ? "like1" : "like2"}
               size={24}
-              color={isLikePressed ? colors.green : colors.white}
+              color={isSwitchOn ? (isLikePressed ? colors.greenLight : colors.whiteLight) : (isLikePressed ? colors.green : colors.white) }
             />
           </TouchableOpacity>
-          <Text style={styles.memeStats}>{postData.likes}</Text>
+          <Text style={[styles.memeStats, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.likes}</Text>
 
           <TouchableOpacity style={styles.button}>
             <Ionicons
               name="md-chatbox-ellipses-outline"
               size={24}
-              color={colors.white}
+              color={isSwitchOn ?  colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
-          <Text style={styles.memeStats}>{postData.comments}</Text>
+          <Text style={[styles.memeStats, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.comments}</Text>
 
           <TouchableOpacity style={styles.button} onPress={toggleBookmarkPress}>
             <Ionicons
               name={isBookmarkPressed ? "md-bookmark" : "md-bookmark-outline"}
               size={24}
-              color={isBookmarkPressed ? colors.green : colors.white}
+              color={isSwitchOn ? (isBookmarkPressed  ? colors.greenLight : colors.whiteLight) : (isBookmarkPressed  ? colors.green : colors.white) }
             />
           </TouchableOpacity>
 
@@ -94,13 +99,13 @@ export function MemeCardSecondary({ postData }: PostProps) {
             <Ionicons
               name="md-share-social-outline"
               size={24}
-              color={colors.white}
+              color={isSwitchOn ?  colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.userInfoContainer}>
-          <Text style={styles.authorName}>{postData.author}</Text>
+          <Text style={[styles.authorName, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.author}</Text>
           <TouchableOpacity>
             <Image source={{ uri: postData.avatar }} style={styles.userImg} />
           </TouchableOpacity>
@@ -108,12 +113,12 @@ export function MemeCardSecondary({ postData }: PostProps) {
       </View>
 
       <View // Divider between memes
-        style={{
+        style={[{
           borderBottomColor: colors.divider,
           borderBottomWidth: 1,
           marginVertical: 15,
           marginHorizontal: "2%",
-        }}
+        }, isSwitchOn ? {borderBottomColor: colors.dividerLight} : {borderBottomColor: colors.divider}]}
       />
     </SafeAreaView>
   );
@@ -136,6 +141,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
 
     backgroundColor: colors.lightBackground,
+
+    marginHorizontal: 15,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    padding: 7.5,
+
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginLeft: 0,
+  },
+  footerLight: {
+    width: "100%",
+    flexDirection: "row",
+
+    backgroundColor: colors.lightBackgroundLight,
 
     marginHorizontal: 15,
     borderBottomLeftRadius: 10,

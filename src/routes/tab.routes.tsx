@@ -6,23 +6,30 @@ import { Feed } from "../pages/Feed";
 import { HypeTrain } from "../pages/HypeTrain";
 import { WolfPack } from "../pages/HyenaClan";
 import { AddMeme } from "../pages/AddMeme";
-import { FontAwesome } from '@expo/vector-icons';
+import SwitchMode from "../styles/SwitchMode";
+import { StyleSheet } from "react-native";
 
 import colors from "../styles/colors";
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
+
+   // Theme
+   let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
     <BottomTab.Navigator
       initialRouteName="Feed"
       tabBarOptions={{
-        activeTintColor: colors.green,
+        activeTintColor: isSwitchOn ? colors.greenLight : colors.green,
         style: {
-          backgroundColor: colors.background,
+          backgroundColor: isSwitchOn ? colors.backgroundLight : colors.background,
           borderTopWidth: 0,
         },
+        
       }}
+   
     >
       <BottomTab.Screen
         name="Feed"
@@ -72,3 +79,12 @@ function TabBarIcon(props: {
 }) {
   return <Ionicons size={30} {...props} />;
 }
+
+const styles = StyleSheet.create({
+  tabbar: {
+    
+  }
+
+
+});
+

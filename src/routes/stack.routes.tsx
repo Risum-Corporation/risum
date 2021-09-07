@@ -14,8 +14,13 @@ import TabRoutes from "./tab.routes"; // Bottom Tab
 import { Drawer } from "../components/Drawer"; // Custom Drawer
 import colors from "../styles/colors";
 
+import SwitchMode from "../styles/SwitchMode";
+
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
+
+// Theme
+let isSwitchOn = SwitchMode.isSwitchOn;
 
 const drawerAndTabScreen = () => (
   <drawerRoutes.Navigator
@@ -31,7 +36,7 @@ const drawerAndTabScreen = () => (
       component={TabRoutes}
       options={{
         title: "Início",
-        drawerIcon: ({ focused, size }) =>
+        drawerIcon: ({ focused }) =>
           focused ? (
             <MaterialCommunityIcons
               name="shield-home"
@@ -42,7 +47,7 @@ const drawerAndTabScreen = () => (
             <MaterialCommunityIcons
               name="shield-home-outline"
               size={25}
-              color={colors.white}
+              color={isSwitchOn ? colors.placeholderTextLight : colors.white}
             />
           ),
       }}
@@ -63,7 +68,7 @@ const drawerAndTabScreen = () => (
             <Ionicons
               name="ios-person-circle-outline"
               size={size}
-              color={colors.white}
+              color={isSwitchOn ? colors.placeholderTextLight : colors.white}
             />
           ),
       }}
@@ -81,7 +86,7 @@ const drawerAndTabScreen = () => (
             <Ionicons
               name="bookmark-outline"
               size={size}
-              color={colors.white}
+              color={isSwitchOn ? colors.placeholderTextLight : colors.white}
             />
           ),
       }}
@@ -99,7 +104,7 @@ const drawerAndTabScreen = () => (
             <Ionicons
               name="settings-outline"
               size={size}
-              color={colors.white}
+              color={isSwitchOn ? colors.placeholderTextLight : colors.white}
             />
           ),
       }}

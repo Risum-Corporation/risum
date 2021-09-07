@@ -10,42 +10,126 @@ import { GoBackButton } from "../../components/GoBackButton";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import AuthContext from "../../contexts/Auth";
+import { Switch } from "react-native-paper";
+
+import SwitchMode from "../../styles/SwitchMode";
 
 export function Settings() {
   const navigation = useNavigation();
   const { signOut } = useContext(AuthContext);
 
+  let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={isSwitchOn ? styles.containerLight : styles.container}>
       <GoBackButton onPress={() => navigation.goBack()} />
       <View style={styles.heading}>
-        <Text style={styles.title}>Configurações</Text>
+        <Text
+          style={[
+            styles.title,
+            isSwitchOn ? { color: colors.greenLight } : { color: colors.green },
+          ]}
+        >
+          Configurações
+        </Text>
         <View style={styles.options}>
           <TouchableOpacity>
             <View style={styles.item}>
-              <MaterialIcons name="person" size={33} color={colors.green} />
-              <Text style={styles.subtitle}>Perfil</Text>
+              <Ionicons
+                name="contrast"
+                size={33}
+                color={isSwitchOn ? colors.whiteLight : colors.white}
+              />
+
+              <Text
+                style={[
+                  styles.subtitle,
+                  isSwitchOn
+                    ? { color: colors.whiteLight }
+                    : { color: colors.white },
+                ]}
+              >
+                Modo Claro
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity>
             <View style={styles.item}>
-              <MaterialIcons name="security" size={33} color={colors.yellow} />
-              <Text style={styles.subtitle}>Segurança</Text>
+              <MaterialIcons
+                name="person"
+                size={33}
+                color={isSwitchOn ? colors.greenLight : colors.green}
+              />
+              <Text
+                style={[
+                  styles.subtitle,
+                  isSwitchOn
+                    ? { color: colors.whiteLight }
+                    : { color: colors.white },
+                ]}
+              >
+                Perfil
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.item}>
+              <MaterialIcons
+                name="security"
+                size={33}
+                color={isSwitchOn ? colors.yellowLight : colors.yellow}
+              />
+              <Text
+                style={[
+                  styles.subtitle,
+                  isSwitchOn
+                    ? { color: colors.whiteLight }
+                    : { color: colors.white },
+                ]}
+              >
+                Segurança
+              </Text>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity>
             <View style={styles.item}>
-              <MaterialIcons name="badge" size={33} color={colors.pink} />
-              <Text style={styles.subtitle}>Sobre nós</Text>
+              <MaterialIcons
+                name="badge"
+                size={33}
+                color={isSwitchOn ? colors.pinkLight : colors.pink}
+              />
+              <Text
+                style={[
+                  styles.subtitle,
+                  isSwitchOn
+                    ? { color: colors.whiteLight }
+                    : { color: colors.white },
+                ]}
+              >
+                Sobre nós
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity>
             <View style={styles.item}>
-              <MaterialIcons name="policy" size={33} color={colors.cyan} />
-              <Text style={styles.subtitle}>Politicas do Risum</Text>
+              <MaterialIcons
+                name="policy"
+                size={33}
+                color={isSwitchOn ? colors.cyanLight : colors.cyan}
+              />
+              <Text
+                style={[
+                  styles.subtitle,
+                  isSwitchOn
+                    ? { color: colors.whiteLight }
+                    : { color: colors.white },
+                ]}
+              >
+                Politicas do Risum
+              </Text>
             </View>
           </TouchableOpacity>
 
@@ -68,11 +152,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+
+  containerLight: {
+    flex: 1,
+    backgroundColor: colors.backgroundLight,
+  },
+
   heading: {
     marginHorizontal: 50,
   },
   title: {
-    color: colors.green,
     fontFamily: fonts.heading,
     fontWeight: "bold",
     fontSize: 25,

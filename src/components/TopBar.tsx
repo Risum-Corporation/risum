@@ -16,6 +16,7 @@ import { useState } from "react";
 
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
+import SwitchMode from "../styles/SwitchMode";
 
 interface TopBarProps {
   name: string;
@@ -44,6 +45,9 @@ export function TopBar(props: TopBarProps) {
     return navigation.openDrawer();
   }
 
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
@@ -53,13 +57,13 @@ export function TopBar(props: TopBarProps) {
         />
       </TouchableOpacity>
 
-      {!isSearchPressed && <Text style={styles.title}>{props.name}</Text>}
+      {!isSearchPressed && <Text style={[styles.title, isSwitchOn ?  {color: colors.greenLight} : {color: colors.green}]}>{props.name}</Text>}
 
       <TouchableOpacity onPress={handleSearchClick} style={{ marginRight: 5 }}>
         <AntDesign
           name={isSearchPressed ? "close" : "search1"}
           size={27}
-          color={colors.white}
+          color={isSwitchOn ?  colors.whiteLight : colors.white}
         />
       </TouchableOpacity>
 
@@ -104,7 +108,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontFamily: fonts.heading,
-    color: colors.green,
     alignItems: "center",
     justifyContent: "center",
     marginTop: Platform.OS === "ios" ? 6 : 0,

@@ -8,14 +8,26 @@ import {
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import SwitchMode from "../styles/SwitchMode";
 
 interface ConfirmButtonProps extends TouchableOpacityProps {
   title: string;
 }
 
 export function ConfirmButton({ title, ...rest }: ConfirmButtonProps) {
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
-    <TouchableOpacity style={styles.container} {...rest}>
+    <TouchableOpacity
+      style={[
+        styles.container,
+        isSwitchOn
+          ? { backgroundColor: colors.greenLight }
+          : { backgroundColor: colors.green },
+      ]}
+      {...rest}
+    >
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
@@ -23,7 +35,6 @@ export function ConfirmButton({ title, ...rest }: ConfirmButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.green,
     borderRadius: 8,
     width: "100%",
     height: 60,

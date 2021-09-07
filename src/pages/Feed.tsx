@@ -4,11 +4,9 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { posts } from "../database/fakeData";
 
 import colors from "../styles/colors";
-import { Image } from 'react-native';
-import { Banner } from 'react-native-paper';
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
-import { Loading } from "../components/Loading";
+import SwitchMode from "../styles/SwitchMode";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -38,11 +36,11 @@ export function Feed() {
     setRefreshing(false);
   }
 
-  const [visible, setVisible] = React.useState(true);
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
 
   return (
-    
-    <View style={styles.wrapper}>
+    <View style={isSwitchOn ? styles.wrapperLight : styles.wrapper}>
       <TopBar name="Feed" />
 
       <FlatList
@@ -55,7 +53,6 @@ export function Feed() {
         renderItem={({ item }) => <MemeCard postData={item} />}
         maxToRenderPerBatch={5}
       />
-
     </View>
   );
 }
@@ -64,5 +61,7 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: colors.background,
   },
-
+  wrapperLight: {
+    backgroundColor: colors.backgroundLight,
+  },
 });

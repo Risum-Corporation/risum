@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from "react";
 import {
-  FlatList,
   StyleSheet,
-  TouchableOpacity,
-  View,
   Text,
-} from "react-native";
-
-import { posts } from "../database/fakeData";
+  View,
+ } from "react-native";
 
 import colors from "../styles/colors";
-import { Image } from "react-native";
-import { Banner } from "react-native-paper";
 import { TopBar } from "../components/TopBar";
-import { MemeCard } from "../components/MemeCard";
-import { Loading } from "../components/Loading";
 import { EmbledWP } from "../components/EmbledHC";
+import SwitchMode from "../styles/SwitchMode";
 
 export function WolfPack() {
+
+    // Theme
+    let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
-    <View style={styles.wrapper}>
+    <View style={[isSwitchOn ? styles.wrapperLight : styles.wrapper]}>
       <TopBar name="CupForce" />
       <EmbledWP />
-
     </View>
   );
 }
@@ -32,4 +28,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     height: '100%'
   },
+  wrapperLight: {
+    backgroundColor: colors.backgroundLight,
+
+  }
 });

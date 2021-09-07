@@ -1,5 +1,13 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, Platform} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  Platform,
+} from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -7,13 +15,21 @@ import {
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import AuthRoutes from "../routes/auth.routes";
-import { Welcome } from "../pages/Auth/Welcome";
-
+import SwitchMode from "../styles/SwitchMode";
 
 export function Drawer(props) {
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        isSwitchOn
+          ? { backgroundColor: colors.backgroundLight }
+          : { backgroundColor: colors.background },
+      ]}
+    >
       <DrawerContentScrollView {...props}>
         <View>
           <Image
@@ -26,17 +42,41 @@ export function Drawer(props) {
               style={styles.userPicture}
             />
 
-            <Text style={styles.title}>Usuário</Text>
+            <Text
+              style={[
+                styles.title,
+                isSwitchOn
+                  ? { color: colors.whiteLight }
+                  : { color: colors.white },
+              ]}
+            >
+              Usuário
+            </Text>
 
-            <Text style={styles.userID}>#1234</Text>
+            <Text
+              style={[
+                styles.userID,
+                isSwitchOn
+                  ? { color: colors.placeholderTextLight }
+                  : { color: colors.placeholderText },
+              ]}
+            >
+              #1234
+            </Text>
           </View>
 
           <View style={styles.wrapper}>
             <View style={styles.itemList}>
               <DrawerItemList
                 {...props}
-                activeBackgroundColor={colors.purple}
-                inactiveBackgroundColor={colors.lightBackground}
+                activeBackgroundColor={
+                  isSwitchOn ? colors.purpleLight : colors.purple
+                }
+                inactiveBackgroundColor={
+                  isSwitchOn
+                    ? colors.lightBackgroundLight
+                    : colors.lightBackground
+                }
                 activeTintColor={colors.white}
                 inactiveTintColor={colors.white}
               />
@@ -51,7 +91,6 @@ export function Drawer(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
     width: "100%",
     borderRadius: 20,
   },
@@ -61,28 +100,26 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    marginTop: Platform.OS === 'ios' ? -55 : -5
+    marginTop: Platform.OS === "ios" ? -55 : -5,
   },
   userPicture: {
     height: 70,
     width: 70,
     marginTop: -20,
     borderRadius: 35,
-    marginLeft: 10
+    marginLeft: 10,
   },
   perfilInfo: {
     flexDirection: "row",
-  alignItems: "center"
+    alignItems: "center",
   },
   title: {
-    color: colors.white,
     fontFamily: fonts.heading,
     fontSize: 17,
     marginLeft: 9,
   },
   userID: {
     fontFamily: fonts.subtitle,
-    color: colors.placeholderText,
     fontSize: 14,
     marginLeft: 7,
   },
@@ -95,20 +132,19 @@ const styles = StyleSheet.create({
   itemList: {
     marginVertical: 5,
   },
-  logout:{
+  logout: {
     backgroundColor: colors.pastelRed,
     marginHorizontal: 100,
     borderRadius: 5,
     height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
   },
   logoutText: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     fontFamily: fonts.subtitle,
-    fontWeight: 'bold'
-
-  }
+    fontWeight: "bold",
+  },
 });

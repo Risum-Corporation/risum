@@ -4,7 +4,7 @@ import { TextInput } from "react-native-paper";
 import colors from "../styles/colors";
 import { ConfirmButton } from "../components/ConfirmButton";
 import { Input } from "react-native-elements";
-
+import SwitchMode from "../styles/SwitchMode";
 import { TopBar } from "../components/TopBar";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -14,19 +14,43 @@ export function AddMeme() {
   const [memeTitle, setMemeTitle] = React.useState("");
   const [tags, setTags] = React.useState("");
 
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
+
   return (
-    <View style={styles.wrapper}>
+    <View
+      style={
+        isSwitchOn
+          ? { backgroundColor: colors.backgroundLight }
+          : { backgroundColor: colors.background }
+      }
+    >
       <TopBar name="Postar Meme" />
 
       <View style={styles.container}>
         <TouchableOpacity style={{ marginTop: 25 }}>
-          <View style={styles.addMemeContainer}>
+          <View
+            style={[
+              styles.addMemeContainer,
+              isSwitchOn
+                ? { borderColor: colors.greenLight }
+                : { borderColor: colors.green },
+            ]}
+          >
             <SimpleLineIcons
               name="cloud-upload"
               size={120}
-              color={colors.green}
+              color={isSwitchOn ? colors.greenLight : colors.green}
             />
-            <Text style={[styles.title, { marginTop: 20 }]}>
+            <Text
+              style={[
+                styles.title,
+                isSwitchOn
+                  ? { color: colors.placeholderTextLight }
+                  : { color: colors.white },
+                { marginTop: 20 },
+              ]}
+            >
               Clique aqui para{"\n"}postar um meme
             </Text>
           </View>
@@ -54,9 +78,6 @@ export function AddMeme() {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: colors.background,
-  },
   container: {
     alignItems: "center",
     height: "100%",
@@ -64,7 +85,6 @@ const styles = StyleSheet.create({
   },
   addMemeContainer: {
     alignItems: "center",
-    borderColor: colors.green,
     borderWidth: 5,
     borderBottomEndRadius: 1,
     padding: 35,
@@ -73,7 +93,6 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   title: {
-    color: colors.white,
     fontFamily: fonts.heading,
     fontSize: 28,
     textAlign: "center",
