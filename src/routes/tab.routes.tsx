@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
@@ -6,6 +6,7 @@ import { Feed } from "../pages/Feed";
 import { HypeTrain } from "../pages/HypeTrain";
 import { WolfPack } from "../pages/HyenaClan";
 import { AddMeme } from "../pages/AddMeme";
+import { FontAwesome } from '@expo/vector-icons';
 
 import colors from "../styles/colors";
 
@@ -28,7 +29,7 @@ export default function BottomTabNavigator() {
         component={Feed}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-home" color={color} />
+            <MaterialIcons name="rss-feed" size={36} color={color}/>
           ),
         }}
       />

@@ -22,7 +22,7 @@ export function Drawer(props) {
           />
           <View style={styles.perfilInfo}>
             <Image
-              source={require("../assets/profilePicture.png")}
+              source={require("../assets/profilePicture.gif")}
               style={styles.userPicture}
             />
 
@@ -32,7 +32,6 @@ export function Drawer(props) {
           </View>
 
           <View style={styles.wrapper}>
-            <View style={styles.icons}>{/* Ionicons */}</View>
             <View style={styles.itemList}>
               <DrawerItemList
                 {...props}
@@ -69,23 +68,22 @@ const styles = StyleSheet.create({
     width: 70,
     marginTop: -20,
     borderRadius: 35,
+    marginLeft: 10
   },
   perfilInfo: {
     flexDirection: "row",
+  alignItems: "center"
   },
   title: {
     color: colors.white,
     fontFamily: fonts.heading,
     fontSize: 17,
-    marginTop: 9,
-    marginLeft: 5,
+    marginLeft: 9,
   },
   userID: {
-    marginTop: 9,
     fontFamily: fonts.subtitle,
     color: colors.placeholderText,
-    fontSize: 17,
-
+    fontSize: 14,
     marginLeft: 7,
   },
   wrapper: {

@@ -44,17 +44,7 @@ export function HypeTrain() {
   const [visible, setVisible] = React.useState(true);
   return (
     <View style={styles.container}>
-      <FlatList
-        data={posts}
-        keyExtractor={(post) => String(post.id)}
-        onEndReached={() => loadPage()}
-        horizontal={true}
-        onEndReachedThreshold={0.1}
-        onRefresh={refreshList}
-        refreshing={refreshing}
-        renderItem={({ item }) => <HypeTrainCard postData={item} />}
-        maxToRenderPerBatch={5}
-      />
+
     </View>
   );
 }

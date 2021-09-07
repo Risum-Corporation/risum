@@ -48,7 +48,7 @@ export function TopBar(props: TopBarProps) {
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
         <Image
-          source={require("../assets/profilePicture.png")}
+          source={require("../assets/profilePicture.gif")}
           style={styles.avatar}
         />
       </TouchableOpacity>

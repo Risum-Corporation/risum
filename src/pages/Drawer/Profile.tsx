@@ -70,7 +70,7 @@ export function Profile() {
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
           <Image
-            source={require("../../assets/profilePicture.png")}
+            source={require("../../assets/profilePicture.gif")}
             style={styles.profilePicture}
           />
           <View style={{ marginTop: 20, paddingLeft: 8 }}>

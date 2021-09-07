@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Platform } from "react-native";
 
 import { Profile } from "../pages/Drawer/Profile";
@@ -22,8 +22,8 @@ const drawerAndTabScreen = () => (
     drawerContent={Drawer}
     drawerStyle={{
       borderRadius: 30,
-      height: Platform.OS === 'ios' ? 310 : 350 ,
-      marginTop: '45%',
+      height: Platform.OS === "ios" ? 310 : 350,
+      marginTop: "45%",
     }}
   >
     <drawerRoutes.Screen
@@ -31,13 +31,20 @@ const drawerAndTabScreen = () => (
       component={TabRoutes}
       options={{
         title: "Início",
-        drawerIcon: ({ focused, size }) => (
-          <Ionicons
-            name="md-home"
-            size={size}
-            color={focused ? colors.white : colors.green}
-          />
-        ),
+        drawerIcon: ({ focused, size }) =>
+          focused ? (
+            <MaterialCommunityIcons
+              name="shield-home"
+              size={25}
+              color={colors.white}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="shield-home-outline"
+              size={25}
+              color={colors.white}
+            />
+          ),
       }}
     />
     <drawerRoutes.Screen
@@ -45,13 +52,20 @@ const drawerAndTabScreen = () => (
       component={Profile}
       options={{
         title: "Perfil",
-        drawerIcon: ({ focused, size }) => (
-          <Ionicons
-            name="ios-person-circle-outline"
-            size={26}
-            color={focused ? colors.white : colors.green}
-          />
-        ),
+        drawerIcon: ({ focused, size }) =>
+          focused ? (
+            <Ionicons
+              name="ios-person-circle"
+              size={size}
+              color={colors.white}
+            />
+          ) : (
+            <Ionicons
+              name="ios-person-circle-outline"
+              size={size}
+              color={colors.white}
+            />
+          ),
       }}
     />
 
@@ -60,13 +74,16 @@ const drawerAndTabScreen = () => (
       component={SavedMemes}
       options={{
         title: "Memes Salvos",
-        drawerIcon: ({ focused, size }) => (
-          <Ionicons
-            name="bookmark"
-            size={size}
-            color={focused ? colors.white : colors.green}
-          />
-        ),
+        drawerIcon: ({ focused, size }) =>
+          focused ? (
+            <Ionicons name="bookmark" size={size} color={colors.white} />
+          ) : (
+            <Ionicons
+              name="bookmark-outline"
+              size={size}
+              color={colors.white}
+            />
+          ),
       }}
     />
 
@@ -75,14 +92,16 @@ const drawerAndTabScreen = () => (
       component={Settings}
       options={{
         title: "Configurações",
-        drawerIcon: ({ focused, size }) => (
-          <Ionicons
-            name="settings"
-            size={size}
-            color={focused ? colors.white : colors.green}
-          />
-        ),
-    
+        drawerIcon: ({ focused, size }) =>
+          focused ? (
+            <Ionicons name="settings" size={size} color={colors.white} />
+          ) : (
+            <Ionicons
+              name="settings-outline"
+              size={size}
+              color={colors.white}
+            />
+          ),
       }}
     />
   </drawerRoutes.Navigator>

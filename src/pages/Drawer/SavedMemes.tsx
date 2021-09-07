@@ -19,9 +19,6 @@ import { Searchbar } from 'react-native-paper';
 export function SavedMemes() {
   const navigation = useNavigation();
 
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  const onChangeSearch = query => setSearchQuery(query);
 
   return (
     <SafeAreaView style={styles.container}>
