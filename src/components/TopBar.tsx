@@ -52,18 +52,27 @@ export function TopBar(props: TopBarProps) {
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
         <Image
-          source={require("../assets/profilePicture.gif")}
+          source={require("../assets/profilePicture.png")}
           style={styles.avatar}
         />
       </TouchableOpacity>
 
-      {!isSearchPressed && <Text style={[styles.title, isSwitchOn ?  {color: colors.greenLight} : {color: colors.green}]}>{props.name}</Text>}
+      {!isSearchPressed && (
+        <Text
+          style={[
+            styles.title,
+            isSwitchOn ? { color: colors.greenLight } : { color: colors.green },
+          ]}
+        >
+          {props.name}
+        </Text>
+      )}
 
       <TouchableOpacity onPress={handleSearchClick} style={{ marginRight: 5 }}>
         <AntDesign
           name={isSearchPressed ? "close" : "search1"}
           size={27}
-          color={isSwitchOn ?  colors.whiteLight : colors.white}
+          color={isSwitchOn ? colors.whiteLight : colors.white}
         />
       </TouchableOpacity>
 

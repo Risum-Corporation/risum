@@ -38,7 +38,12 @@ export function ForgotPasswordStg3() {
       setIsPwdIncorrect(false);
       try {
         await AsyncStorage.setItem("@risum:password", pwd);
-        return login();
+
+        const userName = await AsyncStorage.getItem("@risum.userName");
+        const email = await AsyncStorage.getItem("@risum:email");
+        const avatar = await AsyncStorage.getItem("@risum:avatar");
+
+        return login({ userName, email, avatar });
       } catch {
         Alert.alert(
           "Não foi possível salvar a sua senha, tente novamente mais tarde."
@@ -82,7 +87,11 @@ export function ForgotPasswordStg3() {
           )}
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleSubmit} />
+          <ConfirmButton
+            theme={colors.green}
+            title="Confirmar"
+            onPress={handleSubmit}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -92,7 +101,7 @@ export function ForgotPasswordStg3() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,

@@ -59,7 +59,7 @@ export function RegisterStg1() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <RegisterProgressBar position={25}  />
+        <RegisterProgressBar position={25} />
 
         <View style={styles.heading}>
           <Text style={styles.title}>Email e{"\n"}Senha</Text>
@@ -90,7 +90,11 @@ export function RegisterStg1() {
           )}
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleConfirm} />
+          <ConfirmButton
+            theme={colors.green}
+            title="Confirmar"
+            onPress={handleConfirm}
+          />
         </View>
         <View style={styles.orBox}>
           <Text style={styles.subtitle}>OU</Text>
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 27,
     lineHeight: 50,
-    marginTop: 40
+    marginTop: 40,
   },
   subtitle: {
     fontFamily: fonts.heading,
@@ -177,6 +181,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     fontSize: 10,
     marginTop: 4,
-    paddingLeft: 2
+    paddingLeft: 2,
   },
 });

@@ -28,7 +28,11 @@ export function RegisterStg3() {
   async function handleSubmit() {
     try {
       await AsyncStorage.setItem("@risum:userName", String(userName));
-      return login();
+
+      const email = await AsyncStorage.getItem("@risum:email");
+      const avatar = "../assets/profilePicture.png"; // Async storage dps
+
+      return login({ userName, email, avatar });
     } catch {
       Alert.alert(
         "Não foi possível salvar a sua senha, tente novamente mais tarde."
@@ -58,7 +62,11 @@ export function RegisterStg3() {
           {/* Avatar do perfil */}
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleSubmit} />
+          <ConfirmButton
+            theme={colors.green}
+            title="Confirmar"
+            onPress={handleSubmit}
+          />
         </View>
       </View>
     </SafeAreaView>

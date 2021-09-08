@@ -18,6 +18,7 @@ import facebookWhite from "../../assets/facebookWhite.png";
 import { useNavigation } from "@react-navigation/core";
 
 import AuthContext from "../../contexts/Auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Login() {
   const { signed, user, login } = useContext(AuthContext);
@@ -36,13 +37,14 @@ export function Login() {
     setUserName(value);
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
     if (!email || !userName) {
       return setIsEmailOrUsernameInvalid(true);
     }
     // Verificação da existência da conta no banco de dados
+    const avatar = await AsyncStorage.getItem("@risum:avatar");
 
-    login(); // Eba funcionou ^^
+    login({ userName, email, avatar }); // Eba funcionou ^^
   }
 
   function handleForgotPwd() {
@@ -58,7 +60,7 @@ export function Login() {
 
         <View style={styles.form}>
           <TextInput
-            placeholder="alekprincipebra@mail.com"
+            placeholder="Email"
             placeholderTextColor={colors.placeholderText}
             style={[
               styles.input,
@@ -88,7 +90,11 @@ export function Login() {
           </View>
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleConfirm} />
+          <ConfirmButton
+            theme={colors.green}
+            title="Confirmar"
+            onPress={handleConfirm}
+          />
         </View>
         <View style={styles.orBox}>
           <Text style={styles.subtitle}>OU</Text>
@@ -116,7 +122,7 @@ export function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
@@ -174,14 +180,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     fontSize: 10,
     marginTop: 10,
-    paddingLeft: 2
-
+    paddingLeft: 2,
   },
   text: {
     fontSize: 14,
     fontFamily: fonts.heading,
     color: colors.white,
-    padding: 9
+    padding: 9,
   },
   textBox: {
     flexDirection: "row",

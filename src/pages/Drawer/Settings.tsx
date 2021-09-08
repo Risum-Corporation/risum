@@ -12,46 +12,54 @@ import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import AuthContext from "../../contexts/Auth";
-import { Switch } from "react-native-paper";
 
-import SwitchMode from "../../styles/SwitchMode";
+import StackContext from "../../contexts/Stack";
 
 export function Settings() {
   const navigation = useNavigation();
   const { signOut } = useContext(AuthContext);
 
-  let isSwitchOn = SwitchMode.isSwitchOn;
+  // Theme
+  const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
 
   return (
-    <SafeAreaView style={isSwitchOn ? styles.containerLight : styles.container}>
+    <SafeAreaView
+      style={isWhiteMode ? styles.containerLight : styles.container}
+    >
       <GoBackButton onPress={() => navigation.goBack()} />
       <View style={styles.heading}>
         <Text
           style={[
             styles.title,
-            isSwitchOn ? { color: colors.greenLight } : { color: colors.green },
+            isWhiteMode
+              ? { color: colors.greenLight }
+              : { color: colors.green },
           ]}
         >
           Configurações
         </Text>
         <View style={styles.options}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              toggleWhiteMode();
+            }}
+          >
             <View style={styles.item}>
               <Ionicons
-                name="contrast"
+                name={isWhiteMode ? "moon" : "ios-sunny"}
                 size={33}
-                color={isSwitchOn ? colors.whiteLight : colors.white}
+                color={isWhiteMode ? colors.whiteLight : colors.white}
               />
 
               <Text
                 style={[
                   styles.subtitle,
-                  isSwitchOn
+                  isWhiteMode
                     ? { color: colors.whiteLight }
                     : { color: colors.white },
                 ]}
               >
-                Modo Claro
+                {isWhiteMode ? "Modo Escuro" : "Modo Claro"}
               </Text>
             </View>
           </TouchableOpacity>
@@ -60,12 +68,12 @@ export function Settings() {
               <MaterialIcons
                 name="person"
                 size={33}
-                color={isSwitchOn ? colors.greenLight : colors.green}
+                color={isWhiteMode ? colors.greenLight : colors.green}
               />
               <Text
                 style={[
                   styles.subtitle,
-                  isSwitchOn
+                  isWhiteMode
                     ? { color: colors.whiteLight }
                     : { color: colors.white },
                 ]}
@@ -79,12 +87,12 @@ export function Settings() {
               <MaterialIcons
                 name="security"
                 size={33}
-                color={isSwitchOn ? colors.yellowLight : colors.yellow}
+                color={isWhiteMode ? colors.yellowLight : colors.yellow}
               />
               <Text
                 style={[
                   styles.subtitle,
-                  isSwitchOn
+                  isWhiteMode
                     ? { color: colors.whiteLight }
                     : { color: colors.white },
                 ]}
@@ -99,12 +107,12 @@ export function Settings() {
               <MaterialIcons
                 name="badge"
                 size={33}
-                color={isSwitchOn ? colors.pinkLight : colors.pink}
+                color={isWhiteMode ? colors.pinkLight : colors.pink}
               />
               <Text
                 style={[
                   styles.subtitle,
-                  isSwitchOn
+                  isWhiteMode
                     ? { color: colors.whiteLight }
                     : { color: colors.white },
                 ]}
@@ -118,12 +126,12 @@ export function Settings() {
               <MaterialIcons
                 name="policy"
                 size={33}
-                color={isSwitchOn ? colors.cyanLight : colors.cyan}
+                color={isWhiteMode ? colors.cyanLight : colors.cyan}
               />
               <Text
                 style={[
                   styles.subtitle,
-                  isSwitchOn
+                  isWhiteMode
                     ? { color: colors.whiteLight }
                     : { color: colors.white },
                 ]}

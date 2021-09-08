@@ -1,12 +1,13 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
+import { useContext } from "react";
 
 import { Feed } from "../pages/Feed";
 import { HypeTrain } from "../pages/HypeTrain";
 import { WolfPack } from "../pages/HyenaClan";
 import { AddMeme } from "../pages/AddMeme";
-import SwitchMode from "../styles/SwitchMode";
+import StackContext from "../contexts/Stack";
 import { StyleSheet } from "react-native";
 
 import colors from "../styles/colors";
@@ -14,29 +15,28 @@ import colors from "../styles/colors";
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
-
-   // Theme
-   let isSwitchOn = SwitchMode.isSwitchOn;
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
 
   return (
     <BottomTab.Navigator
       initialRouteName="Feed"
       tabBarOptions={{
-        activeTintColor: isSwitchOn ? colors.greenLight : colors.green,
+        activeTintColor: isWhiteMode ? colors.greenLight : colors.green,
         style: {
-          backgroundColor: isSwitchOn ? colors.backgroundLight : colors.background,
+          backgroundColor: isWhiteMode
+            ? colors.backgroundLight
+            : colors.background,
           borderTopWidth: 0,
         },
-        
       }}
-   
     >
       <BottomTab.Screen
         name="Feed"
         component={Feed}
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialIcons name="rss-feed" size={36} color={color}/>
+            <MaterialIcons name="rss-feed" size={36} color={color} />
           ),
         }}
       />
@@ -81,10 +81,5 @@ function TabBarIcon(props: {
 }
 
 const styles = StyleSheet.create({
-  tabbar: {
-    
-  }
-
-
+  tabbar: {},
 });
-

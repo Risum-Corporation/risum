@@ -1,12 +1,6 @@
 import React from "react";
 
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-} from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 import colors from "../styles/colors";
 import { Image } from "react-native";

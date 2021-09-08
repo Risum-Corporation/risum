@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -19,9 +19,9 @@ import { GoBackButton } from "../../components/GoBackButton";
 import fonts from "../../styles/fonts";
 
 import { useNavigation } from "@react-navigation/native";
-import { Loading } from "../../components/Loading";
 
-import SwitchMode from "../../styles/SwitchMode";
+import StackContext from "../../contexts/Stack";
+import AuthContext from "../../contexts/Auth";
 
 export function Profile() {
   const navigation = useNavigation();
@@ -33,6 +33,11 @@ export function Profile() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  const { user, signed } = useContext(AuthContext);
+
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
 
   function loadPage(pageNumber = page, shouldRefresh = false) {
     if (total && pageNumber > total) return;
@@ -63,14 +68,11 @@ export function Profile() {
     setIsInfoPressed(false);
   }
 
-  // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
-
   return (
     <View
       style={[
         styles.container,
-        isSwitchOn
+        isWhiteMode
           ? { backgroundColor: colors.backgroundLight }
           : { backgroundColor: colors.background },
       ]}
@@ -82,24 +84,24 @@ export function Profile() {
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
           <Image
-            source={require("../../assets/profilePicture.gif")}
+            source={require("../../assets/profilePicture.png")}
             style={styles.profilePicture}
           />
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
             <Text
               style={[
                 styles.userName,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.whiteLight }
                   : { color: colors.white },
               ]}
             >
-              Usuário
+              {signed ? user?.userName : "Convidado"}
             </Text>
             <Text
               style={[
                 styles.userId,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.placeholderTextLight }
                   : { color: colors.placeholderText },
               ]}
@@ -114,7 +116,7 @@ export function Profile() {
             <Text
               style={[
                 styles.text,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.whiteLight }
                   : { color: colors.white },
               ]}
@@ -124,7 +126,7 @@ export function Profile() {
             <Text
               style={[
                 styles.greenText,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.greenLight }
                   : { color: colors.green },
               ]}
@@ -137,7 +139,7 @@ export function Profile() {
             <Text
               style={[
                 styles.text,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.whiteLight }
                   : { color: colors.white },
               ]}
@@ -147,7 +149,7 @@ export function Profile() {
             <Text
               style={[
                 styles.greenText,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.greenLight }
                   : { color: colors.green },
               ]}
@@ -160,7 +162,7 @@ export function Profile() {
       <View
         style={[
           styles.filterIconsBox,
-          isSwitchOn
+          isWhiteMode
             ? { borderBottomColor: colors.dividerLight }
             : { borderBottomColor: colors.divider },
         ]}
@@ -174,7 +176,7 @@ export function Profile() {
           <AntDesign
             name={isSmilePressed ? "smile-circle" : "smileo"}
             color={
-              isSwitchOn
+              isWhiteMode
                 ? isSmilePressed
                   ? colors.greenLight
                   : colors.whiteLight
@@ -194,7 +196,7 @@ export function Profile() {
           <Ionicons
             name={isPostPressed ? "image" : "image-outline"}
             color={
-              isSwitchOn
+              isWhiteMode
                 ? isPostPressed
                   ? colors.greenLight
                   : colors.whiteLight
@@ -216,7 +218,7 @@ export function Profile() {
               isCommentPressed ? "chatbox-ellipses" : "chatbox-ellipses-outline"
             }
             color={
-              isSwitchOn
+              isWhiteMode
                 ? isCommentPressed
                   ? colors.greenLight
                   : colors.whiteLight
@@ -240,7 +242,7 @@ export function Profile() {
                 : "information-circle-outline"
             }
             color={
-              isSwitchOn
+              isWhiteMode
                 ? isInfoPressed
                   ? colors.greenLight
                   : colors.whiteLight

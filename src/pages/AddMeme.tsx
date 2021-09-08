@@ -1,26 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-paper";
+import React, { useContext } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+} from "react-native";
 import colors from "../styles/colors";
 import { ConfirmButton } from "../components/ConfirmButton";
-import { Input } from "react-native-elements";
-import SwitchMode from "../styles/SwitchMode";
+import StackContext from "../contexts/Stack";
 import { TopBar } from "../components/TopBar";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import fonts from "../styles/fonts";
 
 export function AddMeme() {
-  const [memeTitle, setMemeTitle] = React.useState("");
-  const [tags, setTags] = React.useState("");
+  const [memeTitle, setMemeTitle] = React.useState<string>();
+  const [tags, setTags] = React.useState<string>();
 
   // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
+  const { isWhiteMode } = useContext(StackContext);
 
   return (
-    <View
+    <KeyboardAvoidingView
       style={
-        isSwitchOn
+        isWhiteMode
           ? { backgroundColor: colors.backgroundLight }
           : { backgroundColor: colors.background }
       }
@@ -32,7 +37,7 @@ export function AddMeme() {
           <View
             style={[
               styles.addMemeContainer,
-              isSwitchOn
+              isWhiteMode
                 ? { borderColor: colors.greenLight }
                 : { borderColor: colors.green },
             ]}
@@ -40,12 +45,12 @@ export function AddMeme() {
             <SimpleLineIcons
               name="cloud-upload"
               size={120}
-              color={isSwitchOn ? colors.greenLight : colors.green}
+              color={isWhiteMode ? colors.greenLight : colors.green}
             />
             <Text
               style={[
                 styles.title,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.placeholderTextLight }
                   : { color: colors.white },
                 { marginTop: 20 },
@@ -57,23 +62,32 @@ export function AddMeme() {
         </TouchableOpacity>
 
         <View style={styles.form}>
-          <Input
-            placeholder="Telegram 2 - O Retorno?"
-            label="Nome do Meme"
-            style={styles.input}
+          <TextInput
+            placeholder="Nome do Meme"
+            style={[
+              styles.input,
+              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
+            ]}
+            placeholderTextColor={colors.placeholderText}
           />
-          <Input
-            placeholder="Separe as tags por vírgula"
-            label="Tags"
-            style={styles.input}
+          <TextInput
+            placeholder="Tags"
+            style={[
+              styles.input,
+              { borderBottomLeftRadius: 8, borderBottomRightRadius: 8 },
+            ]}
+            placeholderTextColor={colors.placeholderText}
           />
 
           <View style={styles.button}>
-            <ConfirmButton title="Pronto!" />
+            <ConfirmButton
+              theme={isWhiteMode ? colors.greenLight : colors.green}
+              title="Pronto!"
+            />
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -108,8 +122,11 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   input: {
-    marginTop: 25,
+    height: 64,
+    padding: 20,
+    borderBottomWidth: 1,
     color: colors.white,
+    backgroundColor: colors.inputBackground,
   },
   button: {
     marginTop: 40,

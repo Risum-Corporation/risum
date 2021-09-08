@@ -5,8 +5,7 @@ import signIn from "../services/auth";
 interface User {
   userName: string;
   email: string;
-  //     photo: string;
-  //     password: string;
+  avatar: string;
 }
 
 interface AuthContextData {
@@ -14,7 +13,7 @@ interface AuthContextData {
   user: User | null;
   loading: boolean;
 
-  login(): Promise<void>;
+  login({ ...props }: User): Promise<void>;
   signOut(): void;
 }
 
@@ -40,8 +39,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     loadStoragedData();
   }, []);
 
-  async function login() {
-    const response = await signIn();
+  async function login({ ...props }: User) {
+    const response = await signIn(props);
 
     setUser(response.user);
 

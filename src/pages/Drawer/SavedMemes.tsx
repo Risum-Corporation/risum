@@ -6,22 +6,21 @@ import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 import { posts } from "../../database/fakeData";
-import SwitchMode from "../../styles/SwitchMode";
-import { Searchbar } from "react-native-paper";
+import StackContext from "../../contexts/Stack";
 
 export function SavedMemes() {
   const navigation = useNavigation();
 
   // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
+  const { isWhiteMode } = useContext(StackContext);
 
   return (
     <SafeAreaView
       style={[
         styles.container,
-        isSwitchOn
+        isWhiteMode
           ? { backgroundColor: colors.backgroundLight }
-          : { backgroundColor: colors.backgroundLight },
+          : { backgroundColor: colors.background },
       ]}
     >
       <GoBackButton onPress={() => navigation.goBack()} />
@@ -36,7 +35,9 @@ export function SavedMemes() {
         <Text
           style={[
             styles.title,
-            isSwitchOn ? { color: colors.greenLight } : { color: colors.green },
+            isWhiteMode
+              ? { color: colors.greenLight }
+              : { color: colors.green },
           ]}
         >
           Memes Salvos

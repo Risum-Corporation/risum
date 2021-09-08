@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import { posts } from "../database/fakeData";
 
 import colors from "../styles/colors";
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
-import SwitchMode from "../styles/SwitchMode";
+import StackContext from "../contexts/Stack";
 
 export function Feed() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
 
   function loadPage(pageNumber = page) {
     if (total && pageNumber > total) return;
@@ -35,12 +38,8 @@ export function Feed() {
 
     setRefreshing(false);
   }
-
-  // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
-
   return (
-    <View style={isSwitchOn ? styles.wrapperLight : styles.wrapper}>
+    <View style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
       <TopBar name="Feed" />
 
       <FlatList

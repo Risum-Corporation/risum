@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Dimensions,
   View,
-  Platform,
 } from "react-native";
 
 import { Button } from "react-native-paper";
@@ -19,7 +18,6 @@ import fonts from "../../styles/fonts";
 
 import { useNavigation } from "@react-navigation/core";
 import AuthContext from "../../contexts/Auth";
-import { color } from "react-native-reanimated";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
@@ -34,13 +32,21 @@ export function Welcome() {
   }
 
   function handleEnterAsGuest() {
-    return login();
+    const userName = "Convidado";
+    const email = "convidado@email.com";
+    const avatar = "../assets/profilePicture.png";
+
+    return login({
+      userName,
+      email,
+      avatar,
+    });
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
-        <View style={styles.imageBox}>
+        <View>
           <Image source={risumIcon} style={styles.image} />
         </View>
         <View style={styles.titleBox}>
@@ -67,19 +73,18 @@ export function Welcome() {
           </TouchableOpacity>
         </View>
 
-          <View style={styles.guestBox}>
-            <Button
-              mode="outlined"
-              onPress={handleEnterAsGuest}
-              color={colors.text}
-              uppercase={false}
-              contentStyle={{}}
-              style={styles.guestButton}
-            >
-              <Text style={styles.text}>Entrar como Convidado</Text>
-            </Button>
-          </View>
-
+        <View style={styles.guestBox}>
+          <Button
+            mode="outlined"
+            onPress={handleEnterAsGuest}
+            color={colors.text}
+            uppercase={false}
+            contentStyle={{}}
+            style={styles.guestButton}
+          >
+            <Text style={styles.text}>Entrar como Convidado</Text>
+          </Button>
+        </View>
 
         <View style={styles.footer}>
           <Text style={styles.text}>Bem vindo ao Risum!</Text>
@@ -94,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignContent: "center",
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
@@ -102,9 +107,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 20,
     backgroundColor: colors.background,
-  },
-  imageBox: {
-    marginTop: Dimensions.get("window").height * 0.01,
   },
   titleBox: {
     marginTop: "-20%",
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
   guestBox: {
     flex: 1,
     marginTop: 50,
-    opacity: 0.7
+    opacity: 0.7,
   },
   image: {
     width: 153,
@@ -164,7 +166,6 @@ const styles = StyleSheet.create({
   guestButton: {
     borderColor: colors.outlineGray,
     borderWidth: 2,
-    paddingHorizontal: '6%'
-
+    paddingHorizontal: "6%",
   },
 });

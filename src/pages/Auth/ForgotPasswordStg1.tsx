@@ -64,7 +64,11 @@ export function ForgotPasswordStg1() {
           )}
         </View>
         <View style={styles.buttonBox}>
-          <ConfirmButton title="Confirmar" onPress={handleConfirm} />
+          <ConfirmButton
+            theme={colors.green}
+            title="Confirmar"
+            onPress={handleConfirm}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -74,7 +78,7 @@ export function ForgotPasswordStg1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,

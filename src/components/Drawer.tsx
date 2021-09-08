@@ -4,9 +4,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
-  SafeAreaView,
   Platform,
+  ScrollViewProps,
 } from "react-native";
 import {
   DrawerContentScrollView,
@@ -17,7 +16,11 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import SwitchMode from "../styles/SwitchMode";
 
-export function Drawer(props) {
+type Props = ScrollViewProps & {
+  children: React.ReactNode;
+};
+
+export function Drawer({ ...props }: Props) {
   // Theme
   let isSwitchOn = SwitchMode.isSwitchOn;
 
@@ -38,7 +41,7 @@ export function Drawer(props) {
           />
           <View style={styles.perfilInfo}>
             <Image
-              source={require("../assets/profilePicture.gif")}
+              source={require("../assets/profilePicture.png")}
               style={styles.userPicture}
             />
 
@@ -77,8 +80,10 @@ export function Drawer(props) {
                     ? colors.lightBackgroundLight
                     : colors.lightBackground
                 }
-                activeTintColor={colors.white}
-                inactiveTintColor={colors.white}
+                activeTintColor={isSwitchOn ? colors.whiteLight : colors.white}
+                inactiveTintColor={
+                  isSwitchOn ? colors.whiteLight : colors.white
+                }
               />
             </View>
           </View>

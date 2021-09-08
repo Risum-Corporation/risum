@@ -57,9 +57,8 @@ export function MemeCard({ postData }: PostProps) {
     }
   }
 
-    // Theme
-    let isSwitchOn = SwitchMode.isSwitchOn;
-
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
 
   return (
     <SafeAreaView>
@@ -73,25 +72,59 @@ export function MemeCard({ postData }: PostProps) {
             <AntDesign
               name={isLikePressed ? "like1" : "like2"}
               size={24}
-              color={isSwitchOn ? (isLikePressed ? colors.greenLight : colors.whiteLight) : (isLikePressed ? colors.green : colors.white) }
+              color={
+                isSwitchOn
+                  ? isLikePressed
+                    ? colors.greenLight
+                    : colors.whiteLight
+                  : isLikePressed
+                  ? colors.green
+                  : colors.white
+              }
             />
           </TouchableOpacity>
-          <Text style={[styles.memeStats, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.likes}</Text>
+          <Text
+            style={[
+              styles.memeStats,
+              isSwitchOn
+                ? { color: colors.whiteLight }
+                : { color: colors.white },
+            ]}
+          >
+            {postData.likes}
+          </Text>
 
           <TouchableOpacity style={styles.button}>
             <Ionicons
               name="md-chatbox-ellipses-outline"
               size={24}
-              color={isSwitchOn ?  colors.whiteLight : colors.white}
+              color={isSwitchOn ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
-          <Text style={[styles.memeStats, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.comments}</Text>
+          <Text
+            style={[
+              styles.memeStats,
+              isSwitchOn
+                ? { color: colors.whiteLight }
+                : { color: colors.white },
+            ]}
+          >
+            {postData.comments}
+          </Text>
 
           <TouchableOpacity style={styles.button} onPress={toggleBookmarkPress}>
             <Ionicons
               name={isBookmarkPressed ? "md-bookmark" : "md-bookmark-outline"}
               size={24}
-              color={isSwitchOn ? (isBookmarkPressed  ? colors.greenLight : colors.whiteLight) : (isBookmarkPressed  ? colors.green : colors.white) }
+              color={
+                isSwitchOn
+                  ? isBookmarkPressed
+                    ? colors.greenLight
+                    : colors.whiteLight
+                  : isBookmarkPressed
+                  ? colors.green
+                  : colors.white
+              }
             />
           </TouchableOpacity>
 
@@ -99,13 +132,22 @@ export function MemeCard({ postData }: PostProps) {
             <Ionicons
               name="md-share-social-outline"
               size={24}
-              color={isSwitchOn ?  colors.whiteLight : colors.white}
+              color={isSwitchOn ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.userInfoContainer}>
-          <Text style={[styles.authorName, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.author}</Text>
+          <Text
+            style={[
+              styles.authorName,
+              isSwitchOn
+                ? { color: colors.whiteLight }
+                : { color: colors.white },
+            ]}
+          >
+            {postData.author}
+          </Text>
           <TouchableOpacity>
             <Image source={{ uri: postData.avatar }} style={styles.userImg} />
           </TouchableOpacity>
@@ -113,11 +155,16 @@ export function MemeCard({ postData }: PostProps) {
       </View>
 
       <View // Divider between memes
-        style={[{
-          borderBottomWidth: 1,
-          marginVertical: 25,
-          marginHorizontal: 15,
-        }, isSwitchOn ? {borderBottomColor: colors.dividerLight} : {borderBottomColor: colors.divider}]}
+        style={[
+          {
+            borderBottomWidth: 1,
+            marginVertical: 25,
+            marginHorizontal: 15,
+          },
+          isSwitchOn
+            ? { borderBottomColor: colors.dividerLight }
+            : { borderBottomColor: colors.divider },
+        ]}
       />
     </SafeAreaView>
   );

@@ -6,26 +6,17 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 
-import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import SwitchMode from "../styles/SwitchMode";
 
 interface ConfirmButtonProps extends TouchableOpacityProps {
   title: string;
+  theme: string;
 }
 
-export function ConfirmButton({ title, ...rest }: ConfirmButtonProps) {
-  // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
-
+export function ConfirmButton({ title, theme, ...rest }: ConfirmButtonProps) {
   return (
     <TouchableOpacity
-      style={[
-        styles.container,
-        isSwitchOn
-          ? { backgroundColor: colors.greenLight }
-          : { backgroundColor: colors.green },
-      ]}
+      style={[styles.container, { backgroundColor: theme }]}
       {...rest}
     >
       <Text style={styles.text}>{title}</Text>
