@@ -60,8 +60,10 @@ export function RegisterStg1() {
     // Theme
     const { isWhiteMode } = useContext(StackContext);
 
-    const [memeTitle, setMemeTitle] = React.useState<string>();
-    const [tags, setTags] = React.useState<string>();
+    // tesxt
+
+    const [UserEmail, setUserEmail] = React.useState<string>();
+    const [UserPassword, setUserPassword] = React.useState<string>();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,8 +78,8 @@ export function RegisterStg1() {
         <TextInput
             label="Email"
             mode={"flat"}
-            value={memeTitle}
-            onChangeText={(tags) => setMemeTitle(memeTitle)}
+            value={UserEmail}
+            onChangeText={(UserEmail) => setUserEmail(UserEmail)}
             placeholder="alek@risum.com"
             placeholderTextColor={
               isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
@@ -105,8 +107,8 @@ export function RegisterStg1() {
           <TextInput
             label="Senha"
             mode={"flat"}
-            value={tags}
-            onChangeText={(tags) => setTags(tags)}
+            value={UserPassword}
+            onChangeText={(UserPassword) => setUserPassword(UserPassword)}
             placeholderTextColor={
               isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
             }

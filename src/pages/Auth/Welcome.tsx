@@ -8,7 +8,7 @@ import {
   Dimensions,
   View,
 } from "react-native";
-
+ 
 import { Button } from "react-native-paper";
 
 import risumIcon from "../../assets/risumIcon.png";
@@ -38,7 +38,7 @@ export function Welcome() {
   function handleEnterAsGuest() {
     const userName = "Convidado";
     const email = "convidado@email.com";
-    const avatar = "../assets/profilePicture.png";
+    const avatar = "../assets/profilePicture.gif";
 
     return login({
       userName,
@@ -65,7 +65,7 @@ export function Welcome() {
         </View>
         <View style={styles.buttonBox}>
           <TouchableOpacity
-            style={[styles.button, styles.signUpButton, isWhiteMode ? {backgroundColor: colors.greenLight} : {backgroundColor: colors.purple}]}
+            style={[styles.button, styles.signUpButton, isWhiteMode ? {backgroundColor: colors.purpleLight} : {backgroundColor: colors.purple}]}
             activeOpacity={0.7}
             onPress={handleRegister}
           >
@@ -74,7 +74,7 @@ export function Welcome() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.button, styles.signInButton, isWhiteMode ? {backgroundColor: colors.purpleLight} : {backgroundColor: colors.green}]}
+            style={[styles.button, styles.signInButton, isWhiteMode ? {backgroundColor: colors.greenLight} : {backgroundColor: colors.green}]}
             activeOpacity={0.7}
             onPress={handleLogin}
           >

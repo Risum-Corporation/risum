@@ -86,7 +86,7 @@ export function Profile() {
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
           <Image
-            source={require("../../assets/profilePicture.png")}
+            source={require("../../assets/profilePicture.gif")}
             style={styles.profilePicture}
           />
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
@@ -129,7 +129,7 @@ export function Profile() {
               style={[
                 styles.greenText,
                 isWhiteMode
-                  ? { color: colors.greenLight }
+                  ? { color: colors.purpleLight }
                   : { color: colors.green },
               ]}
             >
@@ -152,7 +152,7 @@ export function Profile() {
               style={[
                 styles.greenText,
                 isWhiteMode
-                  ? { color: colors.greenLight }
+                  ? { color: colors.purpleLight }
                   : { color: colors.green },
               ]}
             >
@@ -180,7 +180,7 @@ export function Profile() {
             color={
               isWhiteMode
                 ? isSmilePressed
-                  ? colors.greenLight
+                  ? colors.purpleLight
                   : colors.whiteLight
                 : isSmilePressed
                 ? colors.green
@@ -200,7 +200,7 @@ export function Profile() {
             color={
               isWhiteMode
                 ? isPostPressed
-                  ? colors.greenLight
+                  ? colors.purpleLight
                   : colors.whiteLight
                 : isPostPressed
                 ? colors.green
@@ -222,7 +222,7 @@ export function Profile() {
             color={
               isWhiteMode
                 ? isCommentPressed
-                  ? colors.greenLight
+                  ? colors.purpleLight
                   : colors.whiteLight
                 : isCommentPressed
                 ? colors.green
@@ -246,7 +246,7 @@ export function Profile() {
             color={
               isWhiteMode
                 ? isInfoPressed
-                  ? colors.greenLight
+                  ? colors.purpleLight
                   : colors.whiteLight
                 : isInfoPressed
                 ? colors.green
@@ -275,7 +275,7 @@ export function Profile() {
                     : colors.lightBackground
                 }
                 iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-                IconTintColor={isWhiteMode ? colors.greenLight : colors.green}
+                IconTintColor={isWhiteMode ? colors.purpleLight : colors.green}
                 dividerColor={
                   isWhiteMode
                     ? colors.placeholderTextLight

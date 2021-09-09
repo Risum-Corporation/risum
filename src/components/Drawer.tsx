@@ -42,7 +42,7 @@ export function Drawer({ ...props } ) {
           />
           <View style={styles.perfilInfo}>
             <Image
-              source={require("../assets/profilePicture.png")}
+              source={require("../assets/profilePicture.gif")}
               style={styles.userPicture}
             />
 

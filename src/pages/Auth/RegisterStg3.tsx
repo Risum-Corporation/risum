@@ -30,7 +30,7 @@ export function RegisterStg3() {
       await AsyncStorage.setItem("@risum:userName", String(userName));
 
       const email = await AsyncStorage.getItem("@risum:email");
-      const avatar = "../assets/profilePicture.png"; // Async storage dps
+      const avatar = "../assets/profilePicture.gif"; // Async storage dps
 
       return login({ userName, email, avatar });
     } catch {

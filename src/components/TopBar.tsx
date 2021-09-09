@@ -56,7 +56,7 @@ export function TopBar({ name, iconColor, textColor, searchBackgroundColor, sear
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
         <Image
-          source={require("../assets/profilePicture.png")}
+          source={require("../assets/profilePicture.gif")}
           style={styles.avatar}
         />
       </TouchableOpacity>
