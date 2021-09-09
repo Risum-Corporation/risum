@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   memeUrl: {
-    width: "92.3%",
+    width: "92.2%",
     marginHorizontal: 15,
     height: 350,
     borderTopLeftRadius: 10,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   footer: {
-    maxWidth: "93.3%",
+    maxWidth: "93.1%",
     flexDirection: "row",
 
     marginHorizontal: 15,

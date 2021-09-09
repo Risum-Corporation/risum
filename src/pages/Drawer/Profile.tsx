@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  FlatList, 
+  FlatList,
 } from "react-native";
 import colors from "../../styles/colors";
 
@@ -78,7 +78,7 @@ export function Profile() {
           : { backgroundColor: colors.background },
       ]}
     >
-      <StatusBar barStyle={isWhiteMode ? "dark-content" : 'light-content' }/>
+      <StatusBar barStyle={isWhiteMode ? "dark-content" : "light-content"} />
       <Image
         source={require("../../assets/wallpaper.jpg")}
         style={styles.userWallpaper}
@@ -265,6 +265,7 @@ export function Profile() {
             onEndReachedThreshold={0.1}
             onRefresh={refreshList}
             refreshing={refreshing}
+            showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <MemeCardSecondary
                 postData={item}

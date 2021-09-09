@@ -53,6 +53,7 @@ export function SavedMemes() {
             data={posts}
             keyExtractor={(post) => String(post.id)}
             onEndReachedThreshold={0.1}
+            showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <MemeCardSecondary
                 postData={item}

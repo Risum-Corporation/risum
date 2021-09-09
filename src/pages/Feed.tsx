@@ -57,6 +57,7 @@ export function Feed() {
         onEndReached={() => loadPage()}
         onEndReachedThreshold={0.1}
         onRefresh={refreshList}
+        showsVerticalScrollIndicator={false}
         refreshing={refreshing}
         renderItem={({ item }) => (
           <MemeCard
