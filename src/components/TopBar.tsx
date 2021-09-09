@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  View,
   SafeAreaView,
 } from "react-native";
 
@@ -20,9 +19,14 @@ import SwitchMode from "../styles/SwitchMode";
 
 interface TopBarProps {
   name: string;
+  iconColor: string;
+  textColor: string;
+  searchBackgroundColor: string;
+  searchColor: string;
+
 }
 
-export function TopBar(props: TopBarProps) {
+export function TopBar({ name, iconColor, textColor, searchBackgroundColor, searchColor }: TopBarProps) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [isSearchPressed, setIsSearchPressed] = useState<boolean>();
 
@@ -58,21 +62,14 @@ export function TopBar(props: TopBarProps) {
       </TouchableOpacity>
 
       {!isSearchPressed && (
-        <Text
-          style={[
-            styles.title,
-            isSwitchOn ? { color: colors.greenLight } : { color: colors.green },
-          ]}
-        >
-          {props.name}
-        </Text>
+        <Text style={[styles.title, { color: textColor }]}>{name}</Text>
       )}
 
       <TouchableOpacity onPress={handleSearchClick} style={{ marginRight: 5 }}>
         <AntDesign
           name={isSearchPressed ? "close" : "search1"}
           size={27}
-          color={isSwitchOn ? colors.whiteLight : colors.white}
+          color={iconColor}
         />
       </TouchableOpacity>
 
@@ -82,8 +79,8 @@ export function TopBar(props: TopBarProps) {
           placeholderTextColor={colors.placeholderText}
           onChangeText={onChangeSearch}
           value={searchQuery}
-          style={styles.searchBar}
-          inputStyle={{ color: colors.white }}
+          style={[styles.searchBar, {backgroundColor: searchBackgroundColor}]}
+          inputStyle={{ color: searchColor }}
           iconColor={colors.white}
           autoFocus
         />
@@ -122,8 +119,6 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "ios" ? 6 : 0,
   },
   searchBar: {
-    backgroundColor: colors.searchBarColor,
-    color: colors.white,
     maxWidth: "75%",
   },
   item: {

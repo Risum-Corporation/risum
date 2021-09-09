@@ -4,20 +4,17 @@ import { StyleSheet, View, Text } from "react-native";
 
 import colors from "../styles/colors";
 import { Image } from "react-native";
-import SwitchMode from "../styles/SwitchMode";
 
-export function EmbledWP() {
-  // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
+
+interface EmbledWPProps {
+  numberColor: string;
+  textColor: string;
+}
+
+export function EmbledWP({ numberColor, textColor }: EmbledWPProps) {
 
   return (
-    <View
-      style={
-        isSwitchOn
-          ? { backgroundColor: colors.backgroundLight }
-          : { backgroundColor: colors.background }
-      }
-    >
+    <View>
       <View style={styles.wpWallpaperContainer}>
         <Image
           source={require("../assets/wpWallpaper.jpg")}
@@ -30,68 +27,23 @@ export function EmbledWP() {
         <View style={styles.wpInfo}>
           <View>
             <View style={styles.lineText}>
-              <Text
-                style={[
-                  styles.greenText,
-                  isSwitchOn
-                    ? { color: colors.greenLight }
-                    : { color: colors.green },
-                ]}
-              >
+              <Text style={[styles.greenText, { color: numberColor }]}>
                 1535
               </Text>
-              <Text
-                style={[
-                  isSwitchOn
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                  styles.text,
-                ]}
-              >
-                Membros
-              </Text>
+              <Text style={[{ color: textColor }, styles.text]}>Membros</Text>
             </View>
 
             <View style={styles.lineText}>
-              <Text
-                style={[
-                  styles.greenText,
-                  isSwitchOn
-                    ? { color: colors.greenLight }
-                    : { color: colors.green },
-                ]}
-              >
-                37
-              </Text>
-              <Text
-                style={[
-                  isSwitchOn
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                  styles.text,
-                ]}
-              >
-                Adms
-              </Text>
+              <Text style={[styles.greenText, { color: numberColor }]}>37</Text>
+              <Text style={[{ color: textColor }, styles.text]}>Adms</Text>
             </View>
           </View>
           <View style={styles.lineText}>
+            <Text style={[styles.greenText, { color: numberColor }]}>3º</Text>
             <Text
               style={[
-                styles.greenText,
-                isSwitchOn
-                  ? { color: colors.greenLight }
-                  : { color: colors.green },
-              ]}
-            >
-              3º
-            </Text>
-            <Text
-              style={[
-                isSwitchOn
-                  ? { color: colors.outlineGrayLight }
-                  : { color: colors.inputText },
-                { fontWeight: "bold", marginHorizontal: 5 },
+                { color: textColor, fontWeight: "bold" },
+                styles.lineText,
               ]}
             >
               no MemeRank
@@ -104,7 +56,6 @@ export function EmbledWP() {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {},
   container: {
     alignItems: "center",
     marginHorizontal: 35,

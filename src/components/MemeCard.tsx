@@ -25,9 +25,19 @@ interface PostProps {
     avatar: string;
     comments: number;
   };
+  footerBackground: string;
+  iconColor: string;
+  IconTintColor: string;
+  dividerColor: string;
 }
 
-export function MemeCard({ postData }: PostProps) {
+export function MemeCard({
+  postData,
+  footerBackground,
+  iconColor,
+  IconTintColor,
+  dividerColor,
+}: PostProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
 
@@ -66,31 +76,16 @@ export function MemeCard({ postData }: PostProps) {
         <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
       </View>
 
-      <View style={isSwitchOn ? styles.footerLight : styles.footer}>
+      <View style={[styles.footer, { backgroundColor: footerBackground }]}>
         <View style={styles.buttonBox}>
           <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
             <AntDesign
               name={isLikePressed ? "like1" : "like2"}
               size={24}
-              color={
-                isSwitchOn
-                  ? isLikePressed
-                    ? colors.greenLight
-                    : colors.whiteLight
-                  : isLikePressed
-                  ? colors.green
-                  : colors.white
-              }
+              color={isLikePressed ? IconTintColor : iconColor}
             />
           </TouchableOpacity>
-          <Text
-            style={[
-              styles.memeStats,
-              isSwitchOn
-                ? { color: colors.whiteLight }
-                : { color: colors.white },
-            ]}
-          >
+          <Text style={[styles.memeStats, { color: iconColor }]}>
             {postData.likes}
           </Text>
 
@@ -98,17 +93,10 @@ export function MemeCard({ postData }: PostProps) {
             <Ionicons
               name="md-chatbox-ellipses-outline"
               size={24}
-              color={isSwitchOn ? colors.whiteLight : colors.white}
+              color={iconColor}
             />
           </TouchableOpacity>
-          <Text
-            style={[
-              styles.memeStats,
-              isSwitchOn
-                ? { color: colors.whiteLight }
-                : { color: colors.white },
-            ]}
-          >
+          <Text style={[styles.memeStats, { color: iconColor }]}>
             {postData.comments}
           </Text>
 
@@ -116,15 +104,7 @@ export function MemeCard({ postData }: PostProps) {
             <Ionicons
               name={isBookmarkPressed ? "md-bookmark" : "md-bookmark-outline"}
               size={24}
-              color={
-                isSwitchOn
-                  ? isBookmarkPressed
-                    ? colors.greenLight
-                    : colors.whiteLight
-                  : isBookmarkPressed
-                  ? colors.green
-                  : colors.white
-              }
+              color={isBookmarkPressed ? IconTintColor : iconColor}
             />
           </TouchableOpacity>
 
@@ -132,20 +112,13 @@ export function MemeCard({ postData }: PostProps) {
             <Ionicons
               name="md-share-social-outline"
               size={24}
-              color={isSwitchOn ? colors.whiteLight : colors.white}
+              color={iconColor}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.userInfoContainer}>
-          <Text
-            style={[
-              styles.authorName,
-              isSwitchOn
-                ? { color: colors.whiteLight }
-                : { color: colors.white },
-            ]}
-          >
+          <Text style={[styles.authorName, { color: iconColor }]}>
             {postData.author}
           </Text>
           <TouchableOpacity>
@@ -161,9 +134,9 @@ export function MemeCard({ postData }: PostProps) {
             marginVertical: 25,
             marginHorizontal: 15,
           },
-          isSwitchOn
-            ? { borderBottomColor: colors.dividerLight }
-            : { borderBottomColor: colors.divider },
+          {
+            borderBottomColor: dividerColor,
+          },
         ]}
       />
     </SafeAreaView>
@@ -185,8 +158,6 @@ const styles = StyleSheet.create({
   footer: {
     maxWidth: "93.3%",
     flexDirection: "row",
-
-    backgroundColor: colors.lightBackground,
 
     marginHorizontal: 15,
     borderBottomLeftRadius: 10,

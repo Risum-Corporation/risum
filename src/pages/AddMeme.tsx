@@ -30,7 +30,15 @@ export function AddMeme() {
           : { backgroundColor: colors.background }
       }
     >
-      <TopBar name="Postar Meme" />
+      <TopBar
+        name="Postar Meme"
+        textColor={isWhiteMode ? colors.greenLight : colors.green}
+        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
+        searchColor={isWhiteMode ? colors.whiteLight : colors.white}
+        searchBackgroundColor={
+          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
+        }
+      />
 
       <View style={styles.container}>
         <TouchableOpacity style={{ marginTop: 25 }}>
@@ -61,12 +69,15 @@ export function AddMeme() {
           </View>
         </TouchableOpacity>
 
-        <View style={styles.form}>
+        <View style={[styles.form]}>
           <TextInput
             placeholder="Nome do Meme"
             style={[
               styles.input,
               { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
+              isWhiteMode
+                ? { backgroundColor: colors.inputBackground }
+                : { backgroundColor: colors.inputBackgroundLight },
             ]}
             placeholderTextColor={colors.placeholderText}
           />
@@ -75,6 +86,9 @@ export function AddMeme() {
             style={[
               styles.input,
               { borderBottomLeftRadius: 8, borderBottomRightRadius: 8 },
+              isWhiteMode
+                ? { backgroundColor: colors.inputBackground }
+                : { backgroundColor: colors.inputBackgroundLight },
             ]}
             placeholderTextColor={colors.placeholderText}
           />
@@ -126,7 +140,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomWidth: 1,
     color: colors.white,
-    backgroundColor: colors.inputBackground,
   },
   button: {
     marginTop: 40,

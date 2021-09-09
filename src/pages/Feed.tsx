@@ -40,7 +40,13 @@ export function Feed() {
   }
   return (
     <View style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
-      <TopBar name="Feed" />
+      <TopBar
+        name="Feed"
+        textColor={isWhiteMode ? colors.greenLight : colors.green}
+        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
+        searchColor={isWhiteMode ? colors.whiteLight : colors.white}
+        searchBackgroundColor={isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground}
+      />
 
       <FlatList
         data={posts}
@@ -49,7 +55,19 @@ export function Feed() {
         onEndReachedThreshold={0.1}
         onRefresh={refreshList}
         refreshing={refreshing}
-        renderItem={({ item }) => <MemeCard postData={item} />}
+        renderItem={({ item }) => (
+          <MemeCard
+            postData={item}
+            footerBackground={
+              isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
+            }
+            iconColor={isWhiteMode ? colors.whiteLight : colors.white}
+            IconTintColor={isWhiteMode ? colors.greenLight : colors.green}
+            dividerColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.inputBackground
+            }
+          />
+        )}
         maxToRenderPerBatch={5}
       />
     </View>

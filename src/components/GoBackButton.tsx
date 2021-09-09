@@ -10,17 +10,21 @@ import { Ionicons } from "@expo/vector-icons";
 
 import colors from "../styles/colors";
 
-export function GoBackButton({ ...props }: TouchableOpacityProps) {
+interface GoBackButtonProps extends TouchableOpacityProps {
+  iconColor: string;
+  theme: string;
+}
+
+export function GoBackButton({iconColor, theme, ...rest }: GoBackButtonProps) {
   return (
-    <TouchableOpacity style={styles.container} {...props}>
-      <Ionicons name="arrow-back" color="white" size={25} />
+    <TouchableOpacity style={[styles.container, {backgroundColor: theme}]} {...rest}>
+      <Ionicons name="arrow-back" color={iconColor} size={25} />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.lightBackground,
     borderRadius: 8,
     width: 30,
     height: 30,

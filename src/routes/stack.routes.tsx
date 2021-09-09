@@ -22,6 +22,7 @@ const drawerRoutes = createDrawerNavigator();
 // Theme
 let isSwitchOn = SwitchMode.isSwitchOn;
 
+
 const drawerAndTabScreen = () => (
   <drawerRoutes.Navigator
     drawerContent={Drawer}

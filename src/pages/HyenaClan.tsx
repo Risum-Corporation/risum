@@ -12,8 +12,20 @@ export function WolfPack() {
 
   return (
     <View style={[isWhiteMode ? styles.wrapperLight : styles.wrapper]}>
-      <TopBar name="CupForce" />
-      <EmbledWP />
+      <TopBar
+        name="CupForce"
+        textColor={isWhiteMode ? colors.greenLight : colors.green}
+        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
+        searchColor={isWhiteMode ? colors.whiteLight : colors.white}
+        searchBackgroundColor={
+          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
+        }
+      />
+      <EmbledWP
+      numberColor={isWhiteMode ? colors.greenLight : colors.green}
+      textColor={isWhiteMode ? colors.whiteLight : colors.white}
+      
+      />
     </View>
   );
 }

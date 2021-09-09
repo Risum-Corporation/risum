@@ -15,7 +15,7 @@ interface ConfirmButtonProps extends TouchableOpacityProps {
 
 export function ConfirmButton({ title, theme, ...rest }: ConfirmButtonProps) {
   return (
-    <TouchableOpacity
+    <TouchableOpacity 
       style={[styles.container, { backgroundColor: theme }]}
       {...rest}
     >
