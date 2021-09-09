@@ -24,8 +24,8 @@ export default {
 
   // Risum light theme
 
-  greenLight: "#FF9446", // MainOrange
-  purpleLight: "#47DFED", // Complementery Blue
+  greenLight: "#B436EB",   // MainOrange
+  purpleLight: "#759E05", // Complementery Blue
   backgroundLight: "#EDEDED",
   lightBackgroundLight: "white",
   inputBackgroundLight: "#FFFFFF ",

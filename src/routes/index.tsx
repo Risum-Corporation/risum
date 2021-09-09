@@ -13,7 +13,7 @@ const Routes = () => {
   //   return <Loading />;
   // }
 
-  return signed ? <StackRoutes /> : <AuthRoutes />;
+  return signed ? <StackRoutes backgroundColor={'red'}/> : <AuthRoutes />;
 };
 
 export default Routes;

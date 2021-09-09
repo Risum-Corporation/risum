@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext }  from "react";
 import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import { AuthProvider } from "./src/contexts/Auth";
@@ -17,7 +17,7 @@ import {
 
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { NavigationContainer } from "@react-navigation/native";
-import colors from "./src/styles/colors";
+import StackContext from "./src/contexts/Stack";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -32,9 +32,11 @@ export default function App() {
     return <AppLoading />;
   }
 
+
+
   return (
     <NavigationContainer>
-      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+      <StatusBar barStyle={'light-content'} />
       <AuthProvider>
         <StackProvider>
           <Routes />

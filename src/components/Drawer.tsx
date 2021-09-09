@@ -20,7 +20,8 @@ type Props = ScrollViewProps & {
   children: React.ReactNode;
 };
 
-export function Drawer({ ...props }: Props) {
+
+export function Drawer({ ...props } ) {
   // Theme
   let isSwitchOn = SwitchMode.isSwitchOn;
 

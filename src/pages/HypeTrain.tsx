@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   View,
@@ -10,15 +10,14 @@ import {
 import colors from "../styles/colors";
 
 import { HypeTrainCard } from "../components/HypeTrainCard";
-
 import { posts } from "../database/fakeData";
+
 
 export function HypeTrain() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
   function loadPage(pageNumber = page) {
     if (total && pageNumber > total) return;
 
@@ -42,9 +41,11 @@ export function HypeTrain() {
   }
 
   const [visible, setVisible] = React.useState(true);
-  return (
-    <View style={styles.container}>
 
+
+  return (
+    
+    <View style={styles.container}>
     </View>
   );
 }

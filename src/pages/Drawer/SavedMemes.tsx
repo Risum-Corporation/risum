@@ -53,7 +53,23 @@ export function SavedMemes() {
             data={posts}
             keyExtractor={(post) => String(post.id)}
             onEndReachedThreshold={0.1}
-            renderItem={({ item }) => <MemeCardSecondary postData={item} />}
+            renderItem={({ item }) => (
+              <MemeCardSecondary
+                postData={item}
+                footerBackground={
+                  isWhiteMode
+                    ? colors.lightBackgroundLight
+                    : colors.lightBackground
+                }
+                iconColor={isWhiteMode ? colors.whiteLight : colors.white}
+                IconTintColor={isWhiteMode ? colors.greenLight : colors.green}
+                dividerColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.inputBackground
+                }
+              />
+            )}
           />
         </View>
       </View>

@@ -12,8 +12,8 @@ import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import AuthContext from "../../contexts/Auth";
-
 import StackContext from "../../contexts/Stack";
+import { StatusBar } from "react-native";
 
 export function Settings() {
   const navigation = useNavigation();
@@ -21,12 +21,20 @@ export function Settings() {
 
   // Theme
   const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
-
+ 
+  
   return (
     <SafeAreaView
-      style={isWhiteMode ? styles.containerLight : styles.container}
+    style={isWhiteMode ? styles.containerLight : styles.container}
     >
-      <GoBackButton onPress={() => navigation.goBack()} />
+    <StatusBar barStyle={isWhiteMode ? "dark-content" : "light-content"} />
+      <GoBackButton
+        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
+        theme={
+          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
+        }
+        onPress={() => navigation.goBack()}
+      />
       <View style={styles.heading}>
         <Text
           style={[

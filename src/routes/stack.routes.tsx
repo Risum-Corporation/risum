@@ -22,6 +22,16 @@ const drawerRoutes = createDrawerNavigator();
 // Theme
 let isSwitchOn = SwitchMode.isSwitchOn;
 
+interface DrawerThemetProps {
+backgroundColor: string;
+iconColor: string;
+buttonTintColor: string;
+buttonColor: string;
+title: string;
+subtitle: string;
+}
+
+
 
 const drawerAndTabScreen = () => (
   <drawerRoutes.Navigator
@@ -35,7 +45,7 @@ const drawerAndTabScreen = () => (
     <drawerRoutes.Screen
       name="Início"
       component={TabRoutes}
-      options={{
+      options={{ 
         title: "Início",
         drawerIcon: ({ focused }) =>
           focused ? (

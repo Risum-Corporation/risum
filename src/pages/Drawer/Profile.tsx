@@ -5,11 +5,12 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  FlatList,
+  FlatList, 
 } from "react-native";
 import colors from "../../styles/colors";
 
 import { posts } from "../../database/fakeData";
+import { StatusBar } from "react-native";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
@@ -77,6 +78,7 @@ export function Profile() {
           : { backgroundColor: colors.background },
       ]}
     >
+      <StatusBar barStyle={isWhiteMode ? "dark-content" : 'light-content' }/>
       <Image
         source={require("../../assets/wallpaper.jpg")}
         style={styles.userWallpaper}
@@ -263,7 +265,23 @@ export function Profile() {
             onEndReachedThreshold={0.1}
             onRefresh={refreshList}
             refreshing={refreshing}
-            renderItem={({ item }) => <MemeCardSecondary postData={item} />}
+            renderItem={({ item }) => (
+              <MemeCardSecondary
+                postData={item}
+                footerBackground={
+                  isWhiteMode
+                    ? colors.lightBackgroundLight
+                    : colors.lightBackground
+                }
+                iconColor={isWhiteMode ? colors.whiteLight : colors.white}
+                IconTintColor={isWhiteMode ? colors.greenLight : colors.green}
+                dividerColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.inputBackground
+                }
+              />
+            )}
           />
         )}
       </View>

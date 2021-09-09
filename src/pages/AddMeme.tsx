@@ -4,7 +4,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
 } from "react-native";
 import colors from "../styles/colors";
@@ -14,6 +13,7 @@ import { TopBar } from "../components/TopBar";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import fonts from "../styles/fonts";
+import { TextInput } from "react-native-paper";
 
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = React.useState<string>();
@@ -71,26 +71,61 @@ export function AddMeme() {
 
         <View style={[styles.form]}>
           <TextInput
-            placeholder="Nome do Meme"
-            style={[
-              styles.input,
-              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
+            label="Título do Meme"
+            mode={"flat"}
+            value={memeTitle}
+            onChangeText={(tags) => setMemeTitle(memeTitle)}
+            placeholder="Telegram 2 - O Retorno?"
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            underlineColor={"transparent"}
+            style={
               isWhiteMode
-                ? { backgroundColor: colors.inputBackground }
-                : { backgroundColor: colors.inputBackgroundLight },
-            ]}
-            placeholderTextColor={colors.placeholderText}
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  }
+            }
+            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
           />
+
           <TextInput
-            placeholder="Tags"
-            style={[
-              styles.input,
-              { borderBottomLeftRadius: 8, borderBottomRightRadius: 8 },
+            label="Tags"
+            mode={"flat"}
+            value={tags}
+            onChangeText={(tags) => setTags(tags)}
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            underlineColor={"transparent"}
+            style={
               isWhiteMode
-                ? { backgroundColor: colors.inputBackground }
-                : { backgroundColor: colors.inputBackgroundLight },
-            ]}
-            placeholderTextColor={colors.placeholderText}
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  }
+            }
+            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            placeholder="Separe-as por vígula"
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
           />
 
           <View style={styles.button}>
@@ -139,7 +174,6 @@ const styles = StyleSheet.create({
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
-    color: colors.white,
   },
   button: {
     marginTop: 40,

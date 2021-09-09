@@ -35,7 +35,7 @@ export function MemeCard({
   postData,
   footerBackground,
   iconColor,
-  IconTintColor,
+  IconTintColor,  
   dividerColor,
 }: PostProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
@@ -66,10 +66,7 @@ export function MemeCard({
       console.log("Erro => ", error);
     }
   }
-
-  // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
-
+  
   return (
     <SafeAreaView>
       <View style={styles.container}>

@@ -26,9 +26,19 @@ interface PostProps {
     avatar: string;
     comments: number;
   };
+  footerBackground: string;
+  iconColor: string;
+  IconTintColor: string;
+  dividerColor: string;
 }
 
-export function MemeCardSecondary({ postData }: PostProps) {
+export function MemeCardSecondary({
+  postData,
+  footerBackground,
+  iconColor,
+  IconTintColor,
+  dividerColor,
+}: PostProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
 
@@ -58,8 +68,8 @@ export function MemeCardSecondary({ postData }: PostProps) {
     }
   }
 
-    // Theme
-    let isSwitchOn = SwitchMode.isSwitchOn;
+  // Theme
+  let isSwitchOn = SwitchMode.isSwitchOn;
 
   return (
     <SafeAreaView>
@@ -67,31 +77,35 @@ export function MemeCardSecondary({ postData }: PostProps) {
         <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
       </View>
 
-      <View style={isSwitchOn ? styles.footerLight : styles.footer}>
+      <View style={[styles.footer, { backgroundColor: footerBackground }]}>
         <View style={styles.buttonBox}>
-        <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
+          <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
             <AntDesign
               name={isLikePressed ? "like1" : "like2"}
               size={24}
-              color={isSwitchOn ? (isLikePressed ? colors.greenLight : colors.whiteLight) : (isLikePressed ? colors.green : colors.white) }
+              color={isLikePressed ? IconTintColor : iconColor}
             />
           </TouchableOpacity>
-          <Text style={[styles.memeStats, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.likes}</Text>
+          <Text style={[styles.memeStats, { color: iconColor }]}>
+            {postData.likes}
+          </Text>
 
           <TouchableOpacity style={styles.button}>
             <Ionicons
               name="md-chatbox-ellipses-outline"
               size={24}
-              color={isSwitchOn ?  colors.whiteLight : colors.white}
+              color={iconColor}
             />
           </TouchableOpacity>
-          <Text style={[styles.memeStats, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.comments}</Text>
+          <Text style={[styles.memeStats, { color: iconColor }]}>
+            {postData.comments}
+          </Text>
 
           <TouchableOpacity style={styles.button} onPress={toggleBookmarkPress}>
             <Ionicons
               name={isBookmarkPressed ? "md-bookmark" : "md-bookmark-outline"}
               size={24}
-              color={isSwitchOn ? (isBookmarkPressed  ? colors.greenLight : colors.whiteLight) : (isBookmarkPressed  ? colors.green : colors.white) }
+              color={isBookmarkPressed ? IconTintColor : iconColor}
             />
           </TouchableOpacity>
 
@@ -99,13 +113,15 @@ export function MemeCardSecondary({ postData }: PostProps) {
             <Ionicons
               name="md-share-social-outline"
               size={24}
-              color={isSwitchOn ?  colors.whiteLight : colors.white}
+              color={iconColor}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.userInfoContainer}>
-          <Text style={[styles.authorName, isSwitchOn ?  {color: colors.whiteLight} : {color: colors.white}]}>{postData.author}</Text>
+          <Text style={[styles.authorName, { color: iconColor }]}>
+            {postData.author}
+          </Text>
           <TouchableOpacity>
             <Image source={{ uri: postData.avatar }} style={styles.userImg} />
           </TouchableOpacity>
@@ -113,12 +129,17 @@ export function MemeCardSecondary({ postData }: PostProps) {
       </View>
 
       <View // Divider between memes
-        style={[{
-          borderBottomColor: colors.divider,
-          borderBottomWidth: 1,
-          marginVertical: 15,
-          marginHorizontal: "2%",
-        }, isSwitchOn ? {borderBottomColor: colors.dividerLight} : {borderBottomColor: colors.divider}]}
+        style={[
+          {
+            borderBottomColor: colors.divider,
+            borderBottomWidth: 1,
+            marginVertical: 15,
+            marginHorizontal: "2%",
+          },
+          isSwitchOn
+            ? { borderBottomColor: colors.dividerLight }
+            : { borderBottomColor: colors.divider },
+        ]}
       />
     </SafeAreaView>
   );
@@ -139,23 +160,6 @@ const styles = StyleSheet.create({
   footer: {
     width: "100%",
     flexDirection: "row",
-
-    backgroundColor: colors.lightBackground,
-
-    marginHorizontal: 15,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    padding: 7.5,
-
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginLeft: 0,
-  },
-  footerLight: {
-    width: "100%",
-    flexDirection: "row",
-
-    backgroundColor: colors.lightBackgroundLight,
 
     marginHorizontal: 15,
     borderBottomLeftRadius: 10,
