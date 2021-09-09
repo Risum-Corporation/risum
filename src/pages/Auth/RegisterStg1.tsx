@@ -1,11 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 import {
   SafeAreaView,
   Text,
   View,
   StyleSheet,
   Image,
-  TextInput,
   TouchableOpacity,
   Alert,
 } from "react-native";
@@ -16,12 +15,15 @@ import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 
 import firebase from "../../firebaseConnection";
 
+import { TextInput } from "react-native-paper";
+
 import googleWhite from "../../assets/googleWhite.png";
 import appleWhite from "../../assets/appleWhite.png";
 import facebookWhite from "../../assets/facebookWhite.png";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
+import StackContext from "../../contexts/Stack";
 
 export function RegisterStg1() {
   const navigation = useNavigation();
@@ -55,6 +57,11 @@ export function RegisterStg1() {
       );
     }
   }
+    // Theme
+    const { isWhiteMode } = useContext(StackContext);
+
+    const [memeTitle, setMemeTitle] = React.useState<string>();
+    const [tags, setTags] = React.useState<string>();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,24 +73,62 @@ export function RegisterStg1() {
         </View>
 
         <View style={styles.form}>
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor={colors.placeholderText}
-            style={[
-              styles.input,
-              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
-            ]}
-            onChangeText={handleEmailInputChange}
+        <TextInput
+            label="Email"
+            mode={"flat"}
+            value={memeTitle}
+            onChangeText={(tags) => setMemeTitle(memeTitle)}
+            placeholder="alek@risum.com"
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            underlineColor={"transparent"}
+            style={
+[              isWhiteMode
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  }, styles.input]
+            }
+            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
           />
+
           <TextInput
-            placeholder="Senha"
-            placeholderTextColor={colors.placeholderText}
-            style={[
-              styles.input,
-              { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
-            ]}
-            onChangeText={handlePasswordInputChange}
-            secureTextEntry={true}
+            label="Senha"
+            mode={"flat"}
+            value={tags}
+            onChangeText={(tags) => setTags(tags)}
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            underlineColor={"transparent"}
+            style={
+[              isWhiteMode
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  }, styles.input]
+            }
+            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            placeholder="******"
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
           />
           {isEmailOrPasswordInvalid && (
             <Text style={styles.redAdvertisement}>{errorMessage}</Text>
@@ -153,11 +198,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   input: {
-    height: 64,
-    padding: 20,
     borderBottomWidth: 1,
-    color: colors.white,
-    backgroundColor: colors.inputBackground,
   },
   buttonBox: {
     width: "100%",

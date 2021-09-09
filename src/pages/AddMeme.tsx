@@ -131,6 +131,7 @@ export function AddMeme() {
           <View style={styles.button}>
             <ConfirmButton
               theme={isWhiteMode ? colors.greenLight : colors.green}
+              color={isWhiteMode ? colors.white : colors.whiteLight}
               title="Pronto!"
             />
           </View>

@@ -12,12 +12,16 @@ import {
 import { Button } from "react-native-paper";
 
 import risumIcon from "../../assets/risumIcon.png";
+import risumWhiteIcon from "../../assets/risumWhiteIcon.png";
+
 
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 
 import { useNavigation } from "@react-navigation/core";
 import AuthContext from "../../contexts/Auth";
+import StackContext from "../../contexts/Stack";
+
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
@@ -43,18 +47,25 @@ export function Welcome() {
     });
   }
 
+    // Theme
+    const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
+
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
+    <SafeAreaView style={[styles.container,isWhiteMode ? {backgroundColor: colors.white} : {backgroundColor: colors.background}]}>
+      <View style={[styles.wrapper, isWhiteMode ? {backgroundColor: colors.white} : {backgroundColor: colors.background}]}>
+        <TouchableOpacity onPress={() => toggleWhiteMode()}>
         <View>
-          <Image source={risumIcon} style={styles.image} />
+          {isWhiteMode ? <Image source={risumWhiteIcon} style={styles.image} /> : <Image source={risumIcon} style={styles.image} /> }
         </View>
+        </TouchableOpacity>
+
         <View style={styles.titleBox}>
-          <Text style={styles.title}>Risum</Text>
+          <Text style={[styles.title,  isWhiteMode ? {color: colors.greenLight} : {color: colors.green}]}>Risum</Text>
         </View>
         <View style={styles.buttonBox}>
           <TouchableOpacity
-            style={[styles.button, styles.signUpButton]}
+            style={[styles.button, styles.signUpButton, isWhiteMode ? {backgroundColor: colors.greenLight} : {backgroundColor: colors.purple}]}
             activeOpacity={0.7}
             onPress={handleRegister}
           >
@@ -63,11 +74,11 @@ export function Welcome() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.button, styles.signInButton]}
+            style={[styles.button, styles.signInButton, isWhiteMode ? {backgroundColor: colors.purpleLight} : {backgroundColor: colors.green}]}
             activeOpacity={0.7}
             onPress={handleLogin}
           >
-            <Text style={[styles.text, { color: colors.background }]}>
+            <Text style={[styles.text, isWhiteMode ? { color: colors.white } : {color: colors.background}]}>
               Login
             </Text>
           </TouchableOpacity>
@@ -80,13 +91,13 @@ export function Welcome() {
             color={colors.text}
             uppercase={false}
             contentStyle={{}}
-            style={styles.guestButton}
+            style={[styles.guestButton, isWhiteMode ? {} : {borderColor: colors.outlineGray} ]}
           >
             <Text style={styles.text}>Entrar como Convidado</Text>
           </Button>
         </View>
 
-        <View style={styles.footer}>
+        <View style={[styles.footer, isWhiteMode ? {backgroundColor: colors.lightBackgroundLight} : {backgroundColor: colors.lightBackground}]}>
           <Text style={styles.text}>Bem vindo ao Risum!</Text>
         </View>
       </View>
@@ -130,7 +141,6 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontFamily: fonts.heading,
     textAlign: "center",
-    color: colors.green,
   },
   button: {
     justifyContent: "center",
@@ -164,7 +174,6 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   guestButton: {
-    borderColor: colors.outlineGray,
     borderWidth: 2,
     paddingHorizontal: "6%",
   },

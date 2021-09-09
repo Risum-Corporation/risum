@@ -11,15 +11,16 @@ import fonts from "../styles/fonts";
 interface ConfirmButtonProps extends TouchableOpacityProps {
   title: string;
   theme: string;
+  color: string;
 }
 
-export function ConfirmButton({ title, theme, ...rest }: ConfirmButtonProps) {
+export function ConfirmButton({ title, theme, color, ...rest }: ConfirmButtonProps) {
   return (
     <TouchableOpacity 
-      style={[styles.container, { backgroundColor: theme }]}
+      style={[styles.container, { backgroundColor: theme}]}
       {...rest}
     >
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[styles.text, {color: color}]}>{title}</Text>
     </TouchableOpacity>
   );
 }
@@ -35,7 +36,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: "black",
     fontFamily: fonts.heading,
   },
 });
