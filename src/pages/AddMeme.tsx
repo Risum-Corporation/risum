@@ -4,12 +4,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import colors from "../styles/colors";
 import { ConfirmButton } from "../components/ConfirmButton";
 import StackContext from "../contexts/Stack";
 import { TopBar } from "../components/TopBar";
+
+import { launchImageLibrary } from "react-native-image-picker";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import fonts from "../styles/fonts";
@@ -22,8 +24,12 @@ export function AddMeme() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
+  function imagePickerCallback(data: any) {
+    console.log(data);
+  }
+
   return (
-    <KeyboardAvoidingView
+    <ScrollView
       style={
         isWhiteMode
           ? { backgroundColor: colors.backgroundLight }
@@ -41,7 +47,15 @@ export function AddMeme() {
       />
 
       <View style={styles.container}>
-        <TouchableOpacity style={{ marginTop: 25 }}>
+        <TouchableOpacity
+          style={{ marginTop: 25 }}
+          onPress={() => {
+            launchImageLibrary(
+              { mediaType: "mixed", maxHeight: 350, maxWidth: 350 },
+              imagePickerCallback
+            ); // Dando erro, verificar mais tarde
+          }}
+        >
           <View
             style={[
               styles.addMemeContainer,
@@ -118,7 +132,7 @@ export function AddMeme() {
                   }
             }
             selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
-            placeholder="Separe-as por vígula"
+            placeholder="Shitpost, Cum, Zoio..."
             theme={{
               colors: {
                 text: isWhiteMode ? colors.whiteLight : colors.white,
@@ -129,15 +143,11 @@ export function AddMeme() {
           />
 
           <View style={styles.button}>
-            <ConfirmButton
-              theme={isWhiteMode ? colors.greenLight : colors.green}
-              color={isWhiteMode ? colors.white : colors.whiteLight}
-              title="Pronto!"
-            />
+            <ConfirmButton theme={isWhiteMode} title="Pronto!" />
           </View>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 

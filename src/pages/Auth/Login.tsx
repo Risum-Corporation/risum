@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/core";
 
 import AuthContext from "../../contexts/Auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import StackContext from "../../contexts/Stack";
 
 export function Login() {
   const { signed, user, login } = useContext(AuthContext);
@@ -28,6 +29,7 @@ export function Login() {
   const [userName, setUserName] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
+  const { isWhiteMode } = useContext(StackContext);
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
@@ -91,7 +93,7 @@ export function Login() {
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
-            theme={colors.green}
+            theme={isWhiteMode}
             title="Confirmar"
             onPress={handleConfirm}
           />

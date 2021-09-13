@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   Text,
@@ -12,8 +12,6 @@ import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
-
-import firebase from "../../firebaseConnection";
 
 import { TextInput } from "react-native-paper";
 
@@ -32,6 +30,9 @@ export function RegisterStg1() {
   const [isEmailOrPasswordInvalid, setIsEmailOrPasswordInvalid] =
     useState<boolean>();
   const [errorMessage, setErrorMessage] = useState("Email ou senha inválidos");
+
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
@@ -57,43 +58,50 @@ export function RegisterStg1() {
       );
     }
   }
-    // Theme
-    const { isWhiteMode } = useContext(StackContext);
-
-    // tesxt
-
-    const [UserEmail, setUserEmail] = React.useState<string>();
-    const [UserPassword, setUserPassword] = React.useState<string>();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
+      <View
+        style={
+          isWhiteMode
+            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
+            : [styles.wrapper, { backgroundColor: colors.background }]
+        }
+      >
         <RegisterProgressBar position={25} />
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Email e{"\n"}Senha</Text>
+          <Text
+            style={
+              isWhiteMode
+                ? [styles.title, { color: colors.whiteLight }]
+                : [styles.title, { color: colors.white }]
+            }
+          >
+            Email e{"\n"}Senha
+          </Text>
         </View>
 
         <View style={styles.form}>
-        <TextInput
+          <TextInput
             label="Email"
             mode={"flat"}
-            value={UserEmail}
-            onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-            placeholder="alek@risum.com"
+            onChangeText={handleEmailInputChange}
+            placeholder="usuario@mail.com"
             placeholderTextColor={
               isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
             }
             underlineColor={"transparent"}
-            style={
-[              isWhiteMode
+            style={[
+              isWhiteMode
                 ? { backgroundColor: colors.lightBackgroundLight }
                 : {
                     backgroundColor: colors.lightBackground,
                     color: colors.white,
                     textDecorationColor: colors.white,
-                  }, styles.input]
-            }
+                  },
+              styles.input,
+            ]}
             selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
             theme={{
               colors: {
@@ -106,22 +114,23 @@ export function RegisterStg1() {
 
           <TextInput
             label="Senha"
+            secureTextEntry={true}
             mode={"flat"}
-            value={UserPassword}
-            onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+            onChangeText={handlePasswordInputChange}
             placeholderTextColor={
               isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
             }
             underlineColor={"transparent"}
-            style={
-[              isWhiteMode
+            style={[
+              isWhiteMode
                 ? { backgroundColor: colors.lightBackgroundLight }
                 : {
                     backgroundColor: colors.lightBackground,
                     color: colors.white,
                     textDecorationColor: colors.white,
-                  }, styles.input]
-            }
+                  },
+              styles.input,
+            ]}
             selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
             placeholder="******"
             theme={{
@@ -138,13 +147,21 @@ export function RegisterStg1() {
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
-            theme={colors.green}
+            theme={isWhiteMode}
             title="Confirmar"
             onPress={handleConfirm}
           />
         </View>
         <View style={styles.orBox}>
-          <Text style={styles.subtitle}>OU</Text>
+          <Text
+            style={
+              isWhiteMode
+                ? [styles.subtitle, { color: colors.whiteLight }]
+                : [styles.subtitle, { color: colors.white }]
+            }
+          >
+            OU
+          </Text>
         </View>
 
         <View style={styles.socialRegister}>
@@ -153,7 +170,7 @@ export function RegisterStg1() {
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
-            style={{ marginLeft: "25%", marginRight: "25%" }}
+            style={{ marginHorizontal: "25%" }}
           >
             <Image source={appleWhite} />
           </TouchableOpacity>
@@ -169,14 +186,12 @@ export function RegisterStg1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
     paddingHorizontal: 20,
-    backgroundColor: colors.background,
   },
   heading: {
     textAlign: "left",
@@ -184,7 +199,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fonts.heading,
-    color: colors.white,
     fontSize: 27,
     lineHeight: 50,
     marginTop: 40,
@@ -222,7 +236,7 @@ const styles = StyleSheet.create({
   redAdvertisement: {
     color: colors.pastelRed,
     fontFamily: fonts.heading,
-    fontSize: 10,
+    fontSize: 12,
     marginTop: 4,
     paddingLeft: 2,
   },

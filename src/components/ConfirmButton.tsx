@@ -1,26 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacity,
   Text,
   StyleSheet,
   TouchableOpacityProps,
 } from "react-native";
+import colors from "../styles/colors";
 
 import fonts from "../styles/fonts";
 
 interface ConfirmButtonProps extends TouchableOpacityProps {
   title: string;
-  theme: string;
-  color: string;
+  theme: boolean;
 }
 
-export function ConfirmButton({ title, theme, color, ...rest }: ConfirmButtonProps) {
+export function ConfirmButton({ title, theme, ...rest }: ConfirmButtonProps) {
   return (
-    <TouchableOpacity 
-      style={[styles.container, { backgroundColor: theme}]}
+    <TouchableOpacity
+      style={
+        theme
+          ? [styles.container, { backgroundColor: colors.greenLight }]
+          : [styles.container, { backgroundColor: colors.green }]
+      }
       {...rest}
     >
-      <Text style={[styles.text, {color: color}]}>{title}</Text>
+      <Text
+        style={
+          theme
+            ? [styles.text, { color: colors.whiteLight }]
+            : [styles.text, { color: colors.background }]
+        }
+      >
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 }

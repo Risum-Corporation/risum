@@ -16,10 +16,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
 import AuthContext from "../../contexts/Auth";
+import StackContext from "../../contexts/Stack";
 
 export function RegisterStg3() {
   const { login } = useContext(AuthContext);
-  const [userName, setUserName] = useState<string>();
+  const [userName, setUserName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const { isWhiteMode } = useContext(StackContext);
 
   function handleUserNameCreate(userName1: string) {
     setUserName(String(userName1));
@@ -29,7 +32,9 @@ export function RegisterStg3() {
     try {
       await AsyncStorage.setItem("@risum:userName", String(userName));
 
-      const email = await AsyncStorage.getItem("@risum:email");
+      const emailStoraged = await AsyncStorage.getItem("@risum:email");
+      setEmail(emailStoraged!);
+
       const avatar = "../assets/profilePicture.gif"; // Async storage dps
 
       return login({ userName, email, avatar });
@@ -42,28 +47,57 @@ export function RegisterStg3() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
+      <View
+        style={
+          isWhiteMode
+            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
+            : [styles.wrapper, { backgroundColor: colors.background }]
+        }
+      >
         <RegisterProgressBar position={75} />
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Insira seu{"\n"}nome de usuário</Text>
+          <Text
+            style={
+              isWhiteMode
+                ? [styles.title, { color: colors.whiteLight }]
+                : [styles.title, { color: colors.white }]
+            }
+          >
+            Insira seu{"\n"}nome de usuário
+          </Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
             placeholder="Nome de usuário"
-            placeholderTextColor={colors.placeholderText}
-            style={[
-              styles.input,
-              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
-            ]}
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            style={
+              isWhiteMode
+                ? [
+                    styles.input,
+                    {
+                      backgroundColor: colors.inputBackgroundLight,
+                      color: colors.whiteLight,
+                    },
+                  ]
+                : [
+                    styles.input,
+                    {
+                      backgroundColor: colors.inputBackground,
+                      color: colors.white,
+                    },
+                  ]
+            }
             onChangeText={handleUserNameCreate}
           />
           {/* Avatar do perfil */}
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
-            theme={colors.green}
+            theme={isWhiteMode}
             title="Confirmar"
             onPress={handleSubmit}
           />
@@ -76,14 +110,12 @@ export function RegisterStg3() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
     paddingHorizontal: 20,
-    backgroundColor: colors.background,
   },
   heading: {
     textAlign: "left",
@@ -107,11 +139,9 @@ const styles = StyleSheet.create({
     marginTop: "-10%",
   },
   input: {
-    backgroundColor: colors.inputBackground,
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
-    color: colors.white,
   },
   buttonBox: {
     width: "100%",

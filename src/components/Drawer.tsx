@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Platform,
-  ScrollViewProps,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Platform } from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -16,20 +9,15 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import SwitchMode from "../styles/SwitchMode";
 
-type Props = ScrollViewProps & {
-  children: React.ReactNode;
-};
-
-
-export function Drawer({ ...props } ) {
+export function Drawer({ ...props }) {
   // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
+  let isWhiteMode = SwitchMode.isSwitchOn;
 
   return (
     <View
       style={[
         styles.container,
-        isSwitchOn
+        isWhiteMode
           ? { backgroundColor: colors.backgroundLight }
           : { backgroundColor: colors.background },
       ]}
@@ -49,7 +37,7 @@ export function Drawer({ ...props } ) {
             <Text
               style={[
                 styles.title,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.whiteLight }
                   : { color: colors.white },
               ]}
@@ -60,7 +48,7 @@ export function Drawer({ ...props } ) {
             <Text
               style={[
                 styles.userID,
-                isSwitchOn
+                isWhiteMode
                   ? { color: colors.placeholderTextLight }
                   : { color: colors.placeholderText },
               ]}
@@ -74,16 +62,16 @@ export function Drawer({ ...props } ) {
               <DrawerItemList
                 {...props}
                 activeBackgroundColor={
-                  isSwitchOn ? colors.purpleLight : colors.purple
+                  isWhiteMode ? colors.purpleLight : colors.purple
                 }
                 inactiveBackgroundColor={
-                  isSwitchOn
+                  isWhiteMode
                     ? colors.lightBackgroundLight
                     : colors.lightBackground
                 }
-                activeTintColor={isSwitchOn ? colors.whiteLight : colors.white}
+                activeTintColor={isWhiteMode ? colors.whiteLight : colors.white}
                 inactiveTintColor={
-                  isSwitchOn ? colors.whiteLight : colors.white
+                  isWhiteMode ? colors.whiteLight : colors.white
                 }
               />
             </View>

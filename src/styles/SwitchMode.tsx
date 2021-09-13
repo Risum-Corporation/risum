@@ -1,4 +1,4 @@
 class SwitchMode {
-  static isSwitchOn = true;
+  static isSwitchOn = false;
 }
 export default SwitchMode;

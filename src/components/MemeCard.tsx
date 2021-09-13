@@ -9,10 +9,10 @@ import {
   Share,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import SwitchMode from "../styles/SwitchMode";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 interface PostProps {
   postData: {
@@ -35,11 +35,12 @@ export function MemeCard({
   postData,
   footerBackground,
   iconColor,
-  IconTintColor,  
+  IconTintColor,
   dividerColor,
 }: PostProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
+  const navigation = useNavigation();
 
   function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
@@ -66,7 +67,7 @@ export function MemeCard({
       console.log("Erro => ", error);
     }
   }
-  
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -86,7 +87,12 @@ export function MemeCard({
             {postData.likes}
           </Text>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigation.navigate("Comments");
+            }}
+          >
             <Ionicons
               name="md-chatbox-ellipses-outline"
               size={24}

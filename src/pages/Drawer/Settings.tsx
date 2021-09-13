@@ -21,20 +21,13 @@ export function Settings() {
 
   // Theme
   const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
- 
-  
+
   return (
     <SafeAreaView
-    style={isWhiteMode ? styles.containerLight : styles.container}
+      style={isWhiteMode ? styles.containerLight : styles.container}
     >
-    <StatusBar barStyle={isWhiteMode ? "dark-content" : "light-content"} />
-      <GoBackButton
-        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-        theme={
-          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
-        }
-        onPress={() => navigation.goBack()}
-      />
+      <StatusBar barStyle={isWhiteMode ? "dark-content" : "light-content"} />
+      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
       <View style={styles.heading}>
         <Text
           style={[

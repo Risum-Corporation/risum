@@ -23,13 +23,7 @@ export function SavedMemes() {
           : { backgroundColor: colors.background },
       ]}
     >
-      <GoBackButton
-        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-        theme={
-          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
-        }
-        onPress={() => navigation.goBack()}
-      />
+      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
       <View style={styles.heading}>
         {/* <View style={styles.searchBar}>
       <Searchbar

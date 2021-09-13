@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   Text,
@@ -17,6 +17,7 @@ import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { useState } from "react";
+import StackContext from "../../contexts/Stack";
 
 export function RegisterStg2() {
   const navigation = useNavigation();
@@ -25,6 +26,7 @@ export function RegisterStg2() {
   const [codeInput, setCodeInput] = useState<number>();
   const [isFilled, setIsFilled] = useState(false);
   const [isCodeIncorrect, setIsCodeIncorrect] = useState(false);
+  const { isWhiteMode } = useContext(StackContext);
 
   useEffect(() => {
     async function loadStoragedData() {
@@ -62,18 +64,50 @@ export function RegisterStg2() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
+      <View
+        style={
+          isWhiteMode
+            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
+            : [styles.wrapper, { backgroundColor: colors.background }]
+        }
+      >
         <RegisterProgressBar position={50} />
 
         <View style={styles.heading}>
-          <Text style={styles.title}>Verifique{"\n"}o seu Email</Text>
+          <Text
+            style={
+              isWhiteMode
+                ? [styles.title, { color: colors.whiteLight }]
+                : [styles.title, { color: colors.white }]
+            }
+          >
+            Verifique{"\n"}o seu Email
+          </Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
             placeholder={"###-###"}
-            placeholderTextColor={colors.placeholderText}
-            style={styles.input}
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            style={
+              isWhiteMode
+                ? [
+                    styles.input,
+                    {
+                      backgroundColor: colors.inputBackgroundLight,
+                      color: colors.whiteLight,
+                    },
+                  ]
+                : [
+                    styles.input,
+                    {
+                      backgroundColor: colors.inputBackground,
+                      color: colors.white,
+                    },
+                  ]
+            }
             onChangeText={handleInputChange}
             keyboardType={"number-pad"}
           />
@@ -110,14 +144,12 @@ export function RegisterStg2() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background
   },
   wrapper: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
     paddingHorizontal: 20,
-    backgroundColor: colors.background,
   },
   heading: {
     textAlign: "left",
@@ -125,7 +157,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fonts.heading,
-    color: colors.white,
     fontSize: 27,
     lineHeight: 50,
   },
@@ -139,20 +170,18 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   input: {
-    backgroundColor: colors.inputBackground,
     borderRadius: 8,
 
     height: 64,
     padding: 20,
     borderBottomWidth: 1,
-    color: colors.white,
   },
   redAdvertisement: {
     color: colors.pastelRed,
     fontFamily: fonts.heading,
-    fontSize: 10,
+    fontSize: 12,
     marginTop: 4,
-    paddingLeft: 2
+    paddingLeft: 2,
   },
   buttonBox: {
     width: "97%",

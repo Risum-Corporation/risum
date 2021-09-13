@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 import { Feed } from "../pages/Feed";
 import { HypeTrain } from "../pages/HypeTrain";
-import { WolfPack } from "../pages/HyenaClan";
+import { HyenaClan } from "../pages/HyenaClan";
 import { AddMeme } from "../pages/AddMeme";
 import StackContext from "../contexts/Stack";
 import { StyleSheet } from "react-native";
@@ -52,7 +52,7 @@ export default function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="Alcateia"
-        component={WolfPack}
+        component={HyenaClan}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ios-people" color={color} />

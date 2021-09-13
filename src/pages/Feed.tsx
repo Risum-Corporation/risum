@@ -7,7 +7,6 @@ import colors from "../styles/colors";
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
 import StackContext from "../contexts/Stack";
-import { StatusBar } from "expo-status-bar";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -41,14 +40,14 @@ export function Feed() {
   }
   return (
     <View style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
-
-
       <TopBar
         name="Feed"
         textColor={isWhiteMode ? colors.greenLight : colors.green}
         iconColor={isWhiteMode ? colors.whiteLight : colors.white}
         searchColor={isWhiteMode ? colors.whiteLight : colors.white}
-        searchBackgroundColor={isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground}
+        searchBackgroundColor={
+          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
+        }
       />
 
       <FlatList

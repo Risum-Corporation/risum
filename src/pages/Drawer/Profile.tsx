@@ -286,13 +286,7 @@ export function Profile() {
           />
         )}
       </View>
-      <GoBackButton
-        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-        theme={
-          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
-        }
-        onPress={() => navigation.goBack()}
-      />
+      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
     </View>
   );
 }

@@ -1,5 +1,4 @@
 export default {
-
   // Risum defaut theme
 
   green: "#04D361",
@@ -17,21 +16,21 @@ export default {
 
   outlineGray: "#444444",
   pastelRed: "#FF7A7A",
-  
+
   yellow: "#ffdc8a",
   cyan: "#04D3C9",
   pink: "#f091ff",
 
   // Risum light theme
 
-  greenLight: "#32B768",   // MainOrange
-  purpleLight: "#5DADEC", // Complementery Blue
+  greenLight: "#32B768",
+  purpleLight: "#5DADEC",
   backgroundLight: "#EDEDED",
-  lightBackgroundLight: "white",
-  inputBackgroundLight: "#FFFFFF ",
+  lightBackgroundLight: "#FFFFFF",
+  inputBackgroundLight: "#FFFFFF",
 
   whiteLight: "#1F1F1F",
-  textLight: "black" ,
+  textLight: "#000",
   placeholderTextLight: "#626262",
   inputTextLight: "#E3E3E3",
   dividerLight: "#B8B8B8",
@@ -39,10 +38,8 @@ export default {
 
   outlineGrayLight: "#444444",
   pastelRedLight: "#FF7A7A",
-  
+
   yellowLight: "#2744AA",
   cyanLight: "#00C2FF",
-  pinkLight: "#F472FF"
-
-
+  pinkLight: "#F472FF",
 };

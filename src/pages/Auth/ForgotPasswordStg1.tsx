@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   Text,
@@ -13,12 +13,14 @@ import { ConfirmButton } from "../../components/ConfirmButton";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
+import StackContext from "../../contexts/Stack";
 
 export function ForgotPasswordStg1() {
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
+  const { isWhiteMode } = useContext(StackContext);
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
@@ -65,7 +67,7 @@ export function ForgotPasswordStg1() {
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
-            theme={colors.green}
+            theme={isWhiteMode}
             title="Confirmar"
             onPress={handleConfirm}
           />

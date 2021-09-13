@@ -9,6 +9,13 @@ interface PostProps {
   comments: number;
 }
 
+interface CommentProps {
+  id: number;
+  author: string;
+  likes: number;
+  content: string;
+}
+
 export const posts: PostProps[] = [
   {
     id: 1,
@@ -109,5 +116,50 @@ export const posts: PostProps[] = [
     tags: ["shipost", "ggboy", "cringe"],
     avatar: "https://source.unsplash.com/random/50x50",
     comments: 20,
+  },
+];
+
+export const comments: CommentProps[] = [
+  {
+    id: 1,
+    author: "Educg550",
+    likes: 59,
+    content: "KKKKKKKKK gg dms",
+  },
+  {
+    id: 2,
+    author: "Sapeka",
+    likes: 234,
+    content: "KKKKKKKKK gg dms",
+  },
+  {
+    id: 3,
+    author: "Cacamilly",
+    likes: 7657,
+    content: "KKKKKKKKK gg dms",
+  },
+  {
+    id: 4,
+    author: "Katinho",
+    likes: 34,
+    content: "KKKKKKKKK gg dms",
+  },
+  {
+    id: 5,
+    author: "Rodsfly",
+    likes: 14,
+    content: "KKKKKKKKK gg dms",
+  },
+  {
+    id: 6,
+    author: "Dunker JeJe Niño",
+    likes: 5643,
+    content: "KKKKKKKKK gg dms",
+  },
+  {
+    id: 7,
+    author: "Alek",
+    likes: 675,
+    content: "KKKKKKKKK gg dms",
   },
 ];

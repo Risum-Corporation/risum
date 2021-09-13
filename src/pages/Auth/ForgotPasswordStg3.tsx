@@ -16,15 +16,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState, useContext } from "react";
 import AuthContext from "../../contexts/Auth";
 
-import { useNavigation } from "@react-navigation/native";
+import StackContext from "../../contexts/Stack";
 
 export function ForgotPasswordStg3() {
   const { login } = useContext(AuthContext);
   const [pwd, setPwd] = useState<string>();
   const [pwdConfirm, setPwdConfirm] = useState<string>();
   const [isPwdIncorrect, setIsPwdIncorrect] = useState(false);
-  const navigation = useNavigation();
-
+  const { isWhiteMode } = useContext(StackContext);
   function handlePwdCreate(pwd1: string) {
     setPwd(String(pwd1));
   }
@@ -88,7 +87,7 @@ export function ForgotPasswordStg3() {
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
-            theme={colors.green}
+            theme={isWhiteMode}
             title="Confirmar"
             onPress={handleSubmit}
           />
