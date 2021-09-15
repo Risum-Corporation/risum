@@ -7,10 +7,13 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
+
+import firebase from "../../firebaseConnection";
 
 import googleWhite from "../../assets/googleWhite.png";
 import appleWhite from "../../assets/appleWhite.png";
@@ -23,30 +26,49 @@ import StackContext from "../../contexts/Stack";
 
 export function Login() {
   const { signed, user, login } = useContext(AuthContext);
+  const userName = user?.userName;
 
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
-  const [userName, setUserName] = useState<string>();
+  const [password, setPassword] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
+  const [errorMessage, setErrorMessage] = useState<string>(
+    "Email ou senha inválidos"
+  );
   const { isWhiteMode } = useContext(StackContext);
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
   }
 
-  function handleUserNameInputChange(value: string) {
-    setUserName(value);
+  function handlePasswordInputChange(value: string) {
+    setPassword(value);
   }
 
   async function handleConfirm() {
-    if (!email || !userName) {
+    if (!email || !password) {
       return setIsEmailOrUsernameInvalid(true);
     }
-    // Verificação da existência da conta no banco de dados
     const avatar = await AsyncStorage.getItem("@risum:avatar");
 
-    login({ userName, email, avatar }); // Eba funcionou ^^
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        return login({ userName, email, avatar });
+      })
+      .catch((error) => {
+        setIsEmailOrUsernameInvalid(true);
+
+        if (error.code === "auth/wrong-password") {
+          setErrorMessage("Senha inválida");
+        } else if (error.code === "auth/invalid-email") {
+          setErrorMessage("Email inválido");
+        } else {
+          setErrorMessage(`Ocorreu um erro: ${error.code}`);
+        }
+      });
   }
 
   function handleForgotPwd() {
@@ -77,14 +99,12 @@ export function Login() {
               styles.input,
               { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
             ]}
-            onChangeText={handleUserNameInputChange}
+            onChangeText={handlePasswordInputChange}
             secureTextEntry={true}
           />
           <View style={styles.textBox}>
             {isEmailOrUsernameInvalid && (
-              <Text style={styles.redAdvertisement}>
-                Email ou senha inválidos
-              </Text>
+              <Text style={styles.redAdvertisement}>{errorMessage}</Text>
             )}
             <TouchableOpacity onPress={handleForgotPwd}>
               <Text style={styles.text}>Esqueci minha senha</Text>

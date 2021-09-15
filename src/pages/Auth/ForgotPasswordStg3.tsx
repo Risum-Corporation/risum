@@ -36,8 +36,6 @@ export function ForgotPasswordStg3() {
     if (pwd == pwdConfirm && !!pwd) {
       setIsPwdIncorrect(false);
       try {
-        await AsyncStorage.setItem("@risum:password", pwd);
-
         const userName = await AsyncStorage.getItem("@risum.userName");
         const email = await AsyncStorage.getItem("@risum:email");
         const avatar = await AsyncStorage.getItem("@risum:avatar");

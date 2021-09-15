@@ -13,6 +13,8 @@ import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 
+import firebase from "../../firebaseConnection";
+
 import { TextInput } from "react-native-paper";
 
 import googleWhite from "../../assets/googleWhite.png";
@@ -29,7 +31,9 @@ export function RegisterStg1() {
   const [password, setPassword] = useState<string>();
   const [isEmailOrPasswordInvalid, setIsEmailOrPasswordInvalid] =
     useState<boolean>();
-  const [errorMessage, setErrorMessage] = useState("Email ou senha inválidos");
+  const [errorMessage, setErrorMessage] = useState<string>(
+    "Email ou senha inválidos"
+  );
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -47,16 +51,27 @@ export function RegisterStg1() {
       return setIsEmailOrPasswordInvalid(true);
     }
 
-    try {
-      await AsyncStorage.setItem("@risum:email", email);
-      await AsyncStorage.setItem("@risum:password", password);
+    await AsyncStorage.setItem("@risum:email", email);
 
-      navigation.navigate("RegisterStg2");
-    } catch {
-      Alert.alert(
-        "Não foi possível salvar o seu e-mail e/ou usuário, tente novamente mais tarde."
-      );
-    }
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        navigation.navigate("RegisterStg2");
+      })
+      .catch((error) => {
+        setIsEmailOrPasswordInvalid(true);
+
+        if (error.code === "auth/weak-password") {
+          setErrorMessage("Sua senha deve ter pelo menos 6 caracteres");
+        } else if (error.code === "auth/invalid-email") {
+          setErrorMessage("Email inválido");
+        } else if (error.code === "auth/email-already-exists") {
+          setErrorMessage("Email já cadastrado");
+        } else {
+          setErrorMessage(`Ocorreu um erro: ${error.code}`);
+        }
+      });
   }
 
   return (
