@@ -52,7 +52,16 @@ export function ForgotPasswordStg3() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: isWhiteMode
+            ? colors.backgroundLight
+            : colors.background,
+        },
+      ]}
+    >
       <View style={styles.wrapper}>
         <View style={styles.heading}>
           <Text style={styles.title}>Digite uma{"\n"}nova senha</Text>

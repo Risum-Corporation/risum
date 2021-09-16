@@ -59,7 +59,16 @@ export function ForgotPasswordStg2() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+    style={[
+      styles.container,
+      {
+        backgroundColor: isWhiteMode
+          ? colors.backgroundLight
+          : colors.background,
+      },
+    ]}
+  >
       <View style={styles.wrapper}>
         <View style={styles.heading}>
           <Text style={styles.title}>Verifique{"\n"}o seu Email</Text>

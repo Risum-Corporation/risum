@@ -76,10 +76,31 @@ export function Login() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.wrapper}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: isWhiteMode
+            ? colors.backgroundLight
+            : colors.background,
+        },
+      ]}
+    >
+      <View
+        style={
+          isWhiteMode
+            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
+            : [styles.wrapper, { backgroundColor: colors.background }]
+        }
+      >
         <View style={styles.heading}>
-          <Text style={styles.title}>Entre com sua{"\n"}Conta Risum</Text>
+        <Text
+            style={
+              isWhiteMode
+                ? [styles.title, { color: colors.whiteLight }]
+                : [styles.title, { color: colors.white }]
+            }
+          >Entre com sua{"\n"}Conta Risum</Text>
         </View>
 
         <View style={styles.form}>

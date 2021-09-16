@@ -75,7 +75,16 @@ export function RegisterStg1() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: isWhiteMode
+            ? colors.backgroundLight
+            : colors.background,
+        },
+      ]}
+    >
       <View
         style={
           isWhiteMode
