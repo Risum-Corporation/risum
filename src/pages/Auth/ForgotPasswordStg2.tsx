@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   Text,
@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { useState } from "react";
+import StackContext from "../../contexts/Stack";
 
 export function ForgotPasswordStg2() {
   const navigation = useNavigation();
@@ -23,6 +24,9 @@ export function ForgotPasswordStg2() {
   const [codeInput, setCodeInput] = useState<number>();
   const [isFilled, setIsFilled] = useState(false);
   const [isCodeIncorrect, setIsCodeIncorrect] = useState(false);
+
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
 
   useEffect(() => {
     async function loadStoragedData() {
@@ -60,15 +64,15 @@ export function ForgotPasswordStg2() {
 
   return (
     <SafeAreaView
-    style={[
-      styles.container,
-      {
-        backgroundColor: isWhiteMode
-          ? colors.backgroundLight
-          : colors.background,
-      },
-    ]}
-  >
+      style={[
+        styles.container,
+        {
+          backgroundColor: isWhiteMode
+            ? colors.backgroundLight
+            : colors.background,
+        },
+      ]}
+    >
       <View style={styles.wrapper}>
         <View style={styles.heading}>
           <Text style={styles.title}>Verifique{"\n"}o seu Email</Text>
@@ -115,7 +119,7 @@ export function ForgotPasswordStg2() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,

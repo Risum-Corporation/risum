@@ -4,7 +4,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   TextInput,
   TouchableOpacity,
   Alert,
@@ -18,6 +17,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
+
+import firebase from "../../firebaseConnection";
 
 export function RegisterStg2() {
   const navigation = useNavigation();
@@ -49,7 +50,7 @@ export function RegisterStg2() {
     return Alert.alert(`Email reenviado com sucesso para: ${email}`);
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
     if (codeInput === randomCode && isFilled) {
       return navigation.navigate("RegisterStg3");
     } else {

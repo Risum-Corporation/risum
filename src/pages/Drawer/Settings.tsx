@@ -142,7 +142,11 @@ export function Settings() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={signOut}>
+          <TouchableOpacity
+            onPress={() => {
+              signOut();
+            }}
+          >
             <View style={[styles.item, { marginLeft: 3 }]}>
               <MaterialIcons name="logout" size={33} color={colors.pastelRed} />
               <Text style={[styles.subtitle, { color: colors.pastelRed }]}>

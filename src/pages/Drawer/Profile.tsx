@@ -24,6 +24,8 @@ import { useNavigation } from "@react-navigation/native";
 import StackContext from "../../contexts/Stack";
 import AuthContext from "../../contexts/Auth";
 
+import firebase from "../../firebaseConnection";
+
 export function Profile() {
   const navigation = useNavigation();
   const [isSmilePressed, setIsSmilePressed] = useState<boolean>(true);
@@ -35,7 +37,7 @@ export function Profile() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const { user, signed } = useContext(AuthContext);
+  const { user, signed, signOut } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -50,7 +52,16 @@ export function Profile() {
     setLoading(false);
   }
 
+  async function userVerification() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        signOut();
+      }
+    });
+  }
+
   useEffect(() => {
+    userVerification();
     loadPage();
   }, []);
 
