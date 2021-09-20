@@ -34,8 +34,8 @@ export function Welcome() {
   }
 
   function handleEnterAsGuest() {
-    const userName = "Convidado";
-    const email = "convidado";
+    const userName = null;
+    const email = null;
     const avatar = "../assets/profilePicture.png";
 
     return login({

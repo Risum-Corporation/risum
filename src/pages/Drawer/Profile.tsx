@@ -173,12 +173,7 @@ export function Profile() {
         </View>
       </View>
       <View
-        style={[
-          styles.filterIconsBox,
-          isWhiteMode
-            ? { borderBottomColor: colors.dividerLight }
-            : { borderBottomColor: colors.divider },
-        ]}
+        style={[styles.filterIconsBox, { borderBottomColor: colors.divider }]}
       >
         <TouchableOpacity
           onPress={() => {
@@ -278,21 +273,7 @@ export function Profile() {
             refreshing={refreshing}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
-              <MemeCardSecondary
-                postData={item}
-                footerBackground={
-                  isWhiteMode
-                    ? colors.lightBackgroundLight
-                    : colors.lightBackground
-                }
-                iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-                IconTintColor={isWhiteMode ? colors.purpleLight : colors.green}
-                dividerColor={
-                  isWhiteMode
-                    ? colors.placeholderTextLight
-                    : colors.inputBackground
-                }
-              />
+              <MemeCardSecondary postData={item} theme={isWhiteMode} />
             )}
           />
         )}

@@ -1,32 +1,37 @@
-import React, { useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import React, { useContext, useEffect } from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
 import colors from "../styles/colors";
 import { ConfirmButton } from "../components/ConfirmButton";
 import StackContext from "../contexts/Stack";
 import { TopBar } from "../components/TopBar";
 
-import { launchImageLibrary } from "react-native-image-picker";
+import firebase from "../firebaseConnection";
 
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { SendFileButton } from "../components/SendFileButton";
+
 import fonts from "../styles/fonts";
 import { TextInput } from "react-native-paper";
+import AuthContext from "../contexts/Auth";
 
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = React.useState<string>();
   const [tags, setTags] = React.useState<string>();
+  const { signOut } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  function imagePickerCallback(data: any) {
-    console.log(data);
+  async function userVerification() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        signOut();
+      }
+    });
   }
+
+  useEffect(() => {
+    userVerification();
+  }, []);
 
   return (
     <ScrollView
@@ -47,41 +52,7 @@ export function AddMeme() {
       />
 
       <View style={styles.container}>
-        <TouchableOpacity
-          style={{ marginTop: 25 }}
-          onPress={() => {
-            launchImageLibrary(
-              { mediaType: "mixed", maxHeight: 350, maxWidth: 350 },
-              imagePickerCallback
-            ); // Dando erro, verificar mais tarde
-          }}
-        >
-          <View
-            style={[
-              styles.addMemeContainer,
-              isWhiteMode
-                ? { borderColor: colors.greenLight }
-                : { borderColor: colors.green },
-            ]}
-          >
-            <SimpleLineIcons
-              name="cloud-upload"
-              size={120}
-              color={isWhiteMode ? colors.greenLight : colors.green}
-            />
-            <Text
-              style={[
-                styles.title,
-                isWhiteMode
-                  ? { color: colors.placeholderTextLight }
-                  : { color: colors.white },
-                { marginTop: 20 },
-              ]}
-            >
-              Clique aqui para{"\n"}postar um meme
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <SendFileButton theme={isWhiteMode} />
 
         <View style={[styles.form]}>
           <TextInput
@@ -103,7 +74,7 @@ export function AddMeme() {
                     textDecorationColor: colors.white,
                   }
             }
-            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            selectionColor={colors.divider}
             theme={{
               colors: {
                 text: isWhiteMode ? colors.whiteLight : colors.white,
@@ -131,7 +102,7 @@ export function AddMeme() {
                     textDecorationColor: colors.white,
                   }
             }
-            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            selectionColor={colors.divider}
             placeholder="Shitpost, Cum, Zoio..."
             theme={{
               colors: {
@@ -156,20 +127,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "100%",
     marginHorizontal: 35,
-  },
-  addMemeContainer: {
-    alignItems: "center",
-    borderWidth: 5,
-    borderBottomEndRadius: 1,
-    padding: 35,
-
-    borderStyle: "dashed",
-    borderRadius: 28,
-  },
-  title: {
-    fontFamily: fonts.heading,
-    fontSize: 28,
-    textAlign: "center",
   },
   subtitle: {
     fontFamily: fonts.heading,

@@ -126,7 +126,7 @@ export function RegisterStg1() {
                   },
               styles.input,
             ]}
-            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            selectionColor={colors.divider}
             theme={{
               colors: {
                 text: isWhiteMode ? colors.whiteLight : colors.white,
@@ -155,7 +155,7 @@ export function RegisterStg1() {
                   },
               styles.input,
             ]}
-            selectionColor={isWhiteMode ? colors.dividerLight : colors.divider}
+            selectionColor={colors.divider}
             placeholder="******"
             theme={{
               colors: {

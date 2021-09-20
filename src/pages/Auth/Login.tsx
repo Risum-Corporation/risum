@@ -56,7 +56,11 @@ export function Login() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        return login({ userName, email, avatar });
+        if (!userName || !avatar) {
+          navigation.navigate("RegisterStg3");
+        } else {
+          return login({ userName, email, avatar });
+        }
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);
@@ -94,13 +98,15 @@ export function Login() {
         }
       >
         <View style={styles.heading}>
-        <Text
+          <Text
             style={
               isWhiteMode
                 ? [styles.title, { color: colors.whiteLight }]
                 : [styles.title, { color: colors.white }]
             }
-          >Entre com sua{"\n"}Conta Risum</Text>
+          >
+            Entre com sua{"\n"}Conta Risum
+          </Text>
         </View>
 
         <View style={styles.form}>

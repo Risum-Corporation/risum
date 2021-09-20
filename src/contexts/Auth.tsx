@@ -1,10 +1,13 @@
 import React, { createContext, useState, useEffect } from "react";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import firebase from "../firebaseConnection";
+
 import signIn from "../services/auth";
 
 interface User {
-  userName: string;
-  email: string;
+  userName: string | null;
+  email: string | null;
   avatar: string;
 }
 
@@ -52,6 +55,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     AsyncStorage.clear().then(() => {
       setUser(null);
     });
+    firebase.auth().signOut();
   }
 
   return (

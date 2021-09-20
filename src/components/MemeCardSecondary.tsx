@@ -26,19 +26,10 @@ interface PostProps {
     avatar: string;
     comments: number;
   };
-  footerBackground: string;
-  iconColor: string;
-  IconTintColor: string;
-  dividerColor: string;
+  theme: boolean;
 }
 
-export function MemeCardSecondary({
-  postData,
-  footerBackground,
-  iconColor,
-  IconTintColor,
-  dividerColor,
-}: PostProps) {
+export function MemeCardSecondary({ postData, theme }: PostProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
 
@@ -77,16 +68,38 @@ export function MemeCardSecondary({
         <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
       </View>
 
-      <View style={[styles.footer, { backgroundColor: footerBackground }]}>
+      <View
+        style={[
+          styles.footer,
+          {
+            backgroundColor: theme
+              ? colors.lightBackgroundLight
+              : colors.lightBackground,
+          },
+        ]}
+      >
         <View style={styles.buttonBox}>
           <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
             <AntDesign
               name={isLikePressed ? "like1" : "like2"}
               size={24}
-              color={isLikePressed ? IconTintColor : iconColor}
+              color={
+                isLikePressed
+                  ? theme
+                    ? colors.purpleLight
+                    : colors.green
+                  : theme
+                  ? colors.whiteLight
+                  : colors.white
+              }
             />
           </TouchableOpacity>
-          <Text style={[styles.memeStats, { color: iconColor }]}>
+          <Text
+            style={[
+              styles.memeStats,
+              { color: theme ? colors.whiteLight : colors.white },
+            ]}
+          >
             {postData.likes}
           </Text>
 
@@ -94,10 +107,15 @@ export function MemeCardSecondary({
             <Ionicons
               name="md-chatbox-ellipses-outline"
               size={24}
-              color={iconColor}
+              color={theme ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
-          <Text style={[styles.memeStats, { color: iconColor }]}>
+          <Text
+            style={[
+              styles.memeStats,
+              { color: theme ? colors.whiteLight : colors.white },
+            ]}
+          >
             {postData.comments}
           </Text>
 
@@ -105,7 +123,15 @@ export function MemeCardSecondary({
             <Ionicons
               name={isBookmarkPressed ? "md-bookmark" : "md-bookmark-outline"}
               size={24}
-              color={isBookmarkPressed ? IconTintColor : iconColor}
+              color={
+                isBookmarkPressed
+                  ? theme
+                    ? colors.purpleLight
+                    : colors.green
+                  : theme
+                  ? colors.whiteLight
+                  : colors.white
+              }
             />
           </TouchableOpacity>
 
@@ -113,13 +139,18 @@ export function MemeCardSecondary({
             <Ionicons
               name="md-share-social-outline"
               size={24}
-              color={iconColor}
+              color={theme ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.userInfoContainer}>
-          <Text style={[styles.authorName, { color: iconColor }]}>
+          <Text
+            style={[
+              styles.authorName,
+              { color: theme ? colors.whiteLight : colors.white },
+            ]}
+          >
             {postData.author}
           </Text>
           <TouchableOpacity>
@@ -136,9 +167,6 @@ export function MemeCardSecondary({
             marginVertical: 15,
             marginHorizontal: "2%",
           },
-          isSwitchOn
-            ? { borderBottomColor: colors.dividerLight }
-            : { borderBottomColor: colors.divider },
         ]}
       />
     </SafeAreaView>

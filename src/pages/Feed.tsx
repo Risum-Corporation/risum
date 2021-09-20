@@ -59,17 +59,7 @@ export function Feed() {
         showsVerticalScrollIndicator={false}
         refreshing={refreshing}
         renderItem={({ item }) => (
-          <MemeCard
-            postData={item}
-            footerBackground={
-              isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
-            }
-            iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-            IconTintColor={isWhiteMode ? colors.greenLight : colors.green}
-            dividerColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.inputBackground
-            }
-          />
+          <MemeCard postData={item} theme={isWhiteMode} />
         )}
         maxToRenderPerBatch={5}
       />

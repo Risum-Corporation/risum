@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,7 @@ import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import SwitchMode from "../styles/SwitchMode";
+import AuthContext from "../contexts/Auth";
 
 interface TopBarProps {
   name: string;
@@ -23,12 +24,18 @@ interface TopBarProps {
   textColor: string;
   searchBackgroundColor: string;
   searchColor: string;
-
 }
 
-export function TopBar({ name, iconColor, textColor, searchBackgroundColor, searchColor }: TopBarProps) {
+export function TopBar({
+  name,
+  iconColor,
+  textColor,
+  searchBackgroundColor,
+  searchColor,
+}: TopBarProps) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [isSearchPressed, setIsSearchPressed] = useState<boolean>();
+  const { user } = useContext(AuthContext);
 
   const onChangeSearch = (query: React.SetStateAction<string>) =>
     setSearchQuery(query);
@@ -36,11 +43,6 @@ export function TopBar({ name, iconColor, textColor, searchBackgroundColor, sear
   function handleSearchClick() {
     setIsSearchPressed(!isSearchPressed);
   }
-
-  // For the menu, when pressing the profile picture
-  const [visible, setVisible] = useState(false);
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
 
   // For menu navigation
   const navigation = useNavigation();
@@ -56,7 +58,9 @@ export function TopBar({ name, iconColor, textColor, searchBackgroundColor, sear
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
         <Image
-          source={require("../assets/profilePicture.gif")}
+          source={{
+            uri: "https://marcas-logos.net/wp-content/uploads/2020/03/MOZILLA-FIREFOX-LOGO.png",
+          }}
           style={styles.avatar}
         />
       </TouchableOpacity>
@@ -79,7 +83,7 @@ export function TopBar({ name, iconColor, textColor, searchBackgroundColor, sear
           placeholderTextColor={colors.placeholderText}
           onChangeText={onChangeSearch}
           value={searchQuery}
-          style={[styles.searchBar, {backgroundColor: searchBackgroundColor}]}
+          style={[styles.searchBar, { backgroundColor: searchBackgroundColor }]}
           inputStyle={{ color: searchColor }}
           iconColor={colors.white}
           autoFocus
