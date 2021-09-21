@@ -81,7 +81,8 @@ export function RegisterStg2() {
             : [styles.wrapper, { backgroundColor: colors.background }]
         }
       >
-        <RegisterProgressBar position={50} />
+        <RegisterProgressBar position={50} theme={isWhiteMode}/>
+
 
         <View style={styles.heading}>
           <Text

@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   View,
+  StatusBar,
+  Platform,
 } from "react-native";
 
 import { Button } from "react-native-paper";
@@ -57,6 +59,15 @@ export function Welcome() {
           : { backgroundColor: colors.background },
       ]}
     >
+      <StatusBar
+        barStyle={
+          Platform.OS === "ios"
+            ? isWhiteMode
+              ? "dark-content"
+              : "light-content"
+            : "default"
+        }
+      />
       <View
         style={[
           styles.wrapper,

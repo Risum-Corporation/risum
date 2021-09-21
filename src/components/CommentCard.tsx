@@ -87,7 +87,7 @@ export function CommentCard({ postData, theme }: PostProps) {
             marginHorizontal: 15,
           },
           {
-            borderBottomColor: colors.divider,
+            borderBottomColor: theme ? colors.placeholderTextLight : colors.divider,
           },
         ]}
       />

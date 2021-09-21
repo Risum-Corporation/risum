@@ -27,7 +27,7 @@ export function ConfirmButton({ title, theme, ...rest }: ConfirmButtonProps) {
       <Text
         style={
           theme
-            ? [styles.text, { color: colors.whiteLight }]
+            ? [styles.text, { color: colors.backgroundLight}]
             : [styles.text, { color: colors.background }]
         }
       >

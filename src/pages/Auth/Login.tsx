@@ -5,24 +5,21 @@ import {
   View,
   StyleSheet,
   Image,
-  TextInput,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
 
 import firebase from "../../firebaseConnection";
-
-import googleWhite from "../../assets/googleWhite.png";
-import appleWhite from "../../assets/appleWhite.png";
-import facebookWhite from "../../assets/facebookWhite.png";
+import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/core";
 
 import AuthContext from "../../contexts/Auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StackContext from "../../contexts/Stack";
+
+import { AntDesign } from "@expo/vector-icons";
 
 export function Login() {
   const { signed, user, login } = useContext(AuthContext);
@@ -111,32 +108,63 @@ export function Login() {
 
         <View style={styles.form}>
           <TextInput
-            placeholder="Email"
-            placeholderTextColor={colors.placeholderText}
-            style={[
-              styles.input,
-              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
-            ]}
+            label="Email"
+            mode={"flat"}
             onChangeText={handleEmailInputChange}
-          />
-          <TextInput
-            placeholder="********"
-            placeholderTextColor={colors.placeholderText}
+            placeholder="usuario@mail.com"
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            underlineColor={"transparent"}
             style={[
+              isWhiteMode
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  },
               styles.input,
-              { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 },
             ]}
-            onChangeText={handlePasswordInputChange}
-            secureTextEntry={true}
+            selectionColor={colors.divider}
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
           />
-          <View style={styles.textBox}>
-            {isEmailOrUsernameInvalid && (
-              <Text style={styles.redAdvertisement}>{errorMessage}</Text>
-            )}
-            <TouchableOpacity onPress={handleForgotPwd}>
-              <Text style={styles.text}>Esqueci minha senha</Text>
-            </TouchableOpacity>
-          </View>
+
+          <TextInput
+            label="Senha"
+            secureTextEntry={true}
+            mode={"flat"}
+            onChangeText={handlePasswordInputChange}
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            underlineColor={"transparent"}
+            style={[
+              isWhiteMode
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  },
+              styles.input,
+            ]}
+            selectionColor={colors.divider}
+            placeholder="******"
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
+          />
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
@@ -146,21 +174,37 @@ export function Login() {
           />
         </View>
         <View style={styles.orBox}>
-          <Text style={styles.subtitle}>OU</Text>
+          <Text
+            style={[
+              styles.subtitle,
+              isWhiteMode ? { color: colors.whiteLight } : { color: colors.white },
+            ]}
+          >
+            OU
+          </Text>
         </View>
 
         <View style={styles.socialRegister}>
           <TouchableOpacity activeOpacity={0.7}>
-            <Image source={googleWhite} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{ marginHorizontal: "25%" }}
-          >
-            <Image source={appleWhite} />
+            <AntDesign
+              name="google"
+              size={45}
+              color={isWhiteMode ? colors.whiteLight : colors.white}
+            />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7}>
-            <Image source={facebookWhite} />
+            <AntDesign
+              name="apple1"
+              size={45}
+              color={isWhiteMode ? colors.whiteLight : colors.white}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.7}>
+            <AntDesign
+              name="facebook-square"
+              size={45}
+              color={isWhiteMode ? colors.whiteLight : colors.white}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -198,14 +242,9 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    marginVertical: 5,
   },
   input: {
-    height: 64,
-    padding: 20,
     borderBottomWidth: 1,
-    color: colors.white,
-    backgroundColor: colors.inputBackground,
   },
   buttonBox: {
     width: "100%",
@@ -220,7 +259,7 @@ const styles = StyleSheet.create({
   socialRegister: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     width: "80%",
     marginBottom: "5%",
   },

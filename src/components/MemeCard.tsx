@@ -21,8 +21,8 @@ interface PostProps {
     memeUrl: string;
     likes: number;
     memeTitle: string;
-    tags: string[];
-    avatar: string;
+    tags: string[];    
+    avatar: string; 
     comments: number;
   };
   theme: boolean;
@@ -168,8 +168,8 @@ export function MemeCard({ postData, theme }: PostProps) {
             marginVertical: 25,
             marginHorizontal: 15,
           },
-          {
-            borderBottomColor: colors.divider,
+          { 
+            borderBottomColor: theme ? colors.placeholderTextLight : colors.divider,
           },
         ]}
       />

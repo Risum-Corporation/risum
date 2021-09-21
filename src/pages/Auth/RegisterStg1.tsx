@@ -17,13 +17,11 @@ import firebase from "../../firebaseConnection";
 
 import { TextInput } from "react-native-paper";
 
-import googleWhite from "../../assets/googleWhite.png";
-import appleWhite from "../../assets/appleWhite.png";
-import facebookWhite from "../../assets/facebookWhite.png";
 import { useNavigation } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
+import { AntDesign } from "@expo/vector-icons";
 
 export function RegisterStg1() {
   const navigation = useNavigation();
@@ -92,7 +90,7 @@ export function RegisterStg1() {
             : [styles.wrapper, { backgroundColor: colors.background }]
         }
       >
-        <RegisterProgressBar position={25} />
+        <RegisterProgressBar position={25} theme={isWhiteMode}/>
 
         <View style={styles.heading}>
           <Text
@@ -176,13 +174,15 @@ export function RegisterStg1() {
             onPress={handleConfirm}
           />
         </View>
+
         <View style={styles.orBox}>
           <Text
-            style={
+            style={[
+              styles.subtitle,
               isWhiteMode
-                ? [styles.subtitle, { color: colors.whiteLight }]
-                : [styles.subtitle, { color: colors.white }]
-            }
+                ? { color: colors.whiteLight }
+                : { color: colors.white },
+            ]}
           >
             OU
           </Text>
@@ -190,16 +190,25 @@ export function RegisterStg1() {
 
         <View style={styles.socialRegister}>
           <TouchableOpacity activeOpacity={0.7}>
-            <Image source={googleWhite} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{ marginHorizontal: "25%" }}
-          >
-            <Image source={appleWhite} />
+            <AntDesign
+              name="google"
+              size={45}
+              color={isWhiteMode ? colors.whiteLight : colors.white}
+            />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7}>
-            <Image source={facebookWhite} />
+            <AntDesign
+              name="apple1"
+              size={45}
+              color={isWhiteMode ? colors.whiteLight : colors.white}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.7}>
+            <AntDesign
+              name="facebook-square"
+              size={45}
+              color={isWhiteMode ? colors.whiteLight : colors.white}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -253,7 +262,7 @@ const styles = StyleSheet.create({
   socialRegister: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     width: "80%",
     marginBottom: "5%",
   },

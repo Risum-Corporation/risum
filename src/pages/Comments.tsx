@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, Text } from "react-native";
 
+import { posts } from "../database/fakeData";
 import { comments } from "../database/fakeData";
 
 import colors from "../styles/colors";
 import StackContext from "../contexts/Stack";
 import { GoBackButton } from "../components/GoBackButton";
 import { CommentCard } from "../components/CommentCard";
+import { MemeCardSecondary } from "../components/MemeCardSecondary";
 
 export function Comments() {
   const [page, setPage] = useState(1);
@@ -47,6 +49,9 @@ export function Comments() {
       }
     >
       <GoBackButton theme={isWhiteMode} />
+
+
+
       <FlatList
         data={comments}
         keyExtractor={(post) => String(post.id)}
@@ -56,7 +61,9 @@ export function Comments() {
         showsVerticalScrollIndicator={false}
         refreshing={refreshing}
         renderItem={({ item }) => (
-          <CommentCard postData={item} theme={isWhiteMode} />
+          <>
+            <CommentCard postData={item} theme={isWhiteMode} />
+          </>
         )}
         maxToRenderPerBatch={5}
       />

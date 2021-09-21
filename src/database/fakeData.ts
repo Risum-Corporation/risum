@@ -14,7 +14,7 @@ interface CommentProps {
   author: string;
   likes: number;
   content: string;
-}
+} 
 
 export const posts: PostProps[] = [
   {

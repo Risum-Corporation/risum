@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
+  Platform
 } from "react-native";
 import { GoBackButton } from "../../components/GoBackButton";
 import colors from "../../styles/colors";
@@ -26,7 +27,15 @@ export function Settings() {
     <SafeAreaView
       style={isWhiteMode ? styles.containerLight : styles.container}
     >
-      <StatusBar barStyle={isWhiteMode ? "dark-content" : "light-content"} />
+      <StatusBar
+        barStyle={
+          Platform.OS === "ios"
+            ? isWhiteMode
+              ? "dark-content"
+              : "light-content"
+            : "default"
+        }
+      />
       <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
       <View style={styles.heading}>
         <Text

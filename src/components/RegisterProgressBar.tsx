@@ -4,13 +4,15 @@ import colors from "../styles/colors";
 
 interface PositionProps {
   position: number;
+  theme: boolean
+
 }
 
-export function RegisterProgressBar(props: PositionProps) {
+export function RegisterProgressBar({position, theme} : PositionProps) {
   return (
     <View style={styles.progressBackground}>
       <View
-        style={[styles.currentProgress, { width: `${props.position}%` }]}
+        style={[styles.currentProgress, { width: `${position}%`, backgroundColor: theme ? colors.purpleLight : colors.green }]}
       />
     </View>
   );

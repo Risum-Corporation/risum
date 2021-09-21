@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Platform
 } from "react-native";
 import colors from "../../styles/colors";
 
@@ -89,7 +90,15 @@ export function Profile() {
           : { backgroundColor: colors.background },
       ]}
     >
-      <StatusBar barStyle={isWhiteMode ? "dark-content" : "light-content"} />
+      <StatusBar
+        barStyle={
+          Platform.OS === "ios"
+            ? isWhiteMode
+              ? "dark-content"
+              : "light-content"
+            : "default"
+        }
+      />
       <Image
         source={require("../../assets/wallpaper.jpg")}
         style={styles.userWallpaper}
