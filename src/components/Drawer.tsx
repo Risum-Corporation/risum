@@ -1,23 +1,24 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Platform } from "react-native";
 import {
+  DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import SwitchMode from "../styles/SwitchMode";
 
-export function Drawer({ ...props }) {
-  // Theme
-  let isWhiteMode = SwitchMode.isSwitchOn;
+interface DrawerProps extends DrawerContentComponentProps {
+  theme: boolean;
+}
 
+export function Drawer({ theme, ...props }: DrawerProps) {
   return (
     <View
       style={[
         styles.container,
-        isWhiteMode
+        theme
           ? { backgroundColor: colors.backgroundLight }
           : { backgroundColor: colors.background },
       ]}
@@ -37,9 +38,7 @@ export function Drawer({ ...props }) {
             <Text
               style={[
                 styles.title,
-                isWhiteMode
-                  ? { color: colors.whiteLight }
-                  : { color: colors.white },
+                theme ? { color: colors.whiteLight } : { color: colors.white },
               ]}
             >
               Usuário
@@ -48,7 +47,7 @@ export function Drawer({ ...props }) {
             <Text
               style={[
                 styles.userID,
-                isWhiteMode
+                theme
                   ? { color: colors.placeholderTextLight }
                   : { color: colors.placeholderText },
               ]}
@@ -62,17 +61,13 @@ export function Drawer({ ...props }) {
               <DrawerItemList
                 {...props}
                 activeBackgroundColor={
-                  isWhiteMode ? colors.purpleLight : colors.purple
+                  theme ? colors.purpleLight : colors.purple
                 }
                 inactiveBackgroundColor={
-                  isWhiteMode
-                    ? colors.lightBackgroundLight
-                    : colors.lightBackground
+                  theme ? colors.lightBackgroundLight : colors.lightBackground
                 }
-                activeTintColor={isWhiteMode ? colors.whiteLight : colors.white}
-                inactiveTintColor={
-                  isWhiteMode ? colors.whiteLight : colors.white
-                }
+                activeTintColor={theme ? colors.whiteLight : colors.white}
+                inactiveTintColor={theme ? colors.whiteLight : colors.white}
               />
             </View>
           </View>

@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Platform
+  Platform,
 } from "react-native";
 import colors from "../../styles/colors";
 

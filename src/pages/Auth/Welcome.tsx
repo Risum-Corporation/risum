@@ -5,13 +5,10 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
   View,
   StatusBar,
   Platform,
 } from "react-native";
-
-import { Button } from "react-native-paper";
 
 import risumIcon from "../../assets/risumIcon.png";
 import risumWhiteIcon from "../../assets/risumWhiteIcon.png";
@@ -86,7 +83,7 @@ export function Welcome() {
           </View>
         </TouchableOpacity>
 
-        <View style={styles.titleBox}>
+        <View>
           <Text
             style={[
               styles.title,
@@ -139,31 +136,23 @@ export function Welcome() {
         </View>
 
         <View style={styles.guestBox}>
-          <Button
-            mode="outlined"
+          <TouchableOpacity
             onPress={handleEnterAsGuest}
-            color={colors.text}
-            uppercase={false}
-            contentStyle={{}}
-            style={[
-              styles.guestButton,
-              isWhiteMode ? {} : { borderColor: colors.outlineGray },
-            ]}
+            style={styles.guestButton}
           >
             <Text style={styles.text}>Entrar como Convidado</Text>
-          </Button>
+          </TouchableOpacity>
         </View>
-
-        <View
-          style={[
-            styles.footer,
-            isWhiteMode
-              ? { backgroundColor: colors.lightBackgroundLight }
-              : { backgroundColor: colors.lightBackground },
-          ]}
-        >
-          <Text style={styles.text}>Bem vindo ao Risum!</Text>
-        </View>
+      </View>
+      <View
+        style={[
+          styles.footer,
+          isWhiteMode
+            ? { backgroundColor: colors.lightBackgroundLight }
+            : { backgroundColor: colors.lightBackground },
+        ]}
+      >
+        <Text style={styles.text}>Bem vindo ao Risum!</Text>
       </View>
     </SafeAreaView>
   );
@@ -172,38 +161,33 @@ export function Welcome() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
     backgroundColor: colors.background,
   },
-  titleBox: {
-    marginTop: "-20%",
-  },
   buttonBox: {
-    width: "97%",
     flexDirection: "row",
     marginTop: 70,
+    marginBottom: 20,
   },
   guestBox: {
-    flex: 1,
-    marginTop: 50,
-    opacity: 0.7,
+    flexDirection: "row",
+    marginHorizontal: 10,
   },
   image: {
-    width: 153,
-    height: Dimensions.get("window").width * 0.9,
+    width: 160,
+    height: 160,
     resizeMode: "contain",
   },
   title: {
     fontSize: 50,
     fontFamily: fonts.heading,
+    marginTop: 50,
+    marginBottom: 25,
     textAlign: "center",
   },
   button: {
@@ -211,26 +195,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 8,
     height: 90,
-    width: "100%",
     flex: 1,
+    marginHorizontal: 10,
   },
   signUpButton: {
     backgroundColor: colors.purple,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 20,
   },
   signInButton: {
     backgroundColor: colors.green,
   },
   footer: {
     backgroundColor: colors.lightBackground,
-    width: "120%",
     height: 50,
+    bottom: 1,
+
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    bottom: 0,
   },
   text: {
     fontSize: 20,
@@ -239,6 +221,14 @@ const styles = StyleSheet.create({
   },
   guestButton: {
     borderWidth: 2,
-    paddingHorizontal: "6%",
+    height: 50,
+    borderRadius: 5,
+
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+
+    opacity: 0.7,
+    borderColor: colors.outlineGray,
   },
 });

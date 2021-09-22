@@ -14,7 +14,7 @@ interface CommentProps {
   author: string;
   likes: number;
   content: string;
-} 
+}
 
 export const posts: PostProps[] = [
   {
@@ -40,7 +40,7 @@ export const posts: PostProps[] = [
   {
     id: 3,
     author: "DunkerJeJeNiño",
-    memeUrl: "https://source.unsplash.com/random/500x600",
+    memeUrl: "https://source.unsplash.com/random/",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],

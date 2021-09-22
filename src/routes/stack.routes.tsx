@@ -26,7 +26,9 @@ const drawerAndTabScreen = () => {
 
   return (
     <drawerRoutes.Navigator
-      drawerContent={Drawer}
+      drawerContent={({ ...props }) => (
+        <Drawer {...props} theme={isWhiteMode} />
+      )}
       drawerStyle={{
         borderRadius: 30,
         height: Platform.OS === "ios" ? 310 : 350,

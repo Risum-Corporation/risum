@@ -1,5 +1,11 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  TouchableOpacityProps,
+} from "react-native";
 
 import { launchImageLibrary } from "react-native-image-picker";
 
@@ -7,11 +13,11 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-interface ButtonProps {
+interface ButtonProps extends TouchableOpacityProps {
   theme: boolean;
 }
 
-export function SendFileButton({ theme }: ButtonProps) {
+export function SendFileButton({ theme, ...props }: ButtonProps) {
   function imagePickerCallback(data: any) {
     console.log(data);
   }
@@ -25,6 +31,7 @@ export function SendFileButton({ theme }: ButtonProps) {
           imagePickerCallback
         ); // Dando erro, verificar mais tarde
       }}
+      {...props}
     >
       <View
         style={[
