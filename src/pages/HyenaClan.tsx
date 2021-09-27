@@ -11,15 +11,7 @@ export function HyenaClan() {
 
   return (
     <View style={[isWhiteMode ? styles.wrapperLight : styles.wrapper]}>
-      <TopBar
-        name="CupForce"
-        textColor={isWhiteMode ? colors.greenLight : colors.green}
-        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-        searchColor={isWhiteMode ? colors.whiteLight : colors.white}
-        searchBackgroundColor={
-          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
-        }
-      />
+      <TopBar name="CupForce" theme={isWhiteMode} />
       <View style={styles.wallpaperContainer}>
         <Image
           source={require("../assets/wpWallpaper.jpg")}

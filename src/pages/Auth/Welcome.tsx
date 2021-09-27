@@ -6,8 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  StatusBar,
-  Platform,
 } from "react-native";
 
 import risumIcon from "../../assets/risumIcon.png";
@@ -23,38 +21,45 @@ import { TwoButton } from "../../components/TwoButton";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
-  const { login } = useContext(AuthContext);
+  const { login, loginAnonymously } = useContext(AuthContext);
 
   function handleEnterAsGuest() {
-    const userName = null;
-    const email = null;
-    const avatar = "../assets/profilePicture.png";
-
-    return login({
-      userName,
-      email,
-      avatar,
-    });
+    loginAnonymously();
   }
 
   // Theme
   const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
 
   return (
-    <SafeAreaView style={[styles.container]}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: isWhiteMode
+            ? colors.backgroundLight
+            : colors.background,
+        },
+      ]}
+    >
       <View style={styles.risumIcon}>
-        <TouchableOpacity>
-          <Image source={risumIcon} />
+        <TouchableOpacity onPress={toggleWhiteMode}>
+          <Image source={isWhiteMode ? risumWhiteIcon : risumIcon} />
         </TouchableOpacity>
         <Text style={[styles.title]}>Risum</Text>
       </View>
 
-      <View style={{ marginHorizontal: "8%" }}>
+      <View
+        style={{
+          marginHorizontal: "8%",
+          alignItems: "center",
+        }}
+      >
         <TwoButton
           title={`Criar ${"\n"} Conta `}
           goto={"RegisterStg1"}
           title1="Login"
           goto1={"Login"}
+          theme={isWhiteMode}
         />
         <View style={styles.guestBox}>
           <TouchableOpacity
@@ -65,7 +70,16 @@ export function Welcome() {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.footer}>
+      <View
+        style={[
+          styles.footer,
+          {
+            backgroundColor: isWhiteMode
+              ? colors.lightBackgroundLight
+              : colors.lightBackground,
+          },
+        ]}
+      >
         <Text style={styles.text}>Bem vindo ao Risum!</Text>
       </View>
     </SafeAreaView>
@@ -75,7 +89,6 @@ export function Welcome() {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: colors.background,
   },
   risumIcon: {
     alignItems: "center",
@@ -92,6 +105,7 @@ const styles = StyleSheet.create({
   guestBox: {
     alignItems: "center",
     marginTop: 50,
+    width: "100%",
   },
   guestButton: {
     borderWidth: 2,
@@ -109,7 +123,6 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   footer: {
-    backgroundColor: colors.lightBackground,
     height: 55,
     bottom: 1,
 

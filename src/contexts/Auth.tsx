@@ -17,6 +17,7 @@ interface AuthContextData {
   loading: boolean;
 
   login({ ...props }: User): Promise<void>;
+  loginAnonymously(): void;
   signOut(): void;
 }
 
@@ -25,8 +26,18 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [signed, setSigned] = useState(false);
 
   useEffect(() => {
+    function handleStateChanged(user: any) {
+      if (user) {
+        setSigned(true);
+      } else {
+        setSigned(false);
+      }
+    }
+    firebase.auth().onAuthStateChanged(handleStateChanged);
+
     async function loadStoragedData() {
       const storagedUser = await AsyncStorage.getItem("@risum:user");
       const storagedToken = await AsyncStorage.getItem("@risum:token");
@@ -51,6 +62,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     await AsyncStorage.setItem("@risum:token", response.token);
   }
 
+  function loginAnonymously() {
+    firebase
+      .auth()
+      .signInAnonymously()
+      .catch((error) => {
+        if (error.code === "auth/operation-not-allowed") {
+          console.log("Enable anonymous login in your firebase console");
+        } else {
+          console.log(error.code);
+        }
+      });
+  }
+
   async function signOut() {
     AsyncStorage.clear().then(() => {
       setUser(null);
@@ -60,7 +84,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, loading, login, signOut }}
+      value={{ signed, user, loading, login, loginAnonymously, signOut }}
     >
       {children}
     </AuthContext.Provider>

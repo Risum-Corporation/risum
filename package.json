@@ -21,6 +21,7 @@
     "expo": "~41.0.1",
     "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
+    "expo-google-sign-in": "~9.1.0",
     "expo-status-bar": "~1.0.4",
     "firebase": "8.2.3",
     "global": "^4.4.0",

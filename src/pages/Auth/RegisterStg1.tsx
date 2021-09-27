@@ -4,9 +4,7 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
@@ -72,6 +70,8 @@ export function RegisterStg1() {
       });
   }
 
+  async function handleRegisterWithGoogle() {}
+
   return (
     <SafeAreaView
       style={[
@@ -90,7 +90,7 @@ export function RegisterStg1() {
             : [styles.wrapper, { backgroundColor: colors.background }]
         }
       >
-        <RegisterProgressBar position={25} theme={isWhiteMode}/>
+        <RegisterProgressBar position={25} theme={isWhiteMode} />
 
         <View style={styles.heading}>
           <Text
@@ -189,21 +189,21 @@ export function RegisterStg1() {
         </View>
 
         <View style={styles.socialRegister}>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity onPress={handleRegisterWithGoogle}>
             <AntDesign
               name="google"
               size={45}
               color={isWhiteMode ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity>
             <AntDesign
               name="apple1"
               size={45}
               color={isWhiteMode ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity>
             <AntDesign
               name="facebook-square"
               size={45}

@@ -8,8 +8,6 @@ import {
 } from "react-native";
 import colors from "../styles/colors";
 import { useNavigation } from "@react-navigation/core";
-import AuthContext from "../contexts/Auth";
-import StackContext from "../contexts/Stack";
 
 import fonts from "../styles/fonts";
 
@@ -18,7 +16,7 @@ interface ConfirmButtonProps extends TouchableOpacityProps {
   title1?: string;
   goto: string;
   goto1: string;
-  theme?: boolean;
+  theme: boolean;
 }
 
 export function TwoButton({
@@ -32,31 +30,51 @@ export function TwoButton({
   const navigation = useNavigation(); // Navigation between screen
   return (
     <View style={styles.container}>
-      <View>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.purple }]}
-          activeOpacity={0.7}
-          onPress={() => {
-            navigation.navigate(`${goto}`);
-          }}
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor: theme ? colors.purpleLight : colors.purple,
+          },
+        ]}
+        activeOpacity={0.7}
+        onPress={() => {
+          navigation.navigate(`${goto}`);
+        }}
+        {...rest}
+      >
+        <Text
+          style={[
+            styles.text,
+            { color: theme ? colors.whiteLight : colors.white },
+          ]}
         >
-          <Text style={[styles.text, { color: colors.white }]}> {title}</Text>
-        </TouchableOpacity>
-      </View>
+          {title}
+        </Text>
+      </TouchableOpacity>
 
-      <View>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: colors.green }]}
-          activeOpacity={0.7}
-          onPress={() => {
-            navigation.navigate(`${goto1}`);
-          }}
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor: theme ? colors.greenLight : colors.green,
+          },
+        ]}
+        activeOpacity={0.7}
+        onPress={() => {
+          navigation.navigate(`${goto1}`);
+        }}
+        {...rest}
+      >
+        <Text
+          style={[
+            styles.text,
+            { color: theme ? colors.backgroundLight : colors.background },
+          ]}
         >
-          <Text style={[styles.text, { color: colors.background }]}>
-            {title1}
-          </Text>
-        </TouchableOpacity>
-      </View>
+          {title1}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -78,5 +96,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 90,
     width: 165,
+    marginHorizontal: 4,
   },
 });

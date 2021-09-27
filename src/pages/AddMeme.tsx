@@ -5,8 +5,6 @@ import { ConfirmButton } from "../components/ConfirmButton";
 import StackContext from "../contexts/Stack";
 import { TopBar } from "../components/TopBar";
 
-import firebase from "../firebaseConnection";
-
 import { SendFileButton } from "../components/SendFileButton";
 
 import fonts from "../styles/fonts";
@@ -16,17 +14,15 @@ import AuthContext from "../contexts/Auth";
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = React.useState<string>();
   const [tags, setTags] = React.useState<string>();
-  const { signOut } = useContext(AuthContext);
+  const { signOut, signed } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   async function userVerification() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        signOut();
-      }
-    });
+    if (!signed) {
+      signOut();
+    }
   }
 
   useEffect(() => {

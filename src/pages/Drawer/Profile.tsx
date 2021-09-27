@@ -54,11 +54,9 @@ export function Profile() {
   }
 
   async function userVerification() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        signOut();
-      }
-    });
+    if (!signed) {
+      signOut();
+    }
   }
 
   useEffect(() => {

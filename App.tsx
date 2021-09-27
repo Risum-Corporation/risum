@@ -1,7 +1,7 @@
-import React, { useContext }  from "react";
+import React, { useContext } from "react";
 import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
-import { AuthProvider } from "./src/contexts/Auth";
+import AuthContext, { AuthProvider } from "./src/contexts/Auth";
 import { StatusBar } from "react-native";
 import { StackProvider } from "./src/contexts/Stack";
 import {
@@ -17,7 +17,6 @@ import {
 
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { NavigationContainer } from "@react-navigation/native";
-import StackContext from "./src/contexts/Stack";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -28,15 +27,15 @@ export default function App() {
     Poppins_600SemiBold,
   });
 
-  if (!fontsLoaded) {
+  const { loading } = useContext(AuthContext);
+
+  if (!fontsLoaded || loading) {
     return <AppLoading />;
   }
 
-
-
   return (
     <NavigationContainer>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={"light-content"} />
       <AuthProvider>
         <StackProvider>
           <Routes />

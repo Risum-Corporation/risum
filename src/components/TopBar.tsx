@@ -20,19 +20,10 @@ import AuthContext from "../contexts/Auth";
 
 interface TopBarProps {
   name: string;
-  iconColor: string;
-  textColor: string;
-  searchBackgroundColor: string;
-  searchColor: string;
+  theme: boolean;
 }
 
-export function TopBar({
-  name,
-  iconColor,
-  textColor,
-  searchBackgroundColor,
-  searchColor,
-}: TopBarProps) {
+export function TopBar({ name, theme }: TopBarProps) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [isSearchPressed, setIsSearchPressed] = useState<boolean>();
   const { user } = useContext(AuthContext);
@@ -66,14 +57,21 @@ export function TopBar({
       </TouchableOpacity>
 
       {!isSearchPressed && (
-        <Text style={[styles.title, { color: textColor }]}>{name}</Text>
+        <Text
+          style={[
+            styles.title,
+            { color: theme ? colors.greenLight : colors.green },
+          ]}
+        >
+          {name}
+        </Text>
       )}
 
       <TouchableOpacity onPress={handleSearchClick} style={{ marginRight: 5 }}>
         <AntDesign
           name={isSearchPressed ? "close" : "search1"}
           size={27}
-          color={iconColor}
+          color={theme ? colors.whiteLight : colors.white}
         />
       </TouchableOpacity>
 
@@ -83,8 +81,15 @@ export function TopBar({
           placeholderTextColor={colors.placeholderText}
           onChangeText={onChangeSearch}
           value={searchQuery}
-          style={[styles.searchBar, { backgroundColor: searchBackgroundColor }]}
-          inputStyle={{ color: searchColor }}
+          style={[
+            styles.searchBar,
+            {
+              backgroundColor: theme
+                ? colors.lightBackgroundLight
+                : colors.lightBackground,
+            },
+          ]}
+          inputStyle={{ color: theme ? colors.whiteLight : colors.white }}
           iconColor={colors.white}
           autoFocus
         />

@@ -3,6 +3,8 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import { posts } from "../database/fakeData";
 
+import firebase from "../firebaseConnection";
+
 import colors from "../styles/colors";
 import { TopBar } from "../components/TopBar";
 import { MemeCard } from "../components/MemeCard";
@@ -40,15 +42,7 @@ export function Feed() {
   }
   return (
     <View style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
-      <TopBar
-        name="Feed"
-        textColor={isWhiteMode ? colors.greenLight : colors.green}
-        iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-        searchColor={isWhiteMode ? colors.whiteLight : colors.white}
-        searchBackgroundColor={
-          isWhiteMode ? colors.lightBackgroundLight : colors.lightBackground
-        }
-      />
+      <TopBar name="Feed" theme={isWhiteMode} />
 
       <FlatList
         data={posts}
