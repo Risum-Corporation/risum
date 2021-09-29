@@ -16,14 +16,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.risumcorporation.risum"
+      "bundleIdentifier": "host.exp.exponent"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1F1F1F"
       },
-      "package": "com.risumcorporation.risum"
+      "package": "host.exp.exponent"
     },
     "web": {
       "favicon": "./assets/favicon.png"

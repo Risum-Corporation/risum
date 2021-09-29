@@ -1,35 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   TouchableOpacity,
   Text,
   StyleSheet,
   TouchableOpacityProps,
+  Platform,
 } from "react-native";
-
-import { launchImageLibrary } from "react-native-image-picker";
 
 import { SimpleLineIcons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+
+import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
 interface ButtonProps extends TouchableOpacityProps {
   theme: boolean;
 }
 
 export function SendFileButton({ theme, ...props }: ButtonProps) {
-  function imagePickerCallback(data: any) {
-    console.log(data);
-  }
+  const [image, setImage] = useState(null);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert(
+            "É necessária permissão para acessar suas fotos para postar um meme"
+          );
+          navigation.navigate("Feed");
+        }
+      }
+    })();
+  }, []);
 
   return (
     <TouchableOpacity
       style={{ marginTop: 25 }}
-      onPress={() => {
-        launchImageLibrary(
-          { mediaType: "mixed", maxHeight: 350, maxWidth: 350 },
-          imagePickerCallback
-        ); // Dando erro, verificar mais tarde
+      onPress={async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        setImage(result.uri);
       }}
       {...props}
     >

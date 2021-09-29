@@ -20,6 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 import { AntDesign } from "@expo/vector-icons";
+import AuthContext from "../../contexts/Auth";
 
 export function RegisterStg1() {
   const navigation = useNavigation();
@@ -30,6 +31,7 @@ export function RegisterStg1() {
   const [errorMessage, setErrorMessage] = useState<string>(
     "Email ou senha inválidos"
   );
+  const { signInWithGoogleAsync } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -70,7 +72,9 @@ export function RegisterStg1() {
       });
   }
 
-  async function handleRegisterWithGoogle() {}
+  async function handleRegisterWithGoogle() {
+    signInWithGoogleAsync();
+  }
 
   return (
     <SafeAreaView
@@ -100,7 +104,7 @@ export function RegisterStg1() {
                 : [styles.title, { color: colors.white }]
             }
           >
-            Email e{"\n"}Senha
+            Crie sua{"\n"}conta Risum
           </Text>
         </View>
 
