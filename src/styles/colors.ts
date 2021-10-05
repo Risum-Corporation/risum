@@ -41,4 +41,5 @@ export default {
   yellowLight: "#2744AA",
   cyanLight: "#00C2FF",
   pinkLight: "#F472FF",
+  grayLight: '#d1d1d1'
 };

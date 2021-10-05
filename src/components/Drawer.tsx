@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useReducer } from "react";
 import { View, Text, StyleSheet, Image, Platform } from "react-native";
 import {
   DrawerContentComponentProps,
@@ -8,12 +8,15 @@ import {
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import AuthContext from "../contexts/Auth";
 
 interface DrawerProps extends DrawerContentComponentProps {
   theme: boolean;
 }
 
 export function Drawer({ theme, ...props }: DrawerProps) {
+  const { isAnonymous, user } = useContext(AuthContext);
+
   return (
     <View
       style={[
@@ -31,7 +34,13 @@ export function Drawer({ theme, ...props }: DrawerProps) {
           />
           <View style={styles.perfilInfo}>
             <Image
-              source={require("../assets/profilePicture.gif")}
+              source={
+                isAnonymous
+                  ? require("../assets/risumDefault.png")
+                  : user?.avatar
+                  ? { uri: user.avatar }
+                  : require("../assets/profilePicture.png")
+              }
               style={styles.userPicture}
             />
 
@@ -41,7 +50,7 @@ export function Drawer({ theme, ...props }: DrawerProps) {
                 theme ? { color: colors.whiteLight } : { color: colors.white },
               ]}
             >
-              Usuário
+              {isAnonymous ? "Convidado" : user?.userName}
             </Text>
 
             <Text
@@ -52,7 +61,7 @@ export function Drawer({ theme, ...props }: DrawerProps) {
                   : { color: colors.placeholderText },
               ]}
             >
-              #1234
+              {isAnonymous! ? "" : "#1234"}
             </Text>
           </View>
 

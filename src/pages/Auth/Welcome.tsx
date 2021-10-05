@@ -45,7 +45,14 @@ export function Welcome() {
         <TouchableOpacity onPress={toggleWhiteMode}>
           <Image source={isWhiteMode ? risumWhiteIcon : risumIcon} />
         </TouchableOpacity>
-        <Text style={[styles.title]}>Risum</Text>
+        <Text
+          style={[
+            styles.title,
+            { color: isWhiteMode ? colors.greenLight : colors.green },
+          ]}
+        >
+          Risum
+        </Text>
       </View>
 
       <View
@@ -64,7 +71,7 @@ export function Welcome() {
         <View style={styles.guestBox}>
           <TouchableOpacity
             onPress={handleEnterAsGuest}
-            style={styles.guestButton}
+            style={[styles.guestButton, {borderColor: isWhiteMode ? colors.grayLight : colors.outlineGray}]}
           >
             <Text style={styles.text}>Entrar como Convidado</Text>
           </TouchableOpacity>
@@ -97,7 +104,6 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   title: {
-    color: colors.green,
     fontSize: 50,
     fontFamily: fonts.heading,
     marginTop: 20,

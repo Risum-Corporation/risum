@@ -46,7 +46,7 @@ export function TwoButton({
         <Text
           style={[
             styles.text,
-            { color: theme ? colors.whiteLight : colors.white },
+            { color: theme ? colors.backgroundLight: colors.white },
           ]}
         >
           {title}

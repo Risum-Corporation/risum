@@ -4,6 +4,8 @@ import AppLoading from "expo-app-loading";
 import AuthContext, { AuthProvider } from "./src/contexts/Auth";
 import { StatusBar } from "react-native";
 import { StackProvider } from "./src/contexts/Stack";
+
+
 import {
   useFonts,
   Archivo_700Bold,
@@ -32,6 +34,7 @@ export default function App() {
   if (!fontsLoaded || loading) {
     return <AppLoading />;
   }
+  
 
   return (
     <NavigationContainer>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, SafeAreaView } from "react-native";
 import { GoBackButton } from "../../components/GoBackButton";
 import colors from "../../styles/colors";
@@ -7,12 +7,24 @@ import { useNavigation } from "@react-navigation/native";
 import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 import { posts } from "../../database/fakeData";
 import StackContext from "../../contexts/Stack";
+import AuthContext from "../../contexts/Auth";
 
 export function SavedMemes() {
   const navigation = useNavigation();
+  const {isAnonymous, signOut} = useContext(AuthContext)
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
+
+  function userVerification() {
+    if (isAnonymous) {
+      signOut();
+    }
+  }
+
+  useEffect(() => {
+    userVerification()
+  }, [])
 
   return (
     <SafeAreaView
@@ -51,18 +63,7 @@ export function SavedMemes() {
             renderItem={({ item }) => (
               <MemeCardSecondary
                 postData={item}
-                footerBackground={
-                  isWhiteMode
-                    ? colors.lightBackgroundLight
-                    : colors.lightBackground
-                }
-                iconColor={isWhiteMode ? colors.whiteLight : colors.white}
-                IconTintColor={isWhiteMode ? colors.greenLight : colors.green}
-                dividerColor={
-                  isWhiteMode
-                    ? colors.placeholderTextLight
-                    : colors.inputBackground
-                }
+                theme={isWhiteMode}
               />
             )}
           />

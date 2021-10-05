@@ -26,6 +26,7 @@ import StackContext from "../../contexts/Stack";
 import AuthContext from "../../contexts/Auth";
 
 import firebase from "../../firebaseConnection";
+import { Avatar } from "react-native-paper";
 
 export function Profile() {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ export function Profile() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const { user, signed, signOut } = useContext(AuthContext);
+  const { user, isAnonymous, signOut } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -53,8 +54,8 @@ export function Profile() {
     setLoading(false);
   }
 
-  async function userVerification() {
-    if (!signed) {
+  function userVerification() {
+    if (isAnonymous) {
       signOut();
     }
   }
@@ -103,10 +104,16 @@ export function Profile() {
       />
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
-          <Image
-            source={require("../../assets/profilePicture.gif")}
-            style={styles.profilePicture}
-          />
+          {
+            <Avatar.Image
+              size={100}
+              source={
+                user?.avatar
+                  ? {uri: user.avatar}
+                  : require("../../assets/profilePicture.png")
+              }
+            />
+          }
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
             <Text
               style={[
@@ -116,7 +123,7 @@ export function Profile() {
                   : { color: colors.white },
               ]}
             >
-              {signed ? user?.userName : "Convidado"}
+              {user?.userName}
             </Text>
             <Text
               style={[

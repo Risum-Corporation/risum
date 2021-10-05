@@ -165,6 +165,9 @@ export function Login() {
               },
             }}
           />
+                    {isEmailOrUsernameInvalid && (
+            <Text style={styles.redAdvertisement}>{errorMessage}</Text>
+          )}
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton

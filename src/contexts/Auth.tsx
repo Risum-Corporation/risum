@@ -8,8 +8,8 @@ import firebase from "../firebaseConnection";
 import signIn from "../services/auth";
 
 interface User {
-  userName: string | null;
-  email: string | null;
+  userName: string;
+  email: string;
   avatar: string;
 }
 
@@ -17,6 +17,7 @@ interface AuthContextData {
   signed: boolean;
   user: User | null;
   loading: boolean;
+  isAnonymous: boolean;
 
   login({ ...props }: User): Promise<void>;
   loginAnonymously(): void;
@@ -30,10 +31,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [signed, setSigned] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false)
 
   useEffect(() => {
-    function handleStateChanged(user: any) {
-      if (user) {
+    function handleStateChanged(firebaseUser: any) {
+      if (firebaseUser) {
         setSigned(true);
       } else {
         setSigned(false);
@@ -69,6 +71,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     firebase
       .auth()
       .signInAnonymously()
+      .then(() => {
+        setIsAnonymous(true)
+      })
       .catch((error) => {
         if (error.code === "auth/operation-not-allowed") {
           console.log("Enable anonymous login in your firebase console");
@@ -82,6 +87,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     AsyncStorage.clear().then(() => {
       setUser(null);
     });
+    setIsAnonymous(false)
     firebase.auth().signOut();
   }
 
@@ -111,6 +117,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         signed,
         user,
         loading,
+        isAnonymous,
         login,
         loginAnonymously,
         signOut,

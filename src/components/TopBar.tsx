@@ -26,7 +26,7 @@ interface TopBarProps {
 export function TopBar({ name, theme }: TopBarProps) {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [isSearchPressed, setIsSearchPressed] = useState<boolean>();
-  const { user } = useContext(AuthContext);
+  const { user, isAnonymous } = useContext(AuthContext);
 
   const onChangeSearch = (query: React.SetStateAction<string>) =>
     setSearchQuery(query);
@@ -49,9 +49,13 @@ export function TopBar({ name, theme }: TopBarProps) {
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
         <Image
-          source={{
-            uri: "https://marcas-logos.net/wp-content/uploads/2020/03/MOZILLA-FIREFOX-LOGO.png",
-          }}
+          source={
+            isAnonymous
+              ? require("../assets/risumDefault.png")
+              : user?.avatar
+              ? { uri: user.avatar }
+              : require("../assets/profilePicture.png")
+          }
           style={styles.avatar}
         />
       </TouchableOpacity>
