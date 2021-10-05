@@ -104,16 +104,11 @@ export function Profile() {
       />
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
-          {
-            <Avatar.Image
-              size={100}
-              source={
-                user?.avatar
-                  ? {uri: user.avatar}
-                  : require("../../assets/profilePicture.png")
-              }
-            />
-          }
+          {user?.avatar ? (
+            <Avatar.Image size={100} source={{ uri: user.avatar }} />
+          ) : (
+            <Avatar.Text size={100} label={`${user?.userName.substr(0, 1)}`} />
+          )}
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
             <Text
               style={[

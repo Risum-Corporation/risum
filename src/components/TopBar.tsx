@@ -17,6 +17,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import SwitchMode from "../styles/SwitchMode";
 import AuthContext from "../contexts/Auth";
+import { Avatar } from "react-native-paper";
 
 interface TopBarProps {
   name: string;
@@ -48,16 +49,22 @@ export function TopBar({ name, theme }: TopBarProps) {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
-        <Image
-          source={
-            isAnonymous
-              ? require("../assets/risumDefault.png")
-              : user?.avatar
-              ? { uri: user.avatar }
-              : require("../assets/profilePicture.png")
-          }
-          style={styles.avatar}
-        />
+        {isAnonymous ? (
+          <Avatar.Image
+            size={42}
+            source={require("../assets/risumDefault.png")}
+          />
+        ) : user?.avatar ? (
+          <Avatar.Image
+            size={42}
+            source={{ uri: user.avatar }}
+          />
+        ) : (
+          <Avatar.Text
+            size={42}
+            label={`${user?.userName.substr(0, 1)}`}
+          />
+        )}
       </TouchableOpacity>
 
       {!isSearchPressed && (
@@ -112,11 +119,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Platform.OS === "ios" ? 15 : 0,
     marginBottom: Platform.OS === "ios" ? 15 : 11,
     alignContent: "center",
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
   },
   inputSearch: {
     width: 263,

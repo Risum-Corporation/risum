@@ -9,6 +9,7 @@ import {
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import AuthContext from "../contexts/Auth";
+import { Avatar } from "react-native-paper";
 
 interface DrawerProps extends DrawerContentComponentProps {
   theme: boolean;
@@ -33,17 +34,25 @@ export function Drawer({ theme, ...props }: DrawerProps) {
             style={styles.userWallpaper}
           />
           <View style={styles.perfilInfo}>
-            <Image
-              source={
-                isAnonymous
-                  ? require("../assets/risumDefault.png")
-                  : user?.avatar
-                  ? { uri: user.avatar }
-                  : require("../assets/profilePicture.png")
-              }
-              style={styles.userPicture}
-            />
-
+            {isAnonymous ? (
+              <Avatar.Image
+                size={70}
+                style={styles.userPicture}
+                source={require("../assets/risumDefault.png")}
+              />
+            ) : user?.avatar ? (
+              <Avatar.Image
+                size={70}
+                style={styles.userPicture}
+                source={{ uri: user.avatar }}
+              />
+            ) : (
+              <Avatar.Text
+                size={70}
+                style={styles.userPicture}
+                label={`${user?.userName.substr(0, 1)}`}
+              />
+            )}
             <Text
               style={[
                 styles.title,
@@ -101,8 +110,6 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "ios" ? -55 : -5,
   },
   userPicture: {
-    height: 70,
-    width: 70,
     marginTop: -20,
     borderRadius: 35,
     marginLeft: 10,
