@@ -14,16 +14,16 @@ import fonts from "../styles/fonts";
 interface ConfirmButtonProps extends TouchableOpacityProps {
   title: string;
   title1?: string;
-  goto: string;
-  goto1: string;
+  then(): void;
+  then1(): void;
   theme: boolean;
 }
 
 export function TwoButton({
   title,
   title1,
-  goto,
-  goto1,
+  then,
+  then1,
   theme,
   ...rest
 }: ConfirmButtonProps) {
@@ -39,14 +39,14 @@ export function TwoButton({
         ]}
         activeOpacity={0.7}
         onPress={() => {
-          navigation.navigate(`${goto}`);
+          then();
         }}
         {...rest}
       >
         <Text
           style={[
             styles.text,
-            { color: theme ? colors.backgroundLight: colors.white },
+            { color: theme ? colors.backgroundLight : colors.white },
           ]}
         >
           {title}
@@ -62,7 +62,7 @@ export function TwoButton({
         ]}
         activeOpacity={0.7}
         onPress={() => {
-          navigation.navigate(`${goto1}`);
+          then1();
         }}
         {...rest}
       >

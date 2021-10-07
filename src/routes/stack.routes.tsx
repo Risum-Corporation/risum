@@ -16,6 +16,7 @@ import colors from "../styles/colors";
 
 import StackContext from "../contexts/Stack";
 import { Comments } from "../pages/Comments";
+import { NoAccount } from "../pages/NoAccount";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -125,6 +126,8 @@ const AppRoutes: React.FC = () => (
         component={drawerAndTabScreen}
       />
       <stackRoutes.Screen name="Comments" component={Comments} />
+      <stackRoutes.Screen name="NoAccount" component={NoAccount} />
+
     </stackRoutes.Navigator>
   </NavigationContainer>
 );

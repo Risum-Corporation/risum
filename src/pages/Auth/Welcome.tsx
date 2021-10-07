@@ -63,15 +63,26 @@ export function Welcome() {
       >
         <TwoButton
           title={`Criar ${"\n"} Conta `}
-          goto={"RegisterStg1"}
+          then={() => {
+            navigation.navigate("RegisterStg1");
+          }}
           title1="Login"
-          goto1={"Login"}
+          then1={() => {
+            navigation.navigate("Login");
+          }}
           theme={isWhiteMode}
         />
         <View style={styles.guestBox}>
           <TouchableOpacity
             onPress={handleEnterAsGuest}
-            style={[styles.guestButton, {borderColor: isWhiteMode ? colors.grayLight : colors.outlineGray}]}
+            style={[
+              styles.guestButton,
+              {
+                borderColor: isWhiteMode
+                  ? colors.grayLight
+                  : colors.outlineGray,
+              },
+            ]}
           >
             <Text style={styles.text}>Entrar como Convidado</Text>
           </TouchableOpacity>
@@ -95,7 +106,7 @@ export function Welcome() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
+    flex: 1,
   },
   risumIcon: {
     alignItems: "center",

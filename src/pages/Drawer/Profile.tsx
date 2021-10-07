@@ -56,7 +56,7 @@ export function Profile() {
 
   function userVerification() {
     if (isAnonymous) {
-      signOut();
+      navigation.navigate("NoAccount");
     }
   }
 

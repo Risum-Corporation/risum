@@ -21,6 +21,9 @@ const AuthRoutes: React.FC = () => (
     <AuthStack.Screen name="RegisterStg2" component={RegisterStg2} />
     <AuthStack.Screen name="RegisterStg3" component={RegisterStg3} />
     <AuthStack.Screen name="Login" component={Login} />
+
+
+
     <AuthStack.Screen
       name="ForgotPasswordStg1"
       component={ForgotPasswordStg1}

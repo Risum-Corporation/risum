@@ -11,20 +11,20 @@ import AuthContext from "../../contexts/Auth";
 
 export function SavedMemes() {
   const navigation = useNavigation();
-  const {isAnonymous, signOut} = useContext(AuthContext)
+  const { isAnonymous, signOut } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   function userVerification() {
     if (isAnonymous) {
-      signOut();
+      navigation.navigate("NoAccount");
     }
   }
 
   useEffect(() => {
-    userVerification()
-  }, [])
+    userVerification();
+  }, []);
 
   return (
     <SafeAreaView
@@ -61,10 +61,7 @@ export function SavedMemes() {
             onEndReachedThreshold={0.1}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
-              <MemeCardSecondary
-                postData={item}
-                theme={isWhiteMode}
-              />
+              <MemeCardSecondary postData={item} theme={isWhiteMode} />
             )}
           />
         </View>
