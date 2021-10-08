@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 
 import { Profile } from "../pages/Drawer/Profile";
 import { SavedMemes } from "../pages/Drawer/SavedMemes";
-import { Settings } from "../pages/Drawer/Settings";
+import { Settings } from "../pages/Drawer/Settings/Settings";
 
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -17,6 +17,10 @@ import colors from "../styles/colors";
 import StackContext from "../contexts/Stack";
 import { Comments } from "../pages/Comments";
 import { NoAccount } from "../pages/NoAccount";
+import { ProfileSettings } from "../pages/Drawer/Settings/ProfileSettings";
+import { SecuritySettings } from "../pages/Drawer/Settings/SecuritySettings";
+import { AboutUsSettings } from "../pages/Drawer/Settings/AboutUsSettings";
+import { RisumPoliciesSettings } from "../pages/Drawer/Settings/RisumPoliciesSettings";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -127,6 +131,18 @@ const AppRoutes: React.FC = () => (
       />
       <stackRoutes.Screen name="Comments" component={Comments} />
       <stackRoutes.Screen name="NoAccount" component={NoAccount} />
+
+      {/*  Settings */}
+
+      <stackRoutes.Screen name="ProfileSettings" component={ProfileSettings} />
+      <stackRoutes.Screen name="SecuritySettings" component={SecuritySettings} />
+      <stackRoutes.Screen name="AboutUsSettings" component={AboutUsSettings} />
+      <stackRoutes.Screen name="RisumPoliciesSettings" component={RisumPoliciesSettings} />
+
+
+
+
+
 
     </stackRoutes.Navigator>
   </NavigationContainer>

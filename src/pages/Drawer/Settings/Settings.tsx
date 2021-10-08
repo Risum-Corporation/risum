@@ -5,15 +5,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Platform
+  Platform,
 } from "react-native";
-import { GoBackButton } from "../../components/GoBackButton";
-import colors from "../../styles/colors";
-import fonts from "../../styles/fonts";
+import { GoBackButton } from "../../../components/GoBackButton";
+import colors from "../../../styles/colors";
+import fonts from "../../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import AuthContext from "../../contexts/Auth";
-import StackContext from "../../contexts/Stack";
+import AuthContext from "../../../contexts/Auth";
+import StackContext from "../../../contexts/Stack";
 import { StatusBar } from "react-native";
 
 export function Settings() {
@@ -22,6 +22,22 @@ export function Settings() {
 
   // Theme
   const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
+
+  function handleProfile() {
+    return navigation.navigate("ProfileSettings");
+  }
+
+  function handleSecurity() {
+    return navigation.navigate("SecuritySettings");
+  }
+
+  function handleAboutUs() {
+    return navigation.navigate("AboutUsSettings");
+  }
+
+  function handlePolicies() {
+    return navigation.navigate("RisumPoliciesSettings");
+  }
 
   return (
     <SafeAreaView
@@ -73,7 +89,11 @@ export function Settings() {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handleProfile();
+            }}
+          >
             <View style={styles.item}>
               <MaterialIcons
                 name="person"
@@ -92,7 +112,11 @@ export function Settings() {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handleSecurity();
+            }}
+          >
             <View style={styles.item}>
               <MaterialIcons
                 name="security"
@@ -112,7 +136,11 @@ export function Settings() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handleAboutUs();
+            }}
+          >
             <View style={styles.item}>
               <MaterialIcons
                 name="badge"
@@ -131,7 +159,11 @@ export function Settings() {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handlePolicies();
+            }}
+          >
             <View style={styles.item}>
               <MaterialIcons
                 name="policy"
