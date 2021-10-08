@@ -21,7 +21,7 @@ import { TwoButton } from "../../components/TwoButton";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
-  const { login, loginAnonymously } = useContext(AuthContext);
+  const { loginAnonymously } = useContext(AuthContext);
 
   function handleEnterAsGuest() {
     loginAnonymously();

@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Image,
   Platform,
   SafeAreaView,
 } from "react-native";
@@ -11,11 +10,9 @@ import {
 import { Searchbar } from "react-native-paper";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
-import { useState } from "react";
 
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/core";
-import SwitchMode from "../styles/SwitchMode";
+import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../contexts/Auth";
 import { Avatar } from "react-native-paper";
 
@@ -43,9 +40,6 @@ export function TopBar({ name, theme }: TopBarProps) {
     return navigation.openDrawer();
   }
 
-  // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
-
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
@@ -55,15 +49,9 @@ export function TopBar({ name, theme }: TopBarProps) {
             source={require("../assets/risumDefault.png")}
           />
         ) : user?.avatar ? (
-          <Avatar.Image
-            size={42}
-            source={{ uri: user.avatar }}
-          />
+          <Avatar.Image size={42} source={{ uri: user.avatar }} />
         ) : (
-          <Avatar.Text
-            size={42}
-            label={`${user?.userName.substr(0, 1)}`}
-          />
+          <Avatar.Text size={42} label={`${user?.userName.substr(0, 1)}`} />
         )}
       </TouchableOpacity>
 

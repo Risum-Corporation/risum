@@ -31,16 +31,18 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [signed, setSigned] = useState(false);
-  const [isAnonymous, setIsAnonymous] = useState(false)
+  const [finishedLogin, setFinishedLogin] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false);
+
+  function handleStateChanged(firebaseUser: any) {
+    if (firebaseUser && (finishedLogin || isAnonymous)) {
+      setSigned(true);
+    } else {
+      setSigned(false);
+    }
+  }
 
   useEffect(() => {
-    function handleStateChanged(firebaseUser: any) {
-      if (firebaseUser) {
-        setSigned(true);
-      } else {
-        setSigned(false);
-      }
-    }
     firebase.auth().onAuthStateChanged(handleStateChanged);
 
     async function loadStoragedData() {
@@ -65,6 +67,9 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     await AsyncStorage.setItem("@risum:user", JSON.stringify(response.user));
     await AsyncStorage.setItem("@risum:token", response.token);
+
+    setFinishedLogin(true);
+    firebase.auth().onAuthStateChanged(handleStateChanged);
   }
 
   function loginAnonymously() {
@@ -72,7 +77,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       .auth()
       .signInAnonymously()
       .then(() => {
-        setIsAnonymous(true)
+        setIsAnonymous(true);
       })
       .catch((error) => {
         if (error.code === "auth/operation-not-allowed") {
@@ -87,7 +92,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     AsyncStorage.clear().then(() => {
       setUser(null);
     });
-    setIsAnonymous(false)
+    setIsAnonymous(false);
+    setFinishedLogin(false);
     firebase.auth().signOut();
   }
 

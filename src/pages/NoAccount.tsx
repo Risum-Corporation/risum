@@ -8,8 +8,8 @@ import { TwoButton } from "../components/TwoButton";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-import astronout from "../assets/lotties/astronault.json";
-import astronoutLight from "../assets/lotties/astronaultLight.json";
+import astronaut from "../assets/lotties/astronaut.json";
+import astronautLight from "../assets/lotties/astronautLight.json";
 
 import Lottie from "lottie-react-native";
 export function NoAccount() {
@@ -91,7 +91,7 @@ export function NoAccount() {
             style={styles.astronaut}
             resizeMode="contain"
             autoSize
-            source={astronoutLight}
+            source={astronautLight}
             autoPlay
             loop
           />
@@ -100,7 +100,7 @@ export function NoAccount() {
             style={styles.astronaut}
             resizeMode="contain"
             autoSize
-            source={astronout}
+            source={astronaut}
             autoPlay
             loop
           />

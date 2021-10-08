@@ -51,7 +51,7 @@ export function RegisterStg1() {
 
     await AsyncStorage.setItem("@risum:email", email);
 
-    await firebase
+    return await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
@@ -64,7 +64,10 @@ export function RegisterStg1() {
           setErrorMessage("Sua senha deve ter pelo menos 6 caracteres");
         } else if (error.code === "auth/invalid-email") {
           setErrorMessage("Email inválido");
-        } else if (error.code === "auth/email-already-exists") {
+        } else if (
+          error.code === "auth/email-already-exists" ||
+          error.code === "auth/email-already-in-use"
+        ) {
           setErrorMessage("Email já cadastrado");
         } else {
           setErrorMessage(`Ocorreu um erro: ${error.code}`);

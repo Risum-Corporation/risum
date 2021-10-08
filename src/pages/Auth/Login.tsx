@@ -22,11 +22,10 @@ import StackContext from "../../contexts/Stack";
 import { AntDesign } from "@expo/vector-icons";
 
 export function Login() {
-  const { signed, user, login } = useContext(AuthContext);
-  const userName = user?.userName;
-
+  const { login } = useContext(AuthContext);
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
+  const [userName, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
@@ -47,13 +46,23 @@ export function Login() {
     if (!email || !password) {
       return setIsEmailOrUsernameInvalid(true);
     }
-    const avatar = await AsyncStorage.getItem("@risum:avatar");
+    let avatar = await AsyncStorage.getItem("@risum:avatar");
 
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        if (!userName || !avatar) {
+      .then((cred) => {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(cred.user.uid)
+          .get()
+          .then((doc) => {
+            setUserName(String(doc.data().userName));
+            console.log(`Usuário: ${userName}, Credencial: ${cred.user.uid}`);
+          });
+
+        if (!userName) {
           navigation.navigate("RegisterStg3");
         } else {
           return login({ userName, email, avatar });
@@ -165,7 +174,7 @@ export function Login() {
               },
             }}
           />
-                    {isEmailOrUsernameInvalid && (
+          {isEmailOrUsernameInvalid && (
             <Text style={styles.redAdvertisement}>{errorMessage}</Text>
           )}
         </View>
@@ -180,7 +189,9 @@ export function Login() {
           <Text
             style={[
               styles.subtitle,
-              isWhiteMode ? { color: colors.whiteLight } : { color: colors.white },
+              isWhiteMode
+                ? { color: colors.whiteLight }
+                : { color: colors.white },
             ]}
           >
             OU

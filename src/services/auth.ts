@@ -1,8 +1,8 @@
 interface Response {
   token: string;
   user: {
-    userName: string | null;
-    email: string | null;
+    userName: string;
+    email: string;
     avatar: string;
   };
 }

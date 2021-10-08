@@ -11,32 +11,54 @@ import { ConfirmButton } from "../../components/ConfirmButton";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 
+import firebase from "../../firebaseConnection";
+
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
 import AuthContext from "../../contexts/Auth";
 import StackContext from "../../contexts/Stack";
+import { useNavigation } from "@react-navigation/native";
 
 export function RegisterStg3() {
-  const { login } = useContext(AuthContext);
+  const { login, signOut } = useContext(AuthContext);
   const [userName, setUserName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
+  const navigation = useNavigation();
 
-  function handleUserNameCreate(userName1: string) {
-    setUserName(String(userName1));
+  function handleUserNameInput(value: string) {
+    setUserName(String(value));
   }
 
   async function handleSubmit() {
     try {
-      await AsyncStorage.setItem("@risum:userName", String(userName));
+      await AsyncStorage.setItem("@risum:userName", userName);
 
       const emailStoraged = await AsyncStorage.getItem("@risum:email");
       setEmail(emailStoraged!);
 
       const avatar = "../assets/profilePicture.gif"; // Async storage dps
 
+      const user = firebase.auth().currentUser;
+      if (user) {
+        await firebase
+          .firestore()
+          .collection("users")
+          .doc(user.uid)
+          .set({
+            userName: userName,
+            tag: Number(
+              (Math.floor(Math.random() * 10000) + 10000)
+                .toString()
+                .substring(1)
+            ),
+          });
+      } else {
+        signOut();
+        navigation.navigate("Welcome");
+      }
       return login({ userName, email, avatar });
     } catch {
       Alert.alert(
@@ -63,8 +85,7 @@ export function RegisterStg3() {
             : [styles.wrapper, { backgroundColor: colors.background }]
         }
       >
-        <RegisterProgressBar position={75} theme={isWhiteMode}/>
-
+        <RegisterProgressBar position={75} theme={isWhiteMode} />
 
         <View style={styles.heading}>
           <Text
@@ -101,7 +122,7 @@ export function RegisterStg3() {
                     },
                   ]
             }
-            onChangeText={handleUserNameCreate}
+            onChangeText={handleUserNameInput}
           />
           {/* Avatar do perfil */}
         </View>

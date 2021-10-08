@@ -1,10 +1,12 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, Platform } from "react-native";
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
+
+import firebase from "../firebaseConnection";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
