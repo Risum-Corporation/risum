@@ -49,8 +49,11 @@ export function SendFileButton({ theme, ...props }: ButtonProps) {
       quality: 1,
     });
 
+    // Gera um número aleatório, que será o nome da imagem
+    const imageName = Math.floor(Math.random() * (1000000 - 100)) + 100;
+
     if (!result.cancelled) {
-      uploadImage([result.uri, "imagem-teste"])
+      uploadImage([result.uri, `${imageName}`])
         .then(() => {
           Alert.alert("Sucesso!");
         })
@@ -68,7 +71,7 @@ export function SendFileButton({ theme, ...props }: ButtonProps) {
     var ref = firebase
       .storage()
       .ref()
-      .child("images/" + imageName);
+      .child("memes/" + imageName);
 
     return ref.put(blob);
   }
