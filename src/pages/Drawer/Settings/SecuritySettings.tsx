@@ -11,14 +11,12 @@ import { GoBackButton } from "../../../components/GoBackButton";
 import colors from "../../../styles/colors";
 import fonts from "../../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import AuthContext from "../../../contexts/Auth";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StackContext from "../../../contexts/Stack";
 import { StatusBar } from "react-native";
 
 export function SecuritySettings() {
   const navigation = useNavigation();
-  const { signOut } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);

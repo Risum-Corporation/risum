@@ -1,27 +1,17 @@
 import React, { useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-  Platform,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, Platform } from "react-native";
 import { GoBackButton } from "../../../components/GoBackButton";
 import colors from "../../../styles/colors";
 import fonts from "../../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-import AuthContext from "../../../contexts/Auth";
 import StackContext from "../../../contexts/Stack";
 import { StatusBar } from "react-native";
 
 export function RisumPoliciesSettings() {
   const navigation = useNavigation();
-  const { signOut } = useContext(AuthContext);
 
   // Theme
-  const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
+  const { isWhiteMode } = useContext(StackContext);
 
   return (
     <SafeAreaView
@@ -46,7 +36,7 @@ export function RisumPoliciesSettings() {
               : { color: colors.green },
           ]}
         >
-          Sobre nós
+          Políticas do Risum
         </Text>
       </View>
     </SafeAreaView>

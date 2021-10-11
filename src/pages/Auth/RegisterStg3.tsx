@@ -24,7 +24,6 @@ import { useNavigation } from "@react-navigation/native";
 export function RegisterStg3() {
   const { login, signOut } = useContext(AuthContext);
   const [userName, setUserName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
   const navigation = useNavigation();
 
@@ -34,10 +33,11 @@ export function RegisterStg3() {
 
   async function handleSubmit() {
     try {
-      await AsyncStorage.setItem("@risum:userName", userName);
+      await AsyncStorage.setItem("@risum:user", userName);
 
-      const emailStoraged = await AsyncStorage.getItem("@risum:email");
-      setEmail(emailStoraged!);
+      const tag = (Math.floor(Math.random() * 10000) + 10000)
+        .toString()
+        .substring(1);
 
       const avatar = "../assets/profilePicture.gif"; // Async storage dps
 
@@ -49,17 +49,17 @@ export function RegisterStg3() {
           .doc(user.uid)
           .set({
             userName: userName,
-            tag: Number(
-              (Math.floor(Math.random() * 10000) + 10000)
-                .toString()
-                .substring(1)
-            ),
+            tag: tag,
+          })
+          .then(() => {
+            //Navega para a StackRoutes
+            login({ userName, tag, avatar });
           });
       } else {
         signOut();
         navigation.navigate("Welcome");
       }
-      return login({ userName, email, avatar });
+      return login({ userName, tag, avatar });
     } catch {
       Alert.alert(
         "Não foi possível salvar a sua senha, tente novamente mais tarde."
@@ -122,6 +122,7 @@ export function RegisterStg3() {
                     },
                   ]
             }
+            maxLength={15}
             onChangeText={handleUserNameInput}
           />
           {/* Avatar do perfil */}

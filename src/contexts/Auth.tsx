@@ -5,12 +5,10 @@ import * as Google from "expo-google-app-auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebase from "../firebaseConnection";
 
-import signIn from "../services/auth";
-
 interface User {
   userName: string;
-  email: string;
-  avatar: string;
+  tag: string;
+  avatar?: string | null;
 }
 
 interface AuthContextData {
@@ -34,8 +32,28 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [finishedLogin, setFinishedLogin] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
 
-  function handleStateChanged(firebaseUser: any) {
+  async function handleStateChanged(firebaseUser: any) {
     if (firebaseUser && (finishedLogin || isAnonymous)) {
+      //Verifica se o usuário é anônimo, de forma a escapar da requisição
+      if (isAnonymous) {
+        return;
+      }
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(firebaseUser.uid)
+        .get()
+        .then((doc) => {
+          const userName = doc.data().userName;
+          const tag = doc.data().tag;
+          const avatar = doc.data().avatar;
+
+          setUser({ userName, tag, avatar });
+          console.log(user);
+        });
+
+      // Navega para o StackRoutes
       setSigned(true);
     } else {
       setSigned(false);
@@ -43,42 +61,29 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   useEffect(() => {
+    //Observer: verifica quando o usuário sofre alterações (loga ou desloga)
     firebase.auth().onAuthStateChanged(handleStateChanged);
-
-    async function loadStoragedData() {
-      const storagedUser = await AsyncStorage.getItem("@risum:user");
-      const storagedToken = await AsyncStorage.getItem("@risum:token");
-
-      if (storagedUser && storagedToken) {
-        setUser(JSON.parse(storagedUser));
-        setLoading(false);
-
-        console.log(storagedUser);
-      }
-    }
-
-    loadStoragedData();
   }, []);
 
   async function login({ ...props }: User) {
-    const response = await signIn(props);
+    // setUser({ ...props });
+    // console.log(user);
 
-    setUser(response.user);
-
-    await AsyncStorage.setItem("@risum:user", JSON.stringify(response.user));
-    await AsyncStorage.setItem("@risum:token", response.token);
-
+    //Ajusta as condições de estado do usuário
     setFinishedLogin(true);
-    firebase.auth().onAuthStateChanged(handleStateChanged);
+    setIsAnonymous(false);
+
+    //Loga o usuário forçadamente
+    setSigned(true);
   }
 
   function loginAnonymously() {
+    // Ajusta primeiro o isAnonymous, pois a função handleStateChanged só é chamada depois da requisição no firebase
+    setIsAnonymous(true);
+
     firebase
       .auth()
       .signInAnonymously()
-      .then(() => {
-        setIsAnonymous(true);
-      })
       .catch((error) => {
         if (error.code === "auth/operation-not-allowed") {
           console.log("Enable anonymous login in your firebase console");
@@ -92,8 +97,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     AsyncStorage.clear().then(() => {
       setUser(null);
     });
+    //Ajusta as condições de estado do usuário
     setIsAnonymous(false);
     setFinishedLogin(false);
+
     firebase.auth().signOut();
   }
 

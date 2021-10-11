@@ -25,7 +25,6 @@ import { useNavigation } from "@react-navigation/native";
 import StackContext from "../../contexts/Stack";
 import AuthContext from "../../contexts/Auth";
 
-import firebase from "../../firebaseConnection";
 import { Avatar } from "react-native-paper";
 
 export function Profile() {
@@ -39,7 +38,7 @@ export function Profile() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const { user, isAnonymous, signOut } = useContext(AuthContext);
+  const { user, isAnonymous } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -128,7 +127,7 @@ export function Profile() {
                   : { color: colors.placeholderText },
               ]}
             >
-              #1234
+              {`#${user?.tag}`}
             </Text>
           </View>
         </View>

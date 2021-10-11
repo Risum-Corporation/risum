@@ -11,14 +11,13 @@ import { GoBackButton } from "../../../components/GoBackButton";
 import colors from "../../../styles/colors";
 import fonts from "../../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import AuthContext from "../../../contexts/Auth";
 import StackContext from "../../../contexts/Stack";
 import { StatusBar } from "react-native";
 
 export function ProfileSettings() {
   const navigation = useNavigation();
-  const { signOut } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
@@ -73,24 +72,22 @@ export function ProfileSettings() {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.item}>
-              <MaterialIcons
-                name="add-a-photo"
-                size={33}
-                color={isWhiteMode ? colors.yellowLight : colors.yellow}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Mudar foto
-              </Text>
-            </View>
+          <TouchableOpacity style={styles.item}>
+            <MaterialIcons
+              name="add-a-photo"
+              size={33}
+              color={isWhiteMode ? colors.yellowLight : colors.yellow}
+            />
+            <Text
+              style={[
+                styles.subtitle,
+                isWhiteMode
+                  ? { color: colors.whiteLight }
+                  : { color: colors.white },
+              ]}
+            >
+              Mudar foto
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity>

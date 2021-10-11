@@ -72,7 +72,7 @@ export function Drawer({ theme, ...props }: DrawerProps) {
                   : { color: colors.placeholderText },
               ]}
             >
-              {isAnonymous! ? "" : "#1234"}
+              {isAnonymous ? "" : `#${user?.tag}`}
             </Text>
           </View>
 

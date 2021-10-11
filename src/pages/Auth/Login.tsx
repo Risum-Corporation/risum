@@ -46,7 +46,8 @@ export function Login() {
     if (!email || !password) {
       return setIsEmailOrUsernameInvalid(true);
     }
-    let avatar = await AsyncStorage.getItem("@risum:avatar");
+
+    const avatar = await AsyncStorage.getItem("@risum:avatar");
 
     await firebase
       .auth()
@@ -57,16 +58,13 @@ export function Login() {
           .collection("users")
           .doc(cred.user.uid)
           .get()
-          .then((doc) => {
-            setUserName(String(doc.data().userName));
-            console.log(`Usuário: ${userName}, Credencial: ${cred.user.uid}`);
+          .catch((error) => {
+            console.log(
+              `Não foi possível fazer login devido ao seguinte erro: ${error}`
+            );
           });
 
-        if (!userName) {
-          navigation.navigate("RegisterStg3");
-        } else {
-          return login({ userName, email, avatar });
-        }
+        return login({ userName, email, avatar });
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);
@@ -174,9 +172,16 @@ export function Login() {
               },
             }}
           />
-          {isEmailOrUsernameInvalid && (
-            <Text style={styles.redAdvertisement}>{errorMessage}</Text>
-          )}
+          <View style={styles.complementaryBox}>
+            <Text style={styles.redAdvertisement}>
+              {isEmailOrUsernameInvalid && errorMessage}
+            </Text>
+
+            {/* PELO AMOR DE DEUS  NÃO TIRA MAIS ESSE BOTÃO OK */}
+            <TouchableOpacity onPress={handleForgotPwd}>
+              <Text style={styles.text}>Esqueci minha senha</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
@@ -291,6 +296,10 @@ const styles = StyleSheet.create({
     padding: 9,
   },
   textBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  complementaryBox: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
