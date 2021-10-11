@@ -17,7 +17,7 @@ interface AuthContextData {
   loading: boolean;
   isAnonymous: boolean;
 
-  login({ ...props }: User): Promise<void>;
+  login(): void;
   loginAnonymously(): void;
   signOut(): void;
   signInWithGoogleAsync(): void;
@@ -33,12 +33,10 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [isAnonymous, setIsAnonymous] = useState(false);
 
   async function handleStateChanged(firebaseUser: any) {
-    if (firebaseUser && (finishedLogin || isAnonymous)) {
-      //Verifica se o usuário é anônimo, de forma a escapar da requisição
-      if (isAnonymous) {
-        return;
-      }
-
+    //Verifica se o usuário é anônimo, de forma a escapar da requisição
+    if (isAnonymous) {
+      return setSigned(true);
+    } else if (firebaseUser && finishedLogin) {
       await firebase
         .firestore()
         .collection("users")
@@ -50,13 +48,14 @@ export const AuthProvider: React.FC = ({ children }) => {
           const avatar = doc.data().avatar;
 
           setUser({ userName, tag, avatar });
-          console.log(user);
         });
 
+      // Se você vir essa mensagem no console, quer dizer que tudo deu certo
+      console.log("Fé na sogrinha gg");
       // Navega para o StackRoutes
       setSigned(true);
     } else {
-      setSigned(false);
+      return;
     }
   }
 
@@ -65,7 +64,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     firebase.auth().onAuthStateChanged(handleStateChanged);
   }, []);
 
-  async function login({ ...props }: User) {
+  function login() {
     // setUser({ ...props });
     // console.log(user);
 
@@ -73,15 +72,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     setFinishedLogin(true);
     setIsAnonymous(false);
 
-    //Loga o usuário forçadamente
-    setSigned(true);
+    // Execução da handleStateChanged de maneira forçada
+    const auth = firebase.auth().currentUser;
+    handleStateChanged(auth);
   }
 
-  function loginAnonymously() {
-    // Ajusta primeiro o isAnonymous, pois a função handleStateChanged só é chamada depois da requisição no firebase
+  async function loginAnonymously() {
+    // Ajusta primeiro as condições de estado do usuário, pois a função handleStateChanged só é chamada depois da requisição no firebase
     setIsAnonymous(true);
+    setFinishedLogin(false);
 
-    firebase
+    await firebase
       .auth()
       .signInAnonymously()
       .catch((error) => {
@@ -100,8 +101,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     //Ajusta as condições de estado do usuário
     setIsAnonymous(false);
     setFinishedLogin(false);
+    setSigned(false);
 
-    firebase.auth().signOut();
+    await firebase.auth().signOut();
   }
 
   async function signInWithGoogleAsync() {

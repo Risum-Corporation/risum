@@ -41,25 +41,24 @@ export function RegisterStg3() {
 
       const avatar = "../assets/profilePicture.gif"; // Async storage dps
 
-      const user = firebase.auth().currentUser;
-      if (user) {
+      const auth = firebase.auth().currentUser;
+      if (auth) {
         await firebase
           .firestore()
           .collection("users")
-          .doc(user.uid)
+          .doc(auth.uid)
           .set({
             userName: userName,
             tag: tag,
           })
           .then(() => {
             //Navega para a StackRoutes
-            login({ userName, tag, avatar });
+            return login();
           });
       } else {
         signOut();
         navigation.navigate("Welcome");
       }
-      return login({ userName, tag, avatar });
     } catch {
       Alert.alert(
         "Não foi possível salvar a sua senha, tente novamente mais tarde."

@@ -26,6 +26,7 @@ export function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
   const [userName, setUserName] = useState<string>();
+  const [tag, setTag] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
@@ -47,24 +48,13 @@ export function Login() {
       return setIsEmailOrUsernameInvalid(true);
     }
 
-    const avatar = await AsyncStorage.getItem("@risum:avatar");
+    // const avatar = await AsyncStorage.getItem("@risum:avatar");
 
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((cred) => {
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(cred.user.uid)
-          .get()
-          .catch((error) => {
-            console.log(
-              `Não foi possível fazer login devido ao seguinte erro: ${error}`
-            );
-          });
-
-        return login({ userName, email, avatar });
+      .then(() => {
+        return login();
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);

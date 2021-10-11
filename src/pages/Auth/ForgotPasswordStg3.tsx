@@ -40,7 +40,7 @@ export function ForgotPasswordStg3() {
         const email = await AsyncStorage.getItem("@risum:email");
         const avatar = await AsyncStorage.getItem("@risum:avatar");
 
-        return login({ userName, email, avatar });
+        return login();
       } catch {
         Alert.alert(
           "Não foi possível salvar a sua senha, tente novamente mais tarde."

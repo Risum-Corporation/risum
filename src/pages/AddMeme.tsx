@@ -10,18 +10,20 @@ import { SendFileButton } from "../components/SendFileButton";
 import fonts from "../styles/fonts";
 import { TextInput } from "react-native-paper";
 import AuthContext from "../contexts/Auth";
+import { useNavigation } from "@react-navigation/native";
 
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = React.useState<string>();
   const [tags, setTags] = React.useState<string>();
-  const { signOut, signed } = useContext(AuthContext);
+  const { isAnonymous } = useContext(AuthContext);
+  const navigation = useNavigation();
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   async function userVerification() {
-    if (!signed) {
-      signOut();
+    if (isAnonymous) {
+      navigation.navigate("NoAccount");
     }
   }
 
