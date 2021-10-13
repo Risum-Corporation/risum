@@ -11,7 +11,7 @@ import { ConfirmButton } from "../../components/ConfirmButton";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 
-import firebase from "../../firebaseConnection";
+import firebase from "../../database/firebaseConnection";
 
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -121,7 +121,7 @@ export function RegisterStg3() {
                     },
                   ]
             }
-            maxLength={15}
+            maxLength={10}
             onChangeText={handleUserNameInput}
           />
           {/* Avatar do perfil */}

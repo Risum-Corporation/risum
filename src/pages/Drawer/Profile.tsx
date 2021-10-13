@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontFamily: fonts.heading,
-    fontSize: 24,
+    fontSize: 20,
     color: colors.white,
   },
   userId: {

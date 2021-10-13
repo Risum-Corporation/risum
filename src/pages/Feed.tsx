@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 
 import { posts } from "../database/fakeData";
 
-import firebase from "../firebaseConnection";
+import firebase from "../database/firebaseConnection";
 
 import colors from "../styles/colors";
 import { TopBar } from "../components/TopBar";

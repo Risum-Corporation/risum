@@ -13,7 +13,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-import firebase from "../firebaseConnection";
+import firebase from "../database/firebaseConnection";
 
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";

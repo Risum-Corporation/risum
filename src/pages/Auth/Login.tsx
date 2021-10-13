@@ -11,7 +11,7 @@ import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
 
-import firebase from "../../firebaseConnection";
+import firebase from "../../database/firebaseConnection";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/core";
 
@@ -169,7 +169,14 @@ export function Login() {
 
             {/* PELO AMOR DE DEUS  NÃO TIRA MAIS ESSE BOTÃO OK */}
             <TouchableOpacity onPress={handleForgotPwd}>
-              <Text style={styles.text}>Esqueci minha senha</Text>
+              <Text
+                style={[
+                  styles.text,
+                  { color: isWhiteMode ? colors.whiteLight : colors.white },
+                ]}
+              >
+                Esqueci minha senha
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

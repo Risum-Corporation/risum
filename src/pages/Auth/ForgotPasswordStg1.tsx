@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 
-import firebase from "../../firebaseConnection";
+import firebase from "../../database/firebaseConnection";
 
 export function ForgotPasswordStg1() {
   const navigation = useNavigation();

@@ -19,7 +19,7 @@ interface CommentProps {
 export const posts: PostProps[] = [
   {
     id: 1,
-    author: "Sapeka",
+    author: "DunkerG",
     memeUrl: "https://source.unsplash.com/random/",
     likes: 43,
     memeTitle: "Tio patinhas 👃",
@@ -39,7 +39,7 @@ export const posts: PostProps[] = [
   },
   {
     id: 3,
-    author: "DunkerJeJeNiño",
+    author: "PacMan",
     memeUrl: "https://source.unsplash.com/random/",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
@@ -69,7 +69,7 @@ export const posts: PostProps[] = [
   },
   {
     id: 6,
-    author: "DunkerJeJeNiño",
+    author: "Fabio",
     memeUrl: "https://source.unsplash.com/random/",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
@@ -89,7 +89,7 @@ export const posts: PostProps[] = [
   },
   {
     id: 8,
-    author: "DunkerJeJeNiño",
+    author: "Fabio",
     memeUrl: "https://source.unsplash.com/random/",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
@@ -99,7 +99,7 @@ export const posts: PostProps[] = [
   },
   {
     id: 9,
-    author: "DunkerJeJeNiño",
+    author: "Fabio",
     memeUrl: "https://source.unsplash.com/random/",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
@@ -109,7 +109,7 @@ export const posts: PostProps[] = [
   },
   {
     id: 10,
-    author: "Alek de Calcinha",
+    author: "Fabio",
     memeUrl: "https://source.unsplash.com/random/",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",

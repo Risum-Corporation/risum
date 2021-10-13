@@ -11,7 +11,7 @@ import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 
-import firebase from "../../firebaseConnection";
+import firebase from "../../database/firebaseConnection";
 
 import { TextInput } from "react-native-paper";
 

@@ -145,14 +145,6 @@ export function MemeCardSecondary({ postData, theme }: PostProps) {
         </View>
 
         <View style={styles.userInfoContainer}>
-          <Text
-            style={[
-              styles.authorName,
-              { color: theme ? colors.whiteLight : colors.white },
-            ]}
-          >
-            {postData.author}
-          </Text>
           <TouchableOpacity>
             <Image source={{ uri: postData.avatar }} style={styles.userImg} />
           </TouchableOpacity>

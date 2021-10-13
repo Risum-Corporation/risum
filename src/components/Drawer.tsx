@@ -6,7 +6,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 
-import firebase from "../firebaseConnection";
+import firebase from "../database/firebaseConnection";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";

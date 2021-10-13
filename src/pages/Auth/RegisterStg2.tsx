@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 
-import firebase from "../../firebaseConnection";
+import firebase from "../../database/firebaseConnection";
 
 export function RegisterStg2() {
   const navigation = useNavigation();

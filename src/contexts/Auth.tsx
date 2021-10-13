@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from "react";
 import * as Google from "expo-google-app-auth";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import firebase from "../firebaseConnection";
+import firebase from "../database/firebaseConnection";
 
 interface User {
   userName: string;

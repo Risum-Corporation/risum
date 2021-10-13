@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
 
-    maxWidth: 90,
+
   },
   userInfoContainer: {
     flexDirection: "row",
