@@ -169,7 +169,6 @@ export function Login() {
               {isEmailOrUsernameInvalid && errorMessage}
             </Text>
 
-            {/* PELO AMOR DE DEUS  NÃO TIRA MAIS ESSE BOTÃO OK */}
             <TouchableOpacity onPress={handleForgotPwd}>
               <Text
                 style={[

@@ -21,7 +21,7 @@ export default {
   cyan: "#04D3C9",
   pink: "#f091ff",
 
-  // Risum light theme
+  // Risum light theme 
 
   greenLight: "#32B768",
   purpleLight: "#5DADEC",

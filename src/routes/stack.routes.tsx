@@ -21,6 +21,7 @@ import { ProfileSettings } from "../pages/Drawer/Settings/ProfileSettings";
 import { SecuritySettings } from "../pages/Drawer/Settings/SecuritySettings";
 import { AboutUsSettings } from "../pages/Drawer/Settings/AboutUsSettings";
 import { RisumPoliciesSettings } from "../pages/Drawer/Settings/RisumPoliciesSettings";
+import AuthContext from "../contexts/Auth";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -29,6 +30,8 @@ const drawerAndTabScreen = () => {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
+  const { isAnonymous } = useContext(AuthContext);
+
   return (
     <drawerRoutes.Navigator
       drawerContent={({ ...props }) => (
@@ -36,7 +39,7 @@ const drawerAndTabScreen = () => {
       )}
       drawerStyle={{
         borderRadius: 30,
-        height: Platform.OS === "ios" ? 310 : 350,
+        height: 340,
         marginTop: "45%",
       }}
     >
@@ -61,45 +64,97 @@ const drawerAndTabScreen = () => {
             ),
         }}
       />
-      <drawerRoutes.Screen
-        name="Perfil"
-        component={Profile}
-        options={{
-          title: "Perfil",
-          drawerIcon: ({ focused, size }) =>
-            focused ? (
-              <Ionicons
-                name="ios-person-circle"
-                size={size}
-                color={colors.white}
-              />
-            ) : (
-              <Ionicons
-                name="ios-person-circle-outline"
-                size={size}
-                color={isWhiteMode ? colors.placeholderTextLight : colors.white}
-              />
-            ),
-        }}
-      />
+      {isAnonymous ? (
+        <drawerRoutes.Screen
+          name="Perfil"
+          component={NoAccount}
+          options={{
+            title: "Perfil",
+            drawerIcon: ({ focused, size }) =>
+              focused ? (
+                <Ionicons
+                  name="ios-person-circle"
+                  size={size}
+                  color={colors.white}
+                />
+              ) : (
+                <Ionicons
+                  name="ios-person-circle-outline"
+                  size={size}
+                  color={
+                    isWhiteMode ? colors.placeholderTextLight : colors.white
+                  }
+                />
+              ),
+          }}
+        />
+      ) : (
+        <drawerRoutes.Screen
+          name="Perfil"
+          component={Profile}
+          options={{
+            title: "Perfil",
+            drawerIcon: ({ focused, size }) =>
+              focused ? (
+                <Ionicons
+                  name="ios-person-circle"
+                  size={size}
+                  color={colors.white}
+                />
+              ) : (
+                <Ionicons
+                  name="ios-person-circle-outline"
+                  size={size}
+                  color={
+                    isWhiteMode ? colors.placeholderTextLight : colors.white
+                  }
+                />
+              ),
+          }}
+        />
+      )}
 
-      <drawerRoutes.Screen
-        name="SavedMemes"
-        component={SavedMemes}
-        options={{
-          title: "Memes Salvos",
-          drawerIcon: ({ focused, size }) =>
-            focused ? (
-              <Ionicons name="bookmark" size={size} color={colors.white} />
-            ) : (
-              <Ionicons
-                name="bookmark-outline"
-                size={size}
-                color={isWhiteMode ? colors.placeholderTextLight : colors.white}
-              />
-            ),
-        }}
-      />
+      {isAnonymous ? (
+        <drawerRoutes.Screen
+          name="SavedMemes"
+          component={NoAccount}
+          options={{
+            title: "Memes Salvos",
+            drawerIcon: ({ focused, size }) =>
+              focused ? (
+                <Ionicons name="bookmark" size={size} color={colors.white} />
+              ) : (
+                <Ionicons
+                  name="bookmark-outline"
+                  size={size}
+                  color={
+                    isWhiteMode ? colors.placeholderTextLight : colors.white
+                  }
+                />
+              ),
+          }}
+        />
+      ) : (
+        <drawerRoutes.Screen
+          name="SavedMemes"
+          component={SavedMemes}
+          options={{
+            title: "Memes Salvos",
+            drawerIcon: ({ focused, size }) =>
+              focused ? (
+                <Ionicons name="bookmark" size={size} color={colors.white} />
+              ) : (
+                <Ionicons
+                  name="bookmark-outline"
+                  size={size}
+                  color={
+                    isWhiteMode ? colors.placeholderTextLight : colors.white
+                  }
+                />
+              ),
+          }}
+        />
+      )}
 
       <drawerRoutes.Screen
         name="Settings"
@@ -135,15 +190,15 @@ const AppRoutes: React.FC = () => (
       {/*  Settings */}
 
       <stackRoutes.Screen name="ProfileSettings" component={ProfileSettings} />
-      <stackRoutes.Screen name="SecuritySettings" component={SecuritySettings} />
+      <stackRoutes.Screen
+        name="SecuritySettings"
+        component={SecuritySettings}
+      />
       <stackRoutes.Screen name="AboutUsSettings" component={AboutUsSettings} />
-      <stackRoutes.Screen name="RisumPoliciesSettings" component={RisumPoliciesSettings} />
-
-
-
-
-
-
+      <stackRoutes.Screen
+        name="RisumPoliciesSettings"
+        component={RisumPoliciesSettings}
+      />
     </stackRoutes.Navigator>
   </NavigationContainer>
 );

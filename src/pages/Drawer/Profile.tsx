@@ -53,17 +53,6 @@ export function Profile() {
     setLoading(false);
   }
 
-  function userVerification() {
-    if (isAnonymous) {
-      navigation.navigate("NoAccount");
-    }
-  }
-
-  useEffect(() => {
-    userVerification();
-    loadPage();
-  }, []);
-
   function refreshList() {
     setRefreshing(true);
 

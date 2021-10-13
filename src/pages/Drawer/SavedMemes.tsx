@@ -16,16 +16,6 @@ export function SavedMemes() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  function userVerification() {
-    if (isAnonymous) {
-      navigation.navigate("NoAccount");
-    }
-  }
-
-  useEffect(() => {
-    userVerification();
-  }, []);
-
   return (
     <SafeAreaView
       style={[
