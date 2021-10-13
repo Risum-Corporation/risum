@@ -63,6 +63,8 @@ export function Login() {
           setErrorMessage("Senha inválida");
         } else if (error.code === "auth/invalid-email") {
           setErrorMessage("Email inválido");
+        } else if (error.code === "auth/user-disabled") {
+          setErrorMessage("Esta conta está desativada");
         } else {
           setErrorMessage(`Ocorreu um erro: ${error.code}`);
         }

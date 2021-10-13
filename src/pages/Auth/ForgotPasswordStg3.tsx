@@ -35,17 +35,8 @@ export function ForgotPasswordStg3() {
   async function handleSubmit() {
     if (pwd == pwdConfirm && !!pwd) {
       setIsPwdIncorrect(false);
-      try {
-        const userName = await AsyncStorage.getItem("@risum.userName");
-        const email = await AsyncStorage.getItem("@risum:email");
-        const avatar = await AsyncStorage.getItem("@risum:avatar");
 
-        return login();
-      } catch {
-        Alert.alert(
-          "Não foi possível salvar a sua senha, tente novamente mais tarde."
-        );
-      }
+      return login();
     } else {
       return setIsPwdIncorrect(true);
     }

@@ -7,6 +7,7 @@ import firebase from "../database/firebaseConnection";
 
 interface User {
   userName: string;
+  uid: string;
   tag: string;
   avatar?: string | null;
 }
@@ -46,12 +47,14 @@ export const AuthProvider: React.FC = ({ children }) => {
           const userName = doc.data().userName;
           const tag = doc.data().tag;
           const avatar = doc.data().avatar;
+          const uid = firebaseUser.uid;
 
-          setUser({ userName, tag, avatar });
+          setUser({ userName, uid, tag, avatar });
         });
 
       // Se você vir essa mensagem no console, quer dizer que tudo deu certo
       console.log("Fé na sogrinha gg");
+
       // Navega para o StackRoutes
       setSigned(true);
     } else {
@@ -85,6 +88,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     await firebase
       .auth()
       .signInAnonymously()
+      .then((cred) => {
+        handleStateChanged(cred.user);
+      })
       .catch((error) => {
         if (error.code === "auth/operation-not-allowed") {
           console.log("Enable anonymous login in your firebase console");
