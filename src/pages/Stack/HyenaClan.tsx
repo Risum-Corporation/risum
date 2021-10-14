@@ -1,26 +1,27 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
+import { StyleSheet, View, Image, Text, SafeAreaView } from "react-native";
 
-import colors from "../styles/colors";
-import { TopBar } from "../components/TopBar";
-import StackContext from "../contexts/Stack";
+import colors from "../../styles/colors";
+import { TopBar } from "../../components/TopBar";
+import StackContext from "../../contexts/Stack";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function HyenaClan() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   return (
-    <View style={[isWhiteMode ? styles.wrapperLight : styles.wrapper]}>
+    <ScrollView style={[isWhiteMode ? styles.wrapperLight : styles.wrapper]}>
       <TopBar name="CupForce" theme={isWhiteMode} />
       <View style={styles.wallpaperContainer}>
         <Image
-          source={require("../assets/wpWallpaper.jpg")}
+          source={require("../../assets/wpWallpaper.jpg")}
           style={styles.wallpaper}
         />
       </View>
 
       <View style={styles.headerContainer}>
-        <Image source={require("../assets/wpIcon.png")} style={styles.wpIcon} />
+        <Image source={require("../../assets/wpIcon.png")} style={styles.wpIcon} />
         <View style={styles.info}>
           <View>
             <View style={styles.lineText}>
@@ -87,7 +88,7 @@ export function HyenaClan() {
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

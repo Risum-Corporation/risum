@@ -7,27 +7,28 @@ import {
   Alert,
   Image,
 } from "react-native";
-import colors from "../styles/colors";
-import { ConfirmButton } from "../components/ConfirmButton";
-import StackContext from "../contexts/Stack";
-import { TopBar } from "../components/TopBar";
-
+import colors from "../../styles/colors";
+import { ConfirmButton } from "../../components/ConfirmButton";
+import StackContext from "../../contexts/Stack";
+import { TopBar } from "../../components/TopBar";
+import { Video } from "expo-av";
 import * as ImagePicker from "expo-image-picker";
 
-import firebase from "../database/firebaseConnection";
+import firebase from "../../database/firebaseConnection";
 
-import { SendFileButton } from "../components/SendFileButton";
+import { SendFileButton } from "../../components/SendFileButton";
 
-import fonts from "../styles/fonts";
+import fonts from "../../styles/fonts";
 import { TextInput } from "react-native-paper";
-import AuthContext from "../contexts/Auth";
+import AuthContext from "../../contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = useState<string>();
   const [tags, setTags] = useState<string>();
 
-  // Pode ser uma imagem ou um vídeo
+  // Pode ser uma arquivo ou um vídeo
   const [meme, setMeme] = useState<string>();
 
   const { isAnonymous, user } = useContext(AuthContext);
@@ -52,8 +53,6 @@ export function AddMeme() {
 
   // Executada quando o usuário clicar para inserir uma foto
   async function onChooseImagePress() {
-    // Escapa da função caso o usuário seja anônimo
-
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -66,22 +65,22 @@ export function AddMeme() {
     }
   }
 
-  // Executada para salvar a imagem no Firebase (quando o botão Pronto! for clicado)
-  async function uploadImage([uri, uid, imageName, imageTags]: string[]) {
+  // Executada para salvar a arquivo no Firebase (quando o botão Pronto! for clicado)
+  async function uploadImage([uri, uid, fileName, fileTags]: string[]) {
     const response = await fetch(uri);
     const blob = await response.blob();
 
-    // Salva a imagem no caminho especificado no Storage do Firebase
+    // Salva a arquivo no caminho especificado no Storage do Firebase
     var ref = firebase
       .storage()
       .ref()
-      .child(`memes/${uid}/${imageName.concat(` - ${imageTags}`)}`);
+      .child(`memes/${uid}/${fileName.concat(` - ${fileTags}`)}`);
 
     return ref.put(blob);
   }
 
   return (
-    <ScrollView
+    <SafeAreaView
       style={
         isWhiteMode
           ? { backgroundColor: colors.backgroundLight }
@@ -91,8 +90,22 @@ export function AddMeme() {
       <TopBar name="Postar Meme" theme={isWhiteMode} />
 
       <View style={styles.container}>
-        {meme ? (
-          <Image source={{ uri: meme }} style={styles.submittedImage} />
+        {
+        meme ? (
+          meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? ( 
+            <Video
+              source={{ uri: meme }}
+              rate={1.0}
+              volume={1.0}
+              isMuted={false}
+              resizeMode="cover"
+              shouldPlay
+              isLooping
+              style={styles.submittedImage}
+            />
+          ) : (
+            <Image source={{ uri: meme }} style={styles.submittedImage} />
+          )
         ) : (
           <SendFileButton theme={isWhiteMode} onPress={onChooseImagePress} />
         )}
@@ -146,7 +159,7 @@ export function AddMeme() {
                   }
             }
             selectionColor={colors.divider}
-            placeholder="Shitpost, Cum, Zoio..."
+            placeholder="Shitpost, Hiena, Zoio..."
             theme={{
               colors: {
                 text: isWhiteMode ? colors.whiteLight : colors.white,
@@ -161,8 +174,6 @@ export function AddMeme() {
               theme={isWhiteMode}
               title="Pronto!"
               onPress={() => {
-                userVerification();
-
                 // Se os campos estiverem preenchidos
                 if (memeTitle && tags) {
                   if (meme && user) {
@@ -177,7 +188,7 @@ export function AddMeme() {
                         Alert.alert(`Algo deu errado: ${error}`);
                       });
                   } else {
-                    Alert.alert("Insira uma imagem válida");
+                    Alert.alert("Insira um arquivo válido");
                   }
                 } else {
                   Alert.alert(
@@ -189,7 +200,7 @@ export function AddMeme() {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -221,6 +232,7 @@ const styles = StyleSheet.create({
   submittedImage: {
     width: 350,
     height: 300,
-    resizeMode: "contain",
+    resizeMode: "cover",
+    borderRadius: 20
   },
 });

@@ -2,14 +2,14 @@ import React, { useContext } from "react";
 import { SafeAreaView, Text, Image, StyleSheet, View } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import AuthContext from "../contexts/Auth";
-import StackContext from "../contexts/Stack";
-import { TwoButton } from "../components/TwoButton";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
+import AuthContext from "../../contexts/Auth";
+import StackContext from "../../contexts/Stack";
+import { TwoButton } from "../../components/TwoButton";
+import colors from "../../styles/colors";
+import fonts from "../../styles/fonts";
 
-import astronaut from "../assets/lotties/astronaut.json";
-import astronautLight from "../assets/lotties/astronautLight.json";
+import astronaut from "../../assets/lotties/astronaut.json";
+import astronautLight from "../../assets/lotties/astronautLight.json";
 
 import Lottie from "lottie-react-native";
 export function NoAccount() {

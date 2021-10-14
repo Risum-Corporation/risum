@@ -3,15 +3,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 import { useContext } from "react";
 
-import { Feed } from "../pages/Feed";
-import { HypeTrain } from "../pages/HypeTrain";
-import { HyenaClan } from "../pages/HyenaClan";
-import { AddMeme } from "../pages/AddMeme";
+import { Feed } from "../pages/Stack/Feed";
+import { HypeTrain } from "../pages/Stack/HypeTrain";
+import { HyenaClan } from "../pages/Stack/HyenaClan";
+import { AddMeme } from "../pages/Stack/AddMeme";
 import StackContext from "../contexts/Stack";
 import { StyleSheet } from "react-native";
 import AuthContext from "../contexts/Auth";
 import colors from "../styles/colors";
-import { NoAccount } from "../pages/NoAccount";
+import { NoAccount } from "../pages/Stack/NoAccount";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -23,7 +23,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="HypeTrain"
       tabBarOptions={{
         activeTintColor: isWhiteMode ? colors.greenLight : colors.green,
         style: {
@@ -34,15 +34,27 @@ export default function BottomTabNavigator() {
         },
       }}
     >
-      <BottomTab.Screen
-        name="Feed"
-        component={Feed}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="rss-feed" size={36} color={color} />
-          ),
-        }}
-      />
+      {isAnonymous ? (
+        <BottomTab.Screen
+          name="Feed"
+          component={NoAccount}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="rss-feed" size={36} color={color} />
+            ),
+          }}
+        />
+      ) : (
+        <BottomTab.Screen
+          name="Feed"
+          component={Feed}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name="rss-feed" size={36} color={color} />
+            ),
+          }}
+        />
+      )}
 
       <BottomTab.Screen
         name="HypeTrain"

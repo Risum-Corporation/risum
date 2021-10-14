@@ -6,12 +6,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Platform, StatusBar
 } from "react-native";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 
-import { HypeTrainCard } from "../components/HypeTrainCard";
-import { posts } from "../database/fakeData";
-
+import { HypeTrainCard } from "../../components/HypeTrainCard";
+import { posts } from "../../database/fakeData";
+import { SafeAreaView } from "react-native-safe-area-context";
+import StackContext from "../../contexts/Stack";
 
 export function HypeTrain() {
   const [page, setPage] = useState(1);
@@ -42,11 +44,22 @@ export function HypeTrain() {
 
   const [visible, setVisible] = React.useState(true);
 
+    // Theme
+    const { isWhiteMode } = useContext(StackContext);
 
   return (
-    
-    <View style={styles.container}>
-    </View>
+    <SafeAreaView>
+      <StatusBar
+        barStyle={
+          Platform.OS === "ios"
+            ? isWhiteMode
+              ? "dark-content"
+              : "light-content"
+            : "default"
+        }
+      />
+      <View style={styles.container}></View>
+    </SafeAreaView>
   );
 }
 
@@ -54,6 +67,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1
+    flex: 1,
   },
 });

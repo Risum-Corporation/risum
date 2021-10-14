@@ -40,6 +40,10 @@ export function TopBar({ name, theme }: TopBarProps) {
     return navigation.openDrawer();
   }
 
+  function handleSearch(){
+    navigation.navigate("Search")
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity onPress={handleDrawer}>
@@ -66,7 +70,7 @@ export function TopBar({ name, theme }: TopBarProps) {
         </Text>
       )}
 
-      <TouchableOpacity onPress={handleSearchClick} style={{ marginRight: 5 }}>
+      <TouchableOpacity onPress={handleSearch} style={{ marginRight: 5 }}>
         <AntDesign
           name={isSearchPressed ? "close" : "search1"}
           size={27}

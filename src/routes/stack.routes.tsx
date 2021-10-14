@@ -15,13 +15,14 @@ import { Drawer } from "../components/Drawer"; // Custom Drawer
 import colors from "../styles/colors";
 
 import StackContext from "../contexts/Stack";
-import { Comments } from "../pages/Comments";
-import { NoAccount } from "../pages/NoAccount";
+import { Comments } from "../pages/Stack/Comments";
+import { NoAccount } from "../pages/Stack/NoAccount";
 import { ProfileSettings } from "../pages/Drawer/Settings/ProfileSettings";
 import { SecuritySettings } from "../pages/Drawer/Settings/SecuritySettings";
 import { AboutUsSettings } from "../pages/Drawer/Settings/AboutUsSettings";
 import { RisumPoliciesSettings } from "../pages/Drawer/Settings/RisumPoliciesSettings";
 import AuthContext from "../contexts/Auth";
+import { Search } from "../pages/Stack/Search";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -39,10 +40,9 @@ const drawerAndTabScreen = () => {
       )}
       drawerStyle={{
         borderRadius: 30,
-        marginVertical: '50%',
+        marginVertical: "50%",
         height: 270,
       }}
-
     >
       <drawerRoutes.Screen
         name="Início"
@@ -196,6 +196,8 @@ const AppRoutes: React.FC = () => (
         component={SecuritySettings}
       />
       <stackRoutes.Screen name="AboutUsSettings" component={AboutUsSettings} />
+      <stackRoutes.Screen name="Search" component={Search} />
+
       <stackRoutes.Screen
         name="RisumPoliciesSettings"
         component={RisumPoliciesSettings}

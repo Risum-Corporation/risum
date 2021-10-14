@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import { FlatList, StyleSheet, View, Platform, StatusBar } from "react-native";
 
-import { posts } from "../database/fakeData";
-import { comments } from "../database/fakeData";
+import { posts } from "../../database/fakeData";
 
-import colors from "../styles/colors";
-import StackContext from "../contexts/Stack";
-import { GoBackButton } from "../components/GoBackButton";
-import { CommentCard } from "../components/CommentCard";
-import { MemeCardSecondary } from "../components/MemeCardSecondary";
+import firebase from "../../database/firebaseConnection";
 
-export function Comments() {
+import colors from "../../styles/colors";
+import { TopBar } from "../../components/TopBar";
+import { MemeCard } from "../../components/MemeCard";
+import StackContext from "../../contexts/Stack";
+
+export function Feed() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export function Comments() {
   function loadPage(pageNumber = page) {
     if (total && pageNumber > total) return;
 
-    const totalItems = comments.length;
+    const totalItems = posts.length;
 
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
@@ -41,19 +41,20 @@ export function Comments() {
     setRefreshing(false);
   }
   return (
-    <View
-      style={
-        isWhiteMode
-          ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
-          : [styles.wrapper, { backgroundColor: colors.background }]
-      }
-    >
-      <GoBackButton theme={isWhiteMode} />
-
-
+    <View style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
+      <StatusBar
+        barStyle={
+          Platform.OS === "ios"
+            ? isWhiteMode
+              ? "dark-content"
+              : "light-content"
+            : "default"
+        }
+      />
+      <TopBar name="Feed" theme={isWhiteMode} />
 
       <FlatList
-        data={comments}
+        data={posts}
         keyExtractor={(post) => String(post.id)}
         onEndReached={() => loadPage()}
         onEndReachedThreshold={0.1}
@@ -61,9 +62,7 @@ export function Comments() {
         showsVerticalScrollIndicator={false}
         refreshing={refreshing}
         renderItem={({ item }) => (
-          <>
-            <CommentCard postData={item} theme={isWhiteMode} />
-          </>
+          <MemeCard postData={item} theme={isWhiteMode} />
         )}
         maxToRenderPerBatch={5}
       />
@@ -73,8 +72,9 @@ export function Comments() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    justifyContent: "center",
-    alignContent: "center",
-    flex: 1,
+    backgroundColor: colors.background,
+  },
+  wrapperLight: {
+    backgroundColor: colors.backgroundLight,
   },
 });
