@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     color: colors.pastelRed,
     fontFamily: fonts.heading,
     fontSize: 10,
-    marginTop: 4,
+    marginTop: 10,
+    marginLeft: 5
   },
 });

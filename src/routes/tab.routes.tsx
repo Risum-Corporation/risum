@@ -9,14 +9,17 @@ import { HyenaClan } from "../pages/HyenaClan";
 import { AddMeme } from "../pages/AddMeme";
 import StackContext from "../contexts/Stack";
 import { StyleSheet } from "react-native";
-
+import AuthContext from "../contexts/Auth";
 import colors from "../styles/colors";
+import { NoAccount } from "../pages/NoAccount";
 
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
+
+  const { isAnonymous } = useContext(AuthContext);
 
   return (
     <BottomTab.Navigator
@@ -40,6 +43,7 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
+
       <BottomTab.Screen
         name="HypeTrain"
         component={HypeTrain}
@@ -49,26 +53,48 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-
-      <BottomTab.Screen
-        name="Alcateia"
-        component={HyenaClan}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-people" color={color} />
-          ),
-        }}
-      />
-
-      <BottomTab.Screen
-        name="Postar"
-        component={AddMeme}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-add-circle" color={color} />
-          ),
-        }}
-      />
+      {isAnonymous ? (
+        <BottomTab.Screen
+          name="Alcateia"
+          component={NoAccount}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="ios-people" color={color} />
+            ),
+          }}
+        />
+      ) : (
+        <BottomTab.Screen
+          name="Alcateia"
+          component={HyenaClan}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="ios-people" color={color} />
+            ),
+          }}
+        />
+      )}
+      {isAnonymous ? (
+        <BottomTab.Screen
+          name="Postar"
+          component={NoAccount}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="ios-add-circle" color={color} />
+            ),
+          }}
+        />
+      ) : (
+        <BottomTab.Screen
+          name="Postar"
+          component={AddMeme}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="ios-add-circle" color={color} />
+            ),
+          }}
+        />
+      )}
     </BottomTab.Navigator>
   );
 }

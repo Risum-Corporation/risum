@@ -36,14 +36,7 @@ export function AddMeme() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  async function userVerification() {
-    if (isAnonymous) {
-      navigation.navigate("NoAccount");
-    }
-  }
-
   useEffect(() => {
-    userVerification();
     // Pede permissão para acessar a galeria do usuário
     (async () => {
       if (Platform.OS !== "web") {
@@ -60,7 +53,6 @@ export function AddMeme() {
   // Executada quando o usuário clicar para inserir uma foto
   async function onChooseImagePress() {
     // Escapa da função caso o usuário seja anônimo
-    userVerification();
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,

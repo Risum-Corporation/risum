@@ -55,7 +55,7 @@ export function RegisterStg1() {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        navigation.navigate("RegisterStg2");
+        navigation.navigate("RegisterStg3");
       })
       .catch((error) => {
         setIsEmailOrPasswordInvalid(true);
