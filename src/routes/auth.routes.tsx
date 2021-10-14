@@ -7,6 +7,8 @@ import { RegisterStg1 } from "../pages/Auth/RegisterStg1";
 import { RegisterStg2 } from "../pages/Auth/RegisterStg2";
 import { RegisterStg3 } from "../pages/Auth/RegisterStg3";
 import { ForgotPasswordStg1 } from "../pages/Auth/ForgotPassword";
+import { ForgotPasswordStg2 } from "../pages/Auth/ForgotPasswordStg2";
+
 
 import { Login } from "../pages/Auth/Login";
 
@@ -20,6 +22,8 @@ const AuthRoutes: React.FC = () => (
     <AuthStack.Screen name="RegisterStg3" component={RegisterStg3} />
     <AuthStack.Screen name="Login" component={Login} />
     <AuthStack.Screen name="ForgotPasswordStg1" component={ForgotPasswordStg1} />
+    <AuthStack.Screen name="ForgotPasswordStg2" component={ForgotPasswordStg2} />
+
 
   </AuthStack.Navigator>
 );

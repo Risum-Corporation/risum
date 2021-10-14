@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, Platform, StatusBar } from "react-native";
 
 import { posts } from "../database/fakeData";
 
@@ -42,6 +42,15 @@ export function Feed() {
   }
   return (
     <View style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
+      <StatusBar
+        barStyle={
+          Platform.OS === "ios"
+            ? isWhiteMode
+              ? "dark-content"
+              : "light-content"
+            : "default"
+        }
+      />
       <TopBar name="Feed" theme={isWhiteMode} />
 
       <FlatList

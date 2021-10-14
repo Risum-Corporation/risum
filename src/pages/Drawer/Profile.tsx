@@ -77,15 +77,7 @@ export function Profile() {
           : { backgroundColor: colors.background },
       ]}
     >
-      <StatusBar
-        barStyle={
-          Platform.OS === "ios"
-            ? isWhiteMode
-              ? "dark-content"
-              : "light-content"
-            : "default"
-        }
-      />
+
       <Image
         source={require("../../assets/wallpaper.jpg")}
         style={styles.userWallpaper}

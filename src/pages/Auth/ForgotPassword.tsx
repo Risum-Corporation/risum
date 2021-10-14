@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { SafeAreaView, Text, View, StyleSheet, TextInput } from "react-native";
+import { SafeAreaView, Text, View, StyleSheet } from "react-native";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
-import { ConfirmButton } from "../../components/ConfirmButton"; 
+import { ConfirmButton } from "../../components/ConfirmButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
-
+import { TextInput } from "react-native-paper";
 import firebase from "../../database/firebaseConnection";
 
 export function ForgotPasswordStg1() {
@@ -57,21 +57,57 @@ export function ForgotPasswordStg1() {
         },
       ]}
     >
-      <View style={styles.wrapper}>
+      <View
+        style={[
+          styles.wrapper,
+          {
+            backgroundColor: isWhiteMode
+              ? colors.backgroundLight
+              : colors.background,
+          },
+        ]}
+      >
         <View style={styles.heading}>
-          <Text style={styles.title}>Digite seu{"\n"}Email</Text>
+          <Text
+            style={[
+              styles.title,
+              { color: isWhiteMode ? colors.whiteLight : colors.white },
+            ]}
+          >
+            Digite seu{"\n"}Email
+          </Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            placeholder="usuario@mail.com"
-            placeholderTextColor={colors.placeholderText}
-            style={[
-              styles.input,
-              { borderTopRightRadius: 8, borderTopLeftRadius: 8 },
-            ]}
+            label="Email"
+            mode={"flat"}
             onChangeText={handleEmailInputChange}
+            placeholder="usuario@mail.com"
+            placeholderTextColor={
+              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
+            }
+            underlineColor={"transparent"}
+            style={[
+              isWhiteMode
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  },
+              styles.input,
+            ]}
+            selectionColor={colors.divider}
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
           />
+
           {isEmailOrUsernameInvalid && (
             <Text style={styles.redAdvertisement}>{errorMessage}</Text>
           )}
@@ -121,11 +157,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   input: {
-    height: 64,
-    padding: 20,
     borderRadius: 8,
-    color: colors.white,
-    backgroundColor: colors.inputBackground,
   },
   buttonBox: {
     width: "100%",
@@ -149,6 +181,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     fontSize: 10,
     marginTop: 10,
-    marginLeft: 5
+    marginLeft: 5,
   },
 });

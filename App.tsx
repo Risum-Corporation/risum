@@ -2,9 +2,8 @@ import React, { useContext } from "react";
 import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import AuthContext, { AuthProvider } from "./src/contexts/Auth";
-import { StatusBar } from "react-native";
 import { StackProvider } from "./src/contexts/Stack";
-
+import StackContext from "./src/contexts/Stack";
 
 import {
   useFonts,
@@ -34,11 +33,10 @@ export default function App() {
   if (!fontsLoaded || loading) {
     return <AppLoading />;
   }
-  
+
 
   return (
     <NavigationContainer>
-      <StatusBar barStyle={"light-content"} />
       <AuthProvider>
         <StackProvider>
           <Routes />

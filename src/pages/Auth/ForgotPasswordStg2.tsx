@@ -21,7 +21,7 @@ import AuthContext from "../../contexts/Auth";
 import StackContext from "../../contexts/Stack";
 import { TwoButton } from "../../components/TwoButton";
 
-export function Welcome() {
+export function ForgotPasswordStg2() {
   const navigation = useNavigation(); // Navigation between screen
   const { loginAnonymously } = useContext(AuthContext);
 
@@ -52,65 +52,7 @@ export function Welcome() {
             : "default"
         }
       />
-      <View style={styles.risumIcon}>
-        <TouchableOpacity onPress={toggleWhiteMode}>
-          <Image source={isWhiteMode ? risumWhiteIcon : risumIcon} />
-        </TouchableOpacity>
-        <Text
-          style={[
-            styles.title,
-            { color: isWhiteMode ? colors.greenLight : colors.green },
-          ]}
-        >
-          Risum
-        </Text>
-      </View>
-
-      <View
-        style={{
-          marginHorizontal: "8%",
-          alignItems: "center",
-        }}
-      >
-        <TwoButton
-          title={`Criar ${"\n"} Conta `}
-          then={() => {
-            navigation.navigate("RegisterStg1");
-          }}
-          title1="Login"
-          then1={() => {
-            navigation.navigate("Login");
-          }}
-          theme={isWhiteMode}
-        />
-        <View style={styles.guestBox}>
-          <TouchableOpacity
-            onPress={handleEnterAsGuest}
-            style={[
-              styles.guestButton,
-              {
-                borderColor: isWhiteMode
-                  ? colors.grayLight
-                  : colors.outlineGray,
-              },
-            ]}
-          >
-            <Text style={styles.text}>Entrar como Convidado</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View
-        style={[
-          styles.footer,
-          {
-            backgroundColor: isWhiteMode
-              ? colors.lightBackgroundLight
-              : colors.lightBackground,
-          },
-        ]}
-      >
-        <Text style={styles.text}>Bem vindo ao Risum!</Text>
-      </View>
+  
     </SafeAreaView>
   );
 }
