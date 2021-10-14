@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import { SafeAreaView, Text, View, StyleSheet, TextInput } from "react-native";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
-import { ConfirmButton } from "../../components/ConfirmButton";
-import { useNavigation } from "@react-navigation/core";
+import { ConfirmButton } from "../../components/ConfirmButton"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
@@ -11,7 +10,6 @@ import StackContext from "../../contexts/Stack";
 import firebase from "../../database/firebaseConnection";
 
 export function ForgotPasswordStg1() {
-  const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
@@ -32,8 +30,6 @@ export function ForgotPasswordStg1() {
       .sendPasswordResetEmail(email)
       .then(async () => {
         await AsyncStorage.setItem("@risum:email", email);
-
-        navigation.navigate("ForgotPasswordStg2");
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);

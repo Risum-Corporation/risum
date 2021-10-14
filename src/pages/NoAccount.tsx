@@ -27,6 +27,7 @@ export function NoAccount() {
           ? colors.backgroundLight
           : colors.background,
         flex: 1,
+        justifyContent: 'center'
       }}
     >
       <View style={styles.container}>
@@ -146,7 +147,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     alignItems: "center",
-    marginTop: 70,
   },
 
   title: {

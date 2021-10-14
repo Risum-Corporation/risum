@@ -39,9 +39,10 @@ const drawerAndTabScreen = () => {
       )}
       drawerStyle={{
         borderRadius: 30,
-        height: 340,
-        marginTop: "45%",
+        marginVertical: '50%',
+        height: 270,
       }}
+
     >
       <drawerRoutes.Screen
         name="Início"
