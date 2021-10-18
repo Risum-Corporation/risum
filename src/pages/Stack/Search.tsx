@@ -1,12 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Platform,
-  SafeAreaView,
-  View,
-} from "react-native";
+import { StyleSheet, Platform, SafeAreaView, View } from "react-native";
 
 import { Searchbar, Button } from "react-native-paper";
 import fonts from "../../styles/fonts";
@@ -14,10 +7,8 @@ import colors from "../../styles/colors";
 
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import AuthContext from "../../contexts/Auth";
 import { Avatar } from "react-native-paper";
 import StackContext from "../../contexts/Stack";
-import { GoBackButton } from "../../components/GoBackButton";
 
 export function Search() {
   // Theme
@@ -36,17 +27,15 @@ export function Search() {
   const [isHyenaClanPressed, setHyenaClanPressed] = useState<boolean>();
   const [isMemePressed, setMemePressed] = useState<boolean>();
 
-  const [searchQueryProfile, setSearchQueryProfile] =
-    React.useState<string>("");
+  const [searchQueryProfile, setSearchQueryProfile] = useState<string>("");
   const onChangeSearchProfile = (query: React.SetStateAction<string>) =>
     setSearchQueryProfile(query);
 
-  const [searchQueryHyanaClan, setSearchQueryHyanaClan] =
-    React.useState<string>("");
+  const [searchQueryHyanaClan, setSearchQueryHyanaClan] = useState<string>("");
   const onChangeSearchHyanaClan = (query: React.SetStateAction<string>) =>
     setSearchQueryHyanaClan(query);
 
-  const [searchQueryMeme, setSearchQueryMeme] = React.useState<string>("");
+  const [searchQueryMeme, setSearchQueryMeme] = useState<string>("");
   const onChangeSearchMeme = (query: React.SetStateAction<string>) =>
     setSearchQueryMeme(query);
 

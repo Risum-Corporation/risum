@@ -25,7 +25,8 @@ import AuthContext from "../../contexts/Auth";
 
 import { Avatar } from "react-native-paper";
 
-export function Profile() {
+// route.params.userId para dinamizar a tela de perfil para vários perfis diferentes
+export function Profile({ route }: any) {
   const navigation = useNavigation();
   const [isSmilePressed, setIsSmilePressed] = useState<boolean>(true);
   const [isPostPressed, setIsPostPressed] = useState<boolean>();
