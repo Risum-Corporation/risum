@@ -1,66 +1,123 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   SafeAreaView,
   Text,
   View,
   StyleSheet,
-  TextInput,
-  TouchableOpacity,
   Alert,
+  Image,
+  Platform,
 } from "react-native";
+import { ConfirmButton } from "../../components/ConfirmButton";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
-import { useNavigation } from "@react-navigation/core";
-import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
-import { useState } from "react";
-import StackContext from "../../contexts/Stack";
+import { TextInput } from "react-native-paper";
 
 import firebase from "../../database/firebaseConnection";
 
+import * as ImagePicker from "expo-image-picker";
+import { SendFileButton } from "../../components/SendFileButton";
+
+import { RegisterProgressBar } from "../../components/RegisterProgressBar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+
+import AuthContext from "../../contexts/Auth";
+import StackContext from "../../contexts/Stack";
+import { useNavigation } from "@react-navigation/native";
+
 export function RegisterStg2() {
-  const navigation = useNavigation();
-  const [email, setEmail] = useState<string>();
-  const [randomCode, setRandomCode] = useState<number>();
-  const [codeInput, setCodeInput] = useState<number>();
-  const [isFilled, setIsFilled] = useState(false);
-  const [isCodeIncorrect, setIsCodeIncorrect] = useState(false);
+  const { login, signOut } = useContext(AuthContext);
+  const [userName, setUserName] = useState<string>("");
+  const [userImage, setUserImage] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    async function loadStoragedData() {
-      const emailSaved = await AsyncStorage.getItem("@risum:email");
-      setEmail(String(emailSaved));
-    }
-
-    function generateRandomCode() {
-      const randomNumber = Math.floor(100000 + Math.random() * 900000); // 6-digit code
-      setRandomCode(randomNumber);
-
-      Alert.alert(`Pssiu, o seu código é: ${randomNumber}`);
-    }
-
-    loadStoragedData();
-    generateRandomCode();
+    // Pede permissão para acessar a galeria do usuário
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("É necessária permissão para acessar sua galeria");
+          navigation.navigate("Feed");
+        }
+      }
+    })();
   }, []);
 
-  function handleResendEmail() {
-    return Alert.alert(`Email reenviado com sucesso para: ${email}`);
+  function handleUserNameInput(value: string) {
+    setUserName(String(value));
   }
 
-  async function handleConfirm() {
-    if (codeInput === randomCode && isFilled) {
-      return navigation.navigate("RegisterStg3");
-    } else {
-      setIsCodeIncorrect(true);
+  // Executada quando o usuário clicar para inserir uma foto
+  async function onChooseImagePress() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+      aspect: [4, 3],
+    });
+
+    // Imagem salva no estado, será utilizada no uploadImage
+    if (!result.cancelled) {
+      setUserImage(result.uri);
     }
   }
 
-  function handleInputChange(value: string) {
-    setCodeInput(Number(value));
-    setIsFilled(!!codeInput);
+  // Executada para salvar a arquivo no Firebase (quando o botão Pronto! for clicado)
+  async function uploadImage([uri, uid, fileName]: string[]) {
+    // Verifica se a imagem é válida
+    if (uri === "" || !uri) {
+      return console.log("Imagem inválida");
+    }
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    // Salva a arquivo no caminho especificado no Storage do Firebase
+    var ref = firebase.storage().ref().child(`users/${uid}/${fileName}`);
+
+    ref.put(blob);
+    return ref.getDownloadURL();
+  }
+
+  async function handleSubmit() {
+    await AsyncStorage.setItem("@risum:user", userName);
+
+    // Tag única do usuário
+    const tag = (Math.floor(Math.random() * 10000) + 10000)
+      .toString()
+      .substring(1);
+
+    const auth = firebase.auth().currentUser;
+    if (auth) {
+      // Upload da imagem de perfil
+      const userPicture = await uploadImage([
+        userImage,
+        auth.uid,
+        `${userName}-avatar`,
+      ]);
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(auth.uid)
+        .set({
+          userName: userName,
+          userImage: userPicture,
+          tag: tag,
+          userId: auth.uid,
+        })
+        .then(() => {
+          //Navega para a StackRoutes
+          return login();
+        });
+    } else {
+      signOut();
+      navigation.navigate("Welcome");
+    }
   }
 
   return (
@@ -81,9 +138,6 @@ export function RegisterStg2() {
             : [styles.wrapper, { backgroundColor: colors.background }]
         }
       >
-        <RegisterProgressBar position={50} theme={isWhiteMode}/>
-
-
         <View style={styles.heading}>
           <Text
             style={
@@ -92,60 +146,55 @@ export function RegisterStg2() {
                 : [styles.title, { color: colors.white }]
             }
           >
-            Verifique{"\n"}o seu Email
+            Insira suas{"\n"}informações de perfil
           </Text>
         </View>
 
         <View style={styles.form}>
           <TextInput
-            placeholder={"###-###"}
+            mode="flat"
+            underlineColor="transparent"
+            placeholder="Nome de usuário"
             placeholderTextColor={
               isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
             }
-            style={
+            style={[
               isWhiteMode
-                ? [
-                    styles.input,
-                    {
-                      backgroundColor: colors.inputBackgroundLight,
-                      color: colors.whiteLight,
-                    },
-                  ]
-                : [
-                    styles.input,
-                    {
-                      backgroundColor: colors.inputBackground,
-                      color: colors.white,
-                    },
-                  ]
-            }
-            onChangeText={handleInputChange}
-            keyboardType={"number-pad"}
+                ? { backgroundColor: colors.lightBackgroundLight }
+                : {
+                    backgroundColor: colors.lightBackground,
+                    color: colors.white,
+                    textDecorationColor: colors.white,
+                  },
+              styles.input,
+            ]}
+            selectionColor={colors.divider}
+            theme={{
+              colors: {
+                text: isWhiteMode ? colors.whiteLight : colors.white,
+                primary: isWhiteMode ? colors.greenLight : colors.green,
+                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+              },
+            }}
+            maxLength={10}
+            onChangeText={handleUserNameInput}
           />
-          {isCodeIncorrect && (
-            <Text style={styles.redAdvertisement}>Código inválido!</Text>
+          {userImage ? (
+            <Image source={{ uri: userImage }} style={styles.userImg} />
+          ) : (
+            <SendFileButton
+              theme={isWhiteMode}
+              title="adicionar um avatar"
+              onPress={onChooseImagePress}
+            />
           )}
         </View>
         <View style={styles.buttonBox}>
-          <TouchableOpacity
-            style={[styles.button, styles.resendButton]}
-            activeOpacity={0.7}
-            onPress={handleResendEmail}
-          >
-            <Text style={[styles.text, { color: colors.white }]}>
-              Reenviar{"\n"}Email
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.button, styles.verifyButton]}
-            activeOpacity={0.7}
-            onPress={handleConfirm}
-          >
-            <Text style={[styles.text, { color: colors.background }]}>
-              Verificar
-            </Text>
-          </TouchableOpacity>
+          <ConfirmButton
+            theme={isWhiteMode}
+            title="Confirmar"
+            onPress={handleSubmit}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -165,58 +214,28 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: "left",
     width: "100%",
+    marginTop: "-5%",
   },
   title: {
     fontFamily: fonts.heading,
-    fontSize: 27,
-    lineHeight: 50,
-  },
-  subtitle: {
-    fontFamily: fonts.heading,
     color: colors.white,
-    fontSize: 20,
+    fontSize: 27,
     lineHeight: 50,
   },
   form: {
     width: "100%",
+    marginTop: "-10%",
   },
   input: {
-    borderRadius: 8,
-
-    height: 64,
-    padding: 20,
     borderBottomWidth: 1,
   },
-  redAdvertisement: {
-    color: colors.pastelRed,
-    fontFamily: fonts.heading,
-    fontSize: 12,
-    marginTop: 4,
-    paddingLeft: 2,
-  },
   buttonBox: {
-    width: "97%",
-    flexDirection: "row",
-  },
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    height: 90,
     width: "100%",
-    flex: 1,
+    marginTop: "-0%",
   },
-  resendButton: {
-    backgroundColor: colors.purple,
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 20,
-  },
-  verifyButton: {
-    backgroundColor: colors.green,
-  },
-  text: {
-    fontSize: 20,
-    fontFamily: fonts.heading,
+  userImg: {
+    width: "100%",
+    height: 300,
+    resizeMode: "contain",
   },
 });

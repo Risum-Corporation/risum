@@ -13,9 +13,10 @@ import fonts from "../styles/fonts";
 
 interface ButtonProps extends TouchableOpacityProps {
   theme: boolean;
+  title: string;
 }
 
-export function SendFileButton({ theme, ...props }: ButtonProps) {
+export function SendFileButton({ theme, title, ...props }: ButtonProps) {
   return (
     <TouchableOpacity style={{ marginTop: 25 }} {...props}>
       <View
@@ -40,7 +41,8 @@ export function SendFileButton({ theme, ...props }: ButtonProps) {
             { marginTop: 20 },
           ]}
         >
-          Clique aqui para{"\n"}postar um meme
+          Clique aqui para{"\n"}
+          {title}
         </Text>
       </View>
     </TouchableOpacity>

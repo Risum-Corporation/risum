@@ -9,7 +9,7 @@ interface User {
   userName: string;
   uid: string;
   tag: string;
-  avatar?: string | null;
+  avatar?: string;
 }
 
 interface AuthContextData {
@@ -46,17 +46,17 @@ export const AuthProvider: React.FC = ({ children }) => {
         .then((doc) => {
           const userName = doc.data().userName;
           const tag = doc.data().tag;
-          const avatar = doc.data().avatar;
+          const avatar = doc.data().userImage;
           const uid = firebaseUser.uid;
 
           setUser({ userName, uid, tag, avatar });
+
+          // Se você vir essa mensagem no console, quer dizer que tudo deu certo
+          console.log("Fé na sogrinha gg");
+
+          // Navega para o StackRoutes
+          setSigned(true);
         });
-
-      // Se você vir essa mensagem no console, quer dizer que tudo deu certo
-      console.log("Fé na sogrinha gg");
-
-      // Navega para o StackRoutes
-      setSigned(true);
     } else {
       return;
     }

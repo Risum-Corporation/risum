@@ -6,17 +6,10 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 
-import firebase from "../database/firebaseConnection";
-import { Button } from "react-native-paper";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import AuthContext from "../contexts/Auth";
-import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-
-import drawerAndTabScreen from "../routes/stack.routes";
 
 interface DrawerProps extends DrawerContentComponentProps {
   theme: boolean;

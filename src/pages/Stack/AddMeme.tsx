@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Platform,
-  Alert,
-  Image,
-} from "react-native";
+import { StyleSheet, View, Platform, Alert, Image } from "react-native";
 import colors from "../../styles/colors";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import StackContext from "../../contexts/Stack";
@@ -31,7 +24,7 @@ export function AddMeme() {
   // Pode ser uma arquivo ou um vídeo
   const [meme, setMeme] = useState<string>();
 
-  const { isAnonymous, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const navigation = useNavigation();
 
   // Theme
@@ -90,15 +83,14 @@ export function AddMeme() {
       <TopBar name="Postar Meme" theme={isWhiteMode} />
 
       <View style={styles.container}>
-        {
-        meme ? (
-          meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? ( 
+        {meme ? (
+          meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? (
             <Video
               source={{ uri: meme }}
               rate={1.0}
               volume={1.0}
               isMuted={false}
-              resizeMode="cover"
+              resizeMode="contain"
               shouldPlay
               isLooping
               style={styles.submittedImage}
@@ -107,7 +99,11 @@ export function AddMeme() {
             <Image source={{ uri: meme }} style={styles.submittedImage} />
           )
         ) : (
-          <SendFileButton theme={isWhiteMode} onPress={onChooseImagePress} />
+          <SendFileButton
+            theme={isWhiteMode}
+            title="postar um meme"
+            onPress={onChooseImagePress}
+          />
         )}
 
         <View style={[styles.form]}>
@@ -233,6 +229,6 @@ const styles = StyleSheet.create({
     width: 350,
     height: 300,
     resizeMode: "cover",
-    borderRadius: 20
+    borderRadius: 20,
   },
 });

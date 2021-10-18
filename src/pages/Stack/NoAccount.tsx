@@ -27,7 +27,7 @@ export function NoAccount() {
           ? colors.backgroundLight
           : colors.background,
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: "center",
       }}
     >
       <View style={styles.container}>
@@ -74,7 +74,6 @@ export function NoAccount() {
               { color: isWhiteMode ? colors.whiteLight : colors.white },
             ]}
           >
-            {" "}
             em uma Conta
           </Text>
           <Text

@@ -3,8 +3,6 @@ import { FlatList, StyleSheet, View, Platform, StatusBar } from "react-native";
 
 import { posts } from "../../database/fakeData";
 
-import firebase from "../../database/firebaseConnection";
-
 import colors from "../../styles/colors";
 import { TopBar } from "../../components/TopBar";
 import { MemeCard } from "../../components/MemeCard";

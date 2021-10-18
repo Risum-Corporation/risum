@@ -8,13 +8,17 @@ import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 import { TextInput } from "react-native-paper";
 import firebase from "../../database/firebaseConnection";
+import { useNavigation } from "@react-navigation/native";
 
 export function ForgotPasswordStg1() {
   const [email, setEmail] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
-    useState<boolean>();
-  const [errorMessage, setErrorMessage] = useState<string>();
+    useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string>(
+    "Insira um email para prosseguir"
+  );
   const { isWhiteMode } = useContext(StackContext);
+  const navigation = useNavigation();
 
   function handleEmailInputChange(value: string) {
     setEmail(value);
@@ -30,6 +34,7 @@ export function ForgotPasswordStg1() {
       .sendPasswordResetEmail(email)
       .then(async () => {
         await AsyncStorage.setItem("@risum:email", email);
+        navigation.navigate("ForgotPasswordStg2");
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);

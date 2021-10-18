@@ -55,7 +55,7 @@ export function RegisterStg1() {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        navigation.navigate("RegisterStg3");
+        navigation.navigate("RegisterStg2");
       })
       .catch((error) => {
         setIsEmailOrPasswordInvalid(true);
@@ -114,7 +114,7 @@ export function RegisterStg1() {
         <View style={styles.form}>
           <TextInput
             label="Email"
-            mode={"flat"}
+            mode="flat"
             onChangeText={handleEmailInputChange}
             placeholder="usuario@mail.com"
             placeholderTextColor={

@@ -34,27 +34,15 @@ export default function BottomTabNavigator() {
         },
       }}
     >
-      {isAnonymous ? (
-        <BottomTab.Screen
-          name="Feed"
-          component={NoAccount}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="rss-feed" size={36} color={color} />
-            ),
-          }}
-        />
-      ) : (
-        <BottomTab.Screen
-          name="Feed"
-          component={Feed}
-          options={{
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="rss-feed" size={36} color={color} />
-            ),
-          }}
-        />
-      )}
+      <BottomTab.Screen
+        name="Feed"
+        component={Feed}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="rss-feed" size={36} color={color} />
+          ),
+        }}
+      />
 
       <BottomTab.Screen
         name="HypeTrain"

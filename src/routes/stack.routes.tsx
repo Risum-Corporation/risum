@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Platform } from "react-native";
 
 import { Profile } from "../pages/Drawer/Profile";
 import { SavedMemes } from "../pages/Drawer/SavedMemes";

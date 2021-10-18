@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,10 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Platform,
 } from "react-native";
 import colors from "../../styles/colors";
 
 import { posts } from "../../database/fakeData";
-import { StatusBar } from "react-native";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
@@ -38,7 +36,7 @@ export function Profile() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const { user, isAnonymous } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -77,7 +75,6 @@ export function Profile() {
           : { backgroundColor: colors.background },
       ]}
     >
-
       <Image
         source={require("../../assets/wallpaper.jpg")}
         style={styles.userWallpaper}
