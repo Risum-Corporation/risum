@@ -13,8 +13,6 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-import SwitchMode from "../styles/SwitchMode";
-
 interface PostProps {
   postData: {
     id: number;
@@ -58,9 +56,6 @@ export function MemeCardSecondary({ postData, theme }: PostProps) {
       console.log("Erro => ", error);
     }
   }
-
-  // Theme
-  let isSwitchOn = SwitchMode.isSwitchOn;
 
   return (
     <SafeAreaView>
