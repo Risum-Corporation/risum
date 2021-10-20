@@ -8,6 +8,10 @@ import { useNavigation } from "@react-navigation/core";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import StackContext from "../../contexts/Stack";
 
+import Lottie from "lottie-react-native";
+import letter from "../../assets/lotties/letter.json";
+import letterLight from "../../assets/lotties/letterLight.json";
+
 export function ForgotPasswordStg2() {
   const navigation = useNavigation(); // Navigation between screen
 
@@ -33,7 +37,25 @@ export function ForgotPasswordStg2() {
       >
         Sucesso!
       </Text>
-      <Text style={styles.emoji}>😄</Text>
+      {isWhiteMode ? (
+          <Lottie
+            style={styles.letter}
+            resizeMode="contain"
+            autoSize
+            source={letterLight}
+            autoPlay
+            loop
+          />
+        ) : (
+          <Lottie
+            style={styles.letter}
+            resizeMode="contain"
+            autoSize
+            source={letter}
+            autoPlay
+            loop
+          />
+        )}
       <Text
         style={[
           styles.text,
@@ -77,4 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 86,
     color: colors.text,
   },
+  letter: {
+    height: 250,
+  }
 });

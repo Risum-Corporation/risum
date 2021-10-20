@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 export function ForgotPasswordStg1() {
   const [email, setEmail] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
-    useState<boolean>(true);
+    useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>(
     "Insira um email para prosseguir"
   );
