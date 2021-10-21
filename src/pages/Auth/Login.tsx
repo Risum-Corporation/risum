@@ -4,7 +4,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   TouchableOpacity,
 } from "react-native";
 import colors from "../../styles/colors";
@@ -16,7 +15,6 @@ import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/core";
 
 import AuthContext from "../../contexts/Auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import StackContext from "../../contexts/Stack";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -53,8 +51,9 @@ export function Login() {
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        return login();
+      .then((cred) => {
+        setIsEmailOrUsernameInvalid(false);
+        return login(cred.user);
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);
@@ -65,6 +64,8 @@ export function Login() {
           setErrorMessage("Email inválido");
         } else if (error.code === "auth/user-disabled") {
           setErrorMessage("Esta conta está desativada");
+        } else if (error.code === "auth/user-not-found") {
+          setErrorMessage("Usuário não encontrado");
         } else {
           setErrorMessage(`Ocorreu um erro: ${error.code}`);
         }

@@ -67,10 +67,10 @@ export function AddMeme() {
     var ref = firebase
       .storage()
       .ref()
-      .child(`memes/${uid}/${fileName.concat(` - ${fileTags}`)}`);
+      .child(`media/memes/${uid}/${fileName.concat(` - ${fileTags}`)}`);
 
     await ref.put(blob);
-    return await ref.getDownloadURL()
+    return await ref.getDownloadURL();
   }
 
   return (
@@ -181,17 +181,22 @@ export function AddMeme() {
                         setMemeTitle(undefined);
                         setTags(undefined);
 
-                        const memeId = memeTitle.concat(String(Date.now()))
-                        console.log(url)
+                        console.log(url);
 
-                        firebase.firestore().collection('posts').doc(memeId).set({
-                          // id do meme
-                          memeUrl: url,
-                          memeTitle: memeTitle,
-                          tags: tags,
-                          likes: 0,
-                          comments: 0,
-                        })
+                        firebase
+                          .firestore()
+                          .collection("media")
+                          .doc(user.uid)
+                          .collection("memes")
+                          .doc(memeTitle)
+                          .set({
+                            // id do meme
+                            memeUrl: url,
+                            memeTitle: memeTitle,
+                            tags: tags,
+                            likes: 0,
+                            comments: 0,
+                          });
                       })
                       .catch((error) => {
                         Alert.alert(`Algo deu errado: ${error}`);

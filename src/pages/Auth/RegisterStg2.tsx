@@ -58,7 +58,7 @@ export function RegisterStg2() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
-      aspect: [4, 3], 
+      aspect: [4, 3],
     });
 
     // Imagem salva no estado, será utilizada no uploadImage
@@ -138,7 +138,7 @@ export function RegisterStg2() {
             : [styles.wrapper, { backgroundColor: colors.background }]
         }
       >
-      <RegisterProgressBar position={90} theme={isWhiteMode} />
+        <RegisterProgressBar position={90} theme={isWhiteMode} />
         <View style={styles.heading}>
           <Text
             style={

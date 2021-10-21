@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   View,
+  ScrollView,
   Text,
   StyleSheet,
   Image,
@@ -13,12 +14,15 @@ import { posts } from "../../database/fakeData";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-import { MemeCardSecondary } from "../../components/MemeCardSecondary";
+import {
+  MemeCardSecondary,
+  PostProps,
+} from "../../components/MemeCardSecondary";
 
 import { GoBackButton } from "../../components/GoBackButton";
 import fonts from "../../styles/fonts";
 
-import firebase from '../../database/firebaseConnection'
+import firebase from "../../database/firebaseConnection";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -38,6 +42,9 @@ export function Profile({ route }: any) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [memeList, setMemeList] = useState<PostProps>();
+  const [memeList2, setMemeList2] = useState<PostProps>();
+  const [memeList3, setMemeList3] = useState<PostProps>();
 
   const { user } = useContext(AuthContext);
 
@@ -45,9 +52,55 @@ export function Profile({ route }: any) {
   const { isWhiteMode } = useContext(StackContext);
 
   // Fetch memes from database
-  // useEffect(() => {
-    
-  // }, [])
+  useEffect(() => {
+    async function fetchMemes() {
+      // const list = await firebase
+      //   .firestore()
+      //   .collection("media")
+      //   .doc(user?.uid)
+      //   .collection("memes")
+      //   .get()
+      //   .then((querySnapshot) => {
+      //     querySnapshot.docs.map((doc) => {
+      //       console.log("LOG 1", doc.data());
+      //       return doc.data();
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     console.log(`Algo deu errado: ${error}`);
+      //   });
+      // console.log("LOG 2", list);
+      // return list;
+
+      firebase
+        .firestore()
+        .collection("media")
+        .doc(user?.uid)
+        .collection("memes")
+        .doc("bolsorabo")
+        .get()
+        .then((doc) => {
+          const meme = doc.data();
+          console.log(meme);
+          setMemeList(meme);
+        });
+
+      firebase
+        .firestore()
+        .collection("media")
+        .doc(user?.uid)
+        .collection("memes")
+        .doc("duda")
+        .get()
+        .then((doc) => {
+          const meme = doc.data();
+          console.log(meme);
+          setMemeList2(meme);
+        });
+    }
+
+    fetchMemes();
+  }, []);
 
   function loadPage(pageNumber = page, shouldRefresh = false) {
     if (total && pageNumber > total) return;
@@ -256,10 +309,9 @@ export function Profile({ route }: any) {
           />
         </TouchableOpacity>
       </View>
-      <View style={styles.content}>
-        {
-        isSmilePressed && (
-         <FlatList
+      <ScrollView style={styles.content}>
+        {isSmilePressed && (
+          <FlatList
             data={posts}
             keyExtractor={(post) => String(post.id)}
             onEndReached={() => loadPage()}
@@ -273,20 +325,12 @@ export function Profile({ route }: any) {
           />
         )}
         {isPostPressed && (
-          <FlatList
-          data={posts}
-          keyExtractor={(post) => String(post.id)}
-          onEndReached={() => loadPage()}
-          onEndReachedThreshold={0.1}
-          onRefresh={refreshList}
-          refreshing={refreshing}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <MemeCardSecondary postData={item} theme={isWhiteMode} />
-          )}
-        />
+          <>
+            <MemeCardSecondary postData={memeList} theme={isWhiteMode} />
+            <MemeCardSecondary postData={memeList2} theme={isWhiteMode} />
+          </>
         )}
-      </View>
+      </ScrollView>
       <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
     </View>
   );

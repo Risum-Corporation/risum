@@ -18,7 +18,7 @@ interface AuthContextData {
   loading: boolean;
   isAnonymous: boolean;
 
-  login(): void;
+  login(firebaseUser: any): void;
   loginAnonymously(): void;
   signOut(): void;
   signInWithGoogleAsync(): void;
@@ -37,47 +37,51 @@ export const AuthProvider: React.FC = ({ children }) => {
     //Verifica se o usuário é anônimo, de forma a escapar da requisição
     if (isAnonymous) {
       return setSigned(true);
-    } else if (firebaseUser && finishedLogin) {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(firebaseUser.uid)
-        .get()
-        .then((doc) => {
-          const userName = doc.data().userName;
-          const tag = doc.data().tag;
-          const avatar = doc.data().userImage;
-          const uid = firebaseUser.uid;
-
-          setUser({ userName, uid, tag, avatar });
-
-          // Se você vir essa mensagem no console, quer dizer que tudo deu certo
-          console.log("Fé na sogrinha gg");
-
-          // Navega para o StackRoutes
-          setSigned(true);
-        });
-    } else {
-      return;
     }
   }
 
   useEffect(() => {
-    //Observer: verifica quando o usuário sofre alterações (loga ou desloga)
+    // Observer: verifica quando o usuário sofre alterações (loga ou desloga)
     firebase.auth().onAuthStateChanged(handleStateChanged);
+
+    // Implementar: salvar o usuário logado no dispositivo
   }, []);
 
-  function login() {
+  async function login(firebaseUser: any) {
     // setUser({ ...props });
     // console.log(user);
+
+    if (firebaseUser.isAnonymous || isAnonymous) {
+      return setSigned(true);
+    }
 
     //Ajusta as condições de estado do usuário
     setFinishedLogin(true);
     setIsAnonymous(false);
 
-    // Execução da handleStateChanged de maneira forçada
-    const auth = firebase.auth().currentUser;
-    handleStateChanged(auth);
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(firebaseUser.uid)
+      .get()
+      .then((doc) => {
+        const userName = doc.data().userName;
+        const tag = doc.data().tag;
+        const avatar = doc.data().userImage;
+        const uid = firebaseUser.uid;
+
+        setUser({ userName, uid, tag, avatar });
+
+        // Se você vir essa mensagem no console, quer dizer que tudo deu certo
+        console.log("Fé na sogrinha login");
+
+        // Navega para o StackRoutes
+        setSigned(true);
+      });
+
+    // // Execução da handleStateChanged de maneira forçada
+    // const auth = firebase.auth().currentUser;
+    // handleStateChanged(auth);
   }
 
   async function loginAnonymously() {
@@ -89,7 +93,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       .auth()
       .signInAnonymously()
       .then((cred) => {
-        handleStateChanged(cred.user);
+        login(cred.user);
       })
       .catch((error) => {
         if (error.code === "auth/operation-not-allowed") {

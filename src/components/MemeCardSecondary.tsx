@@ -13,15 +13,15 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-interface PostProps {
+export interface PostProps {
   postData: {
-    id: number;
-    author: string;
+    id?: number;
+    author?: string;
     memeUrl: string;
     likes: number;
     memeTitle: string;
-    tags: string[];
-    avatar: string;
+    tags: string;
+    avatar?: string;
     comments: number;
   };
   theme: boolean;
