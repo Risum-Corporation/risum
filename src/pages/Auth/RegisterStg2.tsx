@@ -92,7 +92,22 @@ export function RegisterStg2() {
       .substring(1);
 
     const auth = firebase.auth().currentUser;
-    if (auth) {
+    if (auth && !userImage) {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(auth.uid)
+        .set({
+          userName: userName,
+          tag: tag,
+          userId: auth.uid,
+        })
+        .then(() => {
+          //Navega para a StackRoutes
+          return login(auth);
+        });
+    }
+    else if (auth && userImage) {
       // Upload da imagem de perfil
       const userPicture = await uploadImage([
         userImage,

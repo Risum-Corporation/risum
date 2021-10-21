@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { SafeAreaView, Text, StyleSheet } from "react-native";
+import { SafeAreaView, Text, StyleSheet, View } from "react-native";
 
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
@@ -29,6 +29,7 @@ export function ForgotPasswordStg2() {
         },
       ]}
     >
+    
       <Text
         style={[
           styles.title,
@@ -59,13 +60,13 @@ export function ForgotPasswordStg2() {
       <Text
         style={[
           styles.text,
-          { color: isWhiteMode ? colors.textLight : colors.text },
+          { color: isWhiteMode ? colors.whiteLight : colors.white },
         ]}
       >
         Um email foi enviado para você, siga suas instruções para redefinir a
         senha da sua Conta Risum
       </Text>
-
+      <View style={styles.buttonContainer}>
       <ConfirmButton
         title="Entendi"
         theme={isWhiteMode}
@@ -73,6 +74,7 @@ export function ForgotPasswordStg2() {
           navigation.navigate("Welcome");
         }}
       />
+      </View>
     </SafeAreaView>
   );
 }
@@ -92,8 +94,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    fontFamily: fonts.heading,
-    textAlign: "justify",
+    fontFamily: fonts.text,
+    textAlign: "center",
+    paddingHorizontal: 20,
+
   },
   emoji: {
     fontSize: 86,
@@ -101,5 +105,10 @@ const styles = StyleSheet.create({
   },
   letter: {
     height: 250,
-  }
+  },
+  buttonContainer: {
+    width: '100%',
+    paddingHorizontal: 30,
+
+  },
 });

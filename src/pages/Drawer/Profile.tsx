@@ -311,7 +311,7 @@ export function Profile({ route }: any) {
       </View>
       <ScrollView style={styles.content}>
         {isSmilePressed  && (
-          <FlatList
+         <FlatList
             data={posts}
             keyExtractor={(post) => String(post.id)}
             onEndReached={() => loadPage()}
@@ -322,9 +322,9 @@ export function Profile({ route }: any) {
             renderItem={({ item }) => (
               <MemeCardSecondary postData={item} theme={isWhiteMode} />
             )}
-          />
+          /> 
         )}
-        {isPostPressed && (
+        {(isPostPressed && user?.uid=="3bmAqEjKVANQH4UX97qbCasNwS33") && (
           <>
             <MemeCardSecondary postData={memeList2} theme={isWhiteMode} />
             <MemeCardSecondary postData={memeList} theme={isWhiteMode} />
