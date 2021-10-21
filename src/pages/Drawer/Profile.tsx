@@ -77,7 +77,7 @@ export function Profile({ route }: any) {
         .collection("media")
         .doc(user?.uid)
         .collection("memes")
-        .doc("bolsorabo")
+        .doc("Ernesto")
         .get()
         .then((doc) => {
           const meme = doc.data();
@@ -90,7 +90,7 @@ export function Profile({ route }: any) {
         .collection("media")
         .doc(user?.uid)
         .collection("memes")
-        .doc("duda")
+        .doc("Gigaton")
         .get()
         .then((doc) => {
           const meme = doc.data();
@@ -310,7 +310,7 @@ export function Profile({ route }: any) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.content}>
-        {isSmilePressed && (
+        {isSmilePressed  && (
           <FlatList
             data={posts}
             keyExtractor={(post) => String(post.id)}
@@ -326,8 +326,8 @@ export function Profile({ route }: any) {
         )}
         {isPostPressed && (
           <>
-            <MemeCardSecondary postData={memeList} theme={isWhiteMode} />
             <MemeCardSecondary postData={memeList2} theme={isWhiteMode} />
+            <MemeCardSecondary postData={memeList} theme={isWhiteMode} />
           </>
         )}
       </ScrollView>

@@ -23,7 +23,7 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="HypeTrain"
+      initialRouteName="Feed"
       tabBarOptions={{
         activeTintColor: isWhiteMode ? colors.greenLight : colors.green,
         style: {

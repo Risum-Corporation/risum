@@ -15,7 +15,7 @@ import fonts from "../../styles/fonts";
 import { TextInput } from "react-native-paper";
 
 import firebase from "../../database/firebaseConnection";
-
+import { AddAvatar } from "../../components/AddAvatar";
 import * as ImagePicker from "expo-image-picker";
 import { SendFileButton } from "../../components/SendFileButton";
 
@@ -112,7 +112,7 @@ export function RegisterStg2() {
         })
         .then(() => {
           //Navega para a StackRoutes
-          return login();
+          return login(auth);
         });
     } else {
       signOut();
@@ -152,43 +152,47 @@ export function RegisterStg2() {
         </View>
 
         <View style={styles.form}>
-          <TextInput
-            mode="flat"
-            underlineColor="transparent"
-            placeholder="Nome de usuário"
-            placeholderTextColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
-            }
-            style={[
-              isWhiteMode
-                ? { backgroundColor: colors.lightBackgroundLight }
-                : {
-                    backgroundColor: colors.lightBackground,
-                    color: colors.white,
-                    textDecorationColor: colors.white,
-                  },
-              styles.input,
-            ]}
-            selectionColor={colors.divider}
-            theme={{
-              colors: {
-                text: isWhiteMode ? colors.whiteLight : colors.white,
-                primary: isWhiteMode ? colors.greenLight : colors.green,
-                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-              },
-            }}
-            maxLength={10}
-            onChangeText={handleUserNameInput}
-          />
           {userImage ? (
             <Image source={{ uri: userImage }} style={styles.userImg} />
           ) : (
-            <SendFileButton
+            <AddAvatar
               theme={isWhiteMode}
               title="adicionar um avatar"
               onPress={onChooseImagePress}
             />
           )}
+          <View style={styles.userName}>
+            <TextInput
+              mode="flat"
+              underlineColor="transparent"
+              placeholder="Nome de usuário"
+              placeholderTextColor={
+                isWhiteMode
+                  ? colors.placeholderTextLight
+                  : colors.placeholderText
+              }
+              style={[
+                isWhiteMode
+                  ? { backgroundColor: colors.lightBackgroundLight }
+                  : {
+                      backgroundColor: colors.lightBackground,
+                      color: colors.white,
+                      textDecorationColor: colors.white,
+                    },
+                styles.input,
+              ]}
+              selectionColor={colors.divider}
+              theme={{
+                colors: {
+                  text: isWhiteMode ? colors.whiteLight : colors.white,
+                  primary: isWhiteMode ? colors.greenLight : colors.green,
+                  placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+                },
+              }}
+              maxLength={10}
+              onChangeText={handleUserNameInput}
+            />
+          </View>
         </View>
         <View style={styles.buttonBox}>
           <ConfirmButton
@@ -207,7 +211,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   wrapper: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
     paddingHorizontal: 20,
@@ -215,28 +218,34 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: "left",
     width: "100%",
-    marginTop: "-5%",
   },
   title: {
     fontFamily: fonts.heading,
     color: colors.white,
     fontSize: 27,
     lineHeight: 50,
+    marginTop: 75,
   },
   form: {
     width: "100%",
-    marginTop: "-10%",
+    marginTop: 10,
   },
   input: {
     borderBottomWidth: 1,
   },
   buttonBox: {
     width: "100%",
-    marginTop: "-0%",
+    marginTop: 50,
+
+    bottom: 1,
   },
   userImg: {
     width: "100%",
-    height: 300,
+    height: 270,
     resizeMode: "contain",
+    borderRadius: 28
+  },
+  userName: {
+    marginTop: 30,
   },
 });

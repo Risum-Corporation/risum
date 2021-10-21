@@ -27,9 +27,8 @@ export default function App() {
     Roboto_400Regular,
     Poppins_600SemiBold,
   });
-
+  console.disableYellowBox = true;
   const { loading } = useContext(AuthContext);
-
   if (!fontsLoaded || loading) {
     return <AppLoading />;
   }
