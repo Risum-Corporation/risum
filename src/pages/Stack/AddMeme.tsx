@@ -69,7 +69,8 @@ export function AddMeme() {
       .ref()
       .child(`memes/${uid}/${fileName.concat(` - ${fileTags}`)}`);
 
-    return ref.put(blob);
+    await ref.put(blob);
+    return await ref.getDownloadURL()
   }
 
   return (
@@ -174,11 +175,23 @@ export function AddMeme() {
                 if (memeTitle && tags) {
                   if (meme && user) {
                     uploadImage([meme, user?.uid, memeTitle, tags])
-                      .then(() => {
+                      .then((url) => {
                         Alert.alert("Sucesso");
                         setMeme(undefined);
                         setMemeTitle(undefined);
                         setTags(undefined);
+
+                        const memeId = memeTitle.concat(String(Date.now()))
+                        console.log(url)
+
+                        firebase.firestore().collection('posts').doc(memeId).set({
+                          // id do meme
+                          memeUrl: url,
+                          memeTitle: memeTitle,
+                          tags: tags,
+                          likes: 0,
+                          comments: 0,
+                        })
                       })
                       .catch((error) => {
                         Alert.alert(`Algo deu errado: ${error}`);

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,8 @@ import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 
 import { GoBackButton } from "../../components/GoBackButton";
 import fonts from "../../styles/fonts";
+
+import firebase from '../../database/firebaseConnection'
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -41,6 +43,11 @@ export function Profile({ route }: any) {
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
+
+  // Fetch memes from database
+  // useEffect(() => {
+    
+  // }, [])
 
   function loadPage(pageNumber = page, shouldRefresh = false) {
     if (total && pageNumber > total) return;
@@ -250,8 +257,9 @@ export function Profile({ route }: any) {
         </TouchableOpacity>
       </View>
       <View style={styles.content}>
-        {(isSmilePressed || isPostPressed) && (
-          <FlatList
+        {
+        isSmilePressed && (
+         <FlatList
             data={posts}
             keyExtractor={(post) => String(post.id)}
             onEndReached={() => loadPage()}
@@ -263,6 +271,20 @@ export function Profile({ route }: any) {
               <MemeCardSecondary postData={item} theme={isWhiteMode} />
             )}
           />
+        )}
+        {isPostPressed && (
+          <FlatList
+          data={posts}
+          keyExtractor={(post) => String(post.id)}
+          onEndReached={() => loadPage()}
+          onEndReachedThreshold={0.1}
+          onRefresh={refreshList}
+          refreshing={refreshing}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <MemeCardSecondary postData={item} theme={isWhiteMode} />
+          )}
+        />
         )}
       </View>
       <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
