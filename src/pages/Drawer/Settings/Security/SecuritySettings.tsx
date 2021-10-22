@@ -7,12 +7,12 @@ import {
   SafeAreaView,
   Platform,
 } from "react-native";
-import { GoBackButton } from "../../../components/GoBackButton";
-import colors from "../../../styles/colors";
-import fonts from "../../../styles/fonts";
+import { GoBackButton } from "../../../../components/GoBackButton";
+import colors from "../../../../styles/colors";
+import fonts from "../../../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import StackContext from "../../../contexts/Stack";
+import StackContext from "../../../../contexts/Stack";
 import { StatusBar } from "react-native";
 
 export function SecuritySettings() {

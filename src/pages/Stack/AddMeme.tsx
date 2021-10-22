@@ -20,7 +20,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = useState<string>();
   const [tags, setTags] = useState<string>();
-
   // Pode ser uma arquivo ou um vídeo
   const [meme, setMeme] = useState<string>();
 
@@ -112,6 +111,7 @@ export function AddMeme() {
             label="Título do Meme"
             mode={"flat"}
             value={memeTitle}
+            clearTextOnFocus
             onChangeText={(memeTitle) => setMemeTitle(memeTitle)}
             placeholder="Telegram 2 - O Retorno?"
             placeholderTextColor={
@@ -141,6 +141,7 @@ export function AddMeme() {
             label="Tags"
             mode={"flat"}
             value={tags}
+            clearTextOnFocus
             onChangeText={(tags) => setTags(tags)}
             placeholderTextColor={
               isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
@@ -180,8 +181,6 @@ export function AddMeme() {
                         setMeme(undefined);
                         setMemeTitle(undefined);
                         setTags(undefined);
-
-                        console.log(url);
 
                         firebase
                           .firestore()

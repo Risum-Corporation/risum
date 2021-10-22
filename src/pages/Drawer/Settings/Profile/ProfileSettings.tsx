@@ -7,13 +7,13 @@ import {
   SafeAreaView,
   Platform,
 } from "react-native";
-import { GoBackButton } from "../../../components/GoBackButton";
-import colors from "../../../styles/colors";
-import fonts from "../../../styles/fonts";
+import { GoBackButton } from "../../../../components/GoBackButton";
+import colors from "../../../../styles/colors";
+import fonts from "../../../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import AuthContext from "../../../contexts/Auth";
-import StackContext from "../../../contexts/Stack";
+import AuthContext from "../../../../contexts/Auth";
+import StackContext from "../../../../contexts/Stack";
 import { StatusBar } from "react-native";
 
 export function ProfileSettings() {
@@ -21,6 +21,16 @@ export function ProfileSettings() {
 
   // Theme
   const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
+
+  function handleChangeAvatar() {
+    navigation.navigate("ChangeAvatar");
+  }
+
+  function handleNoAccount() {
+    navigation.navigate("NoAccount");
+  }
+
+  const { isAnonymous } = useContext(AuthContext);
 
   return (
     <SafeAreaView
@@ -72,7 +82,10 @@ export function ProfileSettings() {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={isAnonymous ? handleNoAccount : handleChangeAvatar}
+          >
             <MaterialIcons
               name="add-a-photo"
               size={33}

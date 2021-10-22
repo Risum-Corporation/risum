@@ -316,7 +316,7 @@ export function Profile({ route }: any) {
             keyExtractor={(post) => String(post.id)}
             onEndReached={() => loadPage()}
             onEndReachedThreshold={0.1}
-            onRefresh={refreshList}
+            onRefresh={refreshList}  
             refreshing={refreshing}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (

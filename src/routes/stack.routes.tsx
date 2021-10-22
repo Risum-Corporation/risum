@@ -16,12 +16,13 @@ import colors from "../styles/colors";
 import StackContext from "../contexts/Stack";
 import { Comments } from "../pages/Stack/Comments";
 import { NoAccount } from "../pages/Stack/NoAccount";
-import { ProfileSettings } from "../pages/Drawer/Settings/ProfileSettings";
-import { SecuritySettings } from "../pages/Drawer/Settings/SecuritySettings";
+import { ProfileSettings } from "../pages/Drawer/Settings/Profile/ProfileSettings";
+import { SecuritySettings } from "../pages/Drawer/Settings/Security/SecuritySettings";
 import { AboutUsSettings } from "../pages/Drawer/Settings/AboutUsSettings";
 import { RisumPoliciesSettings } from "../pages/Drawer/Settings/RisumPoliciesSettings";
 import AuthContext from "../contexts/Auth";
 import { Search } from "../pages/Stack/Search";
+import { ChangeAvatar } from "../pages/Drawer/Settings/Profile/ChangeAvatar";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -190,12 +191,15 @@ const AppRoutes: React.FC = () => (
       {/*  Settings */}
 
       <stackRoutes.Screen name="ProfileSettings" component={ProfileSettings} />
+      <stackRoutes.Screen name="ChangeAvatar" component={ChangeAvatar} />
+
       <stackRoutes.Screen
         name="SecuritySettings"
         component={SecuritySettings}
       />
       <stackRoutes.Screen name="AboutUsSettings" component={AboutUsSettings} />
       <stackRoutes.Screen name="Search" component={Search} />
+
 
       <stackRoutes.Screen
         name="RisumPoliciesSettings"

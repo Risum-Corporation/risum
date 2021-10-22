@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   userID: {
     fontFamily: fonts.subtitle,
-    fontSize: 14,
+    fontSize: 15,
     marginLeft: 7,
   },
   wrapper: {
