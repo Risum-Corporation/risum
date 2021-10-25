@@ -26,8 +26,9 @@ interface EmailProps {
 const EmailVerify = ({ theme }: EmailProps) => {
   const [visible, setVisible] = React.useState(true);
 
+  async function handleSendEmail() {
 
-
+  }
 
   return (
     <Banner
@@ -70,7 +71,7 @@ const EmailVerify = ({ theme }: EmailProps) => {
                   color: theme ? colors.whiteLight : colors.white,
                   fontFamily: fonts.subtitle,
                 }}
-                onPress={() => setVisible(false)}
+                onPress={() => handleSendEmail()}
               >
                 Reenviar
               </Button>
