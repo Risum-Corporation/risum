@@ -51,11 +51,20 @@ export function Login() {
       .signInWithEmailAndPassword(email, password)
       .then((cred) => {
         setIsEmailOrUsernameInvalid(false);
-        if (cred) {
-          firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // Persistência do login
-          return login(cred.user);
-        }
-
+          firebase.firestore().collection('users').doc(cred.user?.uid).get().then((doc: any) => {
+            const userName = doc.data().userName
+            const tag = doc.data().tag
+              
+            // Verifica se o nome de usuário ou sua tag são inválidos, levando o usuário a cadastrá-los no RegisterStg2
+            if (!userName || !tag) {
+              return navigation.navigate("RegisterStg2")
+            } else {
+              // Inicia a persistência do usuário
+              firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+              // Navega para Stack Routes
+              return login(cred.user);
+            }
+          })
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);

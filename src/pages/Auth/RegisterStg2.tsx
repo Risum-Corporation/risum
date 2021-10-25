@@ -4,7 +4,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Alert,
   Image,
   Platform,
 } from "react-native";
@@ -17,10 +16,8 @@ import { TextInput } from "react-native-paper";
 import firebase from "../../database/firebaseConnection";
 import { AddAvatar } from "../../components/AddAvatar";
 import * as ImagePicker from "expo-image-picker";
-import { SendFileButton } from "../../components/SendFileButton";
 
 import { RegisterProgressBar } from "../../components/RegisterProgressBar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
 import AuthContext from "../../contexts/Auth";
@@ -84,14 +81,13 @@ export function RegisterStg2() {
   }
 
   async function handleSubmit() {
-    await AsyncStorage.setItem("@risum:user", userName);
-
     // Tag única do usuário
     const tag = (Math.floor(Math.random() * 10000) + 10000)
       .toString()
       .substring(1);
 
     const auth = firebase.auth().currentUser;
+    // Usuário sem foto de perfil
     if (auth && !userImage) {
       await firebase
         .firestore()
@@ -103,10 +99,14 @@ export function RegisterStg2() {
           userId: auth.uid,
         })
         .then(() => {
+          // Inicia a persistência do usuário
+          firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+          
           //Navega para a StackRoutes
           return login(auth);
         });
     }
+    // Usuário com foto de perfil
     else if (auth && userImage) {
       // Upload da imagem de perfil
       const userPicture = await uploadImage([

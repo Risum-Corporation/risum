@@ -37,10 +37,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     if (isAnonymous) {
       return setSigned(true);
     } else if (firebaseUser) {
-      // Verifica se o usuário já está conectado através da persistência
-      console.log(firebaseUser)
+      // Faz login se o usuário já estiver conectado através da persistência
         login(firebaseUser)
-        console.log('boa noite')
     } else {
       // Usuário não está logado
     }
@@ -53,7 +51,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   async function login(firebaseUser: any) {
     // setUser({ ...props });
     // console.log(user);
-    console.log("Entrei no login kkk")
     if (firebaseUser.isAnonymous || isAnonymous) {
       return setSigned(true);
     }
@@ -114,6 +111,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     setIsAnonymous(false);
     setSigned(false);
 
+    // Remoção da persistência
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
+    
     await firebase.auth().signOut();
   }
 

@@ -54,7 +54,9 @@ export function RegisterStg1() {
     return await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((cred) => {
+        // Envia um email de verificação
+        cred.user?.sendEmailVerification()
         navigation.navigate("RegisterStg2");
       })
       .catch((error) => {
