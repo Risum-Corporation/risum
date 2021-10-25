@@ -17,6 +17,7 @@ interface AuthContextData {
   user: User | null;
   loading: boolean;
   isAnonymous: boolean;
+  isEmailVerified: boolean;
 
   login(firebaseUser: any): void;
   loginAnonymously(): void;
@@ -31,6 +32,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [signed, setSigned] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
 
   async function handleStateChanged(firebaseUser: any) {
     //Verifica se o usuário é anônimo, de forma a escapar da requisição
@@ -55,8 +57,10 @@ export const AuthProvider: React.FC = ({ children }) => {
       return setSigned(true);
     }
 
-    //Ajusta as condições de estado do usuário
+     
+    //Ajusta as configurações de estado do usuário
     setIsAnonymous(false);
+    setIsEmailVerified(firebaseUser.isEmailVerified)
 
     await firebase
       .firestore()
@@ -109,6 +113,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     });
     //Ajusta as condições de estado do usuário
     setIsAnonymous(false);
+    setIsEmailVerified(false)
+
+    // Volta para o Auth Routes
     setSigned(false);
 
     // Remoção da persistência
@@ -145,6 +152,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         user,
         loading,
         isAnonymous,
+        isEmailVerified,
         login,
         loginAnonymously,
         signOut,

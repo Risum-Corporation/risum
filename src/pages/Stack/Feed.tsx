@@ -8,6 +8,8 @@ import { TopBar } from "../../components/TopBar";
 import { MemeCard } from "../../components/MemeCard";
 import StackContext from "../../contexts/Stack";
 import { Loading } from "../../components/Loading";
+import EmailVerify from "../../components/EmailVerify";
+import AuthContext from "../../contexts/Auth";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -17,6 +19,8 @@ export function Feed() {
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
+  const { isEmailVerified} = useContext(AuthContext);
+  
 
   function loadPage(pageNumber = page) {
     if (total && pageNumber > total) return;
@@ -51,6 +55,12 @@ export function Feed() {
         }
       />
       <TopBar name="Feed" theme={isWhiteMode} />
+      {
+        !isEmailVerified ?
+        <EmailVerify theme={isWhiteMode}/>
+        :
+        <></>    
+      }
 
       {loading ? (
         <Loading />
