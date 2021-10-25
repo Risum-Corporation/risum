@@ -23,8 +23,6 @@ export function Login() {
   const { login } = useContext(AuthContext);
   const navigation = useNavigation();
   const [email, setEmail] = useState<string>();
-  const [userName, setUserName] = useState<string>();
-  const [tag, setTag] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [isEmailOrUsernameInvalid, setIsEmailOrUsernameInvalid] =
     useState<boolean>();
@@ -53,7 +51,11 @@ export function Login() {
       .signInWithEmailAndPassword(email, password)
       .then((cred) => {
         setIsEmailOrUsernameInvalid(false);
-        return login(cred.user);
+        if (cred) {
+          firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL) // Persistência do login
+          return login(cred.user);
+        }
+
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);

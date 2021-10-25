@@ -86,22 +86,7 @@ export function ChangeAvatar() {
       .substring(1);
 
     const auth = firebase.auth().currentUser;
-    if (auth && !userImage) {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(auth.uid)
-        .set({
-          userName: userName,
-          tag: tag,
-          userId: auth.uid,
-        })
-        .then(() => {
-          //Navega para a StackRoutes
-          return navigation.navigate('Feed')
-        });
-    }
-    else if (auth && userImage) {
+    if (auth && userImage) {
       // Upload da imagem de perfil
       const userPicture = await uploadImage([
         userImage,
@@ -113,15 +98,13 @@ export function ChangeAvatar() {
         .firestore()
         .collection("users")
         .doc(auth.uid)
-        .set({
-          userName: userName,
+        .update({
           userImage: userPicture,
-          tag: tag,
-          userId: auth.uid,
         })
         .then(() => {
           //Navega para a StackRoutes
           Alert.alert("Sua foto foi alterada com sucesso 😄");
+          navigation.navigate('Feed')
         });
     } else {
         Alert.alert("Não foi possivel alterar sua foto 😕");

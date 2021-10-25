@@ -7,6 +7,7 @@ import colors from "../../styles/colors";
 import { TopBar } from "../../components/TopBar";
 import { MemeCard } from "../../components/MemeCard";
 import StackContext from "../../contexts/Stack";
+import { Loading } from "../../components/Loading";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -51,7 +52,9 @@ export function Feed() {
       />
       <TopBar name="Feed" theme={isWhiteMode} />
 
-      <FlatList
+      {loading ? (
+        <Loading />
+      ) : (<FlatList
         data={posts}
         keyExtractor={(post) => String(post.id)}
         onEndReached={() => loadPage()}
@@ -63,7 +66,7 @@ export function Feed() {
           <MemeCard postData={item} theme={isWhiteMode} />
         )}
         maxToRenderPerBatch={5}
-      />
+      />)}
     </View>
   );
 }

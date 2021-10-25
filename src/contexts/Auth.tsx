@@ -30,33 +30,35 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [signed, setSigned] = useState(false);
-  const [finishedLogin, setFinishedLogin] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
 
   async function handleStateChanged(firebaseUser: any) {
     //Verifica se o usuário é anônimo, de forma a escapar da requisição
     if (isAnonymous) {
       return setSigned(true);
+    } else if (firebaseUser) {
+      // Verifica se o usuário já está conectado através da persistência
+      console.log(firebaseUser)
+        login(firebaseUser)
+        console.log('boa noite')
+    } else {
+      // Usuário não está logado
     }
   }
 
   useEffect(() => {
-    // Observer: verifica quando o usuário sofre alterações (loga ou desloga)
-    firebase.auth().onAuthStateChanged(handleStateChanged);
-
-    // Implementar: salvar o usuário logado no dispositivo
-  }, []);
-
+    firebase.auth().onAuthStateChanged(handleStateChanged)
+  }, [])
+  
   async function login(firebaseUser: any) {
     // setUser({ ...props });
     // console.log(user);
-
+    console.log("Entrei no login kkk")
     if (firebaseUser.isAnonymous || isAnonymous) {
       return setSigned(true);
     }
 
     //Ajusta as condições de estado do usuário
-    setFinishedLogin(true);
     setIsAnonymous(false);
 
     await firebase
@@ -64,7 +66,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       .collection("users")
       .doc(firebaseUser.uid)
       .get()
-      .then((doc) => {
+      .then((doc: any) => {
         const userName = doc.data().userName;
         const tag = doc.data().tag;
         const avatar = doc.data().userImage;
@@ -87,12 +89,12 @@ export const AuthProvider: React.FC = ({ children }) => {
   async function loginAnonymously() {
     // Ajusta primeiro as condições de estado do usuário, pois a função handleStateChanged só é chamada depois da requisição no firebase
     setIsAnonymous(true);
-    setFinishedLogin(false);
 
     await firebase
       .auth()
       .signInAnonymously()
       .then((cred) => {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE) // Remoção da persistência (usuário anônimo)
         login(cred.user);
       })
       .catch((error) => {
@@ -110,12 +112,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     });
     //Ajusta as condições de estado do usuário
     setIsAnonymous(false);
-    setFinishedLogin(false);
     setSigned(false);
 
     await firebase.auth().signOut();
   }
 
+  // Melhorar isso, ainda não funciona
   async function signInWithGoogleAsync() {
     try {
       const result = await Google.logInAsync({

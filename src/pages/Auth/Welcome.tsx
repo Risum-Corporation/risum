@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   SafeAreaView,
   Text,
@@ -13,6 +13,8 @@ import {
 import risumIcon from "../../assets/risumIcon.png";
 import risumWhiteIcon from "../../assets/risumWhiteIcon.png";
 
+import firebase from "../../database/firebaseConnection";
+
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 
@@ -23,7 +25,7 @@ import { TwoButton } from "../../components/TwoButton";
 
 export function Welcome() {
   const navigation = useNavigation(); // Navigation between screen
-  const { loginAnonymously } = useContext(AuthContext);
+  const { login, loginAnonymously } = useContext(AuthContext);
 
   function handleEnterAsGuest() {
     loginAnonymously();

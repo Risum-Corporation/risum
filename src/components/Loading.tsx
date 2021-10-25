@@ -15,7 +15,7 @@ export function Loading() {
       }}
     >
       <Lottie
-        source={require("../../loading.json")}
+        source={require("../assets/lotties/loading.json")}
         resizeMode="contain"
         autoPlay
         loop
