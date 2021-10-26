@@ -21,6 +21,7 @@ import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 import { AntDesign } from "@expo/vector-icons";
 import AuthContext from "../../contexts/Auth";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function RegisterStg1() {
   const navigation = useNavigation();
@@ -56,7 +57,7 @@ export function RegisterStg1() {
       .createUserWithEmailAndPassword(email, password)
       .then((cred) => {
         // Envia um email de verificação
-        cred.user?.sendEmailVerification()
+        cred.user?.sendEmailVerification();
         navigation.navigate("RegisterStg2");
       })
       .catch((error) => {
@@ -82,146 +83,140 @@ export function RegisterStg1() {
   }
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        {
-          backgroundColor: isWhiteMode
-            ? colors.backgroundLight
-            : colors.background,
-        },
-      ]}
-    >
-      <View
-        style={
-          isWhiteMode
-            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
-            : [styles.wrapper, { backgroundColor: colors.background }]
-        }
-      >
-        <RegisterProgressBar position={50} theme={isWhiteMode} />
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <View style={styles.wrapper}>
+            <RegisterProgressBar position={50} theme={isWhiteMode} />
 
-        <View style={styles.heading}>
-          <Text
-            style={
-              isWhiteMode
-                ? [styles.title, { color: colors.whiteLight }]
-                : [styles.title, { color: colors.white }]
-            }
-          >
-            Crie sua{"\n"}conta Risum
-          </Text>
-        </View>
+            <View style={styles.heading}>
+              <Text
+                style={
+                  isWhiteMode
+                    ? [styles.title, { color: colors.whiteLight }]
+                    : [styles.title, { color: colors.white }]
+                }
+              >
+                Crie sua{"\n"}conta Risum
+              </Text>
+            </View>
 
-        <View style={styles.form}>
-          <TextInput
-            label="Email"
-            mode="flat"
-            onChangeText={handleEmailInputChange}
-            placeholder="usuario@mail.com"
-            placeholderTextColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
-            }
-            underlineColor={"transparent"}
-            style={[
-              isWhiteMode
-                ? { backgroundColor: colors.lightBackgroundLight }
-                : {
-                    backgroundColor: colors.lightBackground,
-                    color: colors.white,
-                    textDecorationColor: colors.white,
+            <View style={styles.form}>
+              <TextInput
+                label="Email"
+                mode="flat"
+                onChangeText={handleEmailInputChange}
+                placeholder="usuario@mail.com"
+                placeholderTextColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.placeholderText
+                }
+                underlineColor={"transparent"}
+                style={[
+                  isWhiteMode
+                    ? { backgroundColor: colors.lightBackgroundLight }
+                    : {
+                        backgroundColor: colors.lightBackground,
+                        color: colors.white,
+                        textDecorationColor: colors.white,
+                      },
+                  styles.input,
+                ]}
+                selectionColor={colors.divider}
+                theme={{
+                  colors: {
+                    text: isWhiteMode ? colors.whiteLight : colors.white,
+                    primary: isWhiteMode ? colors.greenLight : colors.green,
+                    placeholder: isWhiteMode ? colors.whiteLight : colors.white,
                   },
-              styles.input,
-            ]}
-            selectionColor={colors.divider}
-            theme={{
-              colors: {
-                text: isWhiteMode ? colors.whiteLight : colors.white,
-                primary: isWhiteMode ? colors.greenLight : colors.green,
-                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-              },
-            }}
-          />
+                }}
+              />
 
-          <TextInput
-            label="Senha"
-            secureTextEntry={true}
-            mode={"flat"}
-            onChangeText={handlePasswordInputChange}
-            placeholderTextColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
-            }
-            underlineColor={"transparent"}
-            style={[
-              isWhiteMode
-                ? { backgroundColor: colors.lightBackgroundLight }
-                : {
-                    backgroundColor: colors.lightBackground,
-                    color: colors.white,
-                    textDecorationColor: colors.white,
+              <TextInput
+                label="Senha"
+                secureTextEntry={true}
+                mode={"flat"}
+                onChangeText={handlePasswordInputChange}
+                placeholderTextColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.placeholderText
+                }
+                underlineColor={"transparent"}
+                style={[
+                  isWhiteMode
+                    ? { backgroundColor: colors.lightBackgroundLight }
+                    : {
+                        backgroundColor: colors.lightBackground,
+                        color: colors.white,
+                        textDecorationColor: colors.white,
+                      },
+                  styles.input,
+                ]}
+                selectionColor={colors.divider}
+                placeholder="******"
+                theme={{
+                  colors: {
+                    text: isWhiteMode ? colors.whiteLight : colors.white,
+                    primary: isWhiteMode ? colors.greenLight : colors.green,
+                    placeholder: isWhiteMode ? colors.whiteLight : colors.white,
                   },
-              styles.input,
-            ]}
-            selectionColor={colors.divider}
-            placeholder="******"
-            theme={{
-              colors: {
-                text: isWhiteMode ? colors.whiteLight : colors.white,
-                primary: isWhiteMode ? colors.greenLight : colors.green,
-                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-              },
-            }}
-          />
-          {isEmailOrPasswordInvalid && (
-            <Text style={styles.redAdvertisement}>{errorMessage}</Text>
-          )}
-        </View>
-        <View style={styles.buttonBox}>
-          <ConfirmButton
-            theme={isWhiteMode}
-            title="Confirmar"
-            onPress={handleConfirm}
-          />
-        </View>
+                }}
+              />
+              {isEmailOrPasswordInvalid && (
+                <Text style={styles.redAdvertisement}>{errorMessage}</Text>
+              )}
+            </View>
+            <View style={styles.buttonBox}>
+              <ConfirmButton
+                theme={isWhiteMode}
+                title="Confirmar"
+                onPress={handleConfirm}
+              />
+            </View>
 
-        <View style={styles.orBox}>
-          <Text
-            style={[
-              styles.subtitle,
-              isWhiteMode
-                ? { color: colors.whiteLight }
-                : { color: colors.white },
-            ]}
-          >
-            OU
-          </Text>
-        </View>
+            <View style={styles.orBox}>
+              <Text
+                style={[
+                  styles.subtitle,
+                  isWhiteMode
+                    ? { color: colors.whiteLight }
+                    : { color: colors.white },
+                ]}
+              >
+                OU
+              </Text>
+            </View>
 
-        <View style={styles.socialRegister}>
-          <TouchableOpacity onPress={handleRegisterWithGoogle}>
-            <AntDesign
-              name="google"
-              size={45}
-              color={isWhiteMode ? colors.whiteLight : colors.white}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <AntDesign
-              name="apple1"
-              size={45}
-              color={isWhiteMode ? colors.whiteLight : colors.white}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <AntDesign
-              name="facebook-square"
-              size={45}
-              color={isWhiteMode ? colors.whiteLight : colors.white}
-            />
-          </TouchableOpacity>
+            <View style={styles.socialRegister}>
+              <TouchableOpacity onPress={handleRegisterWithGoogle}>
+                <AntDesign
+                  name="google"
+                  size={45}
+                  color={isWhiteMode ? colors.whiteLight : colors.white}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <AntDesign
+                  name="apple1"
+                  size={45}
+                  color={isWhiteMode ? colors.whiteLight : colors.white}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <AntDesign
+                  name="facebook-square"
+                  size={45}
+                  color={isWhiteMode ? colors.whiteLight : colors.white}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      }
+    />
   );
 }
 

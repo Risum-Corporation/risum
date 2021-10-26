@@ -30,7 +30,7 @@ export function SecuritySettings() {
     <SafeZoneView
       theme={isWhiteMode}
       content={
-        <View style={styles.container}>
+        <View>
           <GoBackButton
             theme={isWhiteMode}
             onPress={() => navigation.goBack()}
@@ -75,16 +75,6 @@ export function SecuritySettings() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-
-  containerLight: {
-    flex: 1,
-    backgroundColor: colors.backgroundLight,
-  },
-
   heading: {
     marginHorizontal: 50,
   },

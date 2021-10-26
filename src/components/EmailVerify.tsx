@@ -24,7 +24,7 @@ const EmailVerify = ({ theme }: EmailProps) => {
       visible={visible}
       actions={[]}
       style={{
-        backgroundColor: theme ? colors.backgroundLight : colors.searchBarColor,
+        backgroundColor: theme ? colors.searchBarColorLight : colors.searchBarColor,
         marginBottom: 15,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,

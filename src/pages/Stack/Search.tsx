@@ -186,13 +186,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     fontSize: 2,
   },
-  title: {
-    fontSize: 24,
-    fontFamily: fonts.heading,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: Platform.OS === "ios" ? 6 : 0,
-  },
   searchBar: {
     fontSize: 2,
   },

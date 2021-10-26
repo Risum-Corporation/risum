@@ -18,6 +18,7 @@ import AuthContext from "../../contexts/Auth";
 import StackContext from "../../contexts/Stack";
 
 import { AntDesign } from "@expo/vector-icons";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function Login() {
   const { login } = useContext(AuthContext);
@@ -51,20 +52,27 @@ export function Login() {
       .signInWithEmailAndPassword(email, password)
       .then((cred) => {
         setIsEmailOrUsernameInvalid(false);
-          firebase.firestore().collection('users').doc(cred.user?.uid).get().then((doc: any) => {
-            const userName = doc.data().userName
-            const tag = doc.data().tag
-              
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(cred.user?.uid)
+          .get()
+          .then((doc: any) => {
+            const userName = doc.data().userName;
+            const tag = doc.data().tag;
+
             // Verifica se o nome de usuário ou sua tag são inválidos, levando o usuário a cadastrá-los no RegisterStg2
             if (!userName || !tag) {
-              return navigation.navigate("RegisterStg2")
+              return navigation.navigate("RegisterStg2");
             } else {
               // Inicia a persistência do usuário
-              firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+              firebase
+                .auth()
+                .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
               // Navega para Stack Routes
               return login(cred.user);
             }
-          })
+          });
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);
@@ -88,170 +96,162 @@ export function Login() {
   }
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        {
-          backgroundColor: isWhiteMode
-            ? colors.backgroundLight
-            : colors.background,
-        },
-      ]}
-    >
-      <View
-        style={
-          isWhiteMode
-            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
-            : [styles.wrapper, { backgroundColor: colors.background }]
-        }
-      >
-        <View style={styles.heading}>
-          <Text
-            style={
-              isWhiteMode
-                ? [styles.title, { color: colors.whiteLight }]
-                : [styles.title, { color: colors.white }]
-            }
-          >
-            Entre com sua{"\n"}Conta Risum
-          </Text>
-        </View>
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <View style={styles.wrapper}>
+            <View style={styles.heading}>
+              <Text
+                style={
+                  isWhiteMode
+                    ? [styles.title, { color: colors.whiteLight }]
+                    : [styles.title, { color: colors.white }]
+                }
+              >
+                Entre com sua{"\n"}Conta Risum
+              </Text>
+            </View>
 
-        <View style={styles.form}>
-          <TextInput
-            label="Email"
-            mode={"flat"}
-            onChangeText={handleEmailInputChange}
-            placeholder="usuario@mail.com"
-            placeholderTextColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
-            }
-            underlineColor={"transparent"}
-            style={[
-              isWhiteMode
-                ? { backgroundColor: colors.lightBackgroundLight }
-                : {
-                    backgroundColor: colors.lightBackground,
-                    color: colors.white,
-                    textDecorationColor: colors.white,
+            <View style={styles.form}>
+              <TextInput
+                label="Email"
+                mode={"flat"}
+                onChangeText={handleEmailInputChange}
+                placeholder="usuario@mail.com"
+                placeholderTextColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.placeholderText
+                }
+                underlineColor={"transparent"}
+                style={[
+                  isWhiteMode
+                    ? { backgroundColor: colors.lightBackgroundLight }
+                    : {
+                        backgroundColor: colors.lightBackground,
+                        color: colors.white,
+                        textDecorationColor: colors.white,
+                      },
+                  styles.input,
+                ]}
+                selectionColor={colors.divider}
+                theme={{
+                  colors: {
+                    text: isWhiteMode ? colors.whiteLight : colors.white,
+                    primary: isWhiteMode ? colors.greenLight : colors.green,
+                    placeholder: isWhiteMode ? colors.whiteLight : colors.white,
                   },
-              styles.input,
-            ]}
-            selectionColor={colors.divider}
-            theme={{
-              colors: {
-                text: isWhiteMode ? colors.whiteLight : colors.white,
-                primary: isWhiteMode ? colors.greenLight : colors.green,
-                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-              },
-            }}
-          />
+                }}
+              />
 
-          <TextInput
-            label="Senha"
-            secureTextEntry={true}
-            mode={"flat"}
-            onChangeText={handlePasswordInputChange}
-            placeholderTextColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
-            }
-            underlineColor={"transparent"}
-            style={[
-              isWhiteMode
-                ? { backgroundColor: colors.lightBackgroundLight }
-                : {
-                    backgroundColor: colors.lightBackground,
-                    color: colors.white,
-                    textDecorationColor: colors.white,
+              <TextInput
+                label="Senha"
+                secureTextEntry={true}
+                mode={"flat"}
+                onChangeText={handlePasswordInputChange}
+                placeholderTextColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.placeholderText
+                }
+                underlineColor={"transparent"}
+                style={[
+                  isWhiteMode
+                    ? { backgroundColor: colors.lightBackgroundLight }
+                    : {
+                        backgroundColor: colors.lightBackground,
+                        color: colors.white,
+                        textDecorationColor: colors.white,
+                      },
+                  styles.input,
+                ]}
+                selectionColor={colors.divider}
+                placeholder="******"
+                theme={{
+                  colors: {
+                    text: isWhiteMode ? colors.whiteLight : colors.white,
+                    primary: isWhiteMode ? colors.greenLight : colors.green,
+                    placeholder: isWhiteMode ? colors.whiteLight : colors.white,
                   },
-              styles.input,
-            ]}
-            selectionColor={colors.divider}
-            placeholder="******"
-            theme={{
-              colors: {
-                text: isWhiteMode ? colors.whiteLight : colors.white,
-                primary: isWhiteMode ? colors.greenLight : colors.green,
-                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-              },
-            }}
-          />
-          <View style={styles.complementaryBox}>
-            <Text style={styles.redAdvertisement}>
-              {isEmailOrUsernameInvalid && errorMessage}
-            </Text>
+                }}
+              />
+              <View style={styles.complementaryBox}>
+                <Text style={styles.redAdvertisement}>
+                  {isEmailOrUsernameInvalid && errorMessage}
+                </Text>
 
-            <TouchableOpacity onPress={handleForgotPwd}>
+                <TouchableOpacity onPress={handleForgotPwd}>
+                  <Text
+                    style={[
+                      styles.text,
+                      { color: isWhiteMode ? colors.whiteLight : colors.white },
+                    ]}
+                  >
+                    Esqueci minha senha
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.buttonBox}>
+              <ConfirmButton
+                theme={isWhiteMode}
+                title="Confirmar"
+                onPress={handleConfirm}
+              />
+            </View>
+            <View style={styles.orBox}>
               <Text
                 style={[
-                  styles.text,
-                  { color: isWhiteMode ? colors.whiteLight : colors.white },
+                  styles.subtitle,
+                  isWhiteMode
+                    ? { color: colors.whiteLight }
+                    : { color: colors.white },
                 ]}
               >
-                Esqueci minha senha
+                OU
               </Text>
-            </TouchableOpacity>
+            </View>
+
+            <View style={styles.socialRegister}>
+              <TouchableOpacity activeOpacity={0.7}>
+                <AntDesign
+                  name="google"
+                  size={45}
+                  color={isWhiteMode ? colors.whiteLight : colors.white}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.7}>
+                <AntDesign
+                  name="apple1"
+                  size={45}
+                  color={isWhiteMode ? colors.whiteLight : colors.white}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.7}>
+                <AntDesign
+                  name="facebook-square"
+                  size={45}
+                  color={isWhiteMode ? colors.whiteLight : colors.white}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        <View style={styles.buttonBox}>
-          <ConfirmButton
-            theme={isWhiteMode}
-            title="Confirmar"
-            onPress={handleConfirm}
-          />
-        </View>
-        <View style={styles.orBox}>
-          <Text
-            style={[
-              styles.subtitle,
-              isWhiteMode
-                ? { color: colors.whiteLight }
-                : { color: colors.white },
-            ]}
-          >
-            OU
-          </Text>
-        </View>
-
-        <View style={styles.socialRegister}>
-          <TouchableOpacity activeOpacity={0.7}>
-            <AntDesign
-              name="google"
-              size={45}
-              color={isWhiteMode ? colors.whiteLight : colors.white}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
-            <AntDesign
-              name="apple1"
-              size={45}
-              color={isWhiteMode ? colors.whiteLight : colors.white}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
-            <AntDesign
-              name="facebook-square"
-              size={45}
-              color={isWhiteMode ? colors.whiteLight : colors.white}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+      }
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   wrapper: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
     paddingHorizontal: 20,
-    backgroundColor: colors.background,
   },
   heading: {
     textAlign: "left",

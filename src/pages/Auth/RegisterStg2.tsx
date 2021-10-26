@@ -23,6 +23,7 @@ import { useState } from "react";
 import AuthContext from "../../contexts/Auth";
 import StackContext from "../../contexts/Stack";
 import { useNavigation } from "@react-navigation/native";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function RegisterStg2() {
   const { login, signOut } = useContext(AuthContext);
@@ -100,8 +101,8 @@ export function RegisterStg2() {
         })
         .then(() => {
           // Inicia a persistência do usuário
-          firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-          
+          firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
           //Navega para a StackRoutes
           return login(auth);
         });
@@ -136,88 +137,80 @@ export function RegisterStg2() {
   }
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        {
-          backgroundColor: isWhiteMode
-            ? colors.backgroundLight
-            : colors.background,
-        },
-      ]}
-    >
-      <View
-        style={
-          isWhiteMode
-            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
-            : [styles.wrapper, { backgroundColor: colors.background }]
-        }
-      >
-        <RegisterProgressBar position={90} theme={isWhiteMode} />
-        <View style={styles.heading}>
-          <Text
-            style={
-              isWhiteMode
-                ? [styles.title, { color: colors.whiteLight }]
-                : [styles.title, { color: colors.white }]
-            }
-          >
-            Insira suas{"\n"}informações de perfil
-          </Text>
-        </View>
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <View style={styles.wrapper}>
+            <RegisterProgressBar position={90} theme={isWhiteMode} />
+            <View style={styles.heading}>
+              <Text
+                style={
+                  isWhiteMode
+                    ? [styles.title, { color: colors.whiteLight }]
+                    : [styles.title, { color: colors.white }]
+                }
+              >
+                Insira suas{"\n"}informações de perfil
+              </Text>
+            </View>
 
-        <View style={styles.form}>
-          {userImage ? (
-            <Image source={{ uri: userImage }} style={styles.userImg} />
-          ) : (
-            <AddAvatar
-              theme={isWhiteMode}
-              title="adicionar um avatar"
-              onPress={onChooseImagePress}
-            />
-          )}
-          <View style={styles.userName}>
-            <TextInput
-              mode="flat"
-              underlineColor="transparent"
-              placeholder="Nome de usuário"
-              placeholderTextColor={
-                isWhiteMode
-                  ? colors.placeholderTextLight
-                  : colors.placeholderText
-              }
-              style={[
-                isWhiteMode
-                  ? { backgroundColor: colors.lightBackgroundLight }
-                  : {
-                      backgroundColor: colors.lightBackground,
-                      color: colors.white,
-                      textDecorationColor: colors.white,
+            <View style={styles.form}>
+              {userImage ? (
+                <Image source={{ uri: userImage }} style={styles.userImg} />
+              ) : (
+                <AddAvatar
+                  theme={isWhiteMode}
+                  title="adicionar um avatar"
+                  onPress={onChooseImagePress}
+                />
+              )}
+              <View style={styles.userName}>
+                <TextInput
+                  mode="flat"
+                  underlineColor="transparent"
+                  placeholder="Nome de usuário"
+                  placeholderTextColor={
+                    isWhiteMode
+                      ? colors.placeholderTextLight
+                      : colors.placeholderText
+                  }
+                  style={[
+                    isWhiteMode
+                      ? { backgroundColor: colors.lightBackgroundLight }
+                      : {
+                          backgroundColor: colors.lightBackground,
+                          color: colors.white,
+                          textDecorationColor: colors.white,
+                        },
+                    styles.input,
+                  ]}
+                  selectionColor={colors.divider}
+                  theme={{
+                    colors: {
+                      text: isWhiteMode ? colors.whiteLight : colors.white,
+                      primary: isWhiteMode ? colors.greenLight : colors.green,
+                      placeholder: isWhiteMode
+                        ? colors.whiteLight
+                        : colors.white,
                     },
-                styles.input,
-              ]}
-              selectionColor={colors.divider}
-              theme={{
-                colors: {
-                  text: isWhiteMode ? colors.whiteLight : colors.white,
-                  primary: isWhiteMode ? colors.greenLight : colors.green,
-                  placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-                },
-              }}
-              maxLength={10}
-              onChangeText={handleUserNameInput}
-            />
+                  }}
+                  maxLength={10}
+                  onChangeText={handleUserNameInput}
+                />
+              </View>
+            </View>
+            <View style={styles.buttonBox}>
+              <ConfirmButton
+                theme={isWhiteMode}
+                title="Confirmar"
+                onPress={handleSubmit}
+              />
+            </View>
           </View>
         </View>
-        <View style={styles.buttonBox}>
-          <ConfirmButton
-            theme={isWhiteMode}
-            title="Confirmar"
-            onPress={handleSubmit}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
+      }
+    />
   );
 }
 
@@ -258,7 +251,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 270,
     resizeMode: "contain",
-    borderRadius: 28
+    borderRadius: 28,
   },
   userName: {
     marginTop: 30,

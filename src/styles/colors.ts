@@ -33,8 +33,7 @@ export default {
   textLight: "#000",
   placeholderTextLight: "#626262",
   inputTextLight: "#E3E3E3",
-  searchBarColorLight: "#292929",
-
+  searchBarColorLight: "#d9d9d9",
   outlineGrayLight: "#444444",
   pastelRedLight: "#FF7A7A",
 
