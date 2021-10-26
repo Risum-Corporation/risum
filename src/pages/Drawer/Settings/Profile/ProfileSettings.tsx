@@ -16,40 +16,18 @@ import AuthContext from "../../../../contexts/Auth";
 import StackContext from "../../../../contexts/Stack";
 import { StatusBar } from "react-native";
 import { SettingsButton } from "../../../../components/SettingsButton";
+import { SafeZoneView } from "../../../../styles/Theme";
 
 export function ProfileSettings() {
   const navigation = useNavigation();
-
-  // Theme
-  const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
-
-  function handleChangeAvatar() {
-    navigation.navigate("ChangeAvatar");
-  }
-
-  function handleChangeCover() {
-    navigation.navigate("ChangeCover");
-  }
-
-  function handleNoAccount() {
-    navigation.navigate("NoAccount");
-  }
-
   const { isAnonymous } = useContext(AuthContext);
 
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
+
   return (
-    <SafeAreaView
-      style={isWhiteMode ? styles.containerLight : styles.container}
-    >
-      <StatusBar
-        barStyle={
-          Platform.OS === "ios"
-            ? isWhiteMode
-              ? "dark-content"
-              : "light-content"
-            : "default"
-        }
-      />
+    <SafeZoneView theme={isWhiteMode} content={
+    <View style={styles.container}>
       <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
       <View style={styles.heading}>
         <Text
@@ -77,7 +55,7 @@ export function ProfileSettings() {
             title="Mudar foto"
             light={colors.yellowLight}
             dark={colors.yellow}
-            goTo={ !isAnonymous ? "ChangeAvatar" : "NoAccount"}
+            goTo={!isAnonymous ? "ChangeAvatar" : "NoAccount"}
           />
           <SettingsButton
             theme={isWhiteMode}
@@ -85,11 +63,11 @@ export function ProfileSettings() {
             title="Alterar Capa"
             light={colors.pinkLight}
             dark={colors.pink}
-            goTo={ !isAnonymous ? "ChangeCover" : "NoAccount"}
+            goTo={!isAnonymous ? "ChangeCover" : "NoAccount"}
           />
         </View>
       </View>
-    </SafeAreaView>
+      </View>}/>
   );
 }
 

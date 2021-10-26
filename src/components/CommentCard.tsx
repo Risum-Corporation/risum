@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { SimpleText } from "../styles/Theme";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
@@ -38,13 +39,7 @@ export function CommentCard({ postData, theme }: PostProps) {
         }
       >
         <View>
-          <Text
-            style={
-              theme ? { color: colors.whiteLight } : { color: colors.white }
-            }
-          >
-            {postData.content}
-          </Text>
+          <SimpleText theme={theme} title={postData.content} />
           <TouchableOpacity>
             <Text
               style={

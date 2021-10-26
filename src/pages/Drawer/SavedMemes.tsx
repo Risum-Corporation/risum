@@ -8,6 +8,7 @@ import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 import { posts } from "../../database/fakeData";
 import StackContext from "../../contexts/Stack";
 import AuthContext from "../../contexts/Auth";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function SavedMemes() {
   const navigation = useNavigation();
@@ -17,46 +18,41 @@ export function SavedMemes() {
   const { isWhiteMode } = useContext(StackContext);
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        isWhiteMode
-          ? { backgroundColor: colors.backgroundLight }
-          : { backgroundColor: colors.background },
-      ]}
-    >
-      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
-      <View style={styles.heading}>
-        {/* <View style={styles.searchBar}>
-      <Searchbar
-      placeholder="Search"
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-    />
-    </View> */}
-        <Text
-          style={[
-            styles.title,
-            isWhiteMode
-              ? { color: colors.greenLight }
-              : { color: colors.green },
-          ]}
-        >
-          Memes Salvos
-        </Text>
-        <View style={styles.savedMemes}>
-          <FlatList
-            data={posts}
-            keyExtractor={(post) => String(post.id)}
-            onEndReachedThreshold={0.1}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <MemeCardSecondary postData={item} theme={isWhiteMode} />
-            )}
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View>
+          <GoBackButton
+            theme={isWhiteMode}
+            onPress={() => navigation.goBack()}
           />
+          <View style={styles.heading}>
+            {/* Seria legal implementar uma searhbar aqui */}
+            <Text
+              style={[
+                styles.title,
+                isWhiteMode
+                  ? { color: colors.greenLight }
+                  : { color: colors.green },
+              ]}
+            >
+              Memes Salvos
+            </Text>
+            <View style={styles.savedMemes}>
+              <FlatList
+                data={posts}
+                keyExtractor={(post) => String(post.id)}
+                onEndReachedThreshold={0.1}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <MemeCardSecondary postData={item} theme={isWhiteMode} />
+                )}
+              />
+            </View>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      }
+    />
   );
 }
 

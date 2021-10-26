@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FlatList, StyleSheet, View, Text } from "react-native";
 
-import { posts } from '../../database/fakeData'
+import { posts } from "../../database/fakeData";
 import { comments } from "../../database/fakeData";
 
 import colors from "../../styles/colors";
@@ -9,6 +9,7 @@ import StackContext from "../../contexts/Stack";
 import { GoBackButton } from "../../components/GoBackButton";
 import { CommentCard } from "../../components/CommentCard";
 import { MemeCardSecondary } from "../../components/MemeCardSecondary";
+import { SafeZoneView, SimpleText } from "../../styles/Theme";
 
 export function Comments() {
   const [page, setPage] = useState(1);
@@ -41,33 +42,26 @@ export function Comments() {
     setRefreshing(false);
   }
   return (
-    <View
-      style={
-        isWhiteMode
-          ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
-          : [styles.wrapper, { backgroundColor: colors.background }]
-      }
-    >
-      <GoBackButton theme={isWhiteMode} />
-
-
-
-      <FlatList
-        data={comments}
-        keyExtractor={(post) => String(post.id)}
-        onEndReached={() => loadPage()}
-        onEndReachedThreshold={0.1}
-        onRefresh={refreshList}
-        showsVerticalScrollIndicator={false}
-        refreshing={refreshing}
-        renderItem={({ item }) => (
-          <>
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.wrapper}>
+        <FlatList
+          data={comments}
+          keyExtractor={(post) => String(post.id)}
+          onEndReached={() => loadPage()}
+          onEndReachedThreshold={0.1}
+          onRefresh={refreshList}
+          showsVerticalScrollIndicator={false}
+          refreshing={refreshing}
+          renderItem={({ item }) => (
             <CommentCard postData={item} theme={isWhiteMode} />
-          </>
-        )}
-        maxToRenderPerBatch={5}
-      />
-    </View>
+          )}
+          maxToRenderPerBatch={5}
+        />
+        </View>
+      }
+    />
   );
 }
 

@@ -6,6 +6,7 @@ import fonts from "../../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import StackContext from "../../../contexts/Stack";
 import { StatusBar } from "react-native";
+import { SafeZoneView } from "../../../styles/Theme";
 
 export function RisumPoliciesSettings() {
   const navigation = useNavigation();
@@ -14,32 +15,29 @@ export function RisumPoliciesSettings() {
   const { isWhiteMode } = useContext(StackContext);
 
   return (
-    <SafeAreaView
-      style={isWhiteMode ? styles.containerLight : styles.container}
-    >
-      <StatusBar
-        barStyle={
-          Platform.OS === "ios"
-            ? isWhiteMode
-              ? "dark-content"
-              : "light-content"
-            : "default"
-        }
-      />
-      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
-      <View style={styles.heading}>
-        <Text
-          style={[
-            styles.title,
-            isWhiteMode
-              ? { color: colors.greenLight }
-              : { color: colors.green },
-          ]}
-        >
-          Políticas do Risum
-        </Text>
-      </View>
-    </SafeAreaView>
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <GoBackButton
+            theme={isWhiteMode}
+            onPress={() => navigation.goBack()}
+          />
+          <View style={styles.heading}>
+            <Text
+              style={[
+                styles.title,
+                isWhiteMode
+                  ? { color: colors.greenLight }
+                  : { color: colors.green },
+              ]}
+            >
+              Sobre nós
+            </Text>
+          </View>
+        </View>
+      }
+    />
   );
 }
 

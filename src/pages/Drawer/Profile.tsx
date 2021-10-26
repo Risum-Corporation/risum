@@ -30,6 +30,7 @@ import StackContext from "../../contexts/Stack";
 import AuthContext from "../../contexts/Auth";
 
 import { Avatar } from "react-native-paper";
+import { SafeZoneView } from "../../styles/Theme";
 
 // route.params.userId para dinamizar a tela de perfil para vários perfis diferentes
 export function Profile({ route }: any) {
@@ -128,13 +129,9 @@ export function Profile({ route }: any) {
   }
 
   return (
+    <SafeZoneView theme={isWhiteMode} content={
     <View
-      style={[
-        styles.container,
-        isWhiteMode
-          ? { backgroundColor: colors.backgroundLight }
-          : { backgroundColor: colors.background },
-      ]}
+      style={styles.container}
     >
       <Image
         source={require("../../assets/wallpaper.jpg")}
@@ -332,7 +329,7 @@ export function Profile({ route }: any) {
         )}
       </ScrollView>
       <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
-    </View>
+    </View>}/>
   );
 }
 

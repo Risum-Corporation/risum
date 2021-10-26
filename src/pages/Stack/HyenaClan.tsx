@@ -5,13 +5,15 @@ import colors from "../../styles/colors";
 import { TopBar } from "../../components/TopBar";
 import StackContext from "../../contexts/Stack";
 import { ScrollView } from "react-native-gesture-handler";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function HyenaClan() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   return (
-    <ScrollView style={[isWhiteMode ? styles.wrapperLight : styles.wrapper]}>
+    <SafeZoneView theme={isWhiteMode} content={
+    <ScrollView>
       <TopBar name="CupForce" theme={isWhiteMode} />
       <View style={styles.wallpaperContainer}>
         <Image
@@ -88,18 +90,11 @@ export function HyenaClan() {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </ScrollView>}/>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: colors.background,
-    height: "100%",
-  },
-  wrapperLight: {
-    backgroundColor: colors.backgroundLight,
-  },
   headerContainer: {
     alignItems: "center",
     marginHorizontal: 35,

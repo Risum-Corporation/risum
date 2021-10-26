@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { posts } from "../../database/fakeData";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StackContext from "../../contexts/Stack";
-
+import { SafeZoneView, SimpleText } from "../../styles/Theme";
 export function HypeTrain() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -37,7 +37,14 @@ export function HypeTrain() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  return <SafeAreaView></SafeAreaView>;
+  return ( <SafeZoneView
+    theme={isWhiteMode}
+    content={
+      <View style={styles.container}>
+        <SimpleText theme={isWhiteMode} title="HypeTrain" size={30}/>
+      </View>
+    }
+  />);
 }
 
 const styles = StyleSheet.create({

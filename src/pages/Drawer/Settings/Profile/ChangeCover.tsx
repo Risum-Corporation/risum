@@ -9,28 +9,28 @@ import {
   Platform,
 } from "react-native";
 import { ConfirmButton } from "../../../../components/ConfirmButton";
-import colors from "../../../../styles/colors";
-import fonts from "../../../../styles/fonts";
+import colors from "../..//../../styles/colors";
+import fonts from "../..//../../styles/fonts";
 
 import { TextInput } from "react-native-paper";
 
-import firebase from "../../../../database/firebaseConnection";
-import { AddAvatar } from "../../../../components/AddAvatar";
+import firebase from "../..//../../database/firebaseConnection";
+import { AddAvatar } from "../..//../../components/AddAvatar";
 import * as ImagePicker from "expo-image-picker";
 
-import { RegisterProgressBar } from "../../../../components/RegisterProgressBar";
+import { RegisterProgressBar } from "../..//../../components/RegisterProgressBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-import StackContext from "../../../../contexts/Stack";
+import StackContext from "../..//../../contexts/Stack";
 import { useNavigation } from "@react-navigation/native";
+import { SafeZoneView } from "../../../../styles/Theme";
 
 export function ChangeCover() {
   const [userName, setUserName] = useState<string>("");
   const [userImage, setUserImage] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
   const navigation = useNavigation();
-  
 
   useEffect(() => {
     // Pede permissão para acessar a galeria do usuário
@@ -45,7 +45,6 @@ export function ChangeCover() {
       }
     })();
   }, []);
-
 
   // Executada quando o usuário clicar para inserir uma foto
   async function onChooseImagePress() {
@@ -79,21 +78,10 @@ export function ChangeCover() {
   }
 
   async function handleSubmit() {
-    await AsyncStorage.setItem("@risum:user", userName);
-
-    // Tag única do usuário
-    const tag = (Math.floor(Math.random() * 10000) + 10000)
-      .toString()
-      .substring(1);
-
     const auth = firebase.auth().currentUser;
     if (auth && userImage) {
       // Upload da imagem de perfil
-      const userPicture = await uploadImage([
-        userImage,
-        auth.uid,
-        `${userName}-avatar`,
-      ]);
+      const userPicture = await uploadImage([userImage, auth.uid, `avatar`]);
 
       await firebase
         .firestore()
@@ -105,66 +93,59 @@ export function ChangeCover() {
         .then(() => {
           //Navega para a StackRoutes
           Alert.alert("Sua foto foi alterada com sucesso 😄");
-          navigation.navigate('Feed')
+          navigation.navigate("Feed");
         });
     } else {
-        Alert.alert("Não foi possivel alterar sua foto 😕");
+      Alert.alert("Não foi possivel alterar sua foto 😕");
     }
   }
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        {
-          backgroundColor: isWhiteMode
-            ? colors.backgroundLight
-            : colors.background,
-        },
-      ]}
-    >
-      <View
-        style={
-          isWhiteMode
-            ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
-            : [styles.wrapper, { backgroundColor: colors.background }]
-        }
-      >
-
-
-        <View style={styles.form}>
-          {userImage ? (
-            <Image source={{ uri: userImage }} style={styles.userImg} />
-          ) : (
-            <AddAvatar
-              theme={isWhiteMode}
-              title="adicionar um avatar"
-              onPress={onChooseImagePress}
-            />
-          )}
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <View
+            style={
+              isWhiteMode
+                ? [styles.wrapper, { backgroundColor: colors.backgroundLight }]
+                : [styles.wrapper, { backgroundColor: colors.background }]
+            }
+          >
+            <View style={styles.form}>
+              {userImage ? (
+                <Image source={{ uri: userImage }} style={styles.userImg} />
+              ) : (
+                <AddAvatar
+                  theme={isWhiteMode}
+                  title="adicionar um avatar"
+                  onPress={onChooseImagePress}
+                />
+              )}
+            </View>
+            <View style={styles.buttonBox}>
+              <ConfirmButton
+                theme={isWhiteMode}
+                title="Aplicar"
+                onPress={handleSubmit}
+              />
+            </View>
+          </View>
         </View>
-        <View style={styles.buttonBox}>
-          <ConfirmButton
-            theme={isWhiteMode}
-            title="Aplicar"
-            onPress={handleSubmit}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
+      }
+    />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   wrapper: {
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 20,
-
   },
   heading: {
     textAlign: "left",
@@ -175,8 +156,8 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 27,
     lineHeight: 50,
-    justifyContent: 'center',
-    textAlign: 'center'
+    justifyContent: "center",
+    textAlign: "center",
   },
   form: {
     width: "100%",
@@ -195,6 +176,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 270,
     resizeMode: "contain",
-    borderRadius: 28
+    borderRadius: 28,
   },
 });

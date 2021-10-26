@@ -9,6 +9,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-paper";
 import StackContext from "../../contexts/Stack";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function Search() {
   // Theme
@@ -40,7 +41,8 @@ export function Search() {
     setSearchQueryMeme(query);
 
   return (
-    <SafeAreaView style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
+    <SafeZoneView theme={isWhiteMode} content={
+    <View>
       <View style={styles.container}>
         <Searchbar
           placeholder={
@@ -152,7 +154,7 @@ export function Search() {
           Memes
         </Button>
       </View>
-    </SafeAreaView>
+    </View>}/>
   );
 }
 
@@ -165,14 +167,6 @@ const styles = StyleSheet.create({
     marginHorizontal: Platform.OS === "ios" ? 15 : 0,
     marginBottom: Platform.OS === "ios" ? 15 : 11,
     alignContent: "center",
-  },
-  wrapper: {
-    backgroundColor: colors.background,
-    flex: 1,
-  },
-  wrapperLight: {
-    backgroundColor: colors.backgroundLight,
-    flex: 1,
   },
   isselectSearch: {
     width: 120,

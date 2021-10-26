@@ -14,65 +14,63 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StackContext from "../../../../contexts/Stack";
 import { StatusBar } from "react-native";
+import { SafeZoneView } from "../../../../styles/Theme";
 
 export function SecuritySettings() {
   const navigation = useNavigation();
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
-  
-  function handleChangePassword(){
-    navigation.navigate("ChangePassword")
+
+  function handleChangePassword() {
+    navigation.navigate("ChangePassword");
   }
 
   return (
-    <SafeAreaView
-      style={isWhiteMode ? styles.containerLight : styles.container}
-    >
-      <StatusBar
-        barStyle={
-          Platform.OS === "ios"
-            ? isWhiteMode
-              ? "dark-content"
-              : "light-content"
-            : "default"
-        }
-      />
-      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
-      <View style={styles.heading}>
-        <Text
-          style={[
-            styles.title,
-            isWhiteMode
-              ? { color: colors.greenLight }
-              : { color: colors.green },
-          ]}
-        >
-          Segurança
-        </Text>
-        <View style={styles.options}>
-          <TouchableOpacity onPress={handleChangePassword}>
-            <View style={styles.item}>
-              <MaterialCommunityIcons
-                name="form-textbox-password"
-                size={33}
-                color={isWhiteMode ? colors.greenLight : colors.green}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Mudar Senha
-              </Text>
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <GoBackButton
+            theme={isWhiteMode}
+            onPress={() => navigation.goBack()}
+          />
+          <View style={styles.heading}>
+            <Text
+              style={[
+                styles.title,
+                isWhiteMode
+                  ? { color: colors.greenLight }
+                  : { color: colors.green },
+              ]}
+            >
+              Segurança
+            </Text>
+            <View style={styles.options}>
+              <TouchableOpacity onPress={handleChangePassword}>
+                <View style={styles.item}>
+                  <MaterialCommunityIcons
+                    name="form-textbox-password"
+                    size={33}
+                    color={isWhiteMode ? colors.greenLight : colors.green}
+                  />
+                  <Text
+                    style={[
+                      styles.subtitle,
+                      isWhiteMode
+                        ? { color: colors.whiteLight }
+                        : { color: colors.white },
+                    ]}
+                  >
+                    Mudar Senha
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      }
+    />
   );
 }
 

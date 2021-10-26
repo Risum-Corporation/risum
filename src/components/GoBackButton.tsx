@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     height: 30,
 
     position: "absolute",
-    top: Platform.OS === "ios" ? 50 : 11,
+    top:  11,
     left: 15,
 
     justifyContent: "center",

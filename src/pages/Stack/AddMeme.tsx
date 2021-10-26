@@ -16,6 +16,7 @@ import { TextInput } from "react-native-paper";
 import AuthContext from "../../contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = useState<string>();
@@ -73,13 +74,8 @@ export function AddMeme() {
   }
 
   return (
-    <SafeAreaView
-      style={
-        isWhiteMode
-          ? { backgroundColor: colors.backgroundLight }
-          : { backgroundColor: colors.background }
-      }
-    >
+    <SafeZoneView theme={isWhiteMode} content={
+    <View>
       <TopBar name="Postar Meme" theme={isWhiteMode} />
 
       <View style={styles.container}>
@@ -213,7 +209,7 @@ export function AddMeme() {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>}/>
   );
 }
 

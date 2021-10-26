@@ -10,6 +10,7 @@ import StackContext from "../../contexts/Stack";
 import { Loading } from "../../components/Loading";
 import EmailVerify from "../../components/EmailVerify";
 import AuthContext from "../../contexts/Auth";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -19,8 +20,7 @@ export function Feed() {
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
-  const { isEmailVerified} = useContext(AuthContext);
-  
+  const { isEmailVerified } = useContext(AuthContext);
 
   function loadPage(pageNumber = page) {
     if (total && pageNumber > total) return;
@@ -44,48 +44,35 @@ export function Feed() {
     setRefreshing(false);
   }
   return (
-    <View style={isWhiteMode ? styles.wrapperLight : styles.wrapper}>
-      <StatusBar
-        barStyle={
-          Platform.OS === "ios"
-            ? isWhiteMode
-              ? "dark-content"
-              : "light-content"
-            : "default"
-        }
-      />
-      <TopBar name="Feed" theme={isWhiteMode} />
-      {
-        !isEmailVerified ?
-        <EmailVerify theme={isWhiteMode}/>
-        :
-        <></>    
-      }
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View>
+          <TopBar name="Feed" theme={isWhiteMode} />
 
-      {loading ? (
-        <Loading />
-      ) : (<FlatList
-        data={posts}
-        keyExtractor={(post) => String(post.id)}
-        onEndReached={() => loadPage()}
-        onEndReachedThreshold={0.1}
-        onRefresh={refreshList}
-        showsVerticalScrollIndicator={false}
-        refreshing={refreshing}
-        renderItem={({ item }) => (
-          <MemeCard postData={item} theme={isWhiteMode} />
-        )}
-        maxToRenderPerBatch={5}
-      />)}
-    </View>
+          {!isEmailVerified ? <EmailVerify theme={isWhiteMode} /> : <></>}
+
+          {loading ? (
+            <Loading />
+          ) : (
+            <FlatList
+              data={posts}
+              keyExtractor={(post) => String(post.id)}
+              onEndReached={() => loadPage()}
+              onEndReachedThreshold={0.1}
+              onRefresh={refreshList}
+              showsVerticalScrollIndicator={false}
+              refreshing={refreshing}
+              renderItem={({ item }) => (
+                <MemeCard postData={item} theme={isWhiteMode} />
+              )}
+              maxToRenderPerBatch={5}
+            />
+          )}
+        </View>
+      }
+    />
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: colors.background,
-  },
-  wrapperLight: {
-    backgroundColor: colors.backgroundLight,
-  },
-});
+const styles = StyleSheet.create({});
