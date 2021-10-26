@@ -23,6 +23,8 @@ import { RisumPoliciesSettings } from "../pages/Drawer/Settings/RisumPoliciesSet
 import AuthContext from "../contexts/Auth";
 import { Search } from "../pages/Stack/Search";
 import { ChangeAvatar } from "../pages/Drawer/Settings/Profile/ChangeAvatar";
+import { ForgotPasswordStg1 } from "../pages/Auth/ForgotPasswordStg1";
+import { ForgotPasswordStg2 } from "../pages/Auth/ForgotPasswordStg2";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -199,6 +201,12 @@ const AppRoutes: React.FC = () => (
       />
       <stackRoutes.Screen name="AboutUsSettings" component={AboutUsSettings} />
       <stackRoutes.Screen name="Search" component={Search} />
+
+      
+      <stackRoutes.Screen name="ChangePassword" component={ForgotPasswordStg1} />
+      <stackRoutes.Screen name="ForgotPasswordStg2" component={ForgotPasswordStg2} />
+      <stackRoutes.Screen name="Welcome" component={drawerAndTabScreen} />
+
 
 
       <stackRoutes.Screen

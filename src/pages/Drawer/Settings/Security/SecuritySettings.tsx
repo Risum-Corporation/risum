@@ -20,6 +20,10 @@ export function SecuritySettings() {
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
+  
+  function handleChangePassword(){
+    navigation.navigate("ChangePassword")
+  }
 
   return (
     <SafeAreaView
@@ -47,7 +51,7 @@ export function SecuritySettings() {
           Segurança
         </Text>
         <View style={styles.options}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleChangePassword}>
             <View style={styles.item}>
               <MaterialCommunityIcons
                 name="form-textbox-password"

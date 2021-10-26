@@ -1,24 +1,10 @@
 import * as React from "react";
-import { Text, View } from "react-native";
-import {
-  Banner,
-  Button,
-  Provider as PaperProvider,
-  DefaultTheme,
-} from "react-native-paper";
+import { Text, View, Alert } from "react-native";
+import { Banner, Button } from "react-native-paper";
 import firebase from "../database/firebaseConnection";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-const BannerTheme = {
-  ...DefaultTheme,
-  roundness: 2,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "#3498db",
-    accent: "#f1c40f",
-  },
-};
 interface EmailProps {
   theme: boolean;
 }
@@ -27,7 +13,10 @@ const EmailVerify = ({ theme }: EmailProps) => {
   const [visible, setVisible] = React.useState(true);
 
   async function handleSendEmail() {
+    const auth = firebase.auth().currentUser;
+    auth?.sendEmailVerification();
 
+    Alert.alert(`Uma solicitação para verificar conta foi enviada ✈️`);
   }
 
   return (
@@ -68,10 +57,10 @@ const EmailVerify = ({ theme }: EmailProps) => {
                   borderWidth: 1,
                 }}
                 labelStyle={{
-                  color: theme ? colors.whiteLight : colors.white,
+                  color: colors.white,
                   fontFamily: fonts.subtitle,
                 }}
-                onPress={() => handleSendEmail()}
+                onPress={handleSendEmail}
               >
                 Reenviar
               </Button>
