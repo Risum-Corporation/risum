@@ -52,6 +52,8 @@ export function Feed() {
 
           {!isEmailVerified ? <EmailVerify theme={isWhiteMode} /> : <></>}
 
+
+        <View style={{marginTop: -9}}>
           {loading ? (
             <Loading />
           ) : (
@@ -69,6 +71,7 @@ export function Feed() {
               maxToRenderPerBatch={5}
             />
           )}
+          </View>
         </View>
       }
     />

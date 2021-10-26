@@ -248,7 +248,4 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: colors.background,
   },
-  memeList: {
-    marginTop: 110,
-  },
 });

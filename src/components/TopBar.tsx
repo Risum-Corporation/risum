@@ -107,8 +107,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 15,
-    marginTop: 10,
-    marginBottom: Platform.OS === "ios" ? 15 : 11,
+    marginTop: Platform.OS === "android" ? 10 : 0,
     alignContent: "center",
   },
   inputSearch: {
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: Platform.OS === "ios" ? 6 : 0,
   },
   searchBar: {
     maxWidth: "75%",
