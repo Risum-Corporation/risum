@@ -15,6 +15,7 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import AuthContext from "../../../contexts/Auth";
 import StackContext from "../../../contexts/Stack";
 import { StatusBar } from "react-native";
+import { SettingsButton } from "../../../components/SettingsButton";
 
 export function Settings() {
   const navigation = useNavigation();
@@ -22,22 +23,6 @@ export function Settings() {
 
   // Theme
   const { isWhiteMode, toggleWhiteMode } = useContext(StackContext);
-
-  function handleProfile() {
-    return navigation.navigate("ProfileSettings");
-  }
-
-  function handleSecurity() {
-    return navigation.navigate("SecuritySettings");
-  }
-
-  function handleAboutUs() {
-    return navigation.navigate("AboutUsSettings");
-  }
-
-  function handlePolicies() {
-    return navigation.navigate("RisumPoliciesSettings");
-  }
 
   return (
     <SafeAreaView
@@ -89,99 +74,39 @@ export function Settings() {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              handleProfile();
-            }}
-          >
-            <View style={styles.item}>
-              <MaterialIcons
-                name="person"
-                size={33}
-                color={isWhiteMode ? colors.greenLight : colors.green}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Perfil
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              handleSecurity();
-            }}
-          >
-            <View style={styles.item}>
-              <MaterialIcons
-                name="security"
-                size={33}
-                color={isWhiteMode ? colors.yellowLight : colors.yellow}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Segurança
-              </Text>
-            </View>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              handleAboutUs();
-            }}
-          >
-            <View style={styles.item}>
-              <MaterialIcons
-                name="badge"
-                size={33}
-                color={isWhiteMode ? colors.pinkLight : colors.pink}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Sobre nós
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              handlePolicies();
-            }}
-          >
-            <View style={styles.item}>
-              <MaterialIcons
-                name="policy"
-                size={33}
-                color={isWhiteMode ? colors.cyanLight : colors.cyan}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Politicas do Risum
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <SettingsButton
+            theme={isWhiteMode}
+            icon="person"
+            title="Perfil"
+            light={colors.greenLight}
+            dark={colors.green}
+            goTo="ProfileSettings"
+          />
+          <SettingsButton
+            theme={isWhiteMode}
+            icon="security"
+            title="Segurança"
+            light={colors.yellowLight}
+            dark={colors.yellow}
+            goTo="SecuritySettings"
+          />
+          <SettingsButton
+            theme={isWhiteMode}
+            icon="badge"
+            title="Sobre nós"
+            light={colors.pinkLight}
+            dark={colors.pink}
+            goTo="AboutUsSettings"
+          />
+          <SettingsButton
+            theme={isWhiteMode}
+            icon="policy"
+            title="Politicas do Risum"
+            light={colors.cyanLight}
+            dark={colors.cyan}
+            goTo="RisumPoliciesSettings"
+          />
 
           <TouchableOpacity
             onPress={() => {
@@ -205,13 +130,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+    justifyContent: "center",
   },
 
   containerLight: {
     flex: 1,
     backgroundColor: colors.backgroundLight,
-  },
+    justifyContent: "center",
 
+  },
   heading: {
     marginHorizontal: 50,
   },
@@ -219,13 +146,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.heading,
     fontWeight: "bold",
     fontSize: 25,
-    marginTop: "30%",
   },
   options: {
     marginTop: 50,
   },
   subtitle: {
-    color: colors.white,
     fontFamily: fonts.subtitle,
     fontWeight: "bold",
     fontSize: 18,

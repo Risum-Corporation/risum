@@ -25,6 +25,7 @@ import { Search } from "../pages/Stack/Search";
 import { ChangeAvatar } from "../pages/Drawer/Settings/Profile/ChangeAvatar";
 import { ForgotPasswordStg1 } from "../pages/Auth/ForgotPasswordStg1";
 import { ForgotPasswordStg2 } from "../pages/Auth/ForgotPasswordStg2";
+import { ChangeCover } from "../pages/Drawer/Settings/Profile/ChangeCover";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -194,6 +195,8 @@ const AppRoutes: React.FC = () => (
 
       <stackRoutes.Screen name="ProfileSettings" component={ProfileSettings} />
       <stackRoutes.Screen name="ChangeAvatar" component={ChangeAvatar} />
+      <stackRoutes.Screen name="ChangeCover" component={ChangeCover} />
+
 
       <stackRoutes.Screen
         name="SecuritySettings"

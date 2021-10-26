@@ -15,6 +15,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AuthContext from "../../../../contexts/Auth";
 import StackContext from "../../../../contexts/Stack";
 import { StatusBar } from "react-native";
+import { SettingsButton } from "../../../../components/SettingsButton";
 
 export function ProfileSettings() {
   const navigation = useNavigation();
@@ -24,6 +25,10 @@ export function ProfileSettings() {
 
   function handleChangeAvatar() {
     navigation.navigate("ChangeAvatar");
+  }
+
+  function handleChangeCover() {
+    navigation.navigate("ChangeCover");
   }
 
   function handleNoAccount() {
@@ -58,70 +63,30 @@ export function ProfileSettings() {
           Perfil
         </Text>
         <View style={styles.options}>
-          <TouchableOpacity
-            onPress={() => {
-              toggleWhiteMode();
-            }}
-          ></TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.item}>
-              <MaterialIcons
-                name="input"
-                size={33}
-                color={isWhiteMode ? colors.greenLight : colors.green}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Trocar nome
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.item}
-            onPress={isAnonymous ? handleNoAccount : handleChangeAvatar}
-          >
-            <MaterialIcons
-              name="add-a-photo"
-              size={33}
-              color={isWhiteMode ? colors.yellowLight : colors.yellow}
-            />
-            <Text
-              style={[
-                styles.subtitle,
-                isWhiteMode
-                  ? { color: colors.whiteLight }
-                  : { color: colors.white },
-              ]}
-            >
-              Mudar foto
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <View style={styles.item}>
-              <MaterialIcons
-                name="photo-size-select-actual"
-                size={33}
-                color={isWhiteMode ? colors.pinkLight : colors.pink}
-              />
-              <Text
-                style={[
-                  styles.subtitle,
-                  isWhiteMode
-                    ? { color: colors.whiteLight }
-                    : { color: colors.white },
-                ]}
-              >
-                Alterar capa
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <SettingsButton
+            theme={isWhiteMode}
+            icon="input"
+            title="Trocar nome"
+            light={colors.greenLight}
+            dark={colors.green}
+            goTo=""
+          />
+          <SettingsButton
+            theme={isWhiteMode}
+            icon="add-a-photo"
+            title="Mudar foto"
+            light={colors.yellowLight}
+            dark={colors.yellow}
+            goTo={ !isAnonymous ? "ChangeAvatar" : "NoAccount"}
+          />
+          <SettingsButton
+            theme={isWhiteMode}
+            icon="photo-size-select-actual"
+            title="Alterar Capa"
+            light={colors.pinkLight}
+            dark={colors.pink}
+            goTo={ !isAnonymous ? "ChangeCover" : "NoAccount"}
+          />
         </View>
       </View>
     </SafeAreaView>

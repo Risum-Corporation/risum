@@ -5,21 +5,34 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import { useNavigation } from "@react-navigation/native";
 
 interface ButtonProps {
   title: string;
-  icon: string;
+  icon: any;
   theme: boolean;
+  dark: any;
+  light: any;
+  goTo: string;
 }
 
-export function ButtonWithIcon({ title, icon, theme }: ButtonProps) {
+export function SettingsButton({
+  title,
+  icon,
+  theme,
+  light,
+  dark,
+  goTo,
+}: ButtonProps) {
+  const navigation = useNavigation();
+
+  function handleGoto() {
+    navigation.navigate(goTo);
+  }
+
   return (
-    <TouchableOpacity style={styles.item}>
-      <MaterialIcons
-        name={icon}
-        size={33}
-        color={theme ? colors.whiteLight : colors.white}
-      />
+    <TouchableOpacity style={styles.item} onPress={handleGoto}>
+      <MaterialIcons name={icon} size={33} color={theme ? light : dark} />
       <Text
         style={[
           styles.subtitle,
@@ -34,7 +47,6 @@ export function ButtonWithIcon({ title, icon, theme }: ButtonProps) {
 
 const styles = StyleSheet.create({
   subtitle: {
-    color: colors.white,
     fontFamily: fonts.subtitle,
     fontWeight: "bold",
     fontSize: 18,

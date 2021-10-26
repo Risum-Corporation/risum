@@ -9,27 +9,28 @@ import {
   Platform,
 } from "react-native";
 import { ConfirmButton } from "../../../../components/ConfirmButton";
-import colors from "../..//../../styles/colors";
-import fonts from "../..//../../styles/fonts";
+import colors from "../../../../styles/colors";
+import fonts from "../../../../styles/fonts";
 
 import { TextInput } from "react-native-paper";
 
-import firebase from "../..//../../database/firebaseConnection";
-import { AddAvatar } from "../..//../../components/AddAvatar";
+import firebase from "../../../../database/firebaseConnection";
+import { AddAvatar } from "../../../../components/AddAvatar";
 import * as ImagePicker from "expo-image-picker";
 
-import { RegisterProgressBar } from "../..//../../components/RegisterProgressBar";
+import { RegisterProgressBar } from "../../../../components/RegisterProgressBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
-import StackContext from "../..//../../contexts/Stack";
+import StackContext from "../../../../contexts/Stack";
 import { useNavigation } from "@react-navigation/native";
 
-export function ChangeAvatar() {
+export function ChangeCover() {
   const [userName, setUserName] = useState<string>("");
   const [userImage, setUserImage] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
   const navigation = useNavigation();
+  
 
   useEffect(() => {
     // Pede permissão para acessar a galeria do usuário
@@ -78,13 +79,20 @@ export function ChangeAvatar() {
   }
 
   async function handleSubmit() {
+    await AsyncStorage.setItem("@risum:user", userName);
+
+    // Tag única do usuário
+    const tag = (Math.floor(Math.random() * 10000) + 10000)
+      .toString()
+      .substring(1);
+
     const auth = firebase.auth().currentUser;
     if (auth && userImage) {
       // Upload da imagem de perfil
       const userPicture = await uploadImage([
         userImage,
         auth.uid,
-        `avatar`,
+        `${userName}-avatar`,
       ]);
 
       await firebase

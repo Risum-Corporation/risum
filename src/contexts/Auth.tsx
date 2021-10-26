@@ -10,6 +10,7 @@ interface User {
   uid: string;
   tag: string;
   avatar?: string;
+  cover?: string;
 }
 
 interface AuthContextData {
@@ -71,9 +72,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         const userName = doc.data().userName;
         const tag = doc.data().tag;
         const avatar = doc.data().userImage;
+        const cover = doc.data().userCover;
         const uid = firebaseUser.uid;
 
-        setUser({ userName, uid, tag, avatar });
+        setUser({ userName, uid, tag, avatar, cover });
 
         // Se você vir essa mensagem no console, quer dizer que tudo deu certo
         console.log("Fé na sogrinha login");
