@@ -72,7 +72,9 @@ export function TopBar({ name, theme }: TopBarProps) {
 
 const styles = StyleSheet.create({
   container: {
-    overflow: "hidden"
+    overflow: "hidden",
+    zIndex: 1000,
+    elevation: 1000
   },
   title: {
     fontSize: 22,
