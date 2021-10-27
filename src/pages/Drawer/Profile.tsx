@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   View,
-  ScrollView,
   Text,
   StyleSheet,
   Image,
@@ -129,207 +128,220 @@ export function Profile({ route }: any) {
   }
 
   return (
-    <SafeZoneView theme={isWhiteMode} content={
-    <View
-      style={styles.container}
-    >
-      <Image
-        source={require("../../assets/wallpaper.jpg")}
-        style={styles.userWallpaper}
-      />
-      <View style={styles.profileInfo}>
-        <View style={styles.userNameImgBox}>
-          {user?.avatar ? (
-            <Avatar.Image size={100} source={{ uri: user.avatar }} />
-          ) : (
-            <Avatar.Text size={100} label={`${user?.userName.substr(0, 1)}`} />
-          )}
-          <View style={{ marginTop: 20, paddingLeft: 8 }}>
-            <Text
-              style={[
-                styles.userName,
-                isWhiteMode
-                  ? { color: colors.whiteLight }
-                  : { color: colors.white },
-              ]}
-            >
-              {user?.userName}
-            </Text>
-            <Text
-              style={[
-                styles.userId,
-                isWhiteMode
-                  ? { color: colors.placeholderTextLight }
-                  : { color: colors.placeholderText },
-              ]}
-            >
-              {`#${user?.tag}`}
-            </Text>
-          </View>
-        </View>
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <Image
+            source={require("../../assets/wallpaper.jpg")}
+            style={styles.userWallpaper}
+          />
+          <View style={styles.profileInfo}>
+            <View style={styles.userNameImgBox}>
+              {user?.avatar ? (
+                <Avatar.Image size={100} source={{ uri: user.avatar }} />
+              ) : (
+                <Avatar.Text
+                  size={100}
+                  label={`${user?.userName.substr(0, 1)}`}
+                />
+              )}
+              <View style={{ marginTop: 20, paddingLeft: 8 }}>
+                <Text
+                  style={[
+                    styles.userName,
+                    isWhiteMode
+                      ? { color: colors.whiteLight }
+                      : { color: colors.white },
+                  ]}
+                >
+                  {user?.userName}
+                </Text>
+                <Text
+                  style={[
+                    styles.userId,
+                    isWhiteMode
+                      ? { color: colors.placeholderTextLight }
+                      : { color: colors.placeholderText },
+                  ]}
+                >
+                  {`#${user?.tag}`}
+                </Text>
+              </View>
+            </View>
 
-        <View>
-          <View style={styles.lineText}>
-            <Text
-              style={[
-                styles.text,
-                isWhiteMode
-                  ? { color: colors.whiteLight }
-                  : { color: colors.white },
-              ]}
-            >
-              Seguindo
-            </Text>
-            <Text
-              style={[
-                styles.greenText,
-                isWhiteMode
-                  ? { color: colors.purpleLight }
-                  : { color: colors.green },
-              ]}
-            >
-              15
-            </Text>
-          </View>
+            <View>
+              <View style={styles.lineText}>
+                <Text
+                  style={[
+                    styles.text,
+                    isWhiteMode
+                      ? { color: colors.whiteLight }
+                      : { color: colors.white },
+                  ]}
+                >
+                  Seguindo
+                </Text>
+                <Text
+                  style={[
+                    styles.greenText,
+                    isWhiteMode
+                      ? { color: colors.purpleLight }
+                      : { color: colors.green },
+                  ]}
+                >
+                  15
+                </Text>
+              </View>
 
-          <View style={styles.lineText}>
-            <Text
-              style={[
-                styles.text,
-                isWhiteMode
-                  ? { color: colors.whiteLight }
-                  : { color: colors.white },
-              ]}
-            >
-              Seguidores
-            </Text>
-            <Text
-              style={[
-                styles.greenText,
-                isWhiteMode
-                  ? { color: colors.purpleLight }
-                  : { color: colors.green },
-              ]}
-            >
-              37
-            </Text>
+              <View style={styles.lineText}>
+                <Text
+                  style={[
+                    styles.text,
+                    isWhiteMode
+                      ? { color: colors.whiteLight }
+                      : { color: colors.white },
+                  ]}
+                >
+                  Seguidores
+                </Text>
+                <Text
+                  style={[
+                    styles.greenText,
+                    isWhiteMode
+                      ? { color: colors.purpleLight }
+                      : { color: colors.green },
+                  ]}
+                >
+                  37
+                </Text>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
-      <View
-        style={[styles.filterIconsBox, { borderBottomColor: colors.divider }]}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            setIconsFalse();
-            setIsSmilePressed(true);
-          }}
-        >
-          <AntDesign
-            name={isSmilePressed ? "smile-circle" : "smileo"}
-            color={
-              isWhiteMode
-                ? isSmilePressed
-                  ? colors.purpleLight
-                  : colors.whiteLight
-                : isSmilePressed
-                ? colors.green
-                : colors.white
-            }
-            size={30}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setIconsFalse();
-            setIsPostPressed(true);
-          }}
-        >
-          <Ionicons
-            name={isPostPressed ? "image" : "image-outline"}
-            color={
-              isWhiteMode
-                ? isPostPressed
-                  ? colors.purpleLight
-                  : colors.whiteLight
-                : isPostPressed
-                ? colors.green
-                : colors.white
-            }
-            size={30}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setIconsFalse();
-            setIsCommentPressed(true);
-          }}
-        >
-          <Ionicons
-            name={
-              isCommentPressed ? "chatbox-ellipses" : "chatbox-ellipses-outline"
-            }
-            color={
-              isWhiteMode
-                ? isCommentPressed
-                  ? colors.purpleLight
-                  : colors.whiteLight
-                : isCommentPressed
-                ? colors.green
-                : colors.white
-            }
-            size={30}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setIconsFalse();
-            setIsInfoPressed(true);
-          }}
-        >
-          <Ionicons
-            name={
-              isInfoPressed
-                ? "information-circle"
-                : "information-circle-outline"
-            }
-            color={
-              isWhiteMode
-                ? isInfoPressed
-                  ? colors.purpleLight
-                  : colors.whiteLight
-                : isInfoPressed
-                ? colors.green
-                : colors.white
-            }
-            size={30}
-          />
-        </TouchableOpacity>
-      </View>
-      <ScrollView style={styles.content}>
-        {isSmilePressed  && (
-         <FlatList
-            data={posts}
-            keyExtractor={(post) => String(post.id)}
-            onEndReached={() => loadPage()}
-            onEndReachedThreshold={0.1}
-            onRefresh={refreshList}  
-            refreshing={refreshing}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <MemeCardSecondary postData={item} theme={isWhiteMode} />
+          <View
+            style={[
+              styles.filterIconsBox,
+              { borderBottomColor: colors.divider },
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setIconsFalse();
+                setIsSmilePressed(true);
+              }}
+            >
+              <AntDesign
+                name={isSmilePressed ? "smile-circle" : "smileo"}
+                color={
+                  isWhiteMode
+                    ? isSmilePressed
+                      ? colors.purpleLight
+                      : colors.whiteLight
+                    : isSmilePressed
+                    ? colors.green
+                    : colors.white
+                }
+                size={30}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIconsFalse();
+                setIsPostPressed(true);
+              }}
+            >
+              <Ionicons
+                name={isPostPressed ? "image" : "image-outline"}
+                color={
+                  isWhiteMode
+                    ? isPostPressed
+                      ? colors.purpleLight
+                      : colors.whiteLight
+                    : isPostPressed
+                    ? colors.green
+                    : colors.white
+                }
+                size={30}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIconsFalse();
+                setIsCommentPressed(true);
+              }}
+            >
+              <Ionicons
+                name={
+                  isCommentPressed
+                    ? "chatbox-ellipses"
+                    : "chatbox-ellipses-outline"
+                }
+                color={
+                  isWhiteMode
+                    ? isCommentPressed
+                      ? colors.purpleLight
+                      : colors.whiteLight
+                    : isCommentPressed
+                    ? colors.green
+                    : colors.white
+                }
+                size={30}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIconsFalse();
+                setIsInfoPressed(true);
+              }}
+            >
+              <Ionicons
+                name={
+                  isInfoPressed
+                    ? "information-circle"
+                    : "information-circle-outline"
+                }
+                color={
+                  isWhiteMode
+                    ? isInfoPressed
+                      ? colors.purpleLight
+                      : colors.whiteLight
+                    : isInfoPressed
+                    ? colors.green
+                    : colors.white
+                }
+                size={30}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.content}>
+            {isSmilePressed && (
+              <FlatList
+                data={posts}
+                keyExtractor={(post) => String(post.id)}
+                onEndReached={() => loadPage()}
+                onEndReachedThreshold={0.1}
+                onRefresh={refreshList}
+                refreshing={refreshing}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <MemeCardSecondary postData={item} theme={isWhiteMode} />
+                )}
+              />
             )}
-          /> 
-        )}
-        {(isPostPressed && user?.uid=="3bmAqEjKVANQH4UX97qbCasNwS33") && (
-          <>
-            <MemeCardSecondary postData={memeList2} theme={isWhiteMode} />
-            <MemeCardSecondary postData={memeList} theme={isWhiteMode} />
-          </>
-        )}
-      </ScrollView>
-      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
-    </View>}/>
+            {isPostPressed && user?.uid == "3bmAqEjKVANQH4UX97qbCasNwS33" && (
+              <>
+                <MemeCardSecondary postData={memeList2} theme={isWhiteMode} />
+                <MemeCardSecondary postData={memeList} theme={isWhiteMode} />
+              </>
+            )}
+          </View>
+          <GoBackButton
+            theme={isWhiteMode}
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      }
+    />
   );
 }
 
