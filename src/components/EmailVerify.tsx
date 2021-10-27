@@ -20,7 +20,7 @@ const EmailVerify = ({ theme }: EmailProps) => {
   }
 
   return (
-    <View style={{marginTop: 15}}>
+    <View>
     <Banner
       visible={visible}
       actions={[]}

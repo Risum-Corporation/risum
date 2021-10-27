@@ -11,6 +11,7 @@ import { Loading } from "../../components/Loading";
 import EmailVerify from "../../components/EmailVerify";
 import AuthContext from "../../contexts/Auth";
 import { SafeZoneView } from "../../styles/Theme";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -48,34 +49,33 @@ export function Feed() {
       theme={isWhiteMode}
       content={
         <View>
-          <TopBar name="Feed" theme={isWhiteMode} />
+          <TopBar theme={isWhiteMode} name="Feed"/> 
 
-          {!isEmailVerified ? <EmailVerify theme={isWhiteMode} /> : <></>}
+        <ScrollView>
+          <View style={styles.box}/>
+          <View style={styles.box}/>
 
+          <View style={styles.box}/>
+          <View style={styles.box}/>
+          <View style={styles.box}/>
+          <View style={styles.box}/>
 
-        <View style={{marginTop: -9}}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <FlatList
-              data={posts}
-              keyExtractor={(post) => String(post.id)}
-              onEndReached={() => loadPage()}
-              onEndReachedThreshold={0.1}
-              onRefresh={refreshList}
-              showsVerticalScrollIndicator={false}
-              refreshing={refreshing}
-              renderItem={({ item }) => (
-                <MemeCard postData={item} theme={isWhiteMode} />
-              )}
-              maxToRenderPerBatch={5}
-            />
-          )}
-          </View>
+        </ScrollView>
         </View>
+
       }
     />
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+warningContainer:{
+  marginTop: 10
+},
+box: {
+  height: 300,
+  width: "100%",
+  backgroundColor: 'gray',
+  marginBottom: 10
+}
+});

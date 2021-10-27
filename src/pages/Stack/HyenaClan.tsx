@@ -7,7 +7,6 @@ import StackContext from "../../contexts/Stack";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeZoneView } from "../../styles/Theme";
 import { HCInfo } from "../../components/HCInfo";
-import Aaaa from "../../";
 
 export function HyenaClan() {
   // Theme

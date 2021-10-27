@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   Platform,
   SafeAreaView,
+  View
 } from "react-native";
-
+import { Appbar } from 'react-native-paper';
 import { Searchbar } from "react-native-paper";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
@@ -45,7 +46,10 @@ export function TopBar({ name, theme }: TopBarProps) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <Appbar.Header
+      style={{backgroundColor: theme ? colors.backgroundLight : colors.background, paddingHorizontal: 15, }}
+      >
       <TouchableOpacity onPress={handleDrawer}>
         {isAnonymous ? (
           <Avatar.Image
@@ -58,79 +62,20 @@ export function TopBar({ name, theme }: TopBarProps) {
           <Avatar.Text size={42} label={`${user?.userName.substr(0, 1)}`} />
         )}
       </TouchableOpacity>
-
-      {!isSearchPressed && (
-        <Text
-          style={[
-            styles.title,
-            { color: theme ? colors.greenLight : colors.green },
-          ]}
-        >
-          {name}
-        </Text>
-      )}
-
-      <TouchableOpacity onPress={handleSearch} style={{ marginRight: 5 }}>
-        <AntDesign
-          name={isSearchPressed ? "close" : "search1"}
-          size={27}
-          color={theme ? colors.whiteLight : colors.white}
-        />
-      </TouchableOpacity>
-
-      {isSearchPressed && (
-        <Searchbar
-          placeholder="Pesquise por: Alcateias, perfis, memes..."
-          placeholderTextColor={colors.placeholderText}
-          onChangeText={onChangeSearch}
-          value={searchQuery}
-          style={[
-            styles.searchBar,
-            {
-              backgroundColor: theme
-                ? colors.lightBackgroundLight
-                : colors.lightBackground,
-            },
-          ]}
-          inputStyle={{ color: theme ? colors.whiteLight : colors.white }}
-          iconColor={colors.white}
-          autoFocus
-        />
-      )}
-    </SafeAreaView>
+       <Appbar.Content titleStyle={[styles.title, {color: theme ? colors.greenLight : colors.green }]} title={name}  />
+        <Appbar.Action icon="magnify" onPress={handleSearch} />
+    </Appbar.Header>
+    
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 15,
-    marginTop: Platform.OS === "android" ? 10 : 0,
-    alignContent: "center",
-  },
-  inputSearch: {
-    width: 263,
-    height: 30,
-    backgroundColor: colors.searchBarColor,
-    borderRadius: 4,
+    overflow: "hidden"
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontFamily: fonts.heading,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  searchBar: {
-    maxWidth: "75%",
-  },
-  item: {
-    backgroundColor: colors.lightBackground,
-    color: colors.white,
-  },
-  itemTitle: {
-    color: colors.white,
-    fontFamily: fonts.subtitle,
-  },
+  }
 });
