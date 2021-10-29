@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,26 +10,45 @@ import {
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
+import firebase from "../database/firebaseConnection";
+
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-export interface PostProps {
-  postData: {
-    id?: number;
-    author?: string;
-    memeUrl: string;
-    likes: number;
-    memeTitle: string;
-    tags: string;
-    avatar?: string;
-    comments: number;
-  };
+import { PostProps } from "../database/fakeData";
+
+interface MemeCardSecondaryProps {
   theme: boolean;
+  postData: PostProps;
 }
 
-export function MemeCardSecondary({ postData, theme }: PostProps) {
+export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
+
+  // Propriedades da pessoa que postou o meme
+  const [avatar, setAvatar] = useState<string>();
+
+  useEffect(() => {
+    // Recebe as informações do dono do meme para display no MemeCard
+    function fetchUserProfileInfo() {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(postData.authorId)
+        .get()
+        .then((doc: any) => {
+          setAvatar(String(doc.data().userImage));
+        })
+        .catch((error) => {
+          console.log(
+            `Não foi possível receber as informações do usuário devido ao seguinte erro: ${error}`
+          );
+        });
+    }
+
+    fetchUserProfileInfo();
+  }, []);
 
   function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
@@ -141,7 +160,12 @@ export function MemeCardSecondary({ postData, theme }: PostProps) {
 
         <View style={styles.userInfoContainer}>
           <TouchableOpacity>
-            <Image source={{ uri: postData.avatar }} style={styles.userImg} />
+            <Image
+              source={
+                avatar ? { uri: avatar } : require("../assets/risumDefault.png")
+              }
+              style={styles.userImg}
+            />
           </TouchableOpacity>
         </View>
       </View>

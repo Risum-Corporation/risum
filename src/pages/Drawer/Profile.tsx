@@ -9,14 +9,11 @@ import {
 } from "react-native";
 import colors from "../../styles/colors";
 
-import { posts } from "../../database/fakeData";
+import { fakePosts, PostProps } from "../../database/fakeData";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-import {
-  MemeCardSecondary,
-  PostProps,
-} from "../../components/MemeCardSecondary";
+import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 
 import { GoBackButton } from "../../components/GoBackButton";
 import fonts from "../../styles/fonts";
@@ -42,9 +39,7 @@ export function Profile({ route }: any) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [memeList, setMemeList] = useState<PostProps>();
-  const [memeList2, setMemeList2] = useState<PostProps>();
-  const [memeList3, setMemeList3] = useState<PostProps>();
+  const [memeList, setMemeList] = useState<PostProps[]>();
 
   const { user } = useContext(AuthContext);
 
@@ -71,32 +66,18 @@ export function Profile({ route }: any) {
       //   });
       // console.log("LOG 2", list);
       // return list;
-
-      firebase
-        .firestore()
-        .collection("media")
-        .doc(user?.uid)
-        .collection("memes")
-        .doc("Ernesto")
-        .get()
-        .then((doc) => {
-          const meme = doc.data();
-          console.log(meme);
-          setMemeList(meme);
-        });
-
-      firebase
-        .firestore()
-        .collection("media")
-        .doc(user?.uid)
-        .collection("memes")
-        .doc("Gigaton")
-        .get()
-        .then((doc) => {
-          const meme = doc.data();
-          console.log(meme);
-          setMemeList2(meme);
-        });
+      // firebase
+      //   .firestore()
+      //   .collection("media")
+      //   .doc(user?.uid)
+      //   .collection("memes")
+      //   .doc("Ernesto")
+      //   .get()
+      //   .then((doc) => {
+      //     const meme = doc.data();
+      //     console.log(meme);
+      //     setMemeList(meme);
+      //   });
     }
 
     fetchMemes();
@@ -105,7 +86,7 @@ export function Profile({ route }: any) {
   function loadPage(pageNumber = page, shouldRefresh = false) {
     if (total && pageNumber > total) return;
 
-    const totalItems = posts.length;
+    const totalItems = fakePosts.length;
 
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
@@ -316,8 +297,8 @@ export function Profile({ route }: any) {
           <View style={styles.content}>
             {isSmilePressed && (
               <FlatList
-                data={posts}
-                keyExtractor={(post) => String(post.id)}
+                data={fakePosts}
+                keyExtractor={(post: PostProps) => String(post.id)}
                 onEndReached={() => loadPage()}
                 onEndReachedThreshold={0.1}
                 onRefresh={refreshList}
@@ -327,12 +308,6 @@ export function Profile({ route }: any) {
                   <MemeCardSecondary postData={item} theme={isWhiteMode} />
                 )}
               />
-            )}
-            {isPostPressed && user?.uid == "3bmAqEjKVANQH4UX97qbCasNwS33" && (
-              <>
-                <MemeCardSecondary postData={memeList2} theme={isWhiteMode} />
-                <MemeCardSecondary postData={memeList} theme={isWhiteMode} />
-              </>
             )}
           </View>
           <GoBackButton

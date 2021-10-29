@@ -5,7 +5,7 @@ import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MemeCardSecondary } from "../../components/MemeCardSecondary";
-import { posts } from "../../database/fakeData";
+import { fakePosts, PostProps } from "../../database/fakeData";
 import StackContext from "../../contexts/Stack";
 import AuthContext from "../../contexts/Auth";
 import { SafeZoneView } from "../../styles/Theme";
@@ -40,8 +40,8 @@ export function SavedMemes() {
             </Text>
             <View style={styles.savedMemes}>
               <FlatList
-                data={posts}
-                keyExtractor={(post) => String(post.id)}
+                data={fakePosts}
+                keyExtractor={(post: PostProps) => String(post.id)}
                 onEndReachedThreshold={0.1}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (

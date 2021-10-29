@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import { StyleSheet, View } from "react-native";
-import { posts } from "../../database/fakeData";
 import { SafeAreaView } from "react-native-safe-area-context";
 import StackContext from "../../contexts/Stack";
+import { fakePosts } from "../../database/fakeData";
 import { SafeZoneView, SimpleText } from "../../styles/Theme";
 export function HypeTrain() {
   const [page, setPage] = useState(1);
@@ -13,7 +13,7 @@ export function HypeTrain() {
   function loadPage(pageNumber = page) {
     if (total && pageNumber > total) return;
 
-    const totalItems = posts.length;
+    const totalItems = fakePosts.length;
 
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
@@ -37,14 +37,16 @@ export function HypeTrain() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  return ( <SafeZoneView
-    theme={isWhiteMode}
-    content={
-      <View style={styles.container}>
-        <SimpleText theme={isWhiteMode} title="HypeTrain" size={30}/>
-      </View>
-    }
-  />);
+  return (
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View style={styles.container}>
+          <SimpleText theme={isWhiteMode} title="HypeTrain" size={30} />
+        </View>
+      }
+    />
+  );
 }
 
 const styles = StyleSheet.create({

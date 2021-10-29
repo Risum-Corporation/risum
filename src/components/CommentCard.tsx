@@ -6,17 +6,9 @@ import { SimpleText } from "../styles/Theme";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-interface PostProps {
-  postData: {
-    id: number;
-    author: string;
-    likes: number;
-    content: string;
-  };
-  theme: boolean;
-}
+import { CommentProps } from "../database/fakeData";
 
-export function CommentCard({ postData, theme }: PostProps) {
+export function CommentCard(postData: CommentProps, theme: boolean) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
 
   function toggleLikePress() {
@@ -82,7 +74,9 @@ export function CommentCard({ postData, theme }: PostProps) {
             marginHorizontal: 15,
           },
           {
-            borderBottomColor: theme ? colors.placeholderTextLight : colors.divider,
+            borderBottomColor: theme
+              ? colors.placeholderTextLight
+              : colors.divider,
           },
         ]}
       />

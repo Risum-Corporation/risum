@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,28 +10,49 @@ import {
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
+import firebase from "../database/firebaseConnection";
+
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 
-interface PostProps {
-  postData: {
-    id: number;
-    author: string;
-    memeUrl: string;
-    likes: number;
-    memeTitle: string;
-    tags: string[];
-    avatar: string;
-    comments: number;
-  };
+import { PostProps } from "../database/fakeData";
+
+interface MemeCardProps {
   theme: boolean;
+  postData: PostProps;
 }
 
-export function MemeCard({ postData, theme }: PostProps) {
+export function MemeCard({ theme, postData }: MemeCardProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
   const navigation = useNavigation();
+
+  // Propriedades da pessoa que postou o meme
+  const [author, setAuthor] = useState<string>();
+  const [avatar, setAvatar] = useState<string>();
+
+  useEffect(() => {
+    // Recebe as informações do dono do meme para display no MemeCard
+    function fetchUserProfileInfo() {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(postData.authorId)
+        .get()
+        .then((doc: any) => {
+          setAuthor(String(doc.data().userName));
+          setAvatar(String(doc.data().userImage));
+        })
+        .catch((error) => {
+          console.log(
+            `Não foi possível receber as informações do usuário devido ao seguinte erro: ${error}`
+          );
+        });
+    }
+
+    fetchUserProfileInfo();
+  }, []);
 
   function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
@@ -153,10 +174,15 @@ export function MemeCard({ postData, theme }: PostProps) {
               { color: theme ? colors.whiteLight : colors.white },
             ]}
           >
-            {postData.author}
+            {author}
           </Text>
           <TouchableOpacity>
-            <Image source={{ uri: postData.avatar }} style={styles.userImg} />
+            <Image
+              source={
+                avatar ? { uri: avatar } : require("../assets/risumDefault.png")
+              }
+              style={styles.userImg}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -238,8 +264,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.userText,
     fontSize: 14,
     textAlign: "center",
-
-
   },
   userInfoContainer: {
     flexDirection: "row",

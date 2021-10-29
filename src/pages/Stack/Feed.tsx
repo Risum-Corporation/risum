@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 
-import { posts } from "../../database/fakeData";
+import { fakePosts, PostProps } from "../../database/fakeData";
 
 import { TopBar } from "../../components/TopBar";
 import { MemeCard } from "../../components/MemeCard";
@@ -9,19 +9,38 @@ import StackContext from "../../contexts/Stack";
 import { Loading } from "../../components/Loading";
 import { SafeZoneView } from "../../styles/Theme";
 
+import firebase from "../../database/firebaseConnection";
+
 export function Feed() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [memeList, setMemeList] = useState<PostProps[]>();
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   function loadPage(pageNumber = page) {
-    if (total && pageNumber > total) return;
+    //if (total && pageNumber > total) return;
+    // Receber perfis que o usuário segue
 
-    const totalItems = posts.length;
+    // Receber memes de cada perfil e salvar na memeList
+    // firebase
+    // .firestore()
+    // .collection("media")
+    // .get()
+    // .then((docs) => {
+    //   // // Percorre os documentos (usuários) um a um
+    //   // docs.forEach((doc) => {
+    //   //   console.log(doc);
+    //   // });
+    // })
+    // .catch((error) => {
+    //   console.log(`Deu ruim: ${error}`);
+    // });
+
+    const totalItems = fakePosts.length;
 
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
@@ -47,32 +66,32 @@ export function Feed() {
         <>
           <TopBar theme={isWhiteMode} name="Feed" />
 
-          <ScrollView>
-            {loading ? (
+          <View>
+            {loading || refreshing ? (
               <Loading />
             ) : (
-              // <FlatList
-              //   data={posts}
-              //   keyExtractor={(post) => String(post.id)}
-              //   onEndReached={() => loadPage()}
-              //   onEndReachedThreshold={0.1}
-              //   onRefresh={refreshList}
-              //   showsVerticalScrollIndicator={false}
-              //   refreshing={refreshing}
-              //   renderItem={({ item }) => (
-              //     <MemeCard postData={item} theme={isWhiteMode} />
-              //   )}
-              //   maxToRenderPerBatch={5}
-              // />
+              <FlatList
+                data={fakePosts}
+                keyExtractor={(post: PostProps) => String(post.id)}
+                onEndReached={() => loadPage()}
+                onEndReachedThreshold={0.1}
+                onRefresh={refreshList}
+                showsVerticalScrollIndicator={false}
+                refreshing={refreshing}
+                renderItem={({ item }) => (
+                  <MemeCard theme={isWhiteMode} postData={item} />
+                )}
+                maxToRenderPerBatch={5}
+              />
 
-              // Listagem dos posts no Feed
-              posts.map((post) => (
-                <View key={post.id}>
-                  <MemeCard postData={post} theme={isWhiteMode} />
-                </View>
-              ))
+              // // Listagem dos posts no Feed
+              // fakePosts.map((post) => (
+              //   <View key={post.id}>
+              //     <MemeCard theme={isWhiteMode} postData={{ ...post }} />
+              //   </View>
+              // ))
             )}
-          </ScrollView>
+          </View>
         </>
       }
     />

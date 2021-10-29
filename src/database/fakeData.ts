@@ -1,120 +1,110 @@
-interface PostProps {
+export interface PostProps {
   id: number;
-  author: string;
+  authorId?: string;
   memeUrl: string;
   likes: number;
   memeTitle: string;
-  tags: string[];
-  avatar: string;
+  tags?: string[];
   comments: number;
 }
 
-interface CommentProps {
+export interface CommentProps {
   id: number;
-  author: string;
+  authorId: string;
   likes: number;
   content: string;
 }
 
-export const posts: PostProps[] = [
+export const fakePosts: PostProps[] = [
   {
     id: 1,
-    author: "DunkerG",
-    memeUrl: "https://firebasestorage.googleapis.com/v0/b/risum-b1687.appspot.com/o/media%2Fmemes%2F3bmAqEjKVANQH4UX97qbCasNwS33%2FAbelardo%20-%20Ernesto?alt=media&token=8213c272-76d7-4d27-85f7-6417f8ee40da",
+    authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
+    memeUrl:
+      "https://firebasestorage.googleapis.com/v0/b/risum-b1687.appspot.com/o/media%2Fmemes%2F3bmAqEjKVANQH4UX97qbCasNwS33%2FAbelardo%20-%20Ernesto?alt=media&token=8213c272-76d7-4d27-85f7-6417f8ee40da",
     likes: 43,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "comedia"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 17,
   },
   {
     id: 2,
-    author: "Educg550",
+    authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "memeskk", "hurdur"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 3,
-    author: "PacMan",
+    authorId: "CAke6oHbjVWKeL1o5zwnwpqVI4F2",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 4,
-    author: "Bataton",
+    authorId: "CAke6oHbjVWKeL1o5zwnwpqVI4F2",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 5,
-    author: "Jiraya",
+    authorId: "Dh0qh7nvsZYsYOuPnluj6ygP6pr1",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 6,
-    author: "Fabio",
+    authorId: "Dh0qh7nvsZYsYOuPnluj6ygP6pr1",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 7,
-    author: "Yudi",
+    authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 8,
-    author: "Fabio",
+    authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 9,
-    author: "Fabio",
+    authorId: "CAke6oHbjVWKeL1o5zwnwpqVI4F2",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
   {
     id: 10,
-    author: "Fabio",
+    authorId: "Dh0qh7nvsZYsYOuPnluj6ygP6pr1",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
-    avatar: "https://thispersondoesnotexist.com/image",
     comments: 20,
   },
 ];
@@ -122,43 +112,43 @@ export const posts: PostProps[] = [
 export const comments: CommentProps[] = [
   {
     id: 1,
-    author: "Educg550",
+    authorId: "Educg550",
     likes: 59,
     content: "KKKKKKKKK gg dms",
   },
   {
     id: 2,
-    author: "Sapeka",
+    authorId: "Sapeka",
     likes: 234,
     content: "KKKKKKKKK gg dms",
   },
   {
     id: 3,
-    author: "Cacamilly",
+    authorId: "Cacamilly",
     likes: 7657,
     content: "KKKKKKKKK gg dms",
   },
   {
     id: 4,
-    author: "Katinho",
+    authorId: "Katinho",
     likes: 34,
     content: "KKKKKKKKK gg dms",
   },
   {
     id: 5,
-    author: "Rodsfly",
+    authorId: "Rodsfly",
     likes: 14,
     content: "KKKKKKKKK gg dms",
   },
   {
     id: 6,
-    author: "Dunker JeJe Niño",
+    authorId: "Dunker JeJe Niño",
     likes: 5643,
     content: "KKKKKKKKK gg dms",
   },
   {
     id: 7,
-    author: "Alek",
+    authorId: "Alek",
     likes: 675,
     content: "KKKKKKKKK gg dms",
   },
