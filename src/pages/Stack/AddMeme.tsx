@@ -74,142 +74,150 @@ export function AddMeme() {
   }
 
   return (
-    <SafeZoneView theme={isWhiteMode} content={
-    <View>
-      <TopBar name="Postar Meme" theme={isWhiteMode} />
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View>
+          <TopBar name="Postar Meme" theme={isWhiteMode} />
 
-      <View style={styles.container}>
-        {meme ? (
-          meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? (
-            <Video
-              source={{ uri: meme }}
-              rate={1.0}
-              volume={1.0}
-              isMuted={false}
-              resizeMode="contain"
-              shouldPlay
-              isLooping
-              style={styles.submittedImage}
-            />
-          ) : (
-            <Image source={{ uri: meme }} style={styles.submittedImage} />
-          )
-        ) : (
-          <SendFileButton
-            theme={isWhiteMode}
-            title="postar um meme"
-            onPress={onChooseImagePress}
-          />
-        )}
+          <View style={styles.container}>
+            {meme ? (
+              meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? (
+                <Video
+                  source={{ uri: meme }}
+                  rate={1.0}
+                  volume={1.0}
+                  isMuted={false}
+                  resizeMode="contain"
+                  shouldPlay
+                  isLooping
+                  style={styles.submittedImage}
+                />
+              ) : (
+                <Image source={{ uri: meme }} style={styles.submittedImage} />
+              )
+            ) : (
+              <SendFileButton
+                theme={isWhiteMode}
+                title="postar um meme"
+                onPress={onChooseImagePress}
+              />
+            )}
 
-        <View style={[styles.form]}>
-          <TextInput
-            label="Título do Meme"
-            mode={"flat"}
-            value={memeTitle}
-            clearTextOnFocus
-            onChangeText={(memeTitle) => setMemeTitle(memeTitle)}
-            placeholder="Telegram 2 - O Retorno?"
-            placeholderTextColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
-            }
-            underlineColor={"transparent"}
-            style={
-              isWhiteMode
-                ? { backgroundColor: colors.lightBackgroundLight }
-                : {
-                    backgroundColor: colors.lightBackground,
-                    color: colors.white,
-                    textDecorationColor: colors.white,
-                  }
-            }
-            selectionColor={colors.divider}
-            theme={{
-              colors: {
-                text: isWhiteMode ? colors.whiteLight : colors.white,
-                primary: isWhiteMode ? colors.greenLight : colors.green,
-                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-              },
-            }}
-          />
-
-          <TextInput
-            label="Tags"
-            mode={"flat"}
-            value={tags}
-            clearTextOnFocus
-            onChangeText={(tags) => setTags(tags)}
-            placeholderTextColor={
-              isWhiteMode ? colors.placeholderTextLight : colors.placeholderText
-            }
-            underlineColor={"transparent"}
-            style={
-              isWhiteMode
-                ? { backgroundColor: colors.lightBackgroundLight }
-                : {
-                    backgroundColor: colors.lightBackground,
-                    color: colors.white,
-                    textDecorationColor: colors.white,
-                  }
-            }
-            selectionColor={colors.divider}
-            placeholder="Shitpost, Hiena, Zoio..."
-            theme={{
-              colors: {
-                text: isWhiteMode ? colors.whiteLight : colors.white,
-                primary: isWhiteMode ? colors.greenLight : colors.green,
-                placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-              },
-            }}
-          />
-
-          <View style={styles.button}>
-            <ConfirmButton
-              theme={isWhiteMode}
-              title="Pronto!"
-              onPress={() => {
-                // Se os campos estiverem preenchidos
-                if (memeTitle && tags) {
-                  if (meme && user) {
-                    uploadImage([meme, user?.uid, memeTitle, tags])
-                      .then((url) => {
-                        Alert.alert("Sucesso");
-                        setMeme(undefined);
-                        setMemeTitle(undefined);
-                        setTags(undefined);
-
-                        firebase
-                          .firestore()
-                          .collection("media")
-                          .doc(user.uid)
-                          .collection("memes")
-                          .doc(memeTitle)
-                          .set({
-                            // id do meme
-                            memeUrl: url,
-                            memeTitle: memeTitle,
-                            tags: tags,
-                            likes: 0,
-                            comments: 0,
-                          });
-                      })
-                      .catch((error) => {
-                        Alert.alert(`Algo deu errado: ${error}`);
-                      });
-                  } else {
-                    Alert.alert("Insira um arquivo válido");
-                  }
-                } else {
-                  Alert.alert(
-                    "Preencha todas as informações antes de postar seu meme"
-                  );
+            <View style={[styles.form]}>
+              <TextInput
+                label="Título do Meme"
+                mode={"flat"}
+                value={memeTitle}
+                clearTextOnFocus
+                onChangeText={(memeTitle) => setMemeTitle(memeTitle)}
+                placeholder="Telegram 2 - O Retorno?"
+                placeholderTextColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.placeholderText
                 }
-              }}
-            />
+                underlineColor={"transparent"}
+                style={
+                  isWhiteMode
+                    ? { backgroundColor: colors.lightBackgroundLight }
+                    : {
+                        backgroundColor: colors.lightBackground,
+                        color: colors.white,
+                        textDecorationColor: colors.white,
+                      }
+                }
+                selectionColor={colors.divider}
+                theme={{
+                  colors: {
+                    text: isWhiteMode ? colors.whiteLight : colors.white,
+                    primary: isWhiteMode ? colors.greenLight : colors.green,
+                    placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+                  },
+                }}
+              />
+
+              <TextInput
+                label="Tags"
+                mode={"flat"}
+                value={tags}
+                clearTextOnFocus
+                onChangeText={(tags) => setTags(tags)}
+                placeholderTextColor={
+                  isWhiteMode
+                    ? colors.placeholderTextLight
+                    : colors.placeholderText
+                }
+                underlineColor={"transparent"}
+                style={
+                  isWhiteMode
+                    ? { backgroundColor: colors.lightBackgroundLight }
+                    : {
+                        backgroundColor: colors.lightBackground,
+                        color: colors.white,
+                        textDecorationColor: colors.white,
+                      }
+                }
+                selectionColor={colors.divider}
+                placeholder="Shitpost, Hiena, Zoio..."
+                theme={{
+                  colors: {
+                    text: isWhiteMode ? colors.whiteLight : colors.white,
+                    primary: isWhiteMode ? colors.greenLight : colors.green,
+                    placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+                  },
+                }}
+              />
+
+              <View style={styles.button}>
+                <ConfirmButton
+                  theme={isWhiteMode}
+                  title="Pronto!"
+                  onPress={() => {
+                    // Se os campos estiverem preenchidos
+                    if (memeTitle && tags) {
+                      if (meme && user) {
+                        uploadImage([meme, user?.uid, memeTitle, tags])
+                          .then((url) => {
+                            Alert.alert("Sucesso");
+                            setMeme(undefined);
+                            setMemeTitle(undefined);
+                            setTags(undefined);
+
+                            firebase
+                              .firestore()
+                              .collection("memes")
+                              .doc(memeTitle)
+                              .set({
+                                // id do meme
+                                memeUrl: url,
+                                memeTitle: memeTitle,
+                                tags: tags,
+                                likes: 0,
+                                comments: 0,
+                                authorId: user.uid,
+                                id: Math.floor(100000 + Math.random() * 900000),
+                              });
+                          })
+                          .catch((error) => {
+                            Alert.alert(`Algo deu errado: ${error}`);
+                          });
+                      } else {
+                        Alert.alert("Insira um arquivo válido");
+                      }
+                    } else {
+                      Alert.alert(
+                        "Preencha todas as informações antes de postar seu meme"
+                      );
+                    }
+                  }}
+                />
+              </View>
+            </View>
           </View>
         </View>
-      </View>
-    </View>}/>
+      }
+    />
   );
 }
 
