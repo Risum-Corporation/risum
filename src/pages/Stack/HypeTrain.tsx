@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import { StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import StackContext from "../../contexts/Stack";
 import { fakePosts } from "../../database/fakeData";
 import { SafeZoneView, SimpleText } from "../../styles/Theme";

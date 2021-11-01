@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import { View, FlatList, Text } from "react-native";
 
 import { fakePosts, PostProps } from "../../database/fakeData";
 
@@ -10,7 +10,6 @@ import { Loading } from "../../components/Loading";
 import { SafeZoneView } from "../../styles/Theme";
 
 import firebase from "../../database/firebaseConnection";
-
 import AuthContext from "../../contexts/Auth";
 
 export function Feed() {
@@ -19,19 +18,23 @@ export function Feed() {
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [memeList, setMemeList] = useState<PostProps[]>([]);
-  const { user } = useContext(AuthContext);
+
+  // Array de IDs dos usuários seguidos
+  const [following, setFollowing] = useState<string[]>();
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
+  const { user } = useContext(AuthContext);
 
   function loadPage(pageNumber = page) {
     //if (total && pageNumber > total) return;
     // Receber perfis que o usuário segue
 
-    // Receber memes de cada perfil e salvar na memeList
+    // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
     firebase
       .firestore()
       .collection("memes")
+      .where("authorId", "in", following)
       .get()
       .then((docs) => {
         // Percorre os documentos (memes) um a um
@@ -43,14 +46,13 @@ export function Feed() {
           const tags = doc.data().tags;
           const likes = doc.data().likes;
           const comments = doc.data().comments;
-          const authorId = doc.data().authorId; // Fazer com que esse seja requisitado diretamente do Firebase depois
+          const authorId = doc.data().authorId;
 
           // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
           setMemeList([
             ...memeList,
             { id, authorId, memeUrl, likes, memeTitle, tags, comments },
           ]);
-          console.log(memeList);
         });
       })
       .catch((error) => {
@@ -65,17 +67,36 @@ export function Feed() {
   }
 
   useEffect(() => {
-    loadPage();
-  }, []);
+    async function fetchFollowedUsers() {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .get()
+        .then((doc) => {
+          const followingList = [...doc.data()?.following];
+          setFollowing(followingList);
+        });
+    }
+
+    // Recebe a lista de perfis que o usuário segue
+    fetchFollowedUsers();
+
+    // Primeiro carregamento da Flatlist
+    if (following) {
+      loadPage();
+    }
+  });
 
   function refreshList() {
     setIsRefreshing(true);
 
     // Reseta a lista de memes
     setMemeList([]);
-    console.log(memeList);
 
-    loadPage(1);
+    if (following) {
+      loadPage(1);
+    }
 
     setIsRefreshing(false);
   }
@@ -90,7 +111,7 @@ export function Feed() {
           <View>
             {loading || isRefreshing ? (
               <Loading />
-            ) : (
+            ) : following ? (
               <FlatList
                 data={memeList}
                 keyExtractor={(post: PostProps) => String(post.id)}
@@ -106,13 +127,18 @@ export function Feed() {
                 )}
                 maxToRenderPerBatch={5}
               />
-
-              // // Listagem dos posts no Feed
-              // fakePosts.map((post) => (
-              //   <View key={post.id}>
-              //     <MemeCard theme={isWhiteMode} postData={{ ...post }} />
-              //   </View>
-              // ))
+            ) : (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignContent: "center",
+                }}
+              >
+                <Text style={{ color: "white", fontSize: 36 }}>
+                  Você ainda não segue nenhum usuário
+                </Text>
+              </View>
             )}
           </View>
         </>

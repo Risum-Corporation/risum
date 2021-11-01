@@ -16,6 +16,7 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
 import { PostProps } from "../database/fakeData";
+import { useNavigation } from "@react-navigation/native";
 
 interface MemeCardSecondaryProps {
   theme: boolean;
@@ -25,6 +26,7 @@ interface MemeCardSecondaryProps {
 export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
+  const navigation = useNavigation();
 
   // Propriedades da pessoa que postou o meme
   const [avatar, setAvatar] = useState<string>();
@@ -159,7 +161,11 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
         </View>
 
         <View style={styles.userInfoContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Profile", { userId: postData.authorId });
+            }}
+          >
             <Image
               source={
                 avatar ? { uri: avatar } : require("../assets/risumDefault.png")

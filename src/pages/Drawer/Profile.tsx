@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from "react-native";
 import colors from "../../styles/colors";
 
@@ -41,47 +42,65 @@ export function Profile({ route }: any) {
   const [refreshing, setRefreshing] = useState(false);
   const [memeList, setMemeList] = useState<PostProps[]>();
 
+  // Dados para identificação do perfil do usuário
+  const [userName, setUserName] = useState<string>();
+  const [userAvatar, setUserAvatar] = useState<string>();
+  const [isForeignUser, setIsForeignUser] = useState<boolean>(false);
+
+  // Array de IDs dos usuários seguidos
+  const [followingSet, setFollowingSet] = useState<string[]>();
+
   const { user } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  // Fetch memes from database
   useEffect(() => {
-    async function fetchMemes() {
-      // const list = await firebase
-      //   .firestore()
-      //   .collection("media")
-      //   .doc(user?.uid)
-      //   .collection("memes")
-      //   .get()
-      //   .then((querySnapshot) => {
-      //     querySnapshot.docs.map((doc) => {
-      //       console.log("LOG 1", doc.data());
-      //       return doc.data();
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     console.log(`Algo deu errado: ${error}`);
-      //   });
-      // console.log("LOG 2", list);
-      // return list;
-      // firebase
-      //   .firestore()
-      //   .collection("media")
-      //   .doc(user?.uid)
-      //   .collection("memes")
-      //   .doc("Ernesto")
-      //   .get()
-      //   .then((doc) => {
-      //     const meme = doc.data();
-      //     console.log(meme);
-      //     setMemeList(meme);
-      //   });
+    async function fetchUserData() {
+      // Caso o usuário seja diferente do local
+      if (route.params && route.params.userId != user?.uid) {
+        await firebase
+          .firestore()
+          .collection("users")
+          .doc(route.params.userId)
+          .get()
+          .then((doc) => {
+            const name = String(doc.data()?.userName);
+            const img = String(doc.data()?.userImage);
+
+            setUserName(name);
+            setUserAvatar(img);
+            setIsForeignUser(true);
+          });
+      }
+      // Caso seja o usuário local
+      else if (user) {
+        setUserName(user.userName);
+        setUserAvatar(user.avatar);
+        setIsForeignUser(false);
+      } else {
+        console.log("O usuário não pode ser exibido no perfil");
+      }
     }
 
-    fetchMemes();
-  }, []);
+    async function fetchFollowedUsers() {
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .get()
+        .then((doc) => {
+          const followingList = [...doc.data()?.following];
+          setFollowingSet(followingList);
+        });
+    }
+
+    // Recebe a lista de perfis que o usuário segue
+    fetchFollowedUsers();
+
+    // Recebe e verifica as informações do usuário especificado
+    fetchUserData();
+  });
 
   function loadPage(pageNumber = page, shouldRefresh = false) {
     if (total && pageNumber > total) return;
@@ -120,7 +139,7 @@ export function Profile({ route }: any) {
           <View style={styles.profileInfo}>
             <View style={styles.userNameImgBox}>
               {user?.avatar ? (
-                <Avatar.Image size={100} source={{ uri: user.avatar }} />
+                <Avatar.Image size={100} source={{ uri: userAvatar }} />
               ) : (
                 <Avatar.Text
                   size={100}
@@ -136,7 +155,7 @@ export function Profile({ route }: any) {
                       : { color: colors.white },
                   ]}
                 >
-                  {user?.userName}
+                  {userName}
                 </Text>
                 <Text
                   style={[
@@ -149,6 +168,46 @@ export function Profile({ route }: any) {
                   {`#${user?.tag}`}
                 </Text>
               </View>
+              {
+                //Exibe o botão de DEIXAR DE SEGUIR caso o usuário seja diferente do local
+                followingSet?.includes(route.params.userId) ? (
+                  <View style={styles.unFollowButton}>
+                    <TouchableOpacity onPress={() => {}}>
+                      <Text style={styles.text}>Seguir</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  // Exibe o botão de SEGUIR caso o usuário seja diferente do local
+                  isForeignUser && (
+                    <View style={styles.followButton}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          firebase
+                            .firestore()
+                            .collection("users")
+                            .doc(user?.uid)
+                            .update({
+                              following: [
+                                { ...followingSet },
+                                route.params.userId,
+                              ],
+                            })
+                            .then(() => {
+                              Alert.alert(`${userName} seguido com sucesso!`);
+                            })
+                            .catch((error) => {
+                              Alert.alert(
+                                `Ops! Algo deu errado: ${error.code}`
+                              );
+                            });
+                        }}
+                      >
+                        <Text style={styles.text}>Seguir</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                )
+              }
             </View>
 
             <View>
@@ -390,4 +449,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row-reverse",
   },
+  followButton: {
+    backgroundColor: colors.purple,
+    padding: 10,
+    borderRadius: 8,
+  },
+  unFollowButton: {},
 });

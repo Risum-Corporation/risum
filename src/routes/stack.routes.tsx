@@ -188,6 +188,7 @@ const AppRoutes: React.FC = () => (
         name="DrawerAndTabsScreen"
         component={drawerAndTabScreen}
       />
+      <stackRoutes.Screen name="Profile" component={Profile} />
       <stackRoutes.Screen name="Comments" component={Comments} />
       <stackRoutes.Screen name="NoAccount" component={NoAccount} />
 
@@ -197,7 +198,6 @@ const AppRoutes: React.FC = () => (
       <stackRoutes.Screen name="ChangeAvatar" component={ChangeAvatar} />
       <stackRoutes.Screen name="ChangeCover" component={ChangeCover} />
 
-
       <stackRoutes.Screen
         name="SecuritySettings"
         component={SecuritySettings}
@@ -205,12 +205,15 @@ const AppRoutes: React.FC = () => (
       <stackRoutes.Screen name="AboutUsSettings" component={AboutUsSettings} />
       <stackRoutes.Screen name="Search" component={Search} />
 
-      
-      <stackRoutes.Screen name="ChangePassword" component={ForgotPasswordStg1} />
-      <stackRoutes.Screen name="ForgotPasswordStg2" component={ForgotPasswordStg2} />
+      <stackRoutes.Screen
+        name="ChangePassword"
+        component={ForgotPasswordStg1}
+      />
+      <stackRoutes.Screen
+        name="ForgotPasswordStg2"
+        component={ForgotPasswordStg2}
+      />
       <stackRoutes.Screen name="Welcome" component={drawerAndTabScreen} />
-
-
 
       <stackRoutes.Screen
         name="RisumPoliciesSettings"

@@ -176,7 +176,11 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
           >
             {author}
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Profile", { userId: postData.authorId });
+            }}
+          >
             <Image
               source={
                 avatar ? { uri: avatar } : require("../assets/risumDefault.png")
