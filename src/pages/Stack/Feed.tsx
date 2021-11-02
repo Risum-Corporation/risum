@@ -1,63 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, FlatList, Text } from "react-native";
+import { FlatList, StyleSheet, View, Platform, Animated } from "react-native";
 
-import { fakePosts, PostProps } from "../../database/fakeData";
+import { fakePosts } from "../../database/fakeData";
 
+import colors from "../../styles/colors";
 import { TopBar } from "../../components/TopBar";
 import { MemeCard } from "../../components/MemeCard";
 import StackContext from "../../contexts/Stack";
-import { Loading } from "../../components/Loading";
 import { SafeZoneView } from "../../styles/Theme";
-
-import firebase from "../../database/firebaseConnection";
-import AuthContext from "../../contexts/Auth";
 
 export function Feed() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [memeList, setMemeList] = useState<PostProps[]>([]);
-
-  // Array de IDs dos usuários seguidos
-  const [following, setFollowing] = useState<string[]>();
+  const [refreshing, setRefreshing] = useState(false);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
-  const { user } = useContext(AuthContext);
 
   function loadPage(pageNumber = page) {
-    //if (total && pageNumber > total) return;
-    // Receber perfis que o usuário segue
-
-    // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
-    firebase
-      .firestore()
-      .collection("memes")
-      .where("authorId", "in", following)
-      .get()
-      .then((docs) => {
-        // Percorre os documentos (memes) um a um
-        docs.forEach((doc) => {
-          // Recebe cada uma das informações do meme no Firestore
-          const id = doc.data().id;
-          const memeUrl = doc.data().memeUrl;
-          const memeTitle = doc.data().memeTitle;
-          const tags = doc.data().tags;
-          const likes = doc.data().likes;
-          const comments = doc.data().comments;
-          const authorId = doc.data().authorId;
-
-          // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
-          setMemeList([
-            ...memeList,
-            { id, authorId, memeUrl, likes, memeTitle, tags, comments },
-          ]);
-        });
-      })
-      .catch((error) => {
-        console.log(`Deu ruim: ${error}`);
-      });
+    if (total && pageNumber > total) return;
 
     const totalItems = fakePosts.length;
 
@@ -67,82 +29,69 @@ export function Feed() {
   }
 
   useEffect(() => {
-    async function fetchFollowedUsers() {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(user?.uid)
-        .get()
-        .then((doc) => {
-          const followingList = [...doc.data()?.following];
-          setFollowing(followingList);
-        });
-    }
-
-    // Recebe a lista de perfis que o usuário segue
-    fetchFollowedUsers();
-
-    // Primeiro carregamento da Flatlist
-    if (following) {
-      loadPage();
-    }
-  });
+    loadPage();
+  }, []);
 
   function refreshList() {
-    setIsRefreshing(true);
+    setRefreshing(true);
 
-    // Reseta a lista de memes
-    setMemeList([]);
+    loadPage(1);
 
-    if (following) {
-      loadPage(1);
-    }
-
-    setIsRefreshing(false);
+    setRefreshing(false);
   }
+
+  const scrollY = new Animated.Value(0);
+  const TOPBARHEIGHT = 90;
+  const diffClamp = Animated.diffClamp(scrollY, 0, TOPBARHEIGHT);
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 70],
+    outputRange: [0, -TOPBARHEIGHT],
+  });
 
   return (
     <SafeZoneView
       theme={isWhiteMode}
       content={
         <>
-          <TopBar theme={isWhiteMode} name="Feed" />
+        
+          <Animated.View
+            style={{
+              transform: [{ translateY }],
+              elevation: 4,
+              zIndex: 150,
+          
+            }}
+          >
+            <TopBar name="Feed" theme={isWhiteMode} />
+          </Animated.View>
 
-          <View>
-            {loading || isRefreshing ? (
-              <Loading />
-            ) : following ? (
-              <FlatList
-                data={memeList}
-                keyExtractor={(post: PostProps) => String(post.id)}
-                onEndReached={() => loadPage()}
-                onEndReachedThreshold={0.1}
-                onRefresh={() => {
-                  refreshList();
-                }}
-                refreshing={isRefreshing}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <MemeCard theme={isWhiteMode} postData={item} />
-                )}
-                maxToRenderPerBatch={5}
-              />
-            ) : (
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Text style={{ color: "white", fontSize: 36 }}>
-                  Você ainda não segue nenhum usuário
-                </Text>
-              </View>
+          <FlatList
+            data={fakePosts}
+            keyExtractor={(post) => String(post.id)}
+            onEndReached={() => loadPage()}
+            onEndReachedThreshold={0.1}
+            onRefresh={refreshList}
+            showsVerticalScrollIndicator={false}
+            refreshing={refreshing}
+            renderItem={({ item }) => (
+              <MemeCard postData={item} theme={isWhiteMode} />
             )}
-          </View>
+            maxToRenderPerBatch={5}
+            onScroll={(e) => {
+              scrollY.setValue(e.nativeEvent.contentOffset.y);
+            }}
+          />
         </>
       }
     />
   );
 }
+
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: colors.background,
+  },
+  wrapperLight: {
+    backgroundColor: colors.backgroundLight,
+  },
+});

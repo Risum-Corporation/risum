@@ -48,7 +48,7 @@ export function TopBar({ name, theme }: TopBarProps) {
   return (
     <View style={styles.container}>
       <Appbar.Header
-      style={{backgroundColor: theme ? colors.backgroundLight : colors.background, paddingHorizontal: 15, }}
+      style={{backgroundColor: theme ? colors.backgroundLight : colors.background, paddingHorizontal: 15, top: 0 }}
       >
       <TouchableOpacity onPress={handleDrawer}>
         {isAnonymous ? (
@@ -72,9 +72,7 @@ export function TopBar({ name, theme }: TopBarProps) {
 
 const styles = StyleSheet.create({
   container: {
-    overflow: "hidden",
-    zIndex: 1000,
-    elevation: 1000
+    overflow: "hidden"
   },
   title: {
     fontSize: 22,

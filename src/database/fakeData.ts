@@ -20,7 +20,7 @@ export const fakePosts: PostProps[] = [
     id: 1,
     authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl:
-      "https://firebasestorage.googleapis.com/v0/b/risum-b1687.appspot.com/o/media%2Fmemes%2F3bmAqEjKVANQH4UX97qbCasNwS33%2FAbelardo%20-%20Ernesto?alt=media&token=8213c272-76d7-4d27-85f7-6417f8ee40da",
+      "https://thispersondoesnotexist.com/image",
     likes: 43,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "comedia"],
