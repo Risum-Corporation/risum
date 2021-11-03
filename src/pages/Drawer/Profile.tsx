@@ -20,6 +20,7 @@ import { GoBackButton } from "../../components/GoBackButton";
 import fonts from "../../styles/fonts";
 
 import firebase from "../../database/firebaseConnection";
+import { ProfileInfo } from "../../components/Profileinfo";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -132,132 +133,35 @@ export function Profile({ route }: any) {
       theme={isWhiteMode}
       content={
         <View style={styles.container}>
-          <Image
-            source={require("../../assets/wallpaper.jpg")}
-            style={styles.userWallpaper}
+          <ProfileInfo
+            theme={isWhiteMode}
+            cover={require("../../assets/wallpaper.jpg")}
+            avatar={userAvatar}
+            userName={userName}
+            userTag={user?.tag}
+            isForeignUser={isForeignUser}
+            followers={2}
+            following={12}
+            isFollower={false} // Falta automatizar 
+            user={user}
+            whenUnfollow={() => {}}
+            whenFollow={() => {
+              firebase
+                .firestore()
+                .collection("users")
+                .doc(user?.uid)
+                .update({
+                  following: [{ ...followingSet }, route.params.userId],
+                })
+                .then(() => {
+                  Alert.alert(`${userName} seguido com sucesso!`);
+                })
+                .catch((error) => {
+                  Alert.alert(`Ops! Algo deu errado: ${error.code}`);
+                });
+            }}
           />
-          <View style={styles.profileInfo}>
-            <View style={styles.userNameImgBox}>
-              {user?.avatar ? (
-                <Avatar.Image size={100} source={{ uri: userAvatar }} />
-              ) : (
-                <Avatar.Text
-                  size={100}
-                  label={`${user?.userName.substr(0, 1)}`}
-                />
-              )}
-              <View style={{ marginTop: 20, paddingLeft: 8 }}>
-                <Text
-                  style={[
-                    styles.userName,
-                    isWhiteMode
-                      ? { color: colors.whiteLight }
-                      : { color: colors.white },
-                  ]}
-                >
-                  {userName}
-                </Text>
-                <Text
-                  style={[
-                    styles.userId,
-                    isWhiteMode
-                      ? { color: colors.placeholderTextLight }
-                      : { color: colors.placeholderText },
-                  ]}
-                >
-                  {`#${user?.tag}`}
-                </Text>
-              </View>
-              {
-                //Exibe o botão de DEIXAR DE SEGUIR caso o usuário seja diferente do local
-                followingSet?.includes(route.params.userId) ? (
-                  <View style={styles.unFollowButton}>
-                    <TouchableOpacity onPress={() => {}}>
-                      <Text style={styles.text}>Seguir</Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  // Exibe o botão de SEGUIR caso o usuário seja diferente do local
-                  isForeignUser && (
-                    <View style={styles.followButton}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          firebase
-                            .firestore()
-                            .collection("users")
-                            .doc(user?.uid)
-                            .update({
-                              following: [
-                                { ...followingSet },
-                                route.params.userId,
-                              ],
-                            })
-                            .then(() => {
-                              Alert.alert(`${userName} seguido com sucesso!`);
-                            })
-                            .catch((error) => {
-                              Alert.alert(
-                                `Ops! Algo deu errado: ${error.code}`
-                              );
-                            });
-                        }}
-                      >
-                        <Text style={styles.text}>Seguir</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )
-                )
-              }
-            </View>
 
-            <View>
-              <View style={styles.lineText}>
-                <Text
-                  style={[
-                    styles.text,
-                    isWhiteMode
-                      ? { color: colors.whiteLight }
-                      : { color: colors.white },
-                  ]}
-                >
-                  Seguindo
-                </Text>
-                <Text
-                  style={[
-                    styles.greenText,
-                    isWhiteMode
-                      ? { color: colors.purpleLight }
-                      : { color: colors.green },
-                  ]}
-                >
-                  15
-                </Text>
-              </View>
-
-              <View style={styles.lineText}>
-                <Text
-                  style={[
-                    styles.text,
-                    isWhiteMode
-                      ? { color: colors.whiteLight }
-                      : { color: colors.white },
-                  ]}
-                >
-                  Seguidores
-                </Text>
-                <Text
-                  style={[
-                    styles.greenText,
-                    isWhiteMode
-                      ? { color: colors.purpleLight }
-                      : { color: colors.green },
-                  ]}
-                >
-                  37
-                </Text>
-              </View>
-            </View>
-          </View>
           <View
             style={[
               styles.filterIconsBox,
@@ -384,51 +288,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  text: {
-    color: colors.white,
-    marginHorizontal: 5,
-    fontWeight: "bold",
-  },
-  greenText: {
-    color: colors.green,
-    fontWeight: "bold",
-  },
-  lineText: {
-    marginHorizontal: 5,
-    flexDirection: "row-reverse",
-  },
-  userWallpaper: {
-    resizeMode: "cover", // IMPORTANTE! NÃO REMOVER
-    height: 160,
-    width: "105%",
-  },
-  userName: {
-    fontFamily: fonts.heading,
-    fontSize: 20,
-    color: colors.white,
-  },
-  userId: {
-    fontFamily: fonts.subtitle,
-    fontSize: 12,
-  },
-  userNameImgBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: -20,
-  },
-  profileInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-  profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
   filterIconsBox: {
     borderBottomWidth: 1,
 
@@ -443,16 +302,5 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 18.5,
     paddingHorizontal: 30,
-  },
-  backButton: {
-    position: "absolute",
-    marginTop: 20,
-    flexDirection: "row-reverse",
-  },
-  followButton: {
-    backgroundColor: colors.purple,
-    padding: 10,
-    borderRadius: 8,
-  },
-  unFollowButton: {},
+  }
 });
