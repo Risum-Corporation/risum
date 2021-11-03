@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Platform,
   SafeAreaView,
-  View
+  View,
 } from "react-native";
-import { Appbar } from 'react-native-paper';
+import { Appbar } from "react-native-paper";
 import { Searchbar } from "react-native-paper";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
@@ -41,41 +41,51 @@ export function TopBar({ name, theme }: TopBarProps) {
     return navigation.openDrawer();
   }
 
-  function handleSearch(){
-    navigation.navigate("Search")
+  function handleSearch() {
+    navigation.navigate("Search");
   }
 
   return (
     <View style={styles.container}>
       <Appbar.Header
-      style={{backgroundColor: theme ? colors.backgroundLight : colors.background, paddingHorizontal: 15, top: 0 }}
+        style={{
+          backgroundColor: theme ? colors.backgroundLight : colors.background,
+          paddingHorizontal: 15,
+        }}
       >
-      <TouchableOpacity onPress={handleDrawer}>
-        {isAnonymous ? (
-          <Avatar.Image
-            size={42}
-            source={require("../assets/risumDefault.png")}
-          />
-        ) : user?.avatar ? (
-          <Avatar.Image size={42} source={{ uri: user.avatar }} />
-        ) : (
-          <Avatar.Text size={42} label={`${user?.userName.substr(0, 1)}`} />
-        )}
-      </TouchableOpacity>
-       <Appbar.Content titleStyle={[styles.title, {color: theme ? colors.greenLight : colors.green }]} title={name}  />
+        <TouchableOpacity onPress={handleDrawer}>
+          {isAnonymous ? (
+            <Avatar.Image
+              size={42}
+              source={require("../assets/risumDefault.png")}
+            />
+          ) : user?.avatar ? (
+            <Avatar.Image size={42} source={{ uri: user.avatar }} />
+          ) : (
+            <Avatar.Text size={42} label={`${user?.userName.substr(0, 1)}`} />
+          )}
+        </TouchableOpacity>
+        <Appbar.Content
+          titleStyle={[
+            styles.title,
+            { color: theme ? colors.greenLight : colors.green },
+          ]}
+          title={name}
+        />
         <Appbar.Action icon="magnify" onPress={handleSearch} />
-    </Appbar.Header>
-    
+      </Appbar.Header>
+      {/* <Text>gg</Text> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    overflow: "hidden"
+    overflow: "hidden",
+    // backgroundColor: "red",
   },
   title: {
     fontSize: 22,
     fontFamily: fonts.heading,
-  }
+  },
 });

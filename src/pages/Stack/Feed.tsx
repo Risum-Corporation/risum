@@ -5,7 +5,7 @@ import { fakePosts } from "../../database/fakeData";
 
 import { PostProps } from "../../database/fakeData";
 
-import firebase from '../../database/firebaseConnection'
+import firebase from "../../database/firebaseConnection";
 
 import colors from "../../styles/colors";
 import { TopBar } from "../../components/TopBar";
@@ -13,6 +13,7 @@ import { MemeCard } from "../../components/MemeCard";
 import StackContext from "../../contexts/Stack";
 import { SafeZoneView } from "../../styles/Theme";
 import AuthContext from "../../contexts/Auth";
+import { Text } from "react-native-paper";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -21,15 +22,15 @@ export function Feed() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Array de memes recebidos do Firestore
-  const [memeList, setMemeList] = useState<Record<string,PostProps>>({});
-  
+  const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
+
   // Array de IDs dos usuários seguidos
-  const [following, setFollowing] = useState<string[]>()
+  const [following, setFollowing] = useState<string[]>();
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
 
   async function loadPage(pageNumber = page) {
     // if (total && pageNumber > total) return;
@@ -41,10 +42,9 @@ export function Feed() {
       .firestore()
       .collection("memes")
       //.where("authorId", "in", following)
-      .get()
-    let newMemes = {...memeList}
-    console.log('a')
-      // Percorre os documentos (memes) um a um
+      .get();
+    let newMemes = { ...memeList };
+    // Percorre os documentos (memes) um a um
     docs.forEach((doc) => {
       // Recebe cada uma das informações do meme no Firestore
       const id = doc.data().id;
@@ -56,58 +56,53 @@ export function Feed() {
       const authorId = doc.data().authorId;
       // console.log({ id, authorId, memeUrl, likes, memeTitle, tags, comments })
       // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
-      console.log(id)
       newMemes = {
         ...newMemes,
-        [id] : { id, authorId, memeUrl, likes, memeTitle, tags, comments },
+        [id]: { id, authorId, memeUrl, likes, memeTitle, tags, comments },
       };
     });
     // console.log(newMemes)
     const totalItems = Object.keys(memeList).length;
-    setMemeList(newMemes)
+    setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
     setLoading(false);
   }
 
   useEffect(() => {
-    let shouldSet= true
+    let shouldSet = true;
     async function fetchFollowedUsers() {
       const doc = await firebase
         .firestore()
         .collection("users")
         .doc(user?.uid)
-        .get()
-        if(shouldSet){
-          console.log(`Esse aqui é o doc:`,doc.data())
-          const followingList = [...doc.data()?.following];
-          setFollowing(followingList);
-        }
+        .get();
+      if (shouldSet) {
+        const followingList = [...doc.data()?.following];
+        setFollowing(followingList);
       }
+    }
 
     // Recebe a lista de perfis que o usuário segue
     fetchFollowedUsers().then(() => {
       if (following?.length) {
-        console.log('rodou gg')
-        console.log('rodou gg')
         loadPage();
       }
-
     });
-    
+
     // Primeiro carregamento da Flatlist
     return () => {
-      shouldSet = false
-    }
+      shouldSet = false;
+    };
   }, []);
 
   function refreshList() {
     setIsRefreshing(true);
 
     loadPage(1);
-    
+
     // Zera o Array com os memes
-    setMemeList({})
+    setMemeList({});
 
     setIsRefreshing(false);
   }
@@ -119,22 +114,26 @@ export function Feed() {
     inputRange: [0, 70],
     outputRange: [0, -TOPBARHEIGHT],
   });
-
+  console.log(translateY);
   return (
     <SafeZoneView
       theme={isWhiteMode}
       content={
         <>
-        
           <Animated.View
             style={{
               transform: [{ translateY }],
-              elevation: 4,
+              // elevation: 4,
               zIndex: 150,
-          
+              position: "absolute",
+              // backgroundColor: "red",
             }}
           >
             <TopBar name="Feed" theme={isWhiteMode} />
+            {/* <Text>gg</Text>
+            <Text>gg</Text>
+            <Text>gg</Text>
+            <Text>gg</Text> */}
           </Animated.View>
 
           <FlatList
