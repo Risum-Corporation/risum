@@ -11,6 +11,8 @@ import { Avatar } from "react-native-paper";
 import StackContext from "../../contexts/Stack";
 import { SafeZoneView } from "../../styles/Theme";
 
+
+
 export function Search() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);

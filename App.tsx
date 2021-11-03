@@ -19,6 +19,8 @@ import {
 import { Roboto_400Regular } from "@expo-google-fonts/roboto";
 import { NavigationContainer } from "@react-navigation/native";
 
+console. disableYellowBox = true
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     Archivo_700Bold,

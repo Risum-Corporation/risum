@@ -15,7 +15,6 @@ import fonts from "../../styles/fonts";
 import { TextInput } from "react-native-paper";
 import AuthContext from "../../contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { SafeZoneView } from "../../styles/Theme";
 
 export function AddMeme() {
