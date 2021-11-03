@@ -74,7 +74,6 @@ export function TopBar({ name, theme }: TopBarProps) {
         />
         <Appbar.Action icon="magnify" onPress={handleSearch} />
       </Appbar.Header>
-      {/* <Text>gg</Text> */}
     </View>
   );
 }
@@ -82,7 +81,6 @@ export function TopBar({ name, theme }: TopBarProps) {
 const styles = StyleSheet.create({
   container: {
     overflow: "hidden",
-    // backgroundColor: "red",
   },
   title: {
     fontSize: 22,

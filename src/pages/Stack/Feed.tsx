@@ -119,21 +119,18 @@ export function Feed() {
     <SafeZoneView
       theme={isWhiteMode}
       content={
-        <>
+        <> 
           <Animated.View
             style={{
               transform: [{ translateY }],
               // elevation: 4,
               zIndex: 150,
               position: "absolute",
-              // backgroundColor: "red",
+              width: '100%',
+              marginTop: Platform.OS === 'ios' ?  47 : 0
             }}
           >
             <TopBar name="Feed" theme={isWhiteMode} />
-            {/* <Text>gg</Text>
-            <Text>gg</Text>
-            <Text>gg</Text>
-            <Text>gg</Text> */}
           </Animated.View>
 
           <FlatList
