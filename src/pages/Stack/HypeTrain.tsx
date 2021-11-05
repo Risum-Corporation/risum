@@ -1,61 +1,118 @@
 import React, { useState, useEffect, useContext } from "react";
+import { FlatList, StyleSheet, View, Platform, Animated } from "react-native";
 
-import { StyleSheet, View } from "react-native";
-import StackContext from "../../contexts/Stack";
 import { fakePosts } from "../../database/fakeData";
-import { SafeZoneView, SimpleText } from "../../styles/Theme";
-import { Video } from "expo-av";
+
+import { PostProps } from "../../database/fakeData";
+
+import firebase from "../../database/firebaseConnection";
+
+import colors from "../../styles/colors";
+import { TopBar } from "../../components/TopBar";
+import { MemeCard } from "../../components/MemeCard";
+import StackContext from "../../contexts/Stack";
+import { SafeZoneView } from "../../styles/Theme";
+import AuthContext from "../../contexts/Auth";
+import { HypeMemeCard } from "../../components/HypeMemeCard";
 export function HypeTrain() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  function loadPage(pageNumber = page) {
-    if (total && pageNumber > total) return;
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-    const totalItems = fakePosts.length;
+  // Objeto de memes recebidos do Firestore
+  const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
 
+  // Array de IDs dos usuários seguidos
+  const [following, setFollowing] = useState<string[]>();
+
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
+
+  const { user } = useContext(AuthContext);
+
+  async function loadPage(pageNumber = page) {
+    // if (total && pageNumber > total) return;
+
+    // Receber perfis que o usuário segue
+
+    // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
+    const docs = await firebase
+      .firestore()
+      .collection("memes")
+      //.where("authorId", "in", following)
+      .get();
+    let newMemes = { ...memeList };
+    // Percorre os documentos (memes) um a um
+    docs.forEach((doc) => {
+      // Recebe cada uma das informações do meme no Firestore
+      const id = doc.data().id;
+      const memeUrl = doc.data().memeUrl;
+      const memeTitle = doc.data().memeTitle;
+      const tags = doc.data().tags;
+      const likes = doc.data().likes;
+      const comments = doc.data().comments;
+      const authorId = doc.data().authorId;
+      const isVideo = doc.data().isVideo;
+      // console.log({ id, authorId, memeUrl, likes, memeTitle, tags, comments })
+      // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
+      newMemes = {
+        ...newMemes,
+        [id]: { id, authorId, memeUrl, likes, memeTitle, tags, comments, isVideo },
+      };
+    });
+    // console.log(newMemes)
+    const totalItems = Object.keys(memeList).length;
+    setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
     setLoading(false);
   }
 
   useEffect(() => {
-    loadPage();
+    let shouldSet = true;
+    async function fetchFollowedUsers() {
+      const doc = await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .get();
+      if (shouldSet) {
+        const followingList = [...doc.data()?.following];
+        setFollowing(followingList);
+      }
+    }
+
+    // Recebe a lista de perfis que o usuário segue
+    fetchFollowedUsers().then(() => {
+      if (following?.length) {
+        loadPage();
+      }
+    });
+
+    // Primeiro carregamento da Flatlist
+    return () => {
+      shouldSet = false;
+    };
   }, []);
 
   function refreshList() {
-    setRefreshing(true);
+    setIsRefreshing(true);
 
     loadPage(1);
 
-    setRefreshing(false);
+    // Zera o Objeto com os memes
+    setMemeList({});
+
+    setIsRefreshing(false);
   }
-
-  const [visible, setVisible] = useState(true);
-
-  // Theme
-  const { isWhiteMode } = useContext(StackContext);
-
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({})
 
   return (
     <SafeZoneView
       theme={isWhiteMode}
       content={
         <View style={styles.container}>
-          <Video
-        ref={video}
-        style={styles.video}
-        source={{
-          uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-        }}
-        useNativeControls
-        resizeMode="contain"
-        isLooping
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
-      />
+<HypeMemeCard  theme={isWhiteMode} />
         </View>
       }
     />
@@ -66,7 +123,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
+    flex: 1, 
   },
   image: {
     width: 250,

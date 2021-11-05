@@ -6,9 +6,12 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  Dimensions,
   Share,
+  Button,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Video } from "expo-av";
 
 import firebase from "../database/firebaseConnection";
 
@@ -17,13 +20,14 @@ import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 
 import { PostProps } from "../database/fakeData";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-interface MemeCardProps {
+interface HypeMemeCardProps {
   theme: boolean;
   postData: PostProps;
 }
 
-export function HypeMemeCard({ theme, postData }: MemeCardProps) {
+export function HypeMemeCard({ theme, postData }: HypeMemeCardProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
   const navigation = useNavigation();
@@ -31,28 +35,6 @@ export function HypeMemeCard({ theme, postData }: MemeCardProps) {
   // Propriedades da pessoa que postou o meme
   const [author, setAuthor] = useState<string>();
   const [avatar, setAvatar] = useState<string>();
-
-  useEffect(() => {
-    // Recebe as informações do dono do meme para display no MemeCard
-    function fetchUserProfileInfo() {
-      firebase
-        .firestore()
-        .collection("users")
-        .doc(postData.authorId)
-        .get()
-        .then((doc: any) => {
-          setAuthor(String(doc.data().userName));
-          setAvatar(String(doc.data().userImage));
-        })
-        .catch((error) => {
-          console.log(
-            `Não foi possível receber as informações do usuário devido ao seguinte erro: ${error}`
-          );
-        });
-    }
-
-    fetchUserProfileInfo();
-  }, []);
 
   function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
@@ -79,88 +61,73 @@ export function HypeMemeCard({ theme, postData }: MemeCardProps) {
       console.log("Erro => ", error);
     }
   }
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
-      </View>
-
-      <View
-        style={[
-          styles.footer,
-          {
-            backgroundColor: theme
-              ? colors.lightBackgroundLight
-              : colors.lightBackground,
-          },
-        ]}
-      >
-        <View style={styles.buttonBox}>
-          <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
-            <AntDesign
-              name={isLikePressed ? "like1" : "like2"}
-              size={24}
-              color={
-                isLikePressed
-                  ? theme
-                    ? colors.greenLight
-                    : colors.green
-                  : theme
-                  ? colors.whiteLight
-                  : colors.white
-              }
-            />
-          </TouchableOpacity>
-          <Text
-            style={[
-              styles.memeStats,
-              { color: theme ? colors.whiteLight : colors.white },
-            ]}
-          >
-            {postData.likes}
-          </Text>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate("Comments");
+    <>
+      {/* {postData.isVideo ? (
+          <Video
+            ref={video}
+            style={styles.memeUrl}
+            source={{
+              uri: postData.memeUrl,
             }}
-          >
-            <Ionicons
-              name="md-chatbox-ellipses-outline"
+            useNativeControls
+            resizeMode="cover"
+            isLooping
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+        ) : (
+          <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
+        )} */}
+      <Video
+        ref={video}
+        style={styles.memeUrl}
+        source={{
+          uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+        }}
+        resizeMode="cover"
+        isLooping
+        isMuted={true}
+        shouldPlay={true}
+        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+      />
+      {/* <TouchableWithoutFeedback
+        onPress={() =>
+          status.isPlaying
+            ? video.current.pauseAsync()
+            : video.current.playAsync()
+        }
+      >
+        <View style={styles.pause}></View>
+      </TouchableWithoutFeedback>  */}
+      <View style={styles.actionButtons}>
+        <View style={styles.buttonBox}>
+          <TouchableOpacity style={styles.button} onPress={shareMeme}>
+            <AntDesign
+              name="like1"
               size={24}
               color={theme ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
-          <Text
-            style={[
-              styles.memeStats,
-              { color: theme ? colors.whiteLight : colors.white },
-            ]}
-          >
-            {postData.comments}
-          </Text>
-
-          <TouchableOpacity style={styles.button} onPress={toggleBookmarkPress}>
-            <Ionicons
-              name={isBookmarkPressed ? "md-bookmark" : "md-bookmark-outline"}
-              size={24}
-              color={
-                isBookmarkPressed
-                  ? theme
-                    ? colors.greenLight
-                    : colors.green
-                  : theme
-                  ? colors.whiteLight
-                  : colors.white
-              }
-            />
-          </TouchableOpacity>
-
           <TouchableOpacity style={styles.button} onPress={shareMeme}>
             <Ionicons
-              name="md-share-social-outline"
+              name="md-chatbox-ellipses"
+              size={24}
+              color={theme ? colors.whiteLight : colors.white}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={shareMeme}>
+            <Ionicons
+              name="md-bookmark"
+              size={24}
+              color={theme ? colors.whiteLight : colors.white}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={shareMeme}>
+            <Ionicons
+              name="md-share-social"
               size={24}
               color={theme ? colors.whiteLight : colors.white}
             />
@@ -168,17 +135,9 @@ export function HypeMemeCard({ theme, postData }: MemeCardProps) {
         </View>
 
         <View style={styles.userInfoContainer}>
-          <Text
-            style={[
-              styles.authorName,
-              { color: theme ? colors.whiteLight : colors.white },
-            ]}
-          >
-            {author}
-          </Text>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile", { userId: postData.authorId });
+              navigation.navigate("Profile");
             }}
           >
             <Image
@@ -190,73 +149,50 @@ export function HypeMemeCard({ theme, postData }: MemeCardProps) {
           </TouchableOpacity>
         </View>
       </View>
-
-      <View // Divider between memes
+      <Text
         style={[
-          {
-            borderBottomWidth: 1,
-            marginVertical: 25,
-            marginHorizontal: 15,
-          },
-          {
-            borderBottomColor: theme
-              ? colors.placeholderTextLight
-              : colors.divider,
-          },
+          styles.authorName,
+          { color: theme ? colors.whiteLight : colors.white },
         ]}
-      />
-    </SafeAreaView>
+      >Sapekaaaaa</Text>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
   memeUrl: {
-    width: 365,
-    marginHorizontal: 15,
-    height: 350,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    resizeMode: "cover",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    height: "100%",
+    width: "100%",
   },
-  footer: {
-    maxWidth: "93.1%",
-    flexDirection: "row",
-
-    marginHorizontal: 15,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    padding: 7.5,
-
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  footerLight: {
-    maxWidth: "93.3%",
-    flexDirection: "row",
-
-    backgroundColor: colors.lightBackgroundLight,
-
-    marginHorizontal: 15,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    padding: 7.5,
-
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  button: {
-    marginHorizontal: 5,
+  pause: {
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    backgroundColor: "red",
   },
   buttonBox: {
-    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingRight: "90%",
   },
-  memeStats: {
-    fontFamily: fonts.text,
-    margin: 4,
+  button: {
+    marginTop: 15,
+    marginLeft: 10,
+  },
+  userInfoContainer: {
+    marginTop: "180%",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  authorName: {
+    fontFamily: fonts.userText,
+    fontSize: 14,
+    position: "absolute",
+    backgroundColor: "red",
+    justifyContent: 'flex-end',
   },
   userImg: {
     width: 40,
@@ -264,16 +200,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 5,
   },
-  authorName: {
-    fontFamily: fonts.userText,
-    fontSize: 14,
-    textAlign: "center",
-  },
-  userInfoContainer: {
+  actionButtons: {
     flexDirection: "row",
-    alignItems: "center",
-  },
-  wrapper: {
-    backgroundColor: colors.background,
+    marginHorizontal: 30,
   },
 });

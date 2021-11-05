@@ -33,8 +33,6 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
   // Propriedades da pessoa que postou o meme
   const [author, setAuthor] = useState<string>();
   const [avatar, setAvatar] = useState<string>();
-  const [isVideo, setIsVideo] = useState<boolean>();
-
 
   useEffect(() => {
     // Recebe as informações do dono do meme para display no MemeCard

@@ -120,11 +120,10 @@ export function Feed() {
     <SafeZoneView
       theme={isWhiteMode}
       content={
-        <> 
+        <>
           <Animated.View
             style={{
               transform: [{ translateY }],
-              // elevation: 4,
               zIndex: 150,
               position: "absolute",
               width: '100%',
@@ -134,7 +133,7 @@ export function Feed() {
             <TopBar name="Feed" theme={isWhiteMode} />
           </Animated.View>
 
-          
+          {}
 
           <FlatList
             data={Object.values(memeList)}
@@ -143,6 +142,8 @@ export function Feed() {
             onEndReachedThreshold={0.1}
             onRefresh={refreshList}
             showsVerticalScrollIndicator={false}
+            ListHeaderComponent={<TopBar name="Feed" theme={isWhiteMode} />} // Em observação
+            ListHeaderComponentStyle={styles.header}
             refreshing={isRefreshing}
             renderItem={({ item }) => (
               <MemeCard postData={item} theme={isWhiteMode} />
@@ -159,10 +160,7 @@ export function Feed() {
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    backgroundColor: colors.background,
-  },
-  wrapperLight: {
-    backgroundColor: colors.backgroundLight,
-  },
+header: {
+  marginBottom: 10
+}
 });
