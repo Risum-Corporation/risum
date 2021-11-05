@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, Platform, Alert, Image } from "react-native";
+import { StyleSheet, View, Platform, Alert, Image, KeyboardAvoidingView} from "react-native";
 import colors from "../../styles/colors";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import StackContext from "../../contexts/Stack";
@@ -16,6 +16,7 @@ import { TextInput } from "react-native-paper";
 import AuthContext from "../../contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
 import { SafeZoneView } from "../../styles/Theme";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = useState<string>();
@@ -78,8 +79,10 @@ export function AddMeme() {
     <SafeZoneView
       theme={isWhiteMode}
       content={
-        <View>
+        <ScrollView>
           <TopBar name="Postar Meme" theme={isWhiteMode} />
+
+
 
           <View style={styles.container}>
             {meme ? (
@@ -108,6 +111,7 @@ export function AddMeme() {
               />
             )}
 
+              {/* <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null}> */}
             <View style={[styles.form]}>
               <TextInput
                 label="Título do Meme"
@@ -219,8 +223,9 @@ export function AddMeme() {
                 />
               </View>
             </View>
+        {/* </KeyboardAvoidingView> */}
           </View>
-        </View>
+        </ScrollView>
       }
     />
   );

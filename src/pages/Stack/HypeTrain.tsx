@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View, Platform, Animated } from "react-native";
+import { FlatList, StyleSheet, View, Platform, Animated, Dimensions } from "react-native";
 
 import { fakePosts } from "../../database/fakeData";
 
@@ -111,9 +111,26 @@ export function HypeTrain() {
     <SafeZoneView
       theme={isWhiteMode}
       content={
-        <View style={styles.container}>
-<HypeMemeCard  theme={isWhiteMode} />
-        </View>
+        <>
+
+          <FlatList
+            data={Object.values(memeList)}
+            renderItem={({ item }) => (
+              <HypeMemeCard postData={item} theme={isWhiteMode} />
+            )}
+            keyExtractor={(post) => String(post.id)}
+            onEndReached={() => loadPage()}
+            onEndReachedThreshold={0.1}
+            showsVerticalScrollIndicator={false}
+            snapToInterval={Dimensions.get('window').height -120}
+            snapToAlignment={'start'}
+            maxToRenderPerBatch={1}
+            decelerationRate={'fast'}
+          /> 
+          </>
+
+
+
       }
     />
   );
@@ -123,7 +140,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1, 
   },
   image: {
     width: 250,
