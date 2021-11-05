@@ -88,23 +88,24 @@ export function HypeMemeCard({ theme, postData }: HypeMemeCardProps) {
 
   return (
     <>
-      {postData.isVideo ? (
-        <Video
-          ref={video}
-          style={styles.memeUrl}
-          source={{
-            uri: postData.memeUrl,
-          }}
-          resizeMode="cover"
-          isLooping
-          useNativeControls // Player
-          isMuted={true}
-          shouldPlay={true}
-          onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-        />
-      ) : (
-        <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
-      )}
+      <View style={styles.memeUrlContainer}>
+        {postData.isVideo ? (
+          <Video
+            ref={video}
+            style={styles.memeUrl}
+            source={{
+              uri: postData.memeUrl,
+            }}
+            resizeMode="cover"
+            isLooping
+            isMuted={true}
+            shouldPlay={true}
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+        ) : (
+          <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
+        )}
+      </View>
 
       {/* <TouchableWithoutFeedback
         onPress={() =>
@@ -114,7 +115,7 @@ export function HypeMemeCard({ theme, postData }: HypeMemeCardProps) {
         }
       >
         <View style={styles.pause}></View>
-      </TouchableWithoutFeedback>  */}
+      </TouchableWithoutFeedback> */}
       <View style={styles.actionButtons}>
         <View style={styles.buttonBox}>
           <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
@@ -162,36 +163,36 @@ export function HypeMemeCard({ theme, postData }: HypeMemeCardProps) {
 
         <View style={styles.userInfoContainer}></View>
       </View>
+      <View style={styles.userImgContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Profile", { userId: postData.authorId });
+          }}
+        >
+          <Image
+            source={
+              avatar ? { uri: avatar } : require("../assets/risumDefault.png")
+            }
+            style={styles.userImg}
+          />
+        </TouchableOpacity>
+      </View>
 
-      <Text style={[styles.authorName, { color: colors.white }]}>
-        {" "}
-        {author}
-      </Text>
+      <Text style={[styles.authorName, { color: colors.white }]}>{author}</Text>
 
       {postData.likes === 1 ? (
         <Text style={[styles.memeInfo, { color: colors.white }]}>
-          {postData.memeTitle}{"\n"}
+          {postData.memeTitle}
+          {"\n"}
           {postData.likes} like e {postData.comments} comentários
         </Text>
       ) : (
         <Text style={[styles.memeInfo, { color: colors.white }]}>
-          {postData.memeTitle}{"\n"}
+          {postData.memeTitle}
+          {"\n"}
           {postData.likes} likes e {postData.comments} comentários
         </Text>
       )}
-
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("Profile");
-        }}
-      >
-        <Image
-          source={
-            avatar ? { uri: avatar } : require("../assets/risumDefault.png")
-          }
-          style={styles.userImg}
-        />
-      </TouchableOpacity>
 
       <View style={styles.separator} />
     </>
@@ -205,13 +206,15 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    height: "100%",
+  },
+  memeUrlContainer: {
+    height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
+    position: "absolute",
   },
   pause: {
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
-    backgroundColor: "red",
   },
   buttonBox: {
     position: "absolute",
@@ -237,10 +240,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    position: "absolute",
-    bottom: "1%",
-    right: "3%",
   },
+
+  userImgContainer: { position: "absolute", bottom: "5.5%", right: "3%" },
+
   actionButtons: {
     flexDirection: "row",
     marginHorizontal: 6,
@@ -255,6 +258,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#31313125",
   },
   separator: {
-    marginBottom: '10%'
+    height: "0.5%",
   },
 });
