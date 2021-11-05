@@ -20,6 +20,8 @@ import { SafeZoneView } from "../../styles/Theme";
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = useState<string>();
   const [tags, setTags] = useState<string>();
+  let isVideo = false;  
+
   // Pode ser uma arquivo ou um vídeo
   const [meme, setMeme] = useState<string>();
 
@@ -66,7 +68,7 @@ export function AddMeme() {
     var ref = firebase
       .storage()
       .ref()
-      .child(`media/memes/${uid}/${fileName.concat(` - ${fileTags}`)}`);
+      .child(`media/memes/${uid}/${fileName.concat(` - ${fileTags}`)}`); // User name + tag?
 
     await ref.put(blob);
     return await ref.getDownloadURL();
@@ -82,16 +84,19 @@ export function AddMeme() {
           <View style={styles.container}>
             {meme ? (
               meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? (
-                <Video
-                  source={{ uri: meme }}
-                  rate={1.0}
-                  volume={1.0}
-                  isMuted={false}
-                  resizeMode="contain"
-                  shouldPlay
-                  isLooping
-                  style={styles.submittedImage}
-                />
+                (isVideo = true) && (
+                  <Video
+                    source={{ uri: meme }}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={false}
+                    resizeMode="contain"
+                    shouldPlay
+                    isLooping
+                    useNativeControls
+                    style={styles.submittedImage}
+                  />
+                )
               ) : (
                 <Image source={{ uri: meme }} style={styles.submittedImage} />
               )
@@ -196,6 +201,7 @@ export function AddMeme() {
                                 comments: 0,
                                 authorId: user.uid,
                                 id: Math.floor(100000 + Math.random() * 900000),
+                                isVideo: isVideo,
                               });
                           })
                           .catch((error) => {

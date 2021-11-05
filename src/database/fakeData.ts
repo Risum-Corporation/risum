@@ -6,6 +6,7 @@ export interface PostProps {
   memeTitle: string;
   tags?: string[];
   comments: number;
+  isVideo: boolean;
 }
 
 export interface CommentProps {
@@ -19,12 +20,12 @@ export const fakePosts: PostProps[] = [
   {
     id: 1,
     authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
-    memeUrl:
-      "https://thispersondoesnotexist.com/image",
+    memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 43,
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "comedia"],
     comments: 17,
+    isVideo: false,
   },
   {
     id: 2,
@@ -34,6 +35,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "memeskk", "hurdur"],
     comments: 20,
+    isVideo: false,
   },
   {
     id: 3,
@@ -43,6 +45,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+    isVideo: false,
   },
   {
     id: 4,
@@ -52,6 +55,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+    isVideo: false,
   },
   {
     id: 5,
@@ -61,6 +65,8 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+
+    isVideo: false,
   },
   {
     id: 6,
@@ -70,6 +76,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+    isVideo: false,
   },
   {
     id: 7,
@@ -79,6 +86,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+    isVideo: false,
   },
   {
     id: 8,
@@ -88,6 +96,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+    isVideo: false,
   },
   {
     id: 9,
@@ -97,6 +106,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+    isVideo: false,
   },
   {
     id: 10,
@@ -106,6 +116,7 @@ export const fakePosts: PostProps[] = [
     memeTitle: "Tio patinhas 👃",
     tags: ["shipost", "ggboy", "cringe"],
     comments: 20,
+    isVideo: false,
   },
 ];
 

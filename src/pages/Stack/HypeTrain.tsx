@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 import StackContext from "../../contexts/Stack";
 import { fakePosts } from "../../database/fakeData";
 import { SafeZoneView, SimpleText } from "../../styles/Theme";
+import { Video } from "expo-av";
 export function HypeTrain() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -36,12 +37,25 @@ export function HypeTrain() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({})
+
   return (
     <SafeZoneView
       theme={isWhiteMode}
       content={
         <View style={styles.container}>
-          <SimpleText theme={isWhiteMode} title="HypeTrain" size={30} />
+          <Video
+        ref={video}
+        style={styles.video}
+        source={{
+          uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+        }}
+        useNativeControls
+        resizeMode="contain"
+        isLooping
+        onPlaybackStatusUpdate={status => setStatus(() => status)}
+      />
         </View>
       }
     />
@@ -58,4 +72,8 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
   },
+  video: {
+    height: 400,
+    width: 400
+  }
 });

@@ -21,7 +21,7 @@ export function Feed() {
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Array de memes recebidos do Firestore
+  // Objeto de memes recebidos do Firestore
   const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
 
   // Array de IDs dos usuários seguidos
@@ -54,11 +54,12 @@ export function Feed() {
       const likes = doc.data().likes;
       const comments = doc.data().comments;
       const authorId = doc.data().authorId;
+      const isVideo = doc.data().isVideo;
       // console.log({ id, authorId, memeUrl, likes, memeTitle, tags, comments })
       // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
       newMemes = {
         ...newMemes,
-        [id]: { id, authorId, memeUrl, likes, memeTitle, tags, comments },
+        [id]: { id, authorId, memeUrl, likes, memeTitle, tags, comments, isVideo },
       };
     });
     // console.log(newMemes)
@@ -101,7 +102,7 @@ export function Feed() {
 
     loadPage(1);
 
-    // Zera o Array com os memes
+    // Zera o Objeto com os memes
     setMemeList({});
 
     setIsRefreshing(false);

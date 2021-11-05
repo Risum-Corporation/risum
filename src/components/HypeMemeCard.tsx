@@ -10,8 +10,6 @@ import {
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
-import { Video } from "expo-av";
-
 import firebase from "../database/firebaseConnection";
 
 import colors from "../styles/colors";
@@ -25,7 +23,7 @@ interface MemeCardProps {
   postData: PostProps;
 }
 
-export function MemeCard({ theme, postData }: MemeCardProps) {
+export function HypeMemeCard({ theme, postData }: MemeCardProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
   const navigation = useNavigation();
@@ -33,8 +31,6 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
   // Propriedades da pessoa que postou o meme
   const [author, setAuthor] = useState<string>();
   const [avatar, setAvatar] = useState<string>();
-  const [isVideo, setIsVideo] = useState<boolean>();
-
 
   useEffect(() => {
     // Recebe as informações do dono do meme para display no MemeCard
@@ -83,26 +79,11 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
       console.log("Erro => ", error);
     }
   }
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({})
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
-      {postData.isVideo ? (
-          <Video
-            ref={video}
-            style={styles.memeUrl}
-            source={{
-              uri: postData.memeUrl,
-            }}
-            useNativeControls
-            resizeMode="contain"
-            isLooping
-            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-          />
-        ) : (
-          <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
-        )}
+        <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
       </View>
 
       <View
