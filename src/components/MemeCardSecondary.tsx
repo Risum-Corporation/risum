@@ -53,6 +53,25 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
     }
 
     fetchUserProfileInfo();
+
+    // Verifica se o usuário já possui informações daquele meme (Ex: já deu like antes, já salvou antes, etc.)
+    function verifyBehaviourOnMeme() {
+      // Verifica se o usuário já deu like anteriormente
+      if (user?.likedMemes.includes(postData.id)) {
+        setIsLikePressed(true);
+      } else {
+        setIsLikePressed(false);
+      }
+
+      // Verifica se o usuário já salvou o meme anteriormente
+      if (user?.savedMemes.includes(postData.id)) {
+        setIsBookmarkPressed(true);
+      } else {
+        setIsBookmarkPressed(false);
+      }
+    }
+
+    verifyBehaviourOnMeme();
   }, []);
 
   async function toggleLikePress() {

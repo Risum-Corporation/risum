@@ -29,6 +29,7 @@ import AuthContext from "../../contexts/Auth";
 
 import { Avatar } from "react-native-paper";
 import { SafeZoneView } from "../../styles/Theme";
+import { Loading } from "../../components/Loading";
 
 // route.params.userId para dinamizar a tela de perfil para vários perfis diferentes
 export function Profile({ route }: any) {
@@ -40,8 +41,11 @@ export function Profile({ route }: any) {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [memeList, setMemeList] = useState<PostProps[]>();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [likedMemes, setLikedMemes] = useState<string[]>();
+
+  // Objeto de memes recebidos do Firestore
+  const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
 
   // Dados para identificação do perfil do usuário
   const [userName, setUserName] = useState<string>();
@@ -101,24 +105,68 @@ export function Profile({ route }: any) {
 
     // Recebe e verifica as informações do usuário especificado
     fetchUserData();
+
+    if (user?.likedMemes) {
+      setLikedMemes(user.likedMemes);
+      loadSmilesPage();
+    }
   });
 
-  function loadPage(pageNumber = page, shouldRefresh = false) {
-    if (total && pageNumber > total) return;
+  async function loadSmilesPage(pageNumber = page) {
+    // if (total && pageNumber > total) return;
 
-    const totalItems = fakePosts.length;
+    // Receber memes salvos pelo usuário
+    const docs = await firebase
+      .firestore()
+      .collection("memes")
+      .where("id", "in", likedMemes)
+      .get();
+    let newMemes = { ...memeList };
+    // Percorre os documentos (memes) um a um
+    docs.forEach((doc) => {
+      // Recebe cada uma das informações do meme no Firestore
+      const id = doc.data().id;
+      const memeUrl = doc.data().memeUrl;
+      const memeTitle = doc.data().memeTitle;
+      const tags = doc.data().tags;
+      const likes = doc.data().likes;
+      const comments = doc.data().comments;
+      const authorId = doc.data().authorId;
+      const isVideo = doc.data().isVideo;
 
+      // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
+      newMemes = {
+        ...newMemes,
+        [id]: {
+          id,
+          authorId,
+          memeUrl,
+          likes,
+          memeTitle,
+          tags,
+          comments,
+          isVideo,
+        },
+      };
+    });
+
+    const totalItems = Object.keys(memeList).length;
+    setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
     setLoading(false);
   }
 
   function refreshList() {
-    setRefreshing(true);
+    setIsRefreshing(true);
+    setLoading(true);
 
-    loadPage(1, true);
+    loadSmilesPage(1);
 
-    setRefreshing(false);
+    // Zera o Objeto com os memes
+    setMemeList({});
+
+    setIsRefreshing(false);
   }
 
   function setIconsFalse() {
@@ -126,6 +174,7 @@ export function Profile({ route }: any) {
     setIsPostPressed(false);
     setIsCommentPressed(false);
     setIsInfoPressed(false);
+    setMemeList({});
   }
 
   return (
@@ -258,20 +307,24 @@ export function Profile({ route }: any) {
             </TouchableOpacity>
           </View>
           <View style={styles.content}>
-            {isSmilePressed && (
-              <FlatList
-                data={fakePosts}
-                keyExtractor={(post: PostProps) => String(post.id)}
-                onEndReached={() => loadPage()}
-                onEndReachedThreshold={0.1}
-                onRefresh={refreshList}
-                refreshing={refreshing}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                  <MemeCardSecondary postData={item} theme={isWhiteMode} />
-                )}
-              />
-            )}
+            {isSmilePressed &&
+              (loading ? (
+                <Loading />
+              ) : (
+                <FlatList
+                  data={Object.values(memeList)}
+                  keyExtractor={(post) => String(post.id)}
+                  onEndReached={() => loadSmilesPage()}
+                  onRefresh={refreshList}
+                  refreshing={isRefreshing}
+                  onEndReachedThreshold={0.1}
+                  showsVerticalScrollIndicator={false}
+                  maxToRenderPerBatch={5}
+                  renderItem={({ item }) => (
+                    <MemeCardSecondary postData={item} theme={isWhiteMode} />
+                  )}
+                />
+              ))}
           </View>
           <GoBackButton
             theme={isWhiteMode}

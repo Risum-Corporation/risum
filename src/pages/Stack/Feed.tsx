@@ -77,19 +77,21 @@ export function Feed() {
   useEffect(() => {
     let shouldSet = true;
     async function fetchFollowedUsers() {
-      const doc = await firebase
+      await firebase
         .firestore()
         .collection("users")
         .doc(user?.uid)
-        .get();
-      if (shouldSet) {
-        const followingList = [...doc.data()?.following];
-        setFollowing(followingList);
-      }
+        .get()
+        .then((doc) => {
+          if (shouldSet) {
+            const followingList = [...doc.data()?.following];
+            setFollowing(followingList);
+          }
+        });
     }
 
     // Recebe a lista de perfis que o usuário segue
-    fetchFollowedUsers().then(() => {
+    fetchFollowedUsers().then(async () => {
       if (following?.length) {
         loadPage();
       } else {
