@@ -1,5 +1,5 @@
 export interface PostProps {
-  id: number;
+  id: string;
   authorId?: string;
   memeUrl: string;
   likes: number;
@@ -10,7 +10,7 @@ export interface PostProps {
 }
 
 export interface CommentProps {
-  id: number;
+  id: string;
   authorId: string;
   likes: number;
   content: string;
@@ -18,7 +18,7 @@ export interface CommentProps {
 
 export const fakePosts: PostProps[] = [
   {
-    id: 1,
+    id: "1",
     authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 43,
@@ -28,7 +28,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 2,
+    id: "2",
     authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -38,7 +38,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 3,
+    id: "3",
     authorId: "CAke6oHbjVWKeL1o5zwnwpqVI4F2",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -48,7 +48,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 4,
+    id: "4",
     authorId: "CAke6oHbjVWKeL1o5zwnwpqVI4F2",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -58,7 +58,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 5,
+    id: "5",
     authorId: "Dh0qh7nvsZYsYOuPnluj6ygP6pr1",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -69,7 +69,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 6,
+    id: "6",
     authorId: "Dh0qh7nvsZYsYOuPnluj6ygP6pr1",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -79,7 +79,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 7,
+    id: "7",
     authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -89,7 +89,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 8,
+    id: "8",
     authorId: "3bmAqEjKVANQH4UX97qbCasNwS33",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -99,7 +99,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 9,
+    id: "9",
     authorId: "CAke6oHbjVWKeL1o5zwnwpqVI4F2",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -109,7 +109,7 @@ export const fakePosts: PostProps[] = [
     isVideo: false,
   },
   {
-    id: 10,
+    id: "10",
     authorId: "Dh0qh7nvsZYsYOuPnluj6ygP6pr1",
     memeUrl: "https://thispersondoesnotexist.com/image",
     likes: 1223,
@@ -122,43 +122,43 @@ export const fakePosts: PostProps[] = [
 
 export const comments: CommentProps[] = [
   {
-    id: 1,
+    id: "1",
     authorId: "Educg550",
     likes: 59,
     content: "KKKKKKKKK gg dms",
   },
   {
-    id: 2,
+    id: "2",
     authorId: "Sapeka",
     likes: 234,
     content: "KKKKKKKKK gg dms",
   },
   {
-    id: 3,
+    id: "3",
     authorId: "Cacamilly",
     likes: 7657,
     content: "KKKKKKKKK gg dms",
   },
   {
-    id: 4,
+    id: "4",
     authorId: "Katinho",
     likes: 34,
     content: "KKKKKKKKK gg dms",
   },
   {
-    id: 5,
+    id: "5",
     authorId: "Rodsfly",
     likes: 14,
     content: "KKKKKKKKK gg dms",
   },
   {
-    id: 6,
+    id: "6",
     authorId: "Dunker JeJe Niño",
     likes: 5643,
     content: "KKKKKKKKK gg dms",
   },
   {
-    id: 7,
+    id: "7",
     authorId: "Alek",
     likes: 675,
     content: "KKKKKKKKK gg dms",

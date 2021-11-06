@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -17,6 +17,7 @@ import fonts from "../styles/fonts";
 
 import { PostProps } from "../database/fakeData";
 import { useNavigation } from "@react-navigation/native";
+import AuthContext from "../contexts/Auth";
 
 interface MemeCardSecondaryProps {
   theme: boolean;
@@ -27,6 +28,8 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
   const navigation = useNavigation();
+
+  const { user } = useContext(AuthContext);
 
   // Propriedades da pessoa que postou o meme
   const [avatar, setAvatar] = useState<string>();
@@ -52,18 +55,76 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
     fetchUserProfileInfo();
   }, []);
 
-  function toggleLikePress() {
+  async function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
 
     if (isLikePressed) {
-      postData.likes--;
+      // REMOVE um like no meme
+      await firebase
+        .firestore()
+        .collection("memes")
+        .doc(postData.memeTitle)
+        .update({ likes: postData.likes - 1 })
+        .then(async () => {
+          // Atualiza visualmente os likes
+          postData.likes--;
+        });
+
+      // Atualiza a lista de memes curtidos em cache
+      user?.likedMemes.splice(user.likedMemes.indexOf(postData.id), 1);
+
+      // Atualiza a lista de memes curtidos pelo usuário
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ likedMemes: user?.likedMemes });
     } else {
-      postData.likes++;
+      // ADICIONA um like no meme
+      await firebase
+        .firestore()
+        .collection("memes")
+        .doc(postData.memeTitle)
+        .update({ likes: postData.likes + 1 })
+        .then(async () => {
+          // Atualiza visualmente os likes
+          postData.likes++;
+        });
+
+      // Atualiza a lista de memes curtidos em cache
+      user?.likedMemes.push(postData.id);
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ likedMemes: user?.likedMemes });
     }
   }
 
-  function toggleBookmarkPress() {
+  async function toggleBookmarkPress() {
     setIsBookmarkPressed(!isBookmarkPressed);
+
+    if (isBookmarkPressed) {
+      // Atualiza a lista de memes salvos em cache (REMOVE)
+      user?.savedMemes.splice(user.savedMemes.indexOf(postData.id), 1);
+
+      // Atualiza a lista de memes salvos pelo usuário
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ savedMemes: user?.savedMemes });
+    } else {
+      // Atualiza a lista de memes salvos em cache (ADICIONA)
+      user?.savedMemes.push(postData.id);
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ savedMemes: user?.savedMemes });
+    }
   }
 
   async function shareMeme() {

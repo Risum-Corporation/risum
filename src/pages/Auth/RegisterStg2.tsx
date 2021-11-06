@@ -98,7 +98,9 @@ export function RegisterStg2() {
           userName: userName,
           tag: tag,
           userId: auth.uid,
-          following: ['CAke6oHbjVWKeL1o5zwnwpqVI4F2']
+          following: [],
+          likedMemes: [],
+          wolfPackId: null,
         })
         .then(() => {
           // Inicia a persistência do usuário

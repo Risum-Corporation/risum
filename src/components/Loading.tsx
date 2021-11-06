@@ -18,6 +18,7 @@ export function Loading() {
         source={require("../assets/lotties/loading.json")}
         resizeMode="contain"
         autoPlay
+        autoSize
         loop
       />
     </SafeAreaView>

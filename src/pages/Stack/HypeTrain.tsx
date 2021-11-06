@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View, Platform, Animated, Dimensions } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Platform,
+  Animated,
+  Dimensions,
+} from "react-native";
 
 import { fakePosts } from "../../database/fakeData";
 
@@ -32,17 +39,18 @@ export function HypeTrain() {
   const { user } = useContext(AuthContext);
 
   async function loadPage(pageNumber = page) {
-    // if (total && pageNumber > total) return;
+    if (total && pageNumber > total) return;
 
-    // Receber perfis que o usuário segue
-
-    // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
+    // Recebe os memes destacados
     const docs = await firebase
       .firestore()
       .collection("memes")
-      //.where("authorId", "in", following)
+      // .where('isMemeFeatured', '==', true)
       .get();
+
+    // Variável temporária para armazenar os dados da memeList antiga
     let newMemes = { ...memeList };
+
     // Percorre os documentos (memes) um a um
     docs.forEach((doc) => {
       // Recebe cada uma das informações do meme no Firestore
@@ -54,15 +62,26 @@ export function HypeTrain() {
       const comments = doc.data().comments;
       const authorId = doc.data().authorId;
       const isVideo = doc.data().isVideo;
-      // console.log({ id, authorId, memeUrl, likes, memeTitle, tags, comments })
+
       // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
       newMemes = {
         ...newMemes,
-        [id]: { id, authorId, memeUrl, likes, memeTitle, tags, comments, isVideo },
+        [id]: {
+          id,
+          authorId,
+          memeUrl,
+          likes,
+          memeTitle,
+          tags,
+          comments,
+          isVideo,
+        },
       };
     });
-    // console.log(newMemes)
+
+    // Recebe o total de memes na memeList
     const totalItems = Object.keys(memeList).length;
+
     setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
@@ -90,7 +109,7 @@ export function HypeTrain() {
       }
     });
 
-    // Primeiro carregamento da Flatlist
+    // Força o useEffect a rodar apenas uma vez
     return () => {
       shouldSet = false;
     };
@@ -99,7 +118,7 @@ export function HypeTrain() {
   function refreshList() {
     setIsRefreshing(true);
 
-    loadPage(1);
+    loadPage();
 
     // Zera o Objeto com os memes
     setMemeList({});
@@ -108,31 +127,29 @@ export function HypeTrain() {
   }
 
   return (
-    <SafeZoneView
-      theme={isWhiteMode}
-      content={
-        <>
+    // <SafeZoneView
+    //   theme={isWhiteMode}
+    //   content={
+    //     <>
+    //       <FlatList
+    //         data={Object.values(memeList)}
+    //         renderItem={({ item }) => (
+    //           <HypeMemeCard postData={item} theme={isWhiteMode} />
+    //         )}
+    //         keyExtractor={(post) => String(post.id)}
+    //         onEndReached={() => loadPage()}
+    //         onEndReachedThreshold={0.1} // Assim que 10% do fim for alcançado
+    //         showsVerticalScrollIndicator={false}
+    //         snapToInterval={Dimensions.get('window').height -120}
+    //         snapToAlignment={'start'}
+    //         maxToRenderPerBatch={1}
+    //         decelerationRate={'fast'}
+    //       />
+    //       </>
+    //   }
+    // />
 
-          <FlatList
-            data={Object.values(memeList)}
-            renderItem={({ item }) => (
-              <HypeMemeCard postData={item} theme={isWhiteMode} />
-            )}
-            keyExtractor={(post) => String(post.id)}
-            onEndReached={() => loadPage()}
-            onEndReachedThreshold={0.1}
-            showsVerticalScrollIndicator={false}
-            snapToInterval={Dimensions.get('window').height -120}
-            snapToAlignment={'start'}
-            maxToRenderPerBatch={1}
-            decelerationRate={'fast'}
-          /> 
-          </>
-
-
-
-      }
-    />
+    <View></View>
   );
 }
 
@@ -142,11 +159,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 250, 
+    width: 250,
     height: 250,
   },
   video: {
     height: 400,
-    width: 400
-  }
+    width: 400,
+  },
 });

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, SafeAreaView } from "react-native";
+import React, { useContext } from "react";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { GoBackButton } from "../../components/GoBackButton";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
@@ -7,12 +7,10 @@ import { useNavigation } from "@react-navigation/native";
 import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 import { fakePosts, PostProps } from "../../database/fakeData";
 import StackContext from "../../contexts/Stack";
-import AuthContext from "../../contexts/Auth";
 import { SafeZoneView } from "../../styles/Theme";
 
 export function SavedMemes() {
   const navigation = useNavigation();
-  const { isAnonymous, signOut } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);

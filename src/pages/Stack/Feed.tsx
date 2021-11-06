@@ -1,19 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View, Platform, Animated } from "react-native";
-
-import { fakePosts } from "../../database/fakeData";
+import { FlatList, StyleSheet, Platform, Animated } from "react-native";
 
 import { PostProps } from "../../database/fakeData";
 
 import firebase from "../../database/firebaseConnection";
 
-import colors from "../../styles/colors";
 import { TopBar } from "../../components/TopBar";
 import { MemeCard } from "../../components/MemeCard";
 import StackContext from "../../contexts/Stack";
 import { SafeZoneView } from "../../styles/Theme";
 import AuthContext from "../../contexts/Auth";
-import { Text } from "react-native-paper";
+import { Loading } from "../../components/Loading";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -35,13 +32,11 @@ export function Feed() {
   async function loadPage(pageNumber = page) {
     // if (total && pageNumber > total) return;
 
-    // Receber perfis que o usuário segue
-
     // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
     const docs = await firebase
       .firestore()
       .collection("memes")
-      //.where("authorId", "in", following)
+      .where("authorId", "in", following)
       .get();
     let newMemes = { ...memeList };
     // Percorre os documentos (memes) um a um
@@ -55,14 +50,23 @@ export function Feed() {
       const comments = doc.data().comments;
       const authorId = doc.data().authorId;
       const isVideo = doc.data().isVideo;
-      // console.log({ id, authorId, memeUrl, likes, memeTitle, tags, comments })
+
       // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
       newMemes = {
         ...newMemes,
-        [id]: { id, authorId, memeUrl, likes, memeTitle, tags, comments, isVideo },
+        [id]: {
+          id,
+          authorId,
+          memeUrl,
+          likes,
+          memeTitle,
+          tags,
+          comments,
+          isVideo,
+        },
       };
     });
-    // console.log(newMemes)
+
     const totalItems = Object.keys(memeList).length;
     setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
@@ -88,10 +92,12 @@ export function Feed() {
     fetchFollowedUsers().then(() => {
       if (following?.length) {
         loadPage();
+      } else {
+        // Exibir componente semelhante ao NoAccount, onde o usuário é instruído a seguir páginas
       }
     });
 
-    // Primeiro carregamento da Flatlist
+    // Força o useEffect a rodar apenas uma vez
     return () => {
       shouldSet = false;
     };
@@ -99,6 +105,7 @@ export function Feed() {
 
   function refreshList() {
     setIsRefreshing(true);
+    setLoading(true);
 
     loadPage(1);
 
@@ -115,8 +122,9 @@ export function Feed() {
     inputRange: [0, 70],
     outputRange: [0, -TOPBARHEIGHT],
   });
-  console.log(translateY);
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <SafeZoneView
       theme={isWhiteMode}
       content={
@@ -126,14 +134,12 @@ export function Feed() {
               transform: [{ translateY }],
               zIndex: 150,
               position: "absolute",
-              width: '100%',
-              marginTop: Platform.OS === 'ios' ?  47 : 0
+              width: "100%",
+              marginTop: Platform.OS === "ios" ? 47 : 0,
             }}
           >
             <TopBar name="Feed" theme={isWhiteMode} />
           </Animated.View>
-
-          {}
 
           <FlatList
             data={Object.values(memeList)}
@@ -160,7 +166,7 @@ export function Feed() {
 }
 
 const styles = StyleSheet.create({
-header: {
-  marginBottom: 10
-}
+  header: {
+    marginBottom: 10,
+  },
 });

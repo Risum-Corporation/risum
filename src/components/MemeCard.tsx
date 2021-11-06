@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Share,
+  Alert,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
@@ -19,6 +20,7 @@ import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 
 import { PostProps } from "../database/fakeData";
+import AuthContext from "../contexts/Auth";
 
 interface MemeCardProps {
   theme: boolean;
@@ -29,6 +31,8 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
   const navigation = useNavigation();
+
+  const { user } = useContext(AuthContext);
 
   // Propriedades da pessoa que postou o meme
   const [author, setAuthor] = useState<string>();
@@ -54,20 +58,97 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
     }
 
     fetchUserProfileInfo();
+
+    // Verifica se o usuário já possui informações daquele meme (Ex: já deu like antes, já salvou antes, etc.)
+    function verifyBehaviourOnMeme() {
+      // Verifica se o usuário já deu like anteriormente
+      if (user?.likedMemes.includes(postData.id)) {
+        setIsLikePressed(true);
+      } else {
+        setIsLikePressed(false);
+      }
+
+      // Verifica se o usuário já salvou o meme anteriormente
+      if (user?.savedMemes.includes(postData.id)) {
+        setIsBookmarkPressed(true);
+      } else {
+        setIsBookmarkPressed(false);
+      }
+    }
+
+    verifyBehaviourOnMeme();
   }, []);
 
-  function toggleLikePress() {
+  async function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
 
     if (isLikePressed) {
-      postData.likes--;
+      // REMOVE um like no meme
+      await firebase
+        .firestore()
+        .collection("memes")
+        .doc(postData.memeTitle)
+        .update({ likes: postData.likes - 1 })
+        .then(async () => {
+          // Atualiza visualmente os likes
+          postData.likes--;
+        });
+
+      // Atualiza a lista de memes curtidos em cache
+      user?.likedMemes.splice(user.likedMemes.indexOf(postData.id), 1);
+
+      // Atualiza a lista de memes curtidos pelo usuário
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ likedMemes: user?.likedMemes });
     } else {
-      postData.likes++;
+      // ADICIONA um like no meme
+      await firebase
+        .firestore()
+        .collection("memes")
+        .doc(postData.memeTitle)
+        .update({ likes: postData.likes + 1 })
+        .then(async () => {
+          // Atualiza visualmente os likes
+          postData.likes++;
+        });
+
+      // Atualiza a lista de memes curtidos em cache
+      user?.likedMemes.push(postData.id);
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ likedMemes: user?.likedMemes });
     }
   }
 
-  function toggleBookmarkPress() {
+  async function toggleBookmarkPress() {
     setIsBookmarkPressed(!isBookmarkPressed);
+
+    if (isBookmarkPressed) {
+      // Atualiza a lista de memes salvos em cache (REMOVE)
+      user?.savedMemes.splice(user.savedMemes.indexOf(postData.id), 1);
+
+      // Atualiza a lista de memes salvos pelo usuário
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ savedMemes: user?.savedMemes });
+    } else {
+      // Atualiza a lista de memes salvos em cache (ADICIONA)
+      user?.savedMemes.push(postData.id);
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(user?.uid)
+        .update({ savedMemes: user?.savedMemes });
+    }
   }
 
   async function shareMeme() {
@@ -82,11 +163,11 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
     }
   }
   const video = React.useRef(null);
-  const [status, setStatus] = React.useState({})
+  const [status, setStatus] = React.useState({});
   return (
     <SafeAreaView>
       <View style={styles.container}>
-      {postData.isVideo ? (
+        {postData.isVideo ? (
           <Video
             ref={video}
             style={styles.memeUrl}
@@ -196,6 +277,11 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Profile", { userId: postData.authorId });
+            }}
+            onLongPress={() => {
+              Alert.alert(
+                `ID do Meme: ${postData.id}\nTítulo do meme: ${postData.memeTitle}`
+              );
             }}
           >
             <Image

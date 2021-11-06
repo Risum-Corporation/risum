@@ -142,11 +142,11 @@ export function Profile({ route }: any) {
             isForeignUser={isForeignUser}
             followers={2}
             following={12}
-            isFollower={false} // Falta automatizar 
+            isFollower={false} // Falta automatizar
             user={user}
             whenUnfollow={() => {}}
-            whenFollow={() => {
-              firebase
+            whenFollow={async () => {
+              await firebase
                 .firestore()
                 .collection("users")
                 .doc(user?.uid)
@@ -302,5 +302,5 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 18.5,
     paddingHorizontal: 30,
-  }
+  },
 });

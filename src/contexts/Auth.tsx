@@ -6,11 +6,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebase from "../database/firebaseConnection";
 
 interface User {
-  userName: string;
-  uid: string;
-  tag: string;
-  avatar?: string;
-  cover?: string;
+  userName: string; // Nome de exibição do usuário
+  uid: string; // ID única do usuário
+  tag: string; // Tag do usuário (#1234)
+  avatar?: string; // Imagem de perfil
+  cover?: string; // Imagem de fundo do perfil
+  wolfPackId: string | null; // ID da alcateia do usuário
+  following: string[]; // Array de IDs dos usuários seguidos
+  likedMemes: string[]; // Array de IDs dos memes curtidos
+  savedMemes: string[]; // Array de IDs dos memes salvos
 }
 
 interface AuthContextData {
@@ -33,7 +37,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [signed, setSigned] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const [isEmailVerified, setIsEmailVerified] = useState(false)
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   async function handleStateChanged(firebaseUser: any) {
     //Verifica se o usuário é anônimo, de forma a escapar da requisição
@@ -41,16 +45,16 @@ export const AuthProvider: React.FC = ({ children }) => {
       return setSigned(true);
     } else if (firebaseUser) {
       // Faz login se o usuário já estiver conectado através da persistência
-        login(firebaseUser)
+      login(firebaseUser);
     } else {
       // Usuário não está logado
     }
   }
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(handleStateChanged)
-  }, [])
-  
+    firebase.auth().onAuthStateChanged(handleStateChanged);
+  }, []);
+
   async function login(firebaseUser: any) {
     // setUser({ ...props });
     // console.log(user);
@@ -58,10 +62,9 @@ export const AuthProvider: React.FC = ({ children }) => {
       return setSigned(true);
     }
 
-     
     //Ajusta as configurações de estado do usuário
     setIsAnonymous(false);
-    setIsEmailVerified(firebaseUser.isEmailVerified)
+    setIsEmailVerified(firebaseUser.isEmailVerified);
 
     await firebase
       .firestore()
@@ -69,13 +72,28 @@ export const AuthProvider: React.FC = ({ children }) => {
       .doc(firebaseUser.uid)
       .get()
       .then((doc: any) => {
+        // Seguindo a interface User
         const userName = doc.data().userName;
         const tag = doc.data().tag;
         const avatar = doc.data().userImage;
         const cover = doc.data().userCover;
+        const wolfPackId = doc.data().wolfPackId;
+        const following = doc.data().following;
+        const likedMemes = doc.data().likedMemes;
+        const savedMemes = doc.data().savedMemes;
         const uid = firebaseUser.uid;
 
-        setUser({ userName, uid, tag, avatar, cover });
+        setUser({
+          userName,
+          uid,
+          tag,
+          avatar,
+          cover,
+          wolfPackId,
+          following,
+          likedMemes,
+          savedMemes,
+        });
 
         // Se você vir essa mensagem no console, quer dizer que tudo deu certo
         console.log("Fé na sogrinha login");
@@ -97,7 +115,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       .auth()
       .signInAnonymously()
       .then((cred) => {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE) // Remoção da persistência (usuário anônimo)
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE); // Remoção da persistência (usuário anônimo)
         login(cred.user);
       })
       .catch((error) => {
@@ -115,14 +133,14 @@ export const AuthProvider: React.FC = ({ children }) => {
     });
     //Ajusta as condições de estado do usuário
     setIsAnonymous(false);
-    setIsEmailVerified(false)
+    setIsEmailVerified(false);
 
     // Volta para o Auth Routes
     setSigned(false);
 
     // Remoção da persistência
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)
-    
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+
     await firebase.auth().signOut();
   }
 

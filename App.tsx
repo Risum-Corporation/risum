@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { LogBox } from "react-native";
 import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import AuthContext, { AuthProvider } from "./src/contexts/Auth";
@@ -32,7 +33,9 @@ export default function App() {
     return <AppLoading />;
   }
 
-  console.disableYellowBox = true;
+  // Remove a Yellow Box do App
+  LogBox.ignoreAllLogs(true);
+
   return (
     <NavigationContainer>
       <AuthProvider>
