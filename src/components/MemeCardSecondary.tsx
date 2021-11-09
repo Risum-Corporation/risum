@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Share,
+  Alert,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
@@ -244,6 +245,11 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Profile", { userId: postData.authorId });
+            }}
+            onLongPress={() => {
+              Alert.alert(
+                `ID do Meme: ${postData.id}\nTítulo do meme: ${postData.memeTitle}`
+              );
             }}
           >
             <Image

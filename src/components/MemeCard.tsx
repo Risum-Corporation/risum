@@ -6,10 +6,13 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Share,
+  //Share,
   Alert,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
+
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 
 import { Video } from "expo-av";
 
@@ -152,15 +155,28 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
   }
 
   async function shareMeme() {
-    const shareOptions = {
-      message: `Se liga nesse meme do Risum 😂: ${postData.memeUrl}`,
-    };
+    // const shareOptions = {
+    //   message: `Se liga nesse meme do Risum 😂: ${postData.memeUrl}`,
+    // };
+    // try {
+    //   await Share.share(shareOptions);
+    // } catch (error) {
+    //   console.log("Erro no compartilhamento => ", error);
+    // }
 
-    try {
-      await Share.share(shareOptions);
-    } catch (error) {
-      console.log("Erro => ", error);
+    let meme = FileSystem.downloadAsync(
+      postData.memeUrl,
+      FileSystem.documentDirectory + ".jpg"
+    );
+
+    if (postData.isVideo) {
+      meme = FileSystem.downloadAsync(
+        postData.memeUrl,
+        FileSystem.documentDirectory + ".mp4"
+      );
     }
+
+    Sharing.shareAsync((await meme).uri); // And share your file !
   }
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});

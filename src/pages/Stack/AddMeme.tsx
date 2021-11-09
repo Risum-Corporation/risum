@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, Platform, Alert, Image, KeyboardAvoidingView} from "react-native";
+import {
+  StyleSheet,
+  View,
+  Platform,
+  Alert,
+  Image,
+  ScrollView,
+} from "react-native";
 import colors from "../../styles/colors";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import StackContext from "../../contexts/Stack";
@@ -16,12 +23,11 @@ import { TextInput } from "react-native-paper";
 import AuthContext from "../../contexts/Auth";
 import { useNavigation } from "@react-navigation/native";
 import { SafeZoneView } from "../../styles/Theme";
-import { ScrollView } from "react-native-gesture-handler";
 
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = useState<string>();
   const [tags, setTags] = useState<string>();
-  let isVideo = false;  
+  let isVideo = false;
 
   // Pode ser uma arquivo ou um vídeo
   const [meme, setMeme] = useState<string>();
@@ -82,8 +88,6 @@ export function AddMeme() {
         <ScrollView>
           <TopBar name="Postar Meme" theme={isWhiteMode} />
 
-
-
           <View style={styles.container}>
             {meme ? (
               meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? (
@@ -111,7 +115,6 @@ export function AddMeme() {
               />
             )}
 
-              {/* <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null}> */}
             <View style={[styles.form]}>
               <TextInput
                 label="Título do Meme"
@@ -223,7 +226,6 @@ export function AddMeme() {
                 />
               </View>
             </View>
-        {/* </KeyboardAvoidingView> */}
           </View>
         </ScrollView>
       }

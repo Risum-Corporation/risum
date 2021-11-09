@@ -34,7 +34,9 @@ const drawerAndTabScreen = () => {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  const { isAnonymous } = useContext(AuthContext);
+  const { isAnonymous, user } = useContext(AuthContext);
+
+  const userId = user?.uid;
 
   return (
     <drawerRoutes.Navigator
@@ -95,6 +97,7 @@ const drawerAndTabScreen = () => {
       ) : (
         <drawerRoutes.Screen
           name="Perfil"
+          initialParams={{ userId }}
           component={Profile}
           options={{
             title: "Perfil",

@@ -86,24 +86,30 @@ export function Feed() {
           if (shouldSet) {
             const followingList = [...doc.data()?.following];
             setFollowing(followingList);
+            console.log(`Deu boa: ${followingList}`);
           }
+        })
+        .catch((error) => {
+          console.log(`Ops! Algo deu errado: ${error}`);
         });
     }
 
-    // Recebe a lista de perfis que o usuário segue
-    fetchFollowedUsers().then(async () => {
-      if (following?.length) {
-        loadPage();
-      } else {
-        // Exibir componente semelhante ao NoAccount, onde o usuário é instruído a seguir páginas
-      }
-    });
+    fetchFollowedUsers();
 
     // Força o useEffect a rodar apenas uma vez
     return () => {
       shouldSet = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (following?.length) {
+      loadPage();
+    } else {
+      console.log("Sem seguidores");
+      // Exibir componente semelhante ao NoAccount, onde o usuário é instruído a seguir páginas
+    }
+  }, [following]);
 
   function refreshList() {
     setIsRefreshing(true);

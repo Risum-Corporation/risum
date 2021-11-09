@@ -10,14 +10,13 @@ import {
 } from "react-native";
 import colors from "../../styles/colors";
 
-import { fakePosts, PostProps } from "../../database/fakeData";
+import { PostProps } from "../../database/fakeData";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 
 import { GoBackButton } from "../../components/GoBackButton";
-import fonts from "../../styles/fonts";
 
 import firebase from "../../database/firebaseConnection";
 import { ProfileInfo } from "../../components/Profileinfo";
@@ -27,7 +26,6 @@ import { useNavigation } from "@react-navigation/native";
 import StackContext from "../../contexts/Stack";
 import AuthContext from "../../contexts/Auth";
 
-import { Avatar } from "react-native-paper";
 import { SafeZoneView } from "../../styles/Theme";
 import { Loading } from "../../components/Loading";
 
@@ -44,6 +42,10 @@ export function Profile({ route }: any) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [likedMemes, setLikedMemes] = useState<string[]>();
 
+  const { user } = useContext(AuthContext);
+
+  let currentUserId = route.params.userId;
+
   // Objeto de memes recebidos do Firestore
   const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
 
@@ -55,19 +57,17 @@ export function Profile({ route }: any) {
   // Array de IDs dos usuários seguidos
   const [followingSet, setFollowingSet] = useState<string[]>();
 
-  const { user } = useContext(AuthContext);
-
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   useEffect(() => {
     async function fetchUserData() {
       // Caso o usuário seja diferente do local
-      if (route.params && route.params.userId != user?.uid) {
+      if (route.params && currentUserId != user?.uid) {
         await firebase
           .firestore()
           .collection("users")
-          .doc(route.params.userId)
+          .doc(currentUserId)
           .get()
           .then((doc) => {
             const name = String(doc.data()?.userName);
@@ -98,19 +98,37 @@ export function Profile({ route }: any) {
           const followingList = [...doc.data()?.following];
           setFollowingSet(followingList);
         });
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(currentUserId)
+        .get()
+        .then((doc) => {
+          const likedMemeList = [...doc.data()?.likedMemes];
+          setLikedMemes(likedMemeList);
+          console.log(`Deu boa, pois: ${likedMemes}`);
+        });
     }
 
-    // Recebe a lista de perfis que o usuário segue
-    fetchFollowedUsers();
+    // Recebe a lista de perfis que o usuário segue caso esteja num perfil diferente do local
+    if (isForeignUser) {
+      fetchFollowedUsers();
+    }
 
     // Recebe e verifica as informações do usuário especificado
     fetchUserData();
 
-    if (user?.likedMemes) {
+    // Primeiro carregamento (memes curtidos)
+    if (user?.likedMemes && !isForeignUser) {
       setLikedMemes(user.likedMemes);
-      loadSmilesPage();
+      // useEffect no [likedMemes]
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    loadSmilesPage();
+  }, [likedMemes]);
 
   async function loadSmilesPage(pageNumber = page) {
     // if (total && pageNumber > total) return;
@@ -157,11 +175,61 @@ export function Profile({ route }: any) {
     setLoading(false);
   }
 
+  async function loadPostsPage(pageNumber = page) {
+    // if (total && pageNumber > total) return;
+
+    // Receber memes salvos pelo usuário
+    const docs = await firebase
+      .firestore()
+      .collection("memes")
+      .where("authorId", "==", currentUserId)
+      .get();
+    let newMemes = { ...memeList };
+    // Percorre os documentos (memes) um a um
+    docs.forEach((doc) => {
+      // Recebe cada uma das informações do meme no Firestore
+      const id = doc.data().id;
+      const memeUrl = doc.data().memeUrl;
+      const memeTitle = doc.data().memeTitle;
+      const tags = doc.data().tags;
+      const likes = doc.data().likes;
+      const comments = doc.data().comments;
+      const authorId = doc.data().authorId;
+      const isVideo = doc.data().isVideo;
+
+      // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
+      newMemes = {
+        ...newMemes,
+        [id]: {
+          id,
+          authorId,
+          memeUrl,
+          likes,
+          memeTitle,
+          tags,
+          comments,
+          isVideo,
+        },
+      };
+    });
+
+    const totalItems = Object.keys(memeList).length;
+    setMemeList(newMemes);
+    setTotal(Math.floor(totalItems / 5));
+    setPage(pageNumber + 1);
+    setLoading(false);
+  }
+
   function refreshList() {
     setIsRefreshing(true);
     setLoading(true);
 
-    loadSmilesPage(1);
+    // Carrega a lista correspondente ao ícone atual selecionado
+    if (isSmilePressed) {
+      loadSmilesPage();
+    } else if (isPostPressed) {
+      loadPostsPage();
+    }
 
     // Zera o Objeto com os memes
     setMemeList({});
@@ -200,7 +268,7 @@ export function Profile({ route }: any) {
                 .collection("users")
                 .doc(user?.uid)
                 .update({
-                  following: [{ ...followingSet }, route.params.userId],
+                  following: [{ ...followingSet }, currentUserId],
                 })
                 .then(() => {
                   Alert.alert(`${userName} seguido com sucesso!`);
@@ -241,6 +309,7 @@ export function Profile({ route }: any) {
               onPress={() => {
                 setIconsFalse();
                 setIsPostPressed(true);
+                loadPostsPage();
               }}
             >
               <Ionicons
@@ -307,14 +376,14 @@ export function Profile({ route }: any) {
             </TouchableOpacity>
           </View>
           <View style={styles.content}>
-            {isSmilePressed &&
-              (loading ? (
+            {isSmilePressed ? (
+              loading ? (
                 <Loading />
               ) : (
                 <FlatList
                   data={Object.values(memeList)}
                   keyExtractor={(post) => String(post.id)}
-                  onEndReached={() => loadSmilesPage()}
+                  //onEndReached={() => loadSmilesPage()}
                   onRefresh={refreshList}
                   refreshing={isRefreshing}
                   onEndReachedThreshold={0.1}
@@ -324,7 +393,27 @@ export function Profile({ route }: any) {
                     <MemeCardSecondary postData={item} theme={isWhiteMode} />
                   )}
                 />
-              ))}
+              )
+            ) : (
+              isPostPressed &&
+              (loading ? (
+                <Loading />
+              ) : (
+                <FlatList
+                  data={Object.values(memeList)}
+                  keyExtractor={(post) => String(post.id)}
+                  onEndReached={() => loadPostsPage()}
+                  onRefresh={refreshList}
+                  refreshing={isRefreshing}
+                  onEndReachedThreshold={0.1}
+                  showsVerticalScrollIndicator={false}
+                  maxToRenderPerBatch={5}
+                  renderItem={({ item }) => (
+                    <MemeCardSecondary postData={item} theme={isWhiteMode} />
+                  )}
+                />
+              ))
+            )}
           </View>
           <GoBackButton
             theme={isWhiteMode}
