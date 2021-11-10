@@ -15,6 +15,51 @@ export interface CommentProps {
   likes: number;
   content: string;
 }
+export interface ProfileProps {
+  profileId: string;
+  followers: number;
+  avatar: string;
+  tag: number;
+  name?: string;
+}
+
+export const fakeProfiles: ProfileProps[] = [
+  {
+    profileId: "sdsdsd",
+    name: "Adalberto",
+    followers: 5,
+    avatar: "https://thispersondoesnotexist.com/image",
+    tag: 1049,
+  },
+  {
+    profileId: "sdsdsd",
+    name: "Vanessa",
+    followers: 5,
+    avatar: "https://thispersondoesnotexist.com/image",
+    tag: 2029,
+  },
+  {
+    profileId: "asdasd",
+    name: "Julia",
+    followers: 5,
+    avatar: "https://thispersondoesnotexist.com/image",
+    tag: 1049,
+  },
+  {
+    profileId: "1232sds",
+    name: "Bonafont",
+    followers: 5,
+    avatar: "https://thispersondoesnotexist.com/image",
+    tag: 4029,
+  },
+  {
+    profileId: "qwedsd",
+    name: "Zebra",
+    followers: 5,
+    avatar: "https://thispersondoesnotexist.com/image",
+    tag: 1329,
+  },
+];
 
 export const fakePosts: PostProps[] = [
   {

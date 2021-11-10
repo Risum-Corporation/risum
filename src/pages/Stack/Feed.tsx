@@ -149,7 +149,7 @@ export function Feed() {
           >
             <TopBar name="Feed" theme={isWhiteMode} />
           </Animated.View>
-
+ 
           <FlatList
             data={Object.values(memeList)}
             keyExtractor={(post) => String(post.id)}
