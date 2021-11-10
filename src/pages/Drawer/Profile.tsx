@@ -71,7 +71,7 @@ export function Profile({ route }: any) {
           .get()
           .then((doc) => {
             const name = String(doc.data()?.userName);
-            const img = String(doc.data()?.userImage);
+            const img = String(doc.data()?.avatar);
 
             setUserName(name);
             setUserAvatar(img);

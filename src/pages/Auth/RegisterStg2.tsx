@@ -28,7 +28,7 @@ import { SafeZoneView } from "../../styles/Theme";
 export function RegisterStg2() {
   const { login, signOut } = useContext(AuthContext);
   const [userName, setUserName] = useState<string>("");
-  const [userImage, setUserImage] = useState<string>("");
+  const [avatar, setAvatar] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
   const navigation = useNavigation();
 
@@ -61,7 +61,7 @@ export function RegisterStg2() {
 
     // Imagem salva no estado, será utilizada no uploadImage
     if (!result.cancelled) {
-      setUserImage(result.uri);
+      setAvatar(result.uri);
     }
   }
 
@@ -89,17 +89,20 @@ export function RegisterStg2() {
 
     const auth = firebase.auth().currentUser;
     // Usuário sem foto de perfil
-    if (auth && !userImage) {
+    if (auth && !avatar) {
       await firebase
         .firestore()
         .collection("users")
         .doc(auth.uid)
         .set({
           userName: userName,
+          avatar: null,
           tag: tag,
-          userId: auth.uid,
+          cover: null,
+          uid: auth.uid,
           following: [],
           likedMemes: [],
+          savedMemes: [],
           wolfPackId: null,
         })
         .then(() => {
@@ -111,10 +114,10 @@ export function RegisterStg2() {
         });
     }
     // Usuário com foto de perfil
-    else if (auth && userImage) {
+    else if (auth && avatar) {
       // Upload da imagem de perfil
       const userPicture = await uploadImage([
-        userImage,
+        avatar,
         auth.uid,
         `${userName}-avatar`,
       ]);
@@ -125,9 +128,14 @@ export function RegisterStg2() {
         .doc(auth.uid)
         .set({
           userName: userName,
-          userImage: userPicture,
+          avatar: userPicture,
           tag: tag,
-          userId: auth.uid,
+          cover: null,
+          uid: auth.uid,
+          following: [],
+          likedMemes: [],
+          savedMemes: [],
+          wolfPackId: null,
         })
         .then(() => {
           //Navega para a StackRoutes
@@ -159,8 +167,8 @@ export function RegisterStg2() {
             </View>
 
             <View style={styles.form}>
-              {userImage ? (
-                <Image source={{ uri: userImage }} style={styles.userImg} />
+              {avatar ? (
+                <Image source={{ uri: avatar }} style={styles.userImg} />
               ) : (
                 <AddAvatar
                   theme={isWhiteMode}

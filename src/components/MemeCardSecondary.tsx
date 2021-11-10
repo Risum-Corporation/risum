@@ -44,7 +44,7 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
         .doc(postData.authorId)
         .get()
         .then((doc: any) => {
-          setAvatar(String(doc.data().userImage));
+          setAvatar(String(doc.data().avatar));
         })
         .catch((error) => {
           console.log(

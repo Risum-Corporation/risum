@@ -28,7 +28,7 @@ import { SafeZoneView } from "../../../../styles/Theme";
 
 export function ChangeAvatar() {
   const [userName, setUserName] = useState<string>("");
-  const [userImage, setUserImage] = useState<string>("");
+  const [avatar, setAvatar] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
   const navigation = useNavigation();
 
@@ -57,7 +57,7 @@ export function ChangeAvatar() {
 
     // Imagem salva no estado, será utilizada no uploadImage
     if (!result.cancelled) {
-      setUserImage(result.uri);
+      setAvatar(result.uri);
     }
   }
 
@@ -79,16 +79,16 @@ export function ChangeAvatar() {
 
   async function handleSubmit() {
     const auth = firebase.auth().currentUser;
-    if (auth && userImage) {
+    if (auth && avatar) {
       // Upload da imagem de perfil
-      const userPicture = await uploadImage([userImage, auth.uid, `avatar`]);
+      const userPicture = await uploadImage([avatar, auth.uid, `avatar`]);
 
       await firebase
         .firestore()
         .collection("users")
         .doc(auth.uid)
         .update({
-          userImage: userPicture,
+          avatar: userPicture,
         })
         .then(() => {
           //Navega para a StackRoutes
@@ -113,8 +113,8 @@ export function ChangeAvatar() {
             }
           >
             <View style={styles.form}>
-              {userImage ? (
-                <Image source={{ uri: userImage }} style={styles.userImg} />
+              {avatar ? (
+                <Image source={{ uri: avatar }} style={styles.userImg} />
               ) : (
                 <AddAvatar
                   theme={isWhiteMode}

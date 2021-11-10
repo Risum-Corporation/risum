@@ -5,12 +5,12 @@ import * as Google from "expo-google-app-auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebase from "../database/firebaseConnection";
 
-interface User {
+export interface User {
   userName: string; // Nome de exibição do usuário
   uid: string; // ID única do usuário
   tag: string; // Tag do usuário (#1234)
-  avatar?: string; // Imagem de perfil
-  cover?: string; // Imagem de fundo do perfil
+  avatar?: string | null; // Imagem de perfil
+  cover?: string | null; // Imagem de fundo do perfil
   wolfPackId: string | null; // ID da alcateia do usuário
   following: string[]; // Array de IDs dos usuários seguidos
   likedMemes: string[]; // Array de IDs dos memes curtidos
@@ -75,7 +75,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         // Seguindo a interface User
         const userName = doc.data().userName;
         const tag = doc.data().tag;
-        const avatar = doc.data().userImage;
+        const avatar = doc.data().avatar;
         const cover = doc.data().userCover;
         const wolfPackId = doc.data().wolfPackId;
         const following = doc.data().following;

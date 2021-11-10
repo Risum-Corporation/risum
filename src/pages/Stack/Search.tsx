@@ -3,55 +3,92 @@ import { useState, useEffect, useContext } from "react";
 import {
   SafeAreaView,
   View,
-  TextInput,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
   Platform,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListItem from "../../components/ProfileItem";
 import StackContext from "../../contexts/Stack";
 
-import { fakeProfiles } from "../../database/fakeData";
+import firebase from "../../database/firebaseConnection";
+
+import { PostProps } from "../../database/fakeData";
 import { SafeZoneView } from "../../styles/Theme";
 import { Searchbar, Button } from "react-native-paper";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
+import { GoBackButton } from "../../components/GoBackButton";
+import { useNavigation } from "@react-navigation/native";
+import { User } from "../../contexts/Auth";
 
 export function Search() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  const [searchProfile, setSearchProfile] = useState("");
-  const [searchHyanaClan, setSearchHyanaClan] = useState("");
-  const [searchMeme, setSearchMeme] = useState("");
+  const [profileQuery, setProfileQuery] = useState<string>();
+  const [hyenaClanQuery, setHyenaClanQuery] = useState<string>();
+  const [memeQuery, setMemeQuery] = useState<string>();
 
-  const [list, setList] = useState(fakeProfiles);
+  const navigation = useNavigation();
+
+  // Lista de pessoas pesquisadas
+  const [profileList, setProfileList] = useState<Record<string, User>>({});
+
+  // Lista de alcateias pesquisadas
+  const [hyenaClanList, setHyenaClanList] = useState(); // Tipagem <HyenaClan[]>
+
+  // Lista de memes pesquisados
+  const [memeList, setMemeList] = useState<PostProps[]>();
 
   function setSearchFalse() {
     setProfilePressed(false);
     setHyenaClanPressed(false);
     setMemePressed(false);
+    setProfileList({});
   }
 
   const [isProfilePressed, setProfilePressed] = useState<boolean>(true);
   const [isHyenaClanPressed, setHyenaClanPressed] = useState<boolean>();
   const [isMemePressed, setMemePressed] = useState<boolean>();
 
+  // Executada quando o usuário digitar alguma coisa no text input de usuários
   useEffect(() => {
-    if (searchProfile === "") {
-      setList(fakeProfiles);
-    } else {
-      setList(
-        fakeProfiles.filter(
-          (item) =>
-            item.name.toLowerCase().indexOf(searchProfile.toLowerCase()) > -1
-        )
-      );
+    async function searchProfile() {
+      if (profileQuery === "") {
+        console.log("Query vazia");
+        setProfileList({});
+        // Dizer para o usuário pesquisar algo
+      } else {
+        const profiles = await firebase.firestore().collection("users").get();
+
+        profiles.forEach(async (doc) => {
+          const name = doc.data().userName;
+
+          if (name.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1) {
+            // Recebe o perfil selecionado
+            const fetchedProfile = doc.data();
+
+            // Informações do perfil
+            const uid = doc.data().userId;
+
+            const newProfile = await firebase
+              .firestore()
+              .collection("users")
+              .doc(uid)
+              .get();
+
+            // Atualiza a lista de perfis
+            setProfileList({ ...profileList, newProfile });
+
+            console.log(fetchedProfile);
+          }
+        });
+      }
     }
-  }, [searchProfile]);
+
+    searchProfile();
+  }, [profileQuery]);
+
   return (
     <SafeZoneView
       theme={isWhiteMode}
@@ -67,13 +104,13 @@ export function Search() {
                   : `Pesquise por Memes`
               }
               placeholderTextColor={colors.placeholderText}
-              onChangeText={(t) => setSearchProfile(t)}
+              onChangeText={(t: string) => setProfileQuery(t)}
               value={
                 isProfilePressed
-                  ? searchProfile
+                  ? profileQuery
                   : isHyenaClanPressed
-                  ? searchHyanaClan
-                  : searchMeme
+                  ? hyenaClanQuery
+                  : memeQuery
               }
               style={[
                 styles.searchBar,
@@ -166,14 +203,18 @@ export function Search() {
           </View>
           {isProfilePressed && (
             <FlatList
-              data={list}
-              style={styles.list}
+              data={Object.values(profileList)}
+              style={styles.profileList}
               renderItem={({ item }) => (
                 <ListItem theme={isWhiteMode} profileData={item} />
               )}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => String(item.uid)}
             />
           )}
+          <GoBackButton
+            theme={isWhiteMode}
+            onPress={() => navigation.goBack()}
+          />
         </SafeAreaView>
       }
     />
@@ -208,7 +249,7 @@ const styles = StyleSheet.create({
     width: 32,
     marginRight: 30,
   },
-  list: {
+  profileList: {
     flex: 1,
   },
   sselectSearch: {

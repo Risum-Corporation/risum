@@ -1,15 +1,19 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { TouchableOpacity, View, Image, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { User } from "../contexts/Auth";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import { ProfileProps } from "../database/fakeData";
+
+import { Avatar } from "react-native-paper";
 
 interface ProfileItemProps {
-  profileData: ProfileProps;
+  profileData: User;
   theme: boolean;
 }
 
 const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={[
@@ -20,8 +24,21 @@ const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
             : colors.divider,
         },
       ]}
+      onPress={() =>
+        navigation.navigate("Profile", { userId: profileData.userId })
+      }
     >
-      <Image source={{ uri: profileData.avatar }} style={styles.itemPhoto} />
+      {profileData.avatar ? (
+        <Avatar.Image
+          style={styles.itemPhoto}
+          source={{ uri: profileData.avatar }}
+        />
+      ) : (
+        <Avatar.Text
+          style={styles.itemPhoto}
+          label={`${profileData.userName.substr(0, 1)}`}
+        />
+      )}
       <View style={styles.itemInfo}>
         <Text
           style={[
@@ -29,7 +46,7 @@ const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
             { color: theme ? colors.whiteLight : colors.white },
           ]}
         >
-          {profileData.name}
+          {profileData.userName}
         </Text>
         <Text
           style={[
