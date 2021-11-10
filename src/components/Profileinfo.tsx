@@ -44,46 +44,8 @@ export function ProfileInfo({
         {
           //Exibe o botão de DEIXAR DE SEGUIR caso o usuário seja diferente do local
           isForeignUser && isFollower ? (
-            <TouchableOpacity onPress={whenUnfollow}>
-              <View
-                style={[
-                  styles.followButton,
-                  {
-                    backgroundColor: theme
-                      ? colors.searchBarColorLight
-                      : colors.inputBackground,
-                  },
-                ]}
-              >
-                <Text style={[styles.text, {color: theme ? colors.whiteLight : colors.white}]}>Seguindo</Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            // Exibe o botão de SEGUIR caso o usuário seja diferente do local
-            isForeignUser &&
-            !isFollower && (
-              <TouchableOpacity onPress={whenFollow}>
-                <View
-                  style={[
-                    styles.followButton,
-                    {
-                      backgroundColor: theme
-                        ? colors.purpleLight
-                        : colors.purple,
-                    },
-                  ]}
-                >
-                   <Text style={[styles.text, {color: theme ? colors.whiteLight : colors.white}]}>Seguir</Text>
-                </View>
-              </TouchableOpacity>
-            )
-          )
-        }
-        {!isForeignUser && (
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ProfileSettings")}
-          >
-            <View
+            <TouchableOpacity
+              onPress={whenUnfollow}
               style={[
                 styles.followButton,
                 {
@@ -93,8 +55,60 @@ export function ProfileInfo({
                 },
               ]}
             >
-               <Text style={[styles.text, {color: theme ? colors.whiteLight : colors.white}]}>Editar Perfil</Text>
-            </View>
+              <Text
+                style={[
+                  styles.text,
+                  { color: theme ? colors.whiteLight : colors.white },
+                ]}
+              >
+                Seguindo
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            // Exibe o botão de SEGUIR caso o usuário seja diferente do local
+            isForeignUser &&
+            !isFollower && (
+              <TouchableOpacity
+                onPress={whenFollow}
+                style={[
+                  styles.followButton,
+                  {
+                    backgroundColor: theme ? colors.purpleLight : colors.purple,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.text,
+                    { color: theme ? colors.whiteLight : colors.white },
+                  ]}
+                >
+                  Seguir
+                </Text>
+              </TouchableOpacity>
+            )
+          )
+        }
+        {!isForeignUser && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ProfileSettings")}
+            style={[
+              styles.followButton,
+              {
+                backgroundColor: theme
+                  ? colors.searchBarColorLight
+                  : colors.inputBackground,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.text,
+                { color: theme ? colors.whiteLight : colors.white },
+              ]}
+            >
+              Editar Perfil
+            </Text>
           </TouchableOpacity>
         )}
       </View>

@@ -120,14 +120,20 @@ export function Profile({ route }: any) {
     fetchUserData();
 
     // Primeiro carregamento (memes curtidos)
-    if (user?.likedMemes && !isForeignUser) {
+    if (user?.likedMemes) {
       setLikedMemes(user.likedMemes);
       // useEffect no [likedMemes]
     }
   }, []);
 
   useEffect(() => {
-    loadSmilesPage();
+    if (likedMemes?.length) {
+      loadSmilesPage();
+    } else {
+      console.log("Sem memes curtidos");
+      setLoading(false);
+      // Exibir componente semelhante ao NoAccount, onde o usuário é instruído a seguir páginas
+    }
   }, [likedMemes]);
 
   async function loadSmilesPage(pageNumber = page) {

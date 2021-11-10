@@ -107,6 +107,7 @@ export function Feed() {
       loadPage();
     } else {
       console.log("Sem seguidores");
+      setLoading(false);
       // Exibir componente semelhante ao NoAccount, onde o usuário é instruído a seguir páginas
     }
   }, [following]);

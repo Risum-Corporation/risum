@@ -93,6 +93,15 @@ export function SavedMemes() {
     }
   }, []);
 
+  useEffect(() => {
+    if (savedMemes?.length) {
+      loadPage();
+    } else {
+      setLoading(false);
+      console.log("Sem memes salvos");
+    }
+  }, [savedMemes]);
+
   return loading ? (
     <Loading />
   ) : (

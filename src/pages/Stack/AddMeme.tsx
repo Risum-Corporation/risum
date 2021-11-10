@@ -27,7 +27,7 @@ import { SafeZoneView } from "../../styles/Theme";
 export function AddMeme() {
   const [memeTitle, setMemeTitle] = useState<string>();
   const [tags, setTags] = useState<string>();
-  let isVideo = false;
+  const [isVideo, setIsVideo] = useState<boolean>();
 
   // Pode ser uma arquivo ou um vídeo
   const [meme, setMeme] = useState<string>();
@@ -63,6 +63,9 @@ export function AddMeme() {
     // Imagem salva no estado, será utilizada no uploadImage
     if (!result.cancelled) {
       setMeme(result.uri);
+
+      setIsVideo(result.type == "video");
+      console.log(isVideo);
     }
   }
 
@@ -90,20 +93,18 @@ export function AddMeme() {
 
           <View style={styles.container}>
             {meme ? (
-              meme.toString().endsWith("mov" || "mp4" || "avi" || "wmv") ? (
-                (isVideo = true) && (
-                  <Video
-                    source={{ uri: meme }}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="contain"
-                    shouldPlay
-                    isLooping
-                    useNativeControls
-                    style={styles.submittedImage}
-                  />
-                )
+              isVideo ? (
+                <Video
+                  source={{ uri: meme }}
+                  rate={1.0}
+                  volume={1.0}
+                  isMuted={false}
+                  resizeMode="contain"
+                  shouldPlay
+                  isLooping
+                  useNativeControls
+                  style={styles.submittedImage}
+                />
               ) : (
                 <Image source={{ uri: meme }} style={styles.submittedImage} />
               )
@@ -195,10 +196,14 @@ export function AddMeme() {
                             setMemeTitle(undefined);
                             setTags(undefined);
 
+                            const memeId = String(
+                              Math.floor(100000 + Math.random() * 900000)
+                            );
+
                             firebase
                               .firestore()
                               .collection("memes")
-                              .doc(memeTitle)
+                              .doc(memeId)
                               .set({
                                 // id do meme
                                 memeUrl: url,
@@ -207,7 +212,7 @@ export function AddMeme() {
                                 likes: 0,
                                 comments: 0,
                                 authorId: user.uid,
-                                id: Math.floor(100000 + Math.random() * 900000),
+                                id: memeId,
                                 isVideo: isVideo,
                               });
                           })
