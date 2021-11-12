@@ -32,43 +32,48 @@ export function Feed() {
   async function loadPage(pageNumber = page) {
     // if (total && pageNumber > total) return;
 
-    // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
-    const docs = await firebase
-      .firestore()
-      .collection("memes")
-      .where("authorId", "in", following)
-      .get();
-    let newMemes = { ...memeList };
-    // Percorre os documentos (memes) um a um
-    docs.forEach((doc) => {
-      // Recebe cada uma das informações do meme no Firestore
-      const id = doc.data().id;
-      const memeUrl = doc.data().memeUrl;
-      const memeTitle = doc.data().memeTitle;
-      const tags = doc.data().tags;
-      const likes = doc.data().likes;
-      const comments = doc.data().comments;
-      const authorId = doc.data().authorId;
-      const isVideo = doc.data().isVideo;
+    if (following) {
+      // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
+      const docs = await firebase
+        .firestore()
+        .collection("memes")
+        .where("authorId", "in", following)
+        .get();
+      let newMemes = { ...memeList };
+      // Percorre os documentos (memes) um a um
+      docs.forEach((doc) => {
+        // Recebe cada uma das informações do meme no Firestore
+        const id = doc.data().id;
+        const memeUrl = doc.data().memeUrl;
+        const memeTitle = doc.data().memeTitle;
+        const tags = doc.data().tags;
+        const likes = doc.data().likes;
+        const comments = doc.data().comments;
+        const authorId = doc.data().authorId;
+        const isVideo = doc.data().isVideo;
 
-      // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
-      newMemes = {
-        ...newMemes,
-        [id]: {
-          id,
-          authorId,
-          memeUrl,
-          likes,
-          memeTitle,
-          tags,
-          comments,
-          isVideo,
-        },
-      };
-    });
+        // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
+        newMemes = {
+          ...newMemes,
+          [id]: {
+            id,
+            authorId,
+            memeUrl,
+            likes,
+            memeTitle,
+            tags,
+            comments,
+            isVideo,
+          },
+        };
+      });
+
+      setMemeList(newMemes);
+    } else {
+      return;
+    }
 
     const totalItems = Object.keys(memeList).length;
-    setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
     setLoading(false);
@@ -149,7 +154,7 @@ export function Feed() {
           >
             <TopBar name="Feed" theme={isWhiteMode} />
           </Animated.View>
- 
+
           <FlatList
             data={Object.values(memeList)}
             keyExtractor={(post) => String(post.id)}

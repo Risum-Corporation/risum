@@ -197,10 +197,7 @@ export function AddMeme() {
                             setTags(undefined);
 
                             const memeId = String(
-                              Math.floor(
-                                1000000000000000000000 +
-                                  Math.random() * 9000000000000000000000
-                              )
+                              Math.floor(Math.random() * 1000000000)
                             );
 
                             firebase

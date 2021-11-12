@@ -81,7 +81,11 @@ export function Profile({ route }: any) {
       // Caso seja o usuário local
       else if (user) {
         setUserName(user.userName);
-        setUserAvatar(user.avatar);
+        setUserAvatar(
+          user.avatar
+            ? { uri: user.avatar }
+            : require("../../assets/risumDefault.png")
+        );
         setIsForeignUser(false);
       } else {
         console.log("O usuário não pode ser exibido no perfil");
@@ -258,7 +262,11 @@ export function Profile({ route }: any) {
         <View style={styles.container}>
           <ProfileInfo
             theme={isWhiteMode}
-            cover={require("../../assets/wallpaper.jpg")}
+            cover={
+              user?.cover
+                ? { uri: user.cover }
+                : require("../../assets/wallpaper.jpg")
+            }
             avatar={userAvatar}
             userName={userName}
             userTag={user?.tag}

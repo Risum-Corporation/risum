@@ -128,7 +128,7 @@ export function NoAccount() {
           <TwoButton
             title={`Depois...`}
             then={() => {
-              navigation.navigate("HypeTrain");
+              navigation.goBack();
             }}
             title1="Vamos!"
             then1={() => {

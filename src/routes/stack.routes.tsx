@@ -184,46 +184,60 @@ const drawerAndTabScreen = () => {
   );
 };
 
-const AppRoutes: React.FC = () => (
-  <NavigationContainer independent={true}>
-    <stackRoutes.Navigator headerMode="none">
-      <stackRoutes.Screen
-        name="DrawerAndTabsScreen"
-        component={drawerAndTabScreen}
-      />
-      <stackRoutes.Screen name="Profile" component={Profile} />
-      <stackRoutes.Screen name="Comments" component={Comments} />
-      <stackRoutes.Screen name="NoAccount" component={NoAccount} />
+const AppRoutes: React.FC = () => {
+  const { isAnonymous } = useContext(AuthContext);
 
-      {/*  Settings */}
+  return (
+    <NavigationContainer independent={true}>
+      <stackRoutes.Navigator headerMode="none">
+        <stackRoutes.Screen
+          name="DrawerAndTabsScreen"
+          component={drawerAndTabScreen}
+        />
+        <stackRoutes.Screen name="Profile" component={Profile} />
+        <stackRoutes.Screen name="Comments" component={Comments} />
+        <stackRoutes.Screen name="NoAccount" component={NoAccount} />
 
-      <stackRoutes.Screen name="ProfileSettings" component={ProfileSettings} />
-      <stackRoutes.Screen name="ChangeAvatar" component={ChangeAvatar} />
-      <stackRoutes.Screen name="ChangeCover" component={ChangeCover} />
+        {/*  Settings */}
 
-      <stackRoutes.Screen
-        name="SecuritySettings"
-        component={SecuritySettings}
-      />
-      <stackRoutes.Screen name="AboutUsSettings" component={AboutUsSettings} />
-      <stackRoutes.Screen name="Search" component={Search} />
+        {isAnonymous ? (
+          <stackRoutes.Screen name="ProfileSettings" component={NoAccount} />
+        ) : (
+          <stackRoutes.Screen
+            name="ProfileSettings"
+            component={ProfileSettings}
+          />
+        )}
+        <stackRoutes.Screen name="ChangeAvatar" component={ChangeAvatar} />
+        <stackRoutes.Screen name="ChangeCover" component={ChangeCover} />
 
-      <stackRoutes.Screen
-        name="ChangePassword"
-        component={ForgotPasswordStg1}
-      />
-      <stackRoutes.Screen
-        name="ForgotPasswordStg2"
-        component={ForgotPasswordStg2}
-      />
-      <stackRoutes.Screen name="Welcome" component={drawerAndTabScreen} />
+        <stackRoutes.Screen
+          name="SecuritySettings"
+          component={SecuritySettings}
+        />
+        <stackRoutes.Screen
+          name="AboutUsSettings"
+          component={AboutUsSettings}
+        />
+        <stackRoutes.Screen name="Search" component={Search} />
 
-      <stackRoutes.Screen
-        name="RisumPoliciesSettings"
-        component={RisumPoliciesSettings}
-      />
-    </stackRoutes.Navigator>
-  </NavigationContainer>
-);
+        <stackRoutes.Screen
+          name="ChangePassword"
+          component={ForgotPasswordStg1}
+        />
+        <stackRoutes.Screen
+          name="ForgotPasswordStg2"
+          component={ForgotPasswordStg2}
+        />
+        <stackRoutes.Screen name="Welcome" component={drawerAndTabScreen} />
+
+        <stackRoutes.Screen
+          name="RisumPoliciesSettings"
+          component={RisumPoliciesSettings}
+        />
+      </stackRoutes.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default AppRoutes;

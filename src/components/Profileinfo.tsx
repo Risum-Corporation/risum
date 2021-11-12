@@ -115,7 +115,7 @@ export function ProfileInfo({
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
           {user?.avatar ? (
-            <Avatar.Image size={100} source={{ uri: avatar }} />
+            <Avatar.Image size={100} source={avatar} />
           ) : (
             <Avatar.Text size={100} label={`${user?.userName.substr(0, 1)}`} />
           )}
