@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import colors from "../../styles/colors";
@@ -27,8 +28,8 @@ import { SafeZoneView } from "../../styles/Theme";
 
 export function RegisterStg2() {
   const { login, signOut } = useContext(AuthContext);
-  const [userName, setUserName] = useState<string>("");
-  const [avatar, setAvatar] = useState<string>("");
+  const [userName, setUserName] = useState<string>();
+  const [avatar, setAvatar] = useState<string>();
   const { isWhiteMode } = useContext(StackContext);
   const navigation = useNavigation();
 
@@ -81,6 +82,7 @@ export function RegisterStg2() {
     return await ref.getDownloadURL();
   }
 
+  // Quando o botão Pronto! for clicado
   async function handleSubmit() {
     // Tag única do usuário
     const tag = (Math.floor(Math.random() * 10000) + 10000)
@@ -147,6 +149,12 @@ export function RegisterStg2() {
     }
   }
 
+  // Executada caso o usuário queira trocar de imagem de perfil antes de se cadastrar
+  async function removeImageOnPress() {
+    setAvatar(undefined);
+    await onChooseImagePress();
+  }
+
   return (
     <SafeZoneView
       theme={isWhiteMode}
@@ -168,7 +176,13 @@ export function RegisterStg2() {
 
             <View style={styles.form}>
               {avatar ? (
-                <Image source={{ uri: avatar }} style={styles.userImg} />
+                <TouchableOpacity
+                  onPress={() => {
+                    removeImageOnPress();
+                  }}
+                >
+                  <Image source={{ uri: avatar }} style={styles.userImg} />
+                </TouchableOpacity>
               ) : (
                 <AddAvatar
                   theme={isWhiteMode}

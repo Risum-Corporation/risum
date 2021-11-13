@@ -90,7 +90,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
       await firebase
         .firestore()
         .collection("memes")
-        .doc(postData.memeTitle)
+        .doc(postData.id)
         .update({ likes: postData.likes - 1 })
         .then(async () => {
           // Atualiza visualmente os likes
@@ -111,12 +111,8 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
       await firebase
         .firestore()
         .collection("memes")
-        .doc(postData.memeTitle)
-        .update({ likes: postData.likes + 1 })
-        .then(async () => {
-          // Atualiza visualmente os likes
-          postData.likes++;
-        });
+        .doc(postData.id)
+        .update({ likes: postData.likes + 1 });
 
       // Atualiza a lista de memes curtidos em cache
       user?.likedMemes.push(postData.id);

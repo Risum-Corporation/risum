@@ -1,26 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Platform,
-  Animated,
-  Dimensions,
-} from "react-native";
-
-import { fakePosts } from "../../database/fakeData";
+import { FlatList, StyleSheet, Platform, Animated } from "react-native";
 
 import { PostProps } from "../../database/fakeData";
 
 import firebase from "../../database/firebaseConnection";
 
-import colors from "../../styles/colors";
 import { TopBar } from "../../components/TopBar";
 import { MemeCard } from "../../components/MemeCard";
 import StackContext from "../../contexts/Stack";
 import { SafeZoneView } from "../../styles/Theme";
 import AuthContext from "../../contexts/Auth";
-import { HypeMemeCard } from "../../components/HypeMemeCard";
+import { Loading } from "../../components/Loading";
+
 export function HypeTrain() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -30,27 +21,17 @@ export function HypeTrain() {
   // Objeto de memes recebidos do Firestore
   const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
 
-  // Array de IDs dos usuários seguidos
-  const [following, setFollowing] = useState<string[]>();
-
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   const { user } = useContext(AuthContext);
 
   async function loadPage(pageNumber = page) {
-    if (total && pageNumber > total) return;
+    // if (total && pageNumber > total) return;
 
-    // Recebe os memes destacados
-    const docs = await firebase
-      .firestore()
-      .collection("memes")
-      // .where('isMemeFeatured', '==', true)
-      .get();
-
-    // Variável temporária para armazenar os dados da memeList antiga
+    // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
+    const docs = await firebase.firestore().collection("memes").get();
     let newMemes = { ...memeList };
-
     // Percorre os documentos (memes) um a um
     docs.forEach((doc) => {
       // Recebe cada uma das informações do meme no Firestore
@@ -79,91 +60,88 @@ export function HypeTrain() {
       };
     });
 
-    // Recebe o total de memes na memeList
-    const totalItems = Object.keys(memeList).length;
-
     setMemeList(newMemes);
+
+    const totalItems = Object.keys(memeList).length;
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
     setLoading(false);
   }
 
   useEffect(() => {
-    let shouldSet = true;
-    async function fetchFollowedUsers() {
-      const doc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(user?.uid)
-        .get();
-      if (shouldSet) {
-        const followingList = [...doc.data()?.following];
-        setFollowing(followingList);
-      }
+    try {
+      loadPage();
+    } catch (error) {
+      console.log(`Memes não encontrados devido ao erro: ${error}`);
+      setLoading(false);
     }
-
-    // Recebe a lista de perfis que o usuário segue
-    fetchFollowedUsers().then(() => {
-      if (following?.length) {
-        loadPage();
-      }
-    });
-
-    // Força o useEffect a rodar apenas uma vez
-    return () => {
-      shouldSet = false;
-    };
   }, []);
 
   function refreshList() {
     setIsRefreshing(true);
+    setLoading(true);
 
-    loadPage();
+    loadPage(1);
 
     // Zera o Objeto com os memes
     setMemeList({});
 
     setIsRefreshing(false);
+    setLoading(false);
   }
 
-  return (
-    // <SafeZoneView
-    //   theme={isWhiteMode}
-    //   content={
-    //     <>
-    //       <FlatList
-    //         data={Object.values(memeList)}
-    //         renderItem={({ item }) => (
-    //           <HypeMemeCard postData={item} theme={isWhiteMode} />
-    //         )}
-    //         keyExtractor={(post) => String(post.id)}
-    //         onEndReached={() => loadPage()}
-    //         onEndReachedThreshold={0.1} // Assim que 10% do fim for alcançado
-    //         showsVerticalScrollIndicator={false}
-    //         snapToInterval={Dimensions.get('window').height -120}
-    //         snapToAlignment={'start'}
-    //         maxToRenderPerBatch={1}
-    //         decelerationRate={'fast'}
-    //       />
-    //       </>
-    //   }
-    // />
+  const scrollY = new Animated.Value(0);
+  const TOPBARHEIGHT = 90;
+  const diffClamp = Animated.diffClamp(scrollY, 0, TOPBARHEIGHT);
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 70],
+    outputRange: [0, -TOPBARHEIGHT],
+  });
+  return loading ? (
+    <Loading />
+  ) : (
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <>
+          <Animated.View
+            style={{
+              transform: [{ translateY }],
+              zIndex: 150,
+              position: "absolute",
+              width: "100%",
+              marginTop: Platform.OS === "ios" ? 47 : 0,
+            }}
+          >
+            <TopBar name="HypeTrain" theme={isWhiteMode} />
+          </Animated.View>
 
-    <View></View>
+          <FlatList
+            data={Object.values(memeList)}
+            keyExtractor={(post) => String(post.id)}
+            onEndReached={() => loadPage()}
+            onEndReachedThreshold={0.1}
+            onRefresh={refreshList}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={<TopBar name="Feed" theme={isWhiteMode} />} // Em observação
+            ListHeaderComponentStyle={styles.header}
+            refreshing={isRefreshing}
+            renderItem={({ item }) => (
+              <MemeCard postData={item} theme={isWhiteMode} />
+            )}
+            maxToRenderPerBatch={5}
+            onScroll={(e) => {
+              scrollY.setValue(e.nativeEvent.contentOffset.y);
+            }}
+          />
+        </>
+      }
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    width: 250,
-    height: 250,
-  },
-  video: {
-    height: 400,
-    width: 400,
+  header: {
+    marginBottom: 10,
   },
 });

@@ -245,6 +245,7 @@ export function Profile({ route }: any) {
     setMemeList({});
 
     setIsRefreshing(false);
+    setLoading(false);
   }
 
   function setIconsFalse() {

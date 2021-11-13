@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
-import { fakePosts } from "../../database/fakeData";
 import { comments } from "../../database/fakeData";
 
-import colors from "../../styles/colors";
 import StackContext from "../../contexts/Stack";
-import { GoBackButton } from "../../components/GoBackButton";
 import { CommentCard } from "../../components/CommentCard";
-import { MemeCardSecondary } from "../../components/MemeCardSecondary";
-import { SafeZoneView, SimpleText } from "../../styles/Theme";
+import { SafeZoneView } from "../../styles/Theme";
 
 export function Comments() {
   const [page, setPage] = useState(1);
@@ -40,6 +36,7 @@ export function Comments() {
     loadPage(1);
 
     setRefreshing(false);
+    setLoading(false);
   }
   return (
     <SafeZoneView

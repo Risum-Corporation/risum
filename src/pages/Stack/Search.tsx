@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import ListItem from "../../components/ProfileItem";
+import ProfileItem from "../../components/ProfileItem";
 import StackContext from "../../contexts/Stack";
 
 import firebase from "../../database/firebaseConnection";
@@ -21,6 +21,13 @@ import { GoBackButton } from "../../components/GoBackButton";
 import { useNavigation } from "@react-navigation/native";
 import { User } from "../../contexts/Auth";
 
+interface ItemProps {
+  uid: string;
+  userName: string;
+  tag: string;
+  avatar?: string | null;
+}
+
 export function Search() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -32,7 +39,7 @@ export function Search() {
   const navigation = useNavigation();
 
   // Lista de pessoas pesquisadas
-  const [profileList, setProfileList] = useState<Record<string, User>>({});
+  const [profileList, setProfileList] = useState<Record<string, ItemProps>>({});
 
   // Lista de alcateias pesquisadas
   const [hyenaClanList, setHyenaClanList] = useState(); // Tipagem <HyenaClan[]>
@@ -62,25 +69,22 @@ export function Search() {
         const profiles = await firebase.firestore().collection("users").get();
 
         profiles.forEach(async (doc) => {
-          const name = doc.data().userName;
+          const userName = doc.data().userName;
 
-          if (name.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1) {
-            // Recebe o perfil selecionado
-            const fetchedProfile = doc.data();
-
+          if (
+            userName.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1
+          ) {
             // Informações do perfil
             const uid = doc.data().userId;
+            const tag = doc.data().string;
+            const avatar = doc.data().avatar;
 
-            const newProfile = await firebase
-              .firestore()
-              .collection("users")
-              .doc(uid)
-              .get();
+            const newProfile = { uid, userName, tag, avatar };
 
             // Atualiza a lista de perfis
             setProfileList({ ...profileList, newProfile });
 
-            console.log(fetchedProfile);
+            console.log(newProfile);
           }
         });
       }
@@ -206,7 +210,7 @@ export function Search() {
               data={Object.values(profileList)}
               style={styles.profileList}
               renderItem={({ item }) => (
-                <ListItem theme={isWhiteMode} profileData={item} />
+                <ProfileItem theme={isWhiteMode} profileData={item} />
               )}
               keyExtractor={(item) => String(item.uid)}
             />
@@ -283,31 +287,5 @@ const styles = StyleSheet.create({
   },
   isselectSearch: {
     width: 120,
-  },
-  labelSelectSearchType: {
-    fontWeight: "bold",
-    fontSize: 13,
-    fontFamily: fonts.userText,
-  },
-  containerSelectSearch: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  inputSearch: {
-    height: 30,
-    backgroundColor: colors.searchBarColor,
-    borderRadius: 4,
-    fontSize: 2,
-  },
-  searchBar: {
-    fontSize: 2,
-  },
-  item: {
-    backgroundColor: colors.lightBackground,
-    color: colors.white,
-  },
-  itemTitle: {
-    color: colors.white,
-    fontFamily: fonts.subtitle,
   },
 });

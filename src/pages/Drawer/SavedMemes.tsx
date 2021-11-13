@@ -5,7 +5,7 @@ import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 import { MemeCardSecondary } from "../../components/MemeCardSecondary";
-import { fakePosts, PostProps } from "../../database/fakeData";
+import { PostProps } from "../../database/fakeData";
 import StackContext from "../../contexts/Stack";
 import { SafeZoneView } from "../../styles/Theme";
 import AuthContext from "../../contexts/Auth";
@@ -84,6 +84,7 @@ export function SavedMemes() {
     setMemeList({});
 
     setIsRefreshing(false);
+    setLoading(false);
   }
 
   useEffect(() => {

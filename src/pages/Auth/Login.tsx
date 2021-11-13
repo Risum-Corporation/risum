@@ -45,34 +45,38 @@ export function Login() {
       return setIsEmailOrUsernameInvalid(true);
     }
 
-    // const avatar = await AsyncStorage.getItem("@risum:avatar");
-
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((cred) => {
-        setIsEmailOrUsernameInvalid(false);
-        firebase
+      .then(async (cred) => {
+        await firebase
           .firestore()
           .collection("users")
           .doc(cred.user?.uid)
           .get()
           .then((doc: any) => {
-            const userName = doc.data().userName;
-            const tag = doc.data().tag;
+            if (doc.exists) {
+              const userName = doc.data().userName;
+              const tag = doc.data().tag;
 
-            // Verifica se o nome de usuário ou sua tag são inválidos, levando o usuário a cadastrá-los no RegisterStg2
-            if (!userName || !tag) {
-              return navigation.navigate("RegisterStg2");
+              // Verifica se o nome de usuário ou sua tag são inválidos, levando o usuário a cadastrá-los no RegisterStg2
+              if (!userName || !tag) {
+                return navigation.navigate("RegisterStg2");
+              } else {
+                // Inicia a persistência do usuário
+                firebase
+                  .auth()
+                  .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                // Navega para Stack Routes
+                return login(cred.user);
+              }
             } else {
-              // Inicia a persistência do usuário
-              firebase
-                .auth()
-                .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-              // Navega para Stack Routes
-              return login(cred.user);
+              // O usuário não existe no Firestore
+              return navigation.navigate("RegisterStg2");
             }
           });
+
+        setIsEmailOrUsernameInvalid(false);
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);

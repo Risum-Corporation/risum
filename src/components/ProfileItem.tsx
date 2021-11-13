@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { User } from "../contexts/Auth";
 import colors from "../styles/colors";
@@ -8,12 +8,21 @@ import fonts from "../styles/fonts";
 import { Avatar } from "react-native-paper";
 
 interface ProfileItemProps {
-  profileData: User;
+  profileData: {
+    uid: string;
+    userName: string;
+    tag: string;
+    avatar?: string | null;
+  };
   theme: boolean;
 }
 
 const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
   const navigation = useNavigation();
+  useEffect(() => {
+    console.log(`Olha aqui: ${profileData.userName.substr(0, 1)}`);
+  }, []);
+
   return (
     <TouchableOpacity
       style={[
@@ -25,7 +34,7 @@ const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
         },
       ]}
       onPress={() =>
-        navigation.navigate("Profile", { userId: profileData.userId })
+        navigation.navigate("Profile", { userId: profileData.uid })
       }
     >
       {profileData.avatar ? (
@@ -36,7 +45,7 @@ const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
       ) : (
         <Avatar.Text
           style={styles.itemPhoto}
-          label={`${profileData.userName.substr(0, 1)}`}
+          label={profileData.userName.substr(0, 1)}
         />
       )}
       <View style={styles.itemInfo}>

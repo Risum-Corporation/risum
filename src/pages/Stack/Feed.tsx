@@ -11,12 +11,14 @@ import StackContext from "../../contexts/Stack";
 import { SafeZoneView } from "../../styles/Theme";
 import AuthContext from "../../contexts/Auth";
 import { Loading } from "../../components/Loading";
+import { NotFollowingUsers } from "../../components/NotFollowingUsers";
 
 export function Feed() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [notFollowingUsers, setNotFollowingUsers] = useState(false);
 
   // Objeto de memes recebidos do Firestore
   const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
@@ -70,7 +72,7 @@ export function Feed() {
 
       setMemeList(newMemes);
     } else {
-      return;
+      return setNotFollowingUsers(true);
     }
 
     const totalItems = Object.keys(memeList).length;
@@ -92,6 +94,7 @@ export function Feed() {
             const followingList = [...doc.data()?.following];
             setFollowing(followingList);
             console.log(`Deu boa: ${followingList}`);
+            setNotFollowingUsers(false);
           }
         })
         .catch((error) => {
@@ -113,7 +116,7 @@ export function Feed() {
     } else {
       console.log("Sem seguidores");
       setLoading(false);
-      // Exibir componente semelhante ao NoAccount, onde o usuário é instruído a seguir páginas
+      setNotFollowingUsers(true);
     }
   }, [following]);
 
@@ -121,12 +124,15 @@ export function Feed() {
     setIsRefreshing(true);
     setLoading(true);
 
-    loadPage(1);
+    if (following?.length) {
+      loadPage(1);
+    }
 
     // Zera o Objeto com os memes
     setMemeList({});
 
     setIsRefreshing(false);
+    setLoading(false);
   }
 
   const scrollY = new Animated.Value(0);
@@ -155,24 +161,28 @@ export function Feed() {
             <TopBar name="Feed" theme={isWhiteMode} />
           </Animated.View>
 
-          <FlatList
-            data={Object.values(memeList)}
-            keyExtractor={(post) => String(post.id)}
-            onEndReached={() => loadPage()}
-            onEndReachedThreshold={0.1}
-            onRefresh={refreshList}
-            showsVerticalScrollIndicator={false}
-            ListHeaderComponent={<TopBar name="Feed" theme={isWhiteMode} />} // Em observação
-            ListHeaderComponentStyle={styles.header}
-            refreshing={isRefreshing}
-            renderItem={({ item }) => (
-              <MemeCard postData={item} theme={isWhiteMode} />
-            )}
-            maxToRenderPerBatch={5}
-            onScroll={(e) => {
-              scrollY.setValue(e.nativeEvent.contentOffset.y);
-            }}
-          />
+          {notFollowingUsers ? (
+            <NotFollowingUsers />
+          ) : (
+            <FlatList
+              data={Object.values(memeList)}
+              keyExtractor={(post) => String(post.id)}
+              onEndReached={() => loadPage()}
+              onEndReachedThreshold={0.1}
+              onRefresh={refreshList}
+              showsVerticalScrollIndicator={false}
+              ListHeaderComponent={<TopBar name="Feed" theme={isWhiteMode} />} // Em observação
+              ListHeaderComponentStyle={styles.header}
+              refreshing={isRefreshing}
+              renderItem={({ item }) => (
+                <MemeCard postData={item} theme={isWhiteMode} />
+              )}
+              maxToRenderPerBatch={5}
+              onScroll={(e) => {
+                scrollY.setValue(e.nativeEvent.contentOffset.y);
+              }}
+            />
+          )}
         </>
       }
     />

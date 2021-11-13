@@ -8,7 +8,12 @@ import fonts from "../styles/fonts";
 
 import { CommentProps } from "../database/fakeData";
 
-export function CommentCard(postData: CommentProps, theme: boolean) {
+interface CommentCardProps {
+  postData: CommentProps;
+  theme: boolean;
+}
+
+export function CommentCard({ postData, theme }: CommentCardProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
 
   function toggleLikePress() {
@@ -40,7 +45,7 @@ export function CommentCard(postData: CommentProps, theme: boolean) {
                   : [styles.authorName, { color: colors.white }]
               }
             >
-              {postData.author}
+              {postData.authorId}
             </Text>
           </TouchableOpacity>
         </View>
