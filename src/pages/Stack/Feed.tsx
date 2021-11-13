@@ -12,6 +12,7 @@ import { SafeZoneView } from "../../styles/Theme";
 import AuthContext from "../../contexts/Auth";
 import { Loading } from "../../components/Loading";
 import { NotFollowingUsers } from "../../components/NotFollowingUsers";
+import EmailVerify from "../../components/EmailVerify";
 
 export function Feed() {
   const [page, setPage] = useState(1);
@@ -142,6 +143,10 @@ export function Feed() {
     inputRange: [0, 70],
     outputRange: [0, -TOPBARHEIGHT],
   });
+
+  // Utilizado na verificação de e-mail
+  const auth = firebase.auth().currentUser;
+
   return loading ? (
     <Loading />
   ) : (
@@ -160,6 +165,7 @@ export function Feed() {
           >
             <TopBar name="Feed" theme={isWhiteMode} />
           </Animated.View>
+          {!auth?.emailVerified && <EmailVerify theme={isWhiteMode} />}
 
           {notFollowingUsers ? (
             <NotFollowingUsers />

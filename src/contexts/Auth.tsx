@@ -11,7 +11,7 @@ export interface User {
   tag: string; // Tag do usuário (#1234)
   avatar?: string | null; // Imagem de perfil
   cover?: string | null; // Imagem de fundo do perfil
-  wolfPackId: string | null; // ID da alcateia do usuário
+  hyenaClanId: string | null; // ID da alcateia do usuário
   following: string[]; // Array de IDs dos usuários seguidos
   likedMemes: string[]; // Array de IDs dos memes curtidos
   savedMemes: string[]; // Array de IDs dos memes salvos
@@ -77,7 +77,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         const tag = doc.data().tag;
         const avatar = doc.data().avatar;
         const cover = doc.data().userCover;
-        const wolfPackId = doc.data().wolfPackId;
+        const hyenaClanId = doc.data().hyenaClanId;
         const following = doc.data().following;
         const likedMemes = doc.data().likedMemes;
         const savedMemes = doc.data().savedMemes;
@@ -89,7 +89,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           tag,
           avatar,
           cover,
-          wolfPackId,
+          hyenaClanId,
           following,
           likedMemes,
           savedMemes,

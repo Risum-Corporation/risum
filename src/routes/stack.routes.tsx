@@ -16,6 +16,8 @@ import colors from "../styles/colors";
 import StackContext from "../contexts/Stack";
 import { Comments } from "../pages/Stack/Comments";
 import { NoAccount } from "../pages/Stack/NoAccount";
+import { CreateHyenaClan } from "../pages/Stack/CreateHyenaClan";
+
 import { ProfileSettings } from "../pages/Drawer/Settings/Profile/ProfileSettings";
 import { SecuritySettings } from "../pages/Drawer/Settings/Security/SecuritySettings";
 import { AboutUsSettings } from "../pages/Drawer/Settings/AboutUsSettings";
@@ -197,6 +199,10 @@ const AppRoutes: React.FC = () => {
         <stackRoutes.Screen name="Profile" component={Profile} />
         <stackRoutes.Screen name="Comments" component={Comments} />
         <stackRoutes.Screen name="NoAccount" component={NoAccount} />
+        <stackRoutes.Screen
+          name="CreateHyenaClan"
+          component={CreateHyenaClan}
+        />
 
         {/*  Settings */}
 

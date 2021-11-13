@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import {
-  SafeAreaView,
   Text,
   View,
   StyleSheet,
@@ -18,19 +17,19 @@ import firebase from "../../database/firebaseConnection";
 import { AddAvatar } from "../../components/AddAvatar";
 import * as ImagePicker from "expo-image-picker";
 
-import { RegisterProgressBar } from "../../components/RegisterProgressBar";
 import { useState } from "react";
 
-import AuthContext from "../../contexts/Auth";
 import StackContext from "../../contexts/Stack";
 import { useNavigation } from "@react-navigation/native";
 import { SafeZoneView } from "../../styles/Theme";
 
-export function RegisterStg2() {
-  const { login, signOut } = useContext(AuthContext);
-  const [userName, setUserName] = useState<string>();
-  const [avatar, setAvatar] = useState<string>();
+export function CreateHyenaClan() {
+  // Theme
   const { isWhiteMode } = useContext(StackContext);
+
+  const [hyenaClanName, setHyenaClanName] = useState<string>();
+  const [shield, setShield] = useState<string>();
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -48,7 +47,7 @@ export function RegisterStg2() {
   }, []);
 
   function handleUserNameInput(value: string) {
-    setUserName(String(value));
+    setHyenaClanName(String(value));
   }
 
   // Executada quando o usuário clicar para inserir uma foto
@@ -62,7 +61,7 @@ export function RegisterStg2() {
 
     // Imagem salva no estado, será utilizada no uploadImage
     if (!result.cancelled) {
-      setAvatar(result.uri);
+      setShield(result.uri);
     }
   }
 
@@ -84,74 +83,68 @@ export function RegisterStg2() {
 
   // Quando o botão Pronto! for clicado
   async function handleSubmit() {
-    // Tag única do usuário
-    const tag = (Math.floor(Math.random() * 10000) + 10000)
-      .toString()
-      .substring(1);
+    // ID única da Alcateia
+    const id = Math.random().toString(36).substr(2, 9);
 
     const auth = firebase.auth().currentUser;
     // Usuário sem foto de perfil
-    if (auth && !avatar) {
+    if (auth && !shield) {
       await firebase
         .firestore()
-        .collection("users")
-        .doc(auth.uid)
+        .collection("hyenaClans")
+        .doc(id)
         .set({
-          userName: userName,
-          avatar: null,
-          tag: tag,
+          id: id,
+          name: hyenaClanName,
+          shield: null,
           cover: null,
-          uid: auth.uid,
-          following: [],
-          likedMemes: [],
-          savedMemes: [],
-          hyenaClanId: null,
+          members: 1, // Primeiro usuário
         })
-        .then(() => {
-          // Inicia a persistência do usuário
-          firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        .then(async () => {
+          // Coloca o ID da Alcateia no perfil de quem criou
+          await firebase.firestore().collection("users").doc(auth.uid).update({
+            hyenaClanId: id,
+          });
 
-          //Navega para a StackRoutes
-          return login(auth);
+          //Navega para o HyenaClan
+          return navigation.navigate("HyenaClan");
         });
     }
     // Usuário com foto de perfil
-    else if (auth && avatar) {
+    else if (auth && shield) {
       // Upload da imagem de perfil
-      const userPicture = await uploadImage([
-        avatar,
+      const shieldPicture = await uploadImage([
+        shield,
         auth.uid,
-        `${userName}-avatar`,
+        `${hyenaClanName}-shield`,
       ]);
 
       await firebase
         .firestore()
-        .collection("users")
-        .doc(auth.uid)
+        .collection("hyenaClans")
+        .doc(id)
         .set({
-          userName: userName,
-          avatar: userPicture,
-          tag: tag,
+          id: id,
+          name: hyenaClanName,
+          shield: shieldPicture,
           cover: null,
-          uid: auth.uid,
-          following: [],
-          likedMemes: [],
-          savedMemes: [],
-          hyenaClanId: null,
+          members: 1, // Primeiro usuário
         })
-        .then(() => {
-          //Navega para a StackRoutes
-          return login(auth);
+        .then(async () => {
+          // Coloca o ID da Alcateia no perfil de quem criou
+          await firebase.firestore().collection("users").doc(auth.uid).update({
+            hyenaClanId: id,
+          });
+
+          //Navega para o HyenaClan
+          return navigation.navigate("HyenaClan");
         });
-    } else {
-      signOut();
-      navigation.navigate("Welcome");
     }
   }
 
   // Executada caso o usuário queira trocar de imagem de perfil antes de se cadastrar
   async function removeImageOnPress() {
-    setAvatar(undefined);
+    setShield(undefined);
     await onChooseImagePress();
   }
 
@@ -161,7 +154,6 @@ export function RegisterStg2() {
       content={
         <View style={styles.container}>
           <View style={styles.wrapper}>
-            <RegisterProgressBar position={90} theme={isWhiteMode} />
             <View style={styles.heading}>
               <Text
                 style={
@@ -170,31 +162,31 @@ export function RegisterStg2() {
                     : [styles.title, { color: colors.white }]
                 }
               >
-                Insira suas{"\n"}informações de perfil
+                Insira as informações{"\n"}da sua Alcateia
               </Text>
             </View>
 
             <View style={styles.form}>
-              {avatar ? (
+              {shield ? (
                 <TouchableOpacity
                   onPress={() => {
                     removeImageOnPress();
                   }}
                 >
-                  <Image source={{ uri: avatar }} style={styles.userImg} />
+                  <Image source={{ uri: shield }} style={styles.userImg} />
                 </TouchableOpacity>
               ) : (
                 <AddAvatar
                   theme={isWhiteMode}
-                  title="adicionar um avatar"
+                  title="adicionar um escudo"
                   onPress={onChooseImagePress}
                 />
               )}
-              <View style={styles.userName}>
+              <View style={styles.hyenaClanName}>
                 <TextInput
                   mode="flat"
                   underlineColor="transparent"
-                  placeholder="Nome de usuário"
+                  placeholder="Nome da Alcateia"
                   placeholderTextColor={
                     isWhiteMode
                       ? colors.placeholderTextLight
@@ -220,7 +212,7 @@ export function RegisterStg2() {
                         : colors.white,
                     },
                   }}
-                  maxLength={10}
+                  maxLength={25}
                   onChangeText={handleUserNameInput}
                 />
               </View>
@@ -278,7 +270,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     borderRadius: 28,
   },
-  userName: {
+  hyenaClanName: {
     marginTop: 30,
   },
 });

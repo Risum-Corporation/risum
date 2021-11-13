@@ -24,10 +24,13 @@ export function HCInfo({
   return (
     <>
       <View style={styles.wallpaperContainer}>
-        <Image source={cover} style={styles.wallpaper} />
+        <Image
+          source={cover ? { uri: cover } : require("../assets/wpWallpaper.jpg")}
+          style={styles.wallpaper}
+        />
       </View>
       <View style={styles.headerContainer}>
-        <Image source={hyenaShield} style={styles.wpIcon} />
+        <Image source={{ uri: hyenaShield }} style={styles.wpIcon} />
         <View style={styles.info}>
           <View>
             <View style={styles.lineText}>
