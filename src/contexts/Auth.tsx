@@ -12,6 +12,7 @@ export interface User {
   avatar?: string | null; // Imagem de perfil
   cover?: string | null; // Imagem de fundo do perfil
   hyenaClanId: string | null; // ID da alcateia do usuário
+  followers: string[]; // Array de IDs dos usuários que seguem o perfil
   following: string[]; // Array de IDs dos usuários seguidos
   likedMemes: string[]; // Array de IDs dos memes curtidos
   savedMemes: string[]; // Array de IDs dos memes salvos
@@ -43,11 +44,15 @@ export const AuthProvider: React.FC = ({ children }) => {
     //Verifica se o usuário é anônimo, de forma a escapar da requisição
     if (isAnonymous) {
       return setSigned(true);
-    } else if (firebaseUser) {
+    } // A negação no user implica na execução do login APENAS se o usuário já não estiver logado (evita aquele monte de login sucessivo quando o app recarrega)
+    else if (firebaseUser && !user) {
+      // Carregamento (deve esconder a tela de Welcome que aparece rapidão ao iniciar o app como já usuário)
+      setLoading(true);
+
       // Faz login se o usuário já estiver conectado através da persistência
       login(firebaseUser);
-    } else {
-      // Usuário não está logado
+
+      setLoading(false);
     }
   }
 
@@ -56,8 +61,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   async function login(firebaseUser: any) {
-    // setUser({ ...props });
-    // console.log(user);
     if (firebaseUser.isAnonymous || isAnonymous) {
       return setSigned(true);
     }
@@ -71,16 +74,17 @@ export const AuthProvider: React.FC = ({ children }) => {
       .collection("users")
       .doc(firebaseUser.uid)
       .get()
-      .then((doc: any) => {
+      .then((doc) => {
         // Seguindo a interface User
-        const userName = doc.data().userName;
-        const tag = doc.data().tag;
-        const avatar = doc.data().avatar;
-        const cover = doc.data().userCover;
-        const hyenaClanId = doc.data().hyenaClanId;
-        const following = doc.data().following;
-        const likedMemes = doc.data().likedMemes;
-        const savedMemes = doc.data().savedMemes;
+        const userName = doc.data()?.userName;
+        const tag = doc.data()?.tag;
+        const avatar = doc.data()?.avatar;
+        const cover = doc.data()?.userCover;
+        const hyenaClanId = doc.data()?.hyenaClanId;
+        const following = doc.data()?.following;
+        const followers = doc.data()?.followers;
+        const likedMemes = doc.data()?.likedMemes;
+        const savedMemes = doc.data()?.savedMemes;
         const uid = firebaseUser.uid;
 
         setUser({
@@ -91,6 +95,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           cover,
           hyenaClanId,
           following,
+          followers,
           likedMemes,
           savedMemes,
         });
@@ -101,10 +106,6 @@ export const AuthProvider: React.FC = ({ children }) => {
         // Navega para o StackRoutes
         setSigned(true);
       });
-
-    // // Execução da handleStateChanged de maneira forçada
-    // const auth = firebase.auth().currentUser;
-    // handleStateChanged(auth);
   }
 
   async function loginAnonymously() {

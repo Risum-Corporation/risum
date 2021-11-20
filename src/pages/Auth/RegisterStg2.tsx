@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import {
-  SafeAreaView,
   Text,
   View,
   StyleSheet,
@@ -103,6 +102,7 @@ export function RegisterStg2() {
           cover: null,
           uid: auth.uid,
           following: [],
+          followers: [],
           likedMemes: [],
           savedMemes: [],
           hyenaClanId: null,
@@ -135,6 +135,7 @@ export function RegisterStg2() {
           cover: null,
           uid: auth.uid,
           following: [],
+          followers: [],
           likedMemes: [],
           savedMemes: [],
           hyenaClanId: null,

@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  //Share,
   Alert,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -22,17 +21,20 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 
-import { PostProps } from "../database/fakeData";
+import { ReducedPostProps } from "../database/fakeData";
 import AuthContext from "../contexts/Auth";
 
 interface MemeCardProps {
   theme: boolean;
-  postData: PostProps;
+  postData: ReducedPostProps;
 }
 
 export function MemeCard({ theme, postData }: MemeCardProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
+  const [likes, setLikes] = useState<number>();
+  const [comments, setComments] = useState<number>();
+
   const navigation = useNavigation();
 
   const { user } = useContext(AuthContext);
@@ -43,15 +45,15 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
 
   useEffect(() => {
     // Recebe as informações do dono do meme para display no MemeCard
-    function fetchUserProfileInfo() {
-      firebase
+    async function fetchUserProfileInfo() {
+      await firebase
         .firestore()
         .collection("users")
         .doc(postData.authorId)
         .get()
-        .then((doc: any) => {
-          setAuthor(String(doc.data().userName));
-          setAvatar(String(doc.data().avatar));
+        .then((doc) => {
+          setAuthor(String(doc.data()?.userName));
+          setAvatar(String(doc.data()?.avatar));
         })
         .catch((error) => {
           console.log(
@@ -61,6 +63,23 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
     }
 
     fetchUserProfileInfo();
+
+    async function fetchMemeInfo() {
+      await firebase
+        .firestore()
+        .collection("memes")
+        .doc(postData.id)
+        .get()
+        .then((doc) => {
+          const postLikes = Number(doc.data()?.likes);
+          const postComments = Number(doc.data()?.comments);
+
+          setLikes(postLikes);
+          setComments(postComments);
+        });
+    }
+
+    fetchMemeInfo();
 
     // Verifica se o usuário já possui informações daquele meme (Ex: já deu like antes, já salvou antes, etc.)
     function verifyBehaviourOnMeme() {
@@ -92,9 +111,10 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
         .collection("memes")
         .doc(postData.id)
         .update({ likes: postData.likes - 1 })
-        .then(async () => {
+        .then(() => {
           // Atualiza visualmente os likes
           postData.likes--;
+          setLikes(postData.likes);
         });
 
       // Atualiza a lista de memes curtidos em cache
@@ -112,7 +132,11 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
         .firestore()
         .collection("memes")
         .doc(postData.id)
-        .update({ likes: postData.likes + 1 });
+        .update({ likes: postData.likes + 1 })
+        .then(() => {
+          postData.likes++;
+          setLikes(postData.likes);
+        });
 
       // Atualiza a lista de memes curtidos em cache
       user?.likedMemes.push(postData.id);
@@ -172,8 +196,13 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
       );
     }
 
-    Sharing.shareAsync((await meme).uri); // And share your file !
+    const options = {
+      dialogTitle: `Se liga nesse meme do Risum 😂`,
+    };
+
+    Sharing.shareAsync((await meme).uri, options); // And share your file !
   }
+
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   return (
@@ -228,7 +257,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
               { color: theme ? colors.whiteLight : colors.white },
             ]}
           >
-            {postData.likes}
+            {likes}
           </Text>
 
           <TouchableOpacity
@@ -249,7 +278,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
               { color: theme ? colors.whiteLight : colors.white },
             ]}
           >
-            {postData.comments}
+            {comments}
           </Text>
 
           <TouchableOpacity style={styles.button} onPress={toggleBookmarkPress}>
@@ -291,9 +320,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
               navigation.navigate("Profile", { userId: postData.authorId });
             }}
             onLongPress={() => {
-              Alert.alert(
-                `ID do Meme: ${postData.id}\nTítulo do meme: ${postData.memeTitle}`
-              );
+              Alert.alert(`ID do Meme: ${postData.id}}`);
             }}
           >
             <Image

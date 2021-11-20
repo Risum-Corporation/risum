@@ -83,8 +83,11 @@ export function CreateHyenaClan() {
 
   // Quando o botão Pronto! for clicado
   async function handleSubmit() {
-    // ID única da Alcateia
-    const id = Math.random().toString(36).substr(2, 9);
+    // ID única da Alcateia com 27 caracteres (9 + 9 + 9)
+    const id =
+      Math.random().toString(36).substr(2, 9) +
+      Math.random().toString(36).substr(2, 9) +
+      Math.random().toString(36).substr(2, 9);
 
     const auth = firebase.auth().currentUser;
     // Usuário sem foto de perfil

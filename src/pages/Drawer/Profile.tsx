@@ -1,16 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   View,
-  Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   FlatList,
   Alert,
 } from "react-native";
 import colors from "../../styles/colors";
-
-import { PostProps } from "../../database/fakeData";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 
@@ -19,7 +15,7 @@ import { MemeCardSecondary } from "../../components/MemeCardSecondary";
 import { GoBackButton } from "../../components/GoBackButton";
 
 import firebase from "../../database/firebaseConnection";
-import { ProfileInfo } from "../../components/Profileinfo";
+import { ProfileInfo } from "../../components/ProfileInfo";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -28,6 +24,8 @@ import AuthContext from "../../contexts/Auth";
 
 import { SafeZoneView } from "../../styles/Theme";
 import { Loading } from "../../components/Loading";
+
+import { ReducedPostProps } from "../../database/fakeData";
 
 // route.params.userId para dinamizar a tela de perfil para vários perfis diferentes
 export function Profile({ route }: any) {
@@ -41,17 +39,22 @@ export function Profile({ route }: any) {
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [likedMemes, setLikedMemes] = useState<string[]>();
+  const [currentUserId, setCurrentUserId] = useState<string>(
+    route.params.userId
+  );
 
   const { user } = useContext(AuthContext);
 
-  let currentUserId = route.params.userId;
-
   // Objeto de memes recebidos do Firestore
-  const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
+  const [memeList, setMemeList] = useState<Record<string, ReducedPostProps>>(
+    {}
+  );
 
-  // Dados para identificação do perfil do usuário
+  // Dados para identificação do perfil do usuário EXIBIDO
   const [userName, setUserName] = useState<string>();
   const [userAvatar, setUserAvatar] = useState<string>();
+  const [userTag, setUserTag] = useState<string>();
+  const [followers, setFollowers] = useState<number>(); // NÚMERO de seguidores
   const [isForeignUser, setIsForeignUser] = useState<boolean>(false);
 
   // Array de IDs dos usuários seguidos
@@ -63,7 +66,7 @@ export function Profile({ route }: any) {
   useEffect(() => {
     async function fetchUserData() {
       // Caso o usuário seja diferente do local
-      if (route.params && currentUserId != user?.uid) {
+      if (route.params.userId && currentUserId != user?.uid) {
         await firebase
           .firestore()
           .collection("users")
@@ -72,10 +75,15 @@ export function Profile({ route }: any) {
           .then((doc) => {
             const name = String(doc.data()?.userName);
             const img = String(doc.data()?.avatar);
+            const tag = String(doc.data()?.tag);
+            const followers = Number(doc.data()?.followers.length);
 
             setUserName(name);
             setUserAvatar(img);
+            setUserTag(tag);
+            setFollowers(followers);
             setIsForeignUser(true);
+            setLoading(false);
           });
       }
       // Caso seja o usuário local
@@ -86,7 +94,10 @@ export function Profile({ route }: any) {
             ? { uri: user.avatar }
             : require("../../assets/risumDefault.png")
         );
+        setUserTag(user.tag);
         setIsForeignUser(false);
+        setCurrentUserId(user.uid);
+        setLoading(false);
       } else {
         console.log("O usuário não pode ser exibido no perfil");
       }
@@ -96,7 +107,7 @@ export function Profile({ route }: any) {
       await firebase
         .firestore()
         .collection("users")
-        .doc(user?.uid)
+        .doc(currentUserId)
         .get()
         .then((doc) => {
           const followingList = [...doc.data()?.following];
@@ -111,7 +122,7 @@ export function Profile({ route }: any) {
         .then((doc) => {
           const likedMemeList = [...doc.data()?.likedMemes];
           setLikedMemes(likedMemeList);
-          console.log(`Deu boa, pois: ${likedMemes}`);
+          console.log(`Memes curtidos: ${likedMemes}`);
         });
     }
 
@@ -122,13 +133,7 @@ export function Profile({ route }: any) {
 
     // Recebe e verifica as informações do usuário especificado
     fetchUserData();
-
-    // Primeiro carregamento (memes curtidos)
-    if (user?.likedMemes) {
-      setLikedMemes(user.likedMemes);
-      // useEffect no [likedMemes]
-    }
-  }, []);
+  }, [currentUserId]);
 
   useEffect(() => {
     if (likedMemes?.length) {
@@ -140,49 +145,52 @@ export function Profile({ route }: any) {
     }
   }, [likedMemes]);
 
-  async function loadSmilesPage(pageNumber = page) {
-    // if (total && pageNumber > total) return;
+  // Atualiza o número de seguidores do perfil exibido
+  useEffect(() => {
+    const totalFollowers = followingSet ? followingSet.length : 0;
 
+    setFollowers(totalFollowers);
+  }, [followingSet]);
+
+  async function loadSmilesPage(pageNumber = page) {
     // Receber memes salvos pelo usuário
-    const docs = await firebase
+    await firebase
       .firestore()
       .collection("memes")
       .where("id", "in", likedMemes)
-      .get();
-    let newMemes = { ...memeList };
-    // Percorre os documentos (memes) um a um
-    docs.forEach((doc) => {
-      // Recebe cada uma das informações do meme no Firestore
-      const id = doc.data().id;
-      const memeUrl = doc.data().memeUrl;
-      const memeTitle = doc.data().memeTitle;
-      const tags = doc.data().tags;
-      const likes = doc.data().likes;
-      const comments = doc.data().comments;
-      const authorId = doc.data().authorId;
-      const isVideo = doc.data().isVideo;
+      .get()
+      .then((docs) => {
+        let newMemes = { ...memeList };
+        // Percorre os documentos (memes) um a um
+        docs.forEach((doc) => {
+          // Recebe cada uma das informações NECESSÁRIAS do meme no Firestore
+          const id = doc.data().id;
+          const memeUrl = doc.data().memeUrl;
+          const likes = doc.data().likes;
+          const comments = doc.data().comments;
+          const authorId = doc.data().authorId;
+          const isVideo = doc.data().isVideo;
 
-      // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
-      newMemes = {
-        ...newMemes,
-        [id]: {
-          id,
-          authorId,
-          memeUrl,
-          likes,
-          memeTitle,
-          tags,
-          comments,
-          isVideo,
-        },
-      };
-    });
+          // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
+          newMemes = {
+            ...newMemes,
+            [id]: {
+              id,
+              authorId,
+              memeUrl,
+              likes,
+              comments,
+              isVideo,
+            },
+          };
+        });
 
-    const totalItems = Object.keys(memeList).length;
-    setMemeList(newMemes);
-    setTotal(Math.floor(totalItems / 5));
-    setPage(pageNumber + 1);
-    setLoading(false);
+        const totalItems = Object.keys(memeList).length;
+        setMemeList(newMemes);
+        setTotal(Math.floor(totalItems / 5));
+        setPage(pageNumber + 1);
+        setLoading(false);
+      });
   }
 
   async function loadPostsPage(pageNumber = page) {
@@ -197,11 +205,9 @@ export function Profile({ route }: any) {
     let newMemes = { ...memeList };
     // Percorre os documentos (memes) um a um
     docs.forEach((doc) => {
-      // Recebe cada uma das informações do meme no Firestore
+      // Recebe cada uma das informações NECESSÁRIAS do meme no Firestore
       const id = doc.data().id;
       const memeUrl = doc.data().memeUrl;
-      const memeTitle = doc.data().memeTitle;
-      const tags = doc.data().tags;
       const likes = doc.data().likes;
       const comments = doc.data().comments;
       const authorId = doc.data().authorId;
@@ -215,8 +221,6 @@ export function Profile({ route }: any) {
           authorId,
           memeUrl,
           likes,
-          memeTitle,
-          tags,
           comments,
           isVideo,
         },
@@ -261,38 +265,35 @@ export function Profile({ route }: any) {
       theme={isWhiteMode}
       content={
         <View style={styles.container}>
-          <ProfileInfo
-            theme={isWhiteMode}
-            cover={
-              user?.cover
-                ? { uri: user.cover }
-                : require("../../assets/wallpaper.jpg")
-            }
-            avatar={userAvatar}
-            userName={userName}
-            userTag={user?.tag}
-            isForeignUser={isForeignUser}
-            followers={2}
-            following={12}
-            isFollower={false} // Falta automatizar
-            user={user}
-            whenUnfollow={() => {}}
-            whenFollow={async () => {
-              await firebase
-                .firestore()
-                .collection("users")
-                .doc(user?.uid)
-                .update({
-                  following: [{ ...followingSet }, currentUserId],
-                })
-                .then(() => {
-                  Alert.alert(`${userName} seguido com sucesso!`);
-                })
-                .catch((error) => {
-                  Alert.alert(`Ops! Algo deu errado: ${error.code}`);
-                });
-            }}
-          />
+          {!loading && (
+            <ProfileInfo
+              theme={isWhiteMode}
+              cover={user?.cover}
+              avatar={userAvatar}
+              userName={userName}
+              userTag={userTag}
+              isForeignUser={isForeignUser}
+              followers={followers ? followers : 0}
+              following={followingSet ? followingSet.length : 0}
+              isFollower={false} // Falta automatizar
+              whenUnfollow={() => {}}
+              whenFollow={async () => {
+                await firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(user?.uid)
+                  .update({
+                    following: [{ ...followingSet }, currentUserId],
+                  })
+                  .then(() => {
+                    Alert.alert(`${userName} seguido com sucesso!`);
+                  })
+                  .catch((error) => {
+                    Alert.alert(`Ops! Algo deu errado: ${error.code}`);
+                  });
+              }}
+            />
+          )}
 
           <View
             style={[

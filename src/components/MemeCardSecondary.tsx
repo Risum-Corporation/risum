@@ -13,21 +13,27 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import firebase from "../database/firebaseConnection";
 
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
+
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-import { PostProps } from "../database/fakeData";
+import { ReducedPostProps } from "../database/fakeData";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../contexts/Auth";
 
 interface MemeCardSecondaryProps {
   theme: boolean;
-  postData: PostProps;
+  postData: ReducedPostProps;
 }
 
 export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
+  const [likes, setLikes] = useState<number>();
+  const [comments, setComments] = useState<number>();
+
   const navigation = useNavigation();
 
   const { user } = useContext(AuthContext);
@@ -37,14 +43,16 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
 
   useEffect(() => {
     // Recebe as informações do dono do meme para display no MemeCard
-    function fetchUserProfileInfo() {
-      firebase
+    async function fetchUserProfileInfo() {
+      await firebase
         .firestore()
         .collection("users")
         .doc(postData.authorId)
         .get()
-        .then((doc: any) => {
-          setAvatar(String(doc.data().avatar));
+        .then((doc) => {
+          const avatar = String(doc.data()?.avatar);
+
+          setAvatar(avatar);
         })
         .catch((error) => {
           console.log(
@@ -54,6 +62,23 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
     }
 
     fetchUserProfileInfo();
+
+    async function fetchMemeInfo() {
+      await firebase
+        .firestore()
+        .collection("memes")
+        .doc(postData.id)
+        .get()
+        .then((doc) => {
+          const postLikes = Number(doc.data()?.likes);
+          const postComments = Number(doc.data()?.comments);
+
+          setLikes(postLikes);
+          setComments(postComments);
+        });
+    }
+
+    fetchMemeInfo();
 
     // Verifica se o usuário já possui informações daquele meme (Ex: já deu like antes, já salvou antes, etc.)
     function verifyBehaviourOnMeme() {
@@ -85,9 +110,10 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
         .collection("memes")
         .doc(postData.id)
         .update({ likes: postData.likes - 1 })
-        .then(async () => {
+        .then(() => {
           // Atualiza visualmente os likes
           postData.likes--;
+          setLikes(postData.likes);
         });
 
       // Atualiza a lista de memes curtidos em cache
@@ -105,7 +131,11 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
         .firestore()
         .collection("memes")
         .doc(postData.id)
-        .update({ likes: postData.likes + 1 });
+        .update({ likes: postData.likes + 1 })
+        .then(() => {
+          postData.likes++;
+          setLikes(postData.likes);
+        });
 
       // Atualiza a lista de memes curtidos em cache
       user?.likedMemes.push(postData.id);
@@ -144,15 +174,32 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
   }
 
   async function shareMeme() {
-    const shareOptions = {
-      message: `Se liga nesse meme do Risum 😂: ${postData.memeUrl}`,
+    // const shareOptions = {
+    //   message: `Se liga nesse meme do Risum 😂: ${postData.memeUrl}`,
+    // };
+    // try {
+    //   await Share.share(shareOptions);
+    // } catch (error) {
+    //   console.log("Erro no compartilhamento => ", error);
+    // }
+
+    let meme = FileSystem.downloadAsync(
+      postData.memeUrl,
+      FileSystem.documentDirectory + ".jpg"
+    );
+
+    if (postData.isVideo) {
+      meme = FileSystem.downloadAsync(
+        postData.memeUrl,
+        FileSystem.documentDirectory + ".mp4"
+      );
+    }
+
+    const options = {
+      dialogTitle: `Se liga nesse meme do Risum 😂`,
     };
 
-    try {
-      await Share.share(shareOptions);
-    } catch (error) {
-      console.log("Erro => ", error);
-    }
+    Sharing.shareAsync((await meme).uri, options); // And share your file !
   }
 
   return (
@@ -193,7 +240,7 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
               { color: theme ? colors.whiteLight : colors.white },
             ]}
           >
-            {postData.likes}
+            {likes}
           </Text>
 
           <TouchableOpacity style={styles.button}>
@@ -243,9 +290,7 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
               navigation.navigate("Profile", { userId: postData.authorId });
             }}
             onLongPress={() => {
-              Alert.alert(
-                `ID do Meme: ${postData.id}\nTítulo do meme: ${postData.memeTitle}`
-              );
+              Alert.alert(`ID do Meme: ${postData.id}`);
             }}
           >
             <Image

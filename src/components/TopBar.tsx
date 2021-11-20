@@ -1,18 +1,9 @@
 import React, { useContext, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Platform,
-  SafeAreaView,
-  View,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Appbar } from "react-native-paper";
-import { Searchbar } from "react-native-paper";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 
-import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../contexts/Auth";
 import { Avatar } from "react-native-paper";
@@ -23,16 +14,7 @@ interface TopBarProps {
 }
 
 export function TopBar({ name, theme }: TopBarProps) {
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const [isSearchPressed, setIsSearchPressed] = useState<boolean>();
   const { user, isAnonymous } = useContext(AuthContext);
-
-  const onChangeSearch = (query: React.SetStateAction<string>) =>
-    setSearchQuery(query);
-
-  function handleSearchClick() {
-    setIsSearchPressed(!isSearchPressed);
-  }
 
   // For menu navigation
   const navigation = useNavigation();
@@ -62,7 +44,7 @@ export function TopBar({ name, theme }: TopBarProps) {
           ) : user?.avatar ? (
             <Avatar.Image size={42} source={{ uri: user.avatar }} />
           ) : (
-            <Avatar.Text size={42} label={`${user?.userName.substr(0, 1)}`} />
+            <Avatar.Text size={42} label={user!.userName.substr(0, 1)} />
           )}
         </TouchableOpacity>
         <Appbar.Content

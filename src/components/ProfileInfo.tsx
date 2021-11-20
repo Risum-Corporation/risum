@@ -18,7 +18,6 @@ interface ProfileInfoProps {
   isFollower: boolean;
   whenFollow: any;
   whenUnfollow: any;
-  user: any;
 }
 
 export function ProfileInfo({
@@ -33,13 +32,15 @@ export function ProfileInfo({
   isFollower,
   whenFollow,
   whenUnfollow,
-  user,
 }: ProfileInfoProps) {
   const navigation = useNavigation();
 
   return (
     <>
-      <Image source={cover} style={styles.userWallpaper} />
+      <Image
+        source={cover ? { uri: cover } : require("../assets/wallpaper.jpg")}
+        style={styles.userWallpaper}
+      />
       <View style={styles.followButtonContainer}>
         {
           //Exibe o botão de DEIXAR DE SEGUIR caso o usuário seja diferente do local
@@ -114,10 +115,10 @@ export function ProfileInfo({
       </View>
       <View style={styles.profileInfo}>
         <View style={styles.userNameImgBox}>
-          {user?.avatar ? (
-            <Avatar.Image size={100} source={avatar} />
+          {avatar ? (
+            <Avatar.Image size={100} source={{ uri: avatar }} />
           ) : (
-            <Avatar.Text size={100} label={`${user?.userName.substr(0, 1)}`} />
+            <Avatar.Text size={100} label={userName.substr(0, 1)} />
           )}
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
             <Text

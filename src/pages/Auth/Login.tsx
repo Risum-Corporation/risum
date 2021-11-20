@@ -67,6 +67,9 @@ export function Login() {
                 firebase
                   .auth()
                   .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+                setIsEmailOrUsernameInvalid(false);
+
                 // Navega para Stack Routes
                 return login(cred.user);
               }
@@ -75,8 +78,6 @@ export function Login() {
               return navigation.navigate("RegisterStg2");
             }
           });
-
-        setIsEmailOrUsernameInvalid(false);
       })
       .catch((error) => {
         setIsEmailOrUsernameInvalid(true);

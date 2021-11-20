@@ -1,10 +1,19 @@
 export interface PostProps {
   id: string;
-  authorId?: string;
+  authorId: string;
   memeUrl: string;
   likes: number;
   memeTitle: string;
   tags?: string[];
+  comments: number;
+  isVideo: boolean;
+}
+
+export interface ReducedPostProps {
+  id: string;
+  authorId: string;
+  memeUrl: string;
+  likes: number;
   comments: number;
   isVideo: boolean;
 }
