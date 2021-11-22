@@ -10,7 +10,7 @@ interface ProfileInfoProps {
   theme: boolean;
   cover: any;
   avatar: any;
-  userName: any;
+  userName: string;
   userTag: any;
   followers: number;
   following: number;
@@ -118,7 +118,7 @@ export function ProfileInfo({
           {avatar ? (
             <Avatar.Image size={100} source={{ uri: avatar }} />
           ) : (
-            <Avatar.Text size={100} label={userName.substr(0, 1)} />
+            <Avatar.Text size={100} label={userName} />
           )}
           <View style={{ marginTop: 20, paddingLeft: 8 }}>
             <Text

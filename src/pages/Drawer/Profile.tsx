@@ -55,6 +55,7 @@ export function Profile({ route }: any) {
   const [userAvatar, setUserAvatar] = useState<string>();
   const [userTag, setUserTag] = useState<string>();
   const [followers, setFollowers] = useState<number>(); // NÚMERO de seguidores
+  const [following, setFollowing] = useState<number>(); // NÚMERO de pessoas seguidas pelo perfil
   const [isForeignUser, setIsForeignUser] = useState<boolean>(false);
 
   // Array de IDs dos usuários seguidos
@@ -66,7 +67,8 @@ export function Profile({ route }: any) {
   useEffect(() => {
     async function fetchUserData() {
       // Caso o usuário seja diferente do local
-      if (route.params.userId && currentUserId != user?.uid) {
+      if (currentUserId != user?.uid) {
+        console.log(currentUserId);
         await firebase
           .firestore()
           .collection("users")
@@ -77,23 +79,24 @@ export function Profile({ route }: any) {
             const img = String(doc.data()?.avatar);
             const tag = String(doc.data()?.tag);
             const followers = Number(doc.data()?.followers.length);
+            const following = Number(doc.data()?.following.length);
 
             setUserName(name);
             setUserAvatar(img);
             setUserTag(tag);
             setFollowers(followers);
+            setFollowing(following);
             setIsForeignUser(true);
             setLoading(false);
+          })
+          .catch((error) => {
+            console.log(`Deu ruim: ${error}`);
           });
       }
       // Caso seja o usuário local
       else if (user) {
         setUserName(user.userName);
-        setUserAvatar(
-          user.avatar
-            ? { uri: user.avatar }
-            : require("../../assets/risumDefault.png")
-        );
+        setUserAvatar(user.avatar!);
         setUserTag(user.tag);
         setIsForeignUser(false);
         setCurrentUserId(user.uid);
@@ -270,7 +273,7 @@ export function Profile({ route }: any) {
               theme={isWhiteMode}
               cover={user?.cover}
               avatar={userAvatar}
-              userName={userName}
+              userName={userName!}
               userTag={userTag}
               isForeignUser={isForeignUser}
               followers={followers ? followers : 0}
