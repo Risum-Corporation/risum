@@ -21,7 +21,7 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 
-import { ReducedPostProps } from "../database/fakeData";
+import { ReducedPostProps } from "../database/interfaces";
 import AuthContext from "../contexts/Auth";
 
 interface MemeCardProps {

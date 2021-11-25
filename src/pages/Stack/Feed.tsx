@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FlatList, StyleSheet, Platform, Animated } from "react-native";
 
-import { PostProps } from "../../database/fakeData";
+import { ReducedPostProps } from "../../database/interfaces";
 
 import firebase from "../../database/firebaseConnection";
 
@@ -22,7 +22,9 @@ export function Feed() {
   const [notFollowingUsers, setNotFollowingUsers] = useState(false);
 
   // Objeto de memes recebidos do Firestore
-  const [memeList, setMemeList] = useState<Record<string, PostProps>>({});
+  const [memeList, setMemeList] = useState<Record<string, ReducedPostProps>>(
+    {}
+  );
 
   // Array de IDs dos usuários seguidos
   const [following, setFollowing] = useState<string[]>();
@@ -42,14 +44,14 @@ export function Feed() {
         .collection("memes")
         .where("authorId", "in", following)
         .get();
+
       let newMemes = { ...memeList };
+
       // Percorre os documentos (memes) um a um
       docs.forEach((doc) => {
         // Recebe cada uma das informações do meme no Firestore
         const id = doc.data().id;
         const memeUrl = doc.data().memeUrl;
-        const memeTitle = doc.data().memeTitle;
-        const tags = doc.data().tags;
         const likes = doc.data().likes;
         const comments = doc.data().comments;
         const authorId = doc.data().authorId;
@@ -63,8 +65,6 @@ export function Feed() {
             authorId,
             memeUrl,
             likes,
-            memeTitle,
-            tags,
             comments,
             isVideo,
           },

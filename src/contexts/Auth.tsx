@@ -9,8 +9,8 @@ export interface User {
   userName: string; // Nome de exibição do usuário
   uid: string; // ID única do usuário
   tag: string; // Tag do usuário (#1234)
-  avatar?: string | null; // Imagem de perfil
-  cover?: string | null; // Imagem de fundo do perfil
+  avatar: string | null; // Imagem de perfil
+  cover: string | null; // Imagem de fundo do perfil
   hyenaClanId: string | null; // ID da alcateia do usuário
   followers: string[]; // Array de IDs dos usuários que seguem o perfil
   following: string[]; // Array de IDs dos usuários seguidos
@@ -44,8 +44,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     //Verifica se o usuário é anônimo, de forma a escapar da requisição
     if (isAnonymous) {
       return setSigned(true);
-    } // A negação no user implica na execução do login APENAS se o usuário já não estiver logado (evita aquele monte de login sucessivo quando o app recarrega)
-    else if (firebaseUser && !user) {
+    } else if (firebaseUser) {
       // Carregamento (deve esconder a tela de Welcome que aparece rapidão ao iniciar o app como já usuário)
       setLoading(true);
 
@@ -79,7 +78,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         const userName = doc.data()?.userName;
         const tag = doc.data()?.tag;
         const avatar = doc.data()?.avatar;
-        const cover = doc.data()?.userCover;
+        const cover = doc.data()?.cover;
         const hyenaClanId = doc.data()?.hyenaClanId;
         const following = doc.data()?.following;
         const followers = doc.data()?.followers;

@@ -25,6 +25,14 @@ export interface CommentProps {
   content: string;
 }
 
+export interface HyenaClanProps {
+  id: string;
+  name: string; // Nome da alcateia
+  shield?: string | null; // Foto da alcateia
+  cover?: string | null; // Wallpaper de fundo da alcateia
+  members: string[]; // Array com os IDs de todos os membros
+}
+
 export const comments: CommentProps[] = [
   {
     id: "1",

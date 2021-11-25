@@ -65,7 +65,6 @@ export function AddMeme() {
       setMeme(result.uri);
 
       setIsVideo(result.type == "video");
-      console.log(isVideo);
     }
   }
 
@@ -196,9 +195,11 @@ export function AddMeme() {
                             setMemeTitle(undefined);
                             setTags(undefined);
 
-                            const memeId = String(
-                              Math.floor(Math.random() * 1000000000)
-                            );
+                            // ID única do meme com 27 caracteres (9 + 9 + 9)
+                            const memeId =
+                              Math.random().toString(36).substr(2, 9) +
+                              Math.random().toString(36).substr(2, 9) +
+                              Math.random().toString(36).substr(2, 9);
 
                             firebase
                               .firestore()

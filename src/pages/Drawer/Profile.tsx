@@ -25,20 +25,20 @@ import AuthContext from "../../contexts/Auth";
 import { SafeZoneView } from "../../styles/Theme";
 import { Loading } from "../../components/Loading";
 
-import { ReducedPostProps } from "../../database/fakeData";
+import { ReducedPostProps } from "../../database/interfaces";
 
 // route.params.userId para dinamizar a tela de perfil para vários perfis diferentes
 export function Profile({ route }: any) {
   const navigation = useNavigation();
-  const [isSmilePressed, setIsSmilePressed] = useState<boolean>(true);
-  const [isPostPressed, setIsPostPressed] = useState<boolean>();
-  const [isCommentPressed, setIsCommentPressed] = useState<boolean>();
-  const [isInfoPressed, setIsInfoPressed] = useState<boolean>();
+  const [isSmilePressed, setIsSmilePressed] = useState<boolean>(false);
+  const [isPostPressed, setIsPostPressed] = useState<boolean>(true);
+  const [isCommentPressed, setIsCommentPressed] = useState<boolean>(false);
+  const [isInfoPressed, setIsInfoPressed] = useState<boolean>(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [likedMemes, setLikedMemes] = useState<string[]>();
+  const [likedMemesSet, setLikedMemesSet] = useState<string[]>(); // Set de IDs dos memes curtidos do perfil exibido
   const [currentUserId, setCurrentUserId] = useState<string>(
     route.params.userId
   );
@@ -53,10 +53,12 @@ export function Profile({ route }: any) {
   // Dados para identificação do perfil do usuário EXIBIDO
   const [userName, setUserName] = useState<string>();
   const [userAvatar, setUserAvatar] = useState<string>();
+  const [userCover, setUserCover] = useState<string>();
   const [userTag, setUserTag] = useState<string>();
   const [followers, setFollowers] = useState<number>(); // NÚMERO de seguidores
   const [following, setFollowing] = useState<number>(); // NÚMERO de pessoas seguidas pelo perfil
   const [isForeignUser, setIsForeignUser] = useState<boolean>(false);
+  const [isFollowed, setIsFollowed] = useState<boolean>(false); // Define se o usuário exibido JÁ É SEGUIDO pelo perfil do usuário
 
   // Array de IDs dos usuários seguidos
   const [followingSet, setFollowingSet] = useState<string[]>();
@@ -68,7 +70,6 @@ export function Profile({ route }: any) {
     async function fetchUserData() {
       // Caso o usuário seja diferente do local
       if (currentUserId != user?.uid) {
-        console.log(currentUserId);
         await firebase
           .firestore()
           .collection("users")
@@ -76,13 +77,24 @@ export function Profile({ route }: any) {
           .get()
           .then((doc) => {
             const name = String(doc.data()?.userName);
-            const img = String(doc.data()?.avatar);
+            const img = doc.data()?.avatar;
+            const cover = doc.data()?.cover;
             const tag = String(doc.data()?.tag);
             const followers = Number(doc.data()?.followers.length);
-            const following = Number(doc.data()?.following.length);
+            const followingList = [...doc.data()?.following];
+            const following = Number(followingList.length);
+
+            // Verifica se o perfil já está sendo seguido
+            if (followingList.indexOf(currentUserId) != null) {
+              setIsFollowed(true);
+            } else {
+              console.log(followingList);
+              setIsFollowed(false);
+            }
 
             setUserName(name);
             setUserAvatar(img);
+            setUserCover(cover);
             setUserTag(tag);
             setFollowers(followers);
             setFollowing(following);
@@ -97,6 +109,7 @@ export function Profile({ route }: any) {
       else if (user) {
         setUserName(user.userName);
         setUserAvatar(user.avatar!);
+        setUserCover(user.cover!);
         setUserTag(user.tag);
         setIsForeignUser(false);
         setCurrentUserId(user.uid);
@@ -116,17 +129,6 @@ export function Profile({ route }: any) {
           const followingList = [...doc.data()?.following];
           setFollowingSet(followingList);
         });
-
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(currentUserId)
-        .get()
-        .then((doc) => {
-          const likedMemeList = [...doc.data()?.likedMemes];
-          setLikedMemes(likedMemeList);
-          console.log(`Memes curtidos: ${likedMemes}`);
-        });
     }
 
     // Recebe a lista de perfis que o usuário segue caso esteja num perfil diferente do local
@@ -134,19 +136,11 @@ export function Profile({ route }: any) {
       fetchFollowedUsers();
     }
 
+    loadPostsPage();
+
     // Recebe e verifica as informações do usuário especificado
     fetchUserData();
   }, [currentUserId]);
-
-  useEffect(() => {
-    if (likedMemes?.length) {
-      loadSmilesPage();
-    } else {
-      console.log("Sem memes curtidos");
-      setLoading(false);
-      // Exibir componente semelhante ao NoAccount, onde o usuário é instruído a seguir páginas
-    }
-  }, [likedMemes]);
 
   // Atualiza o número de seguidores do perfil exibido
   useEffect(() => {
@@ -160,7 +154,7 @@ export function Profile({ route }: any) {
     await firebase
       .firestore()
       .collection("memes")
-      .where("id", "in", likedMemes)
+      .where("id", "in", likedMemesSet)
       .get()
       .then((docs) => {
         let newMemes = { ...memeList };
@@ -263,6 +257,51 @@ export function Profile({ route }: any) {
     setMemeList({});
   }
 
+  async function handleFollowProfile() {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user?.uid)
+      .update({
+        following: firebase.firestore.FieldValue.arrayUnion(currentUserId),
+      })
+      .then(() => {
+        setIsFollowed(true);
+      })
+      .catch((error) => {
+        console.log(`Ops! Algo deu errado: ${error.code}`);
+      });
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUserId)
+      .update({
+        followers: firebase.firestore.FieldValue.arrayUnion(user?.uid),
+      });
+  }
+
+  async function handleUnfollowProfile() {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user?.uid)
+      .update({
+        following: firebase.firestore.FieldValue.arrayRemove(currentUserId),
+      })
+      .then(() => {
+        setIsFollowed(false);
+      });
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(currentUserId)
+      .update({
+        followers: firebase.firestore.FieldValue.arrayRemove(user?.uid),
+      });
+  }
+
   return (
     <SafeZoneView
       theme={isWhiteMode}
@@ -271,59 +310,28 @@ export function Profile({ route }: any) {
           {!loading && (
             <ProfileInfo
               theme={isWhiteMode}
-              cover={user?.cover}
+              cover={userCover}
               avatar={userAvatar}
               userName={userName!}
               userTag={userTag}
               isForeignUser={isForeignUser}
               followers={followers ? followers : 0}
               following={followingSet ? followingSet.length : 0}
-              isFollower={false} // Falta automatizar
-              whenUnfollow={() => {}}
-              whenFollow={async () => {
-                await firebase
-                  .firestore()
-                  .collection("users")
-                  .doc(user?.uid)
-                  .update({
-                    following: [{ ...followingSet }, currentUserId],
-                  })
-                  .then(() => {
-                    Alert.alert(`${userName} seguido com sucesso!`);
-                  })
-                  .catch((error) => {
-                    Alert.alert(`Ops! Algo deu errado: ${error.code}`);
-                  });
+              isFollower={isFollowed} // Falta automatizar
+              whenUnfollow={() => {
+                handleUnfollowProfile();
+              }}
+              whenFollow={() => {
+                handleFollowProfile();
               }}
             />
           )}
-
           <View
             style={[
               styles.filterIconsBox,
               { borderBottomColor: colors.divider },
             ]}
           >
-            <TouchableOpacity
-              onPress={() => {
-                setIconsFalse();
-                setIsSmilePressed(true);
-              }}
-            >
-              <AntDesign
-                name={isSmilePressed ? "smile-circle" : "smileo"}
-                color={
-                  isWhiteMode
-                    ? isSmilePressed
-                      ? colors.purpleLight
-                      : colors.whiteLight
-                    : isSmilePressed
-                    ? colors.green
-                    : colors.white
-                }
-                size={30}
-              />
-            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 setIconsFalse();
@@ -348,7 +356,29 @@ export function Profile({ route }: any) {
             <TouchableOpacity
               onPress={() => {
                 setIconsFalse();
+                setIsSmilePressed(true);
+                loadSmilesPage();
+              }}
+            >
+              <AntDesign
+                name={isSmilePressed ? "smile-circle" : "smileo"}
+                color={
+                  isWhiteMode
+                    ? isSmilePressed
+                      ? colors.purpleLight
+                      : colors.whiteLight
+                    : isSmilePressed
+                    ? colors.green
+                    : colors.white
+                }
+                size={30}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIconsFalse();
                 setIsCommentPressed(true);
+                // loadCommentsPage()
               }}
             >
               <Ionicons
@@ -373,6 +403,7 @@ export function Profile({ route }: any) {
               onPress={() => {
                 setIconsFalse();
                 setIsInfoPressed(true);
+                // loadInfoPage()
               }}
             >
               <Ionicons
@@ -395,43 +426,26 @@ export function Profile({ route }: any) {
             </TouchableOpacity>
           </View>
           <View style={styles.content}>
-            {isSmilePressed ? (
-              loading ? (
-                <Loading />
-              ) : (
-                <FlatList
-                  data={Object.values(memeList)}
-                  keyExtractor={(post) => String(post.id)}
-                  //onEndReached={() => loadSmilesPage()}
-                  onRefresh={refreshList}
-                  refreshing={isRefreshing}
-                  onEndReachedThreshold={0.1}
-                  showsVerticalScrollIndicator={false}
-                  maxToRenderPerBatch={5}
-                  renderItem={({ item }) => (
-                    <MemeCardSecondary postData={item} theme={isWhiteMode} />
-                  )}
-                />
-              )
+            {loading ? (
+              <Loading />
             ) : (
-              isPostPressed &&
-              (loading ? (
-                <Loading />
-              ) : (
-                <FlatList
-                  data={Object.values(memeList)}
-                  keyExtractor={(post) => String(post.id)}
-                  onEndReached={() => loadPostsPage()}
-                  onRefresh={refreshList}
-                  refreshing={isRefreshing}
-                  onEndReachedThreshold={0.1}
-                  showsVerticalScrollIndicator={false}
-                  maxToRenderPerBatch={5}
-                  renderItem={({ item }) => (
-                    <MemeCardSecondary postData={item} theme={isWhiteMode} />
-                  )}
-                />
-              ))
+              <FlatList
+                data={Object.values(memeList)}
+                keyExtractor={(post) => String(post.id)}
+                onEndReached={() => {
+                  if (isSmilePressed) loadSmilesPage();
+                  else if (isPostPressed) loadPostsPage();
+                  // Comments e Info
+                }}
+                onRefresh={refreshList}
+                refreshing={isRefreshing}
+                onEndReachedThreshold={0.1}
+                showsVerticalScrollIndicator={false}
+                maxToRenderPerBatch={5}
+                renderItem={({ item }) => (
+                  <MemeCardSecondary postData={item} theme={isWhiteMode} />
+                )}
+              />
             )}
           </View>
           <GoBackButton
@@ -462,6 +476,6 @@ const styles = StyleSheet.create({
   content: {
     width: "100%",
     marginTop: 18.5,
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
   },
 });

@@ -16,6 +16,7 @@ import colors from "../styles/colors";
 import StackContext from "../contexts/Stack";
 import { Comments } from "../pages/Stack/Comments";
 import { NoAccount } from "../pages/Stack/NoAccount";
+import { HyenaClan } from "../pages/Stack/HyenaClan";
 import { CreateHyenaClan } from "../pages/Stack/CreateHyenaClan";
 
 import { ProfileSettings } from "../pages/Drawer/Settings/Profile/ProfileSettings";
@@ -203,6 +204,7 @@ const AppRoutes: React.FC = () => {
           name="CreateHyenaClan"
           component={CreateHyenaClan}
         />
+        <stackRoutes.Screen name="HyenaClan" component={HyenaClan} />
 
         {/*  Settings */}
 

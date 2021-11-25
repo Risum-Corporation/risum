@@ -19,7 +19,7 @@ import * as FileSystem from "expo-file-system";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-import { ReducedPostProps } from "../database/fakeData";
+import { ReducedPostProps } from "../database/interfaces";
 import { useNavigation } from "@react-navigation/native";
 import AuthContext from "../contexts/Auth";
 

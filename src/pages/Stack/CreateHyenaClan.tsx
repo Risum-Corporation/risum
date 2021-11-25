@@ -75,7 +75,7 @@ export function CreateHyenaClan() {
     const blob = await response.blob();
 
     // Salva a arquivo no caminho especificado no Storage do Firebase
-    var ref = firebase.storage().ref().child(`users/${uid}/${fileName}`);
+    var ref = firebase.storage().ref().child(`hyena-clans/${uid}/${fileName}`);
 
     await ref.put(blob);
     return await ref.getDownloadURL();
@@ -101,13 +101,20 @@ export function CreateHyenaClan() {
           name: hyenaClanName,
           shield: null,
           cover: null,
-          members: 1, // Primeiro usuário
+          members: [auth.uid], // Primeiro usuário
         })
         .then(async () => {
           // Coloca o ID da Alcateia no perfil de quem criou
-          await firebase.firestore().collection("users").doc(auth.uid).update({
-            hyenaClanId: id,
-          });
+          await firebase
+            .firestore()
+            .collection("users")
+            .doc(auth.uid)
+            .update({
+              hyenaClanId: id,
+            })
+            .catch((error) => {
+              console.log(`Ocorreu um erro: ${error.code}`);
+            });
 
           //Navega para o HyenaClan
           return navigation.navigate("HyenaClan");
@@ -118,7 +125,7 @@ export function CreateHyenaClan() {
       // Upload da imagem de perfil
       const shieldPicture = await uploadImage([
         shield,
-        auth.uid,
+        id,
         `${hyenaClanName}-shield`,
       ]);
 

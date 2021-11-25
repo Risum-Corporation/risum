@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
-import { comments } from "../../database/fakeData";
+import { comments } from "../../database/interfaces";
 
 import StackContext from "../../contexts/Stack";
 import { CommentCard } from "../../components/CommentCard";

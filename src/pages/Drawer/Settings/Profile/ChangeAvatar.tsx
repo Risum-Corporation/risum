@@ -25,11 +25,12 @@ import { useState } from "react";
 import StackContext from "../..//../../contexts/Stack";
 import { useNavigation } from "@react-navigation/native";
 import { SafeZoneView } from "../../../../styles/Theme";
+import AuthContext from "../../../../contexts/Auth";
 
 export function ChangeAvatar() {
-  const [userName, setUserName] = useState<string>("");
   const [avatar, setAvatar] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
+  const { user } = useContext(AuthContext);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -81,7 +82,11 @@ export function ChangeAvatar() {
     const auth = firebase.auth().currentUser;
     if (auth && avatar) {
       // Upload da imagem de perfil
-      const userPicture = await uploadImage([avatar, auth.uid, `avatar`]);
+      const userPicture = await uploadImage([
+        avatar,
+        auth.uid,
+        `${user?.userName}-avatar`,
+      ]);
 
       await firebase
         .firestore()

@@ -19,7 +19,7 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { useNavigation } from "@react-navigation/native";
 
-import { PostProps } from "../database/fakeData";
+import { PostProps } from "../database/interfaces";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 interface HypeMemeCardProps {

@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 
 interface ProfileInfoProps {
   theme: boolean;
-  cover: any;
+  cover: string | null | undefined;
   avatar: any;
   userName: string;
   userTag: any;

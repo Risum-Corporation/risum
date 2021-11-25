@@ -12,7 +12,7 @@ import StackContext from "../../contexts/Stack";
 
 import firebase from "../../database/firebaseConnection";
 
-import { PostProps } from "../../database/fakeData";
+import { PostProps } from "../../database/interfaces";
 import { SafeZoneView } from "../../styles/Theme";
 import { Searchbar, Button } from "react-native-paper";
 import colors from "../../styles/colors";

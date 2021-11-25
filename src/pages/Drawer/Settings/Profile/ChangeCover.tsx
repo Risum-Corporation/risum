@@ -12,24 +12,21 @@ import { ConfirmButton } from "../../../../components/ConfirmButton";
 import colors from "../..//../../styles/colors";
 import fonts from "../..//../../styles/fonts";
 
-import { TextInput } from "react-native-paper";
-
 import firebase from "../..//../../database/firebaseConnection";
 import { AddAvatar } from "../..//../../components/AddAvatar";
 import * as ImagePicker from "expo-image-picker";
 
-import { RegisterProgressBar } from "../..//../../components/RegisterProgressBar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
 import StackContext from "../..//../../contexts/Stack";
 import { useNavigation } from "@react-navigation/native";
 import { SafeZoneView } from "../../../../styles/Theme";
+import AuthContext from "../../../../contexts/Auth";
 
 export function ChangeCover() {
-  const [userName, setUserName] = useState<string>("");
-  const [avatar, setAvatar] = useState<string>("");
+  const [cover, setCover] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
+  const { user } = useContext(AuthContext);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -57,7 +54,7 @@ export function ChangeCover() {
 
     // Imagem salva no estado, será utilizada no uploadImage
     if (!result.cancelled) {
-      setAvatar(result.uri);
+      setCover(result.uri);
     }
   }
 
@@ -79,24 +76,30 @@ export function ChangeCover() {
 
   async function handleSubmit() {
     const auth = firebase.auth().currentUser;
-    if (auth && avatar) {
+    if (auth && cover) {
       // Upload da imagem de perfil
-      const userPicture = await uploadImage([avatar, auth.uid, `avatar`]);
+      const userCover = await uploadImage([
+        cover,
+        auth.uid,
+        `${user?.userName}-cover`,
+      ]);
 
       await firebase
         .firestore()
         .collection("users")
         .doc(auth.uid)
         .update({
-          avatar: userPicture,
+          cover: userCover,
         })
         .then(() => {
           //Navega para a StackRoutes
-          Alert.alert("Sua foto foi alterada com sucesso 😄");
+          Alert.alert(
+            "Sua foto de capa foi alterada com sucesso 😄\nPode ser necessário o app para que suas alterações surtam efeito"
+          );
           navigation.navigate("Feed");
         });
     } else {
-      Alert.alert("Não foi possivel alterar sua foto 😕");
+      Alert.alert("Não foi possivel alterar sua foto de capa 😕");
     }
   }
 
@@ -113,12 +116,12 @@ export function ChangeCover() {
             }
           >
             <View style={styles.form}>
-              {avatar ? (
-                <Image source={{ uri: avatar }} style={styles.userImg} />
+              {cover ? (
+                <Image source={{ uri: cover }} style={styles.userImg} />
               ) : (
                 <AddAvatar
                   theme={isWhiteMode}
-                  title="adicionar um avatar"
+                  title="adicionar uma capa"
                   onPress={onChooseImagePress}
                 />
               )}

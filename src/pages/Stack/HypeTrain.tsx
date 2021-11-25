@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FlatList, StyleSheet, Platform, Animated } from "react-native";
 
-import { PostProps } from "../../database/fakeData";
+import { PostProps } from "../../database/interfaces";
 
 import firebase from "../../database/firebaseConnection";
 
