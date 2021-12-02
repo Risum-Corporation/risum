@@ -19,30 +19,41 @@ import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { GoBackButton } from "../../components/GoBackButton";
 import { useNavigation } from "@react-navigation/native";
-import { User } from "../../contexts/Auth";
+import HyenaClanItem from "../../components/HyenaClanItem";
 
-interface ItemProps {
+interface ProfileProps {
   uid: string;
   userName: string;
   tag: string;
-  avatar?: string | null;
+  avatar: string | null;
+}
+
+interface HyenaProps {
+  id: string;
+  name: string;
+  shield: string;
+  members: string[];
 }
 
 export function Search() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  const [profileQuery, setProfileQuery] = useState<string>();
-  const [hyenaClanQuery, setHyenaClanQuery] = useState<string>();
-  const [memeQuery, setMemeQuery] = useState<string>();
+  const [profileQuery, setProfileQuery] = useState<string>("");
+  const [hyenaClanQuery, setHyenaClanQuery] = useState<string>("");
+  const [memeQuery, setMemeQuery] = useState<string>("");
 
   const navigation = useNavigation();
 
   // Lista de pessoas pesquisadas
-  const [profileList, setProfileList] = useState<Record<string, ItemProps>>({});
+  const [profileList, setProfileList] = useState<Record<string, ProfileProps>>(
+    {}
+  );
 
   // Lista de alcateias pesquisadas
-  const [hyenaClanList, setHyenaClanList] = useState(); // Tipagem <HyenaClan[]>
+  const [hyenaClanList, setHyenaClanList] = useState<
+    Record<string, HyenaProps>
+  >({}); // Tipagem <HyenaClan[]>
 
   // Lista de memes pesquisados
   const [memeList, setMemeList] = useState<PostProps[]>();
@@ -58,40 +69,98 @@ export function Search() {
   const [isHyenaClanPressed, setHyenaClanPressed] = useState<boolean>();
   const [isMemePressed, setMemePressed] = useState<boolean>();
 
+  async function searchProfile() {
+    if (profileQuery === "") {
+      console.log("Query vazia");
+      setProfileList({});
+      // Dizer para o usuário pesquisar algo
+    } else {
+      const docs = await firebase
+        .firestore()
+        .collection("users")
+        .where("userName", "<=", profileQuery)
+        .get();
+
+      let newProfile = profileList;
+
+      docs.forEach(async (doc) => {
+        const userName = doc.data().userName;
+
+        if (userName.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1) {
+          // Informações do perfil
+          const uid = doc.data().uid;
+          const userName = doc.data().userName;
+          const tag = doc.data().tag;
+          const avatar = doc.data().avatar;
+
+          newProfile = {
+            ...newProfile,
+            [uid]: {
+              uid,
+              userName,
+              tag,
+              avatar,
+            },
+          };
+
+          // Atualiza a lista de perfis
+          setProfileList(newProfile);
+        }
+      });
+    }
+  }
+
+  async function searchHyenaClan() {
+    if (hyenaClanQuery === "") {
+      console.log("Query vazia");
+      setHyenaClanList({});
+      // Dizer para o usuário pesquisar algo
+    } else {
+      const docs = await firebase
+        .firestore()
+        .collection("hyenaClans")
+        .where("name", "<=", hyenaClanQuery)
+        .get();
+
+      let newHyenaClan = hyenaClanList;
+
+      docs.forEach(async (doc) => {
+        const name = doc.data().name;
+
+        if (name.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1) {
+          // Informações do perfil
+          const id = doc.data().id;
+          const name = doc.data().name;
+          const shield = doc.data().shield;
+          const members = doc.data().members;
+
+          newHyenaClan = {
+            ...newHyenaClan,
+            [id]: {
+              id,
+              name,
+              shield,
+              members,
+            },
+          };
+
+          // Atualiza a lista de perfis
+          setHyenaClanList(newHyenaClan);
+          console.log(hyenaClanList);
+        }
+      });
+    }
+  }
+
   // Executada quando o usuário digitar alguma coisa no text input de usuários
   useEffect(() => {
-    async function searchProfile() {
-      if (profileQuery === "") {
-        console.log("Query vazia");
-        setProfileList({});
-        // Dizer para o usuário pesquisar algo
-      } else {
-        const profiles = await firebase.firestore().collection("users").get();
-
-        profiles.forEach(async (doc) => {
-          const userName = doc.data().userName;
-
-          if (
-            userName.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1
-          ) {
-            // Informações do perfil
-            const uid = doc.data().userId;
-            const tag = doc.data().string;
-            const avatar = doc.data().avatar;
-
-            const newProfile = { uid, userName, tag, avatar };
-
-            // Atualiza a lista de perfis
-            setProfileList({ ...profileList, newProfile });
-
-            console.log(newProfile);
-          }
-        });
-      }
-    }
-
     searchProfile();
   }, [profileQuery]);
+
+  // Executada quando o usuário digitar alguma coisa no text input de alcateias
+  useEffect(() => {
+    searchHyenaClan();
+  }, [hyenaClanQuery]);
 
   return (
     <SafeZoneView
@@ -108,7 +177,13 @@ export function Search() {
                   : `Pesquise por Memes`
               }
               placeholderTextColor={colors.placeholderText}
-              onChangeText={(t: string) => setProfileQuery(t)}
+              onChangeText={(t: string) => {
+                isProfilePressed
+                  ? setProfileQuery(t)
+                  : isHyenaClanPressed
+                  ? setHyenaClanQuery(t)
+                  : setMemeQuery(t);
+              }}
               value={
                 isProfilePressed
                   ? profileQuery
@@ -213,6 +288,16 @@ export function Search() {
                 <ProfileItem theme={isWhiteMode} profileData={item} />
               )}
               keyExtractor={(item) => String(item.uid)}
+            />
+          )}
+          {isHyenaClanPressed && (
+            <FlatList
+              data={Object.values(hyenaClanList)}
+              style={styles.profileList}
+              renderItem={({ item }) => (
+                <HyenaClanItem theme={isWhiteMode} hyenaClanData={item} />
+              )}
+              keyExtractor={(item) => String(item.id)}
             />
           )}
           <GoBackButton

@@ -6,17 +6,17 @@ import fonts from "../styles/fonts";
 
 import { Avatar } from "react-native-paper";
 
-interface ProfileItemProps {
-  profileData: {
-    uid: string;
-    userName: string;
-    tag: string;
-    avatar?: string | null;
+interface HyenaClanItemProps {
+  hyenaClanData: {
+    id: string;
+    name: string;
+    shield: string | null;
+    members: string[];
   };
   theme: boolean;
 }
 
-const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
+const HyenaClanItem = ({ hyenaClanData, theme }: HyenaClanItemProps) => {
   const navigation = useNavigation();
 
   return (
@@ -29,29 +29,27 @@ const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
             : colors.divider,
         },
       ]}
-      onPress={() =>
-        navigation.navigate("Profile", { userId: profileData.uid })
-      }
+      onPress={() => navigation.navigate("HyenaClan")}
     >
-      {profileData.avatar ? (
+      {hyenaClanData.shield ? (
         <Avatar.Image
           style={styles.itemPhoto}
-          source={{ uri: profileData.avatar }}
+          source={{ uri: hyenaClanData.shield }}
         />
       ) : (
         <Avatar.Text
           style={styles.itemPhoto}
-          label={profileData.userName.substr(0, 1)}
+          label={hyenaClanData.name.substr(0, 1)}
         />
       )}
       <View style={styles.itemInfo}>
         <Text
           style={[
-            styles.userName,
+            styles.name,
             { color: theme ? colors.whiteLight : colors.white },
           ]}
         >
-          {profileData.userName}
+          {hyenaClanData.name}
         </Text>
         <Text
           style={[
@@ -63,7 +61,8 @@ const ProfileItem = ({ profileData, theme }: ProfileItemProps) => {
             },
           ]}
         >
-          #{profileData.tag}
+          {hyenaClanData.members.length}{" "}
+          {hyenaClanData.members.length == 1 ? "membro" : "membros"}
         </Text>
       </View>
     </TouchableOpacity>
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
   itemInfo: {
     marginLeft: 20,
   },
-  userName: {
+  name: {
     fontSize: 22,
     marginBottom: 5,
     fontFamily: fonts.subtitle,
@@ -98,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileItem;
+export default HyenaClanItem;
