@@ -123,8 +123,6 @@ export function HypeTrain() {
             onEndReachedThreshold={0.1}
             onRefresh={refreshList}
             showsVerticalScrollIndicator={false}
-            ListHeaderComponent={<TopBar name="Feed" theme={isWhiteMode} />} // Em observação
-            ListHeaderComponentStyle={styles.header}
             refreshing={isRefreshing}
             renderItem={({ item }) => (
               <MemeCard postData={item} theme={isWhiteMode} />

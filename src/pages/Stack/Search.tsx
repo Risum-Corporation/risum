@@ -75,11 +75,7 @@ export function Search() {
       setProfileList({});
       // Dizer para o usuário pesquisar algo
     } else {
-      const docs = await firebase
-        .firestore()
-        .collection("users")
-        .where("userName", "<=", profileQuery)
-        .get();
+      const docs = await firebase.firestore().collection("users").get();
 
       let newProfile = profileList;
 
@@ -116,11 +112,7 @@ export function Search() {
       setHyenaClanList({});
       // Dizer para o usuário pesquisar algo
     } else {
-      const docs = await firebase
-        .firestore()
-        .collection("hyenaClans")
-        .where("name", "<=", hyenaClanQuery)
-        .get();
+      const docs = await firebase.firestore().collection("hyenaClans").get();
 
       let newHyenaClan = hyenaClanList;
 

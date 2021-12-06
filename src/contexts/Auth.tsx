@@ -39,6 +39,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [signed, setSigned] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [isLoginFinished, setIsLoginFinished] = useState<boolean>();
 
   async function handleStateChanged(firebaseUser: any) {
     //Verifica se o usuário é anônimo, de forma a escapar da requisição
@@ -68,12 +69,14 @@ export const AuthProvider: React.FC = ({ children }) => {
     setIsAnonymous(false);
     setIsEmailVerified(firebaseUser.isEmailVerified);
 
-    await firebase
+    const user = firebase
       .firestore()
       .collection("users")
       .doc(firebaseUser.uid)
-      .get()
-      .then((doc) => {
+      .get();
+
+    if ((await user).exists) {
+      await user.then((doc) => {
         // Seguindo a interface User
         const userName = doc.data()?.userName;
         const tag = doc.data()?.tag;
@@ -105,6 +108,9 @@ export const AuthProvider: React.FC = ({ children }) => {
         // Navega para o StackRoutes
         setSigned(true);
       });
+    } else {
+      return setSigned(false);
+    }
   }
 
   async function loginAnonymously() {

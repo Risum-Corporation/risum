@@ -317,7 +317,7 @@ export function Profile({ route }: any) {
               isForeignUser={isForeignUser}
               followers={followers ? followers : 0}
               following={followingSet ? followingSet.length : 0}
-              isFollower={isFollowed} // Falta automatizar
+              isFollower={isFollowed}
               whenUnfollow={() => {
                 handleUnfollowProfile();
               }}
