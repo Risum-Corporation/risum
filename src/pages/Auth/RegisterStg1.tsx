@@ -16,7 +16,6 @@ import firebase from "../../database/firebaseConnection";
 import { TextInput } from "react-native-paper";
 
 import { useNavigation } from "@react-navigation/core";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 import { AntDesign } from "@expo/vector-icons";
@@ -32,7 +31,6 @@ export function RegisterStg1() {
   const [errorMessage, setErrorMessage] = useState<string>(
     "Email ou senha inválidos"
   );
-  const { signInWithGoogleAsync } = useContext(AuthContext);
 
   // Theme
   const { isWhiteMode } = useContext(StackContext);
@@ -49,8 +47,6 @@ export function RegisterStg1() {
     if (!email || !password) {
       return setIsEmailOrPasswordInvalid(true);
     }
-
-    await AsyncStorage.setItem("@risum:email", email);
 
     return await firebase
       .auth()
@@ -76,10 +72,6 @@ export function RegisterStg1() {
           setErrorMessage(`Ocorreu um erro: ${error.code}`);
         }
       });
-  }
-
-  async function handleRegisterWithGoogle() {
-    signInWithGoogleAsync();
   }
 
   return (
@@ -191,7 +183,7 @@ export function RegisterStg1() {
             </View>
 
             <View style={styles.socialRegister}>
-              <TouchableOpacity onPress={handleRegisterWithGoogle}>
+              <TouchableOpacity>
                 <AntDesign
                   name="google"
                   size={45}

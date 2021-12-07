@@ -22,10 +22,12 @@ import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 import { useNavigation } from "@react-navigation/native";
 import { SafeZoneView } from "../../styles/Theme";
+import AuthContext from "../../contexts/Auth";
 
 export function CreateHyenaClan() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
+  const { user, updateUser } = useContext(AuthContext);
 
   const [hyenaClanName, setHyenaClanName] = useState<string>();
   const [shield, setShield] = useState<string>();
@@ -112,12 +114,17 @@ export function CreateHyenaClan() {
             .update({
               hyenaClanId: id,
             })
+            .then(() => {
+              const newUser = { ...user!, hyenaClanId: id };
+
+              updateUser(newUser);
+
+              //Navega para o HyenaClan
+              return navigation.navigate("HyenaClan");
+            })
             .catch((error) => {
               console.log(`Ocorreu um erro: ${error.code}`);
             });
-
-          //Navega para o HyenaClan
-          return navigation.navigate("HyenaClan");
         });
     }
     // Usuário com foto de perfil
@@ -142,12 +149,21 @@ export function CreateHyenaClan() {
         })
         .then(async () => {
           // Coloca o ID da Alcateia no perfil de quem criou
-          await firebase.firestore().collection("users").doc(auth.uid).update({
-            hyenaClanId: id,
-          });
+          await firebase
+            .firestore()
+            .collection("users")
+            .doc(auth.uid)
+            .update({
+              hyenaClanId: id,
+            })
+            .then(() => {
+              const newUser = { ...user!, hyenaClanId: id };
 
-          //Navega para o HyenaClan
-          return navigation.navigate("HyenaClan");
+              updateUser(newUser);
+
+              //Navega para o HyenaClan
+              return navigation.navigate("HyenaClan");
+            });
         });
     }
   }

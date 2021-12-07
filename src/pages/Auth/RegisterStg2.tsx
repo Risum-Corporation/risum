@@ -105,6 +105,7 @@ export function RegisterStg2() {
           followers: [],
           likedMemes: [],
           savedMemes: [],
+          likedComments: [],
           hyenaClanId: null,
         })
         .then(() => {

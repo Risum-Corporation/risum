@@ -1,11 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import colors from "../../styles/colors";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -43,7 +37,7 @@ export function Profile({ route }: any) {
     route.params.userId
   );
 
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
 
   // Objeto de memes recebidos do Firestore
   const [memeList, setMemeList] = useState<Record<string, ReducedPostProps>>(
@@ -85,10 +79,9 @@ export function Profile({ route }: any) {
             const following = Number(followingList.length);
 
             // Verifica se o perfil já está sendo seguido
-            if (followingList.indexOf(currentUserId) != null) {
+            if (followingList.indexOf(currentUserId) >= 0) {
               setIsFollowed(true);
             } else {
-              console.log(followingList);
               setIsFollowed(false);
             }
 
@@ -111,6 +104,8 @@ export function Profile({ route }: any) {
         setUserAvatar(user.avatar!);
         setUserCover(user.cover!);
         setUserTag(user.tag);
+        setFollowers(user.followers.length);
+        setFollowing(user.following.length);
         setIsForeignUser(false);
         setCurrentUserId(user.uid);
         setLoading(false);

@@ -30,7 +30,14 @@ export function HCInfo({
         />
       </View>
       <View style={styles.headerContainer}>
-        <Image source={{ uri: hyenaShield }} style={styles.wpIcon} />
+        <Image
+          source={
+            hyenaShield
+              ? { uri: hyenaShield }
+              : require("../assets/risumDefault.png")
+          }
+          style={styles.wpIcon}
+        />
         <View style={styles.info}>
           <View>
             <View style={styles.lineText}>
@@ -127,6 +134,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop: -35,
+    borderRadius: 20,
     borderColor: colors.background,
     alignItems: "center",
     position: "absolute",

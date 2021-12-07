@@ -205,6 +205,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
 
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
+
   return (
     <SafeAreaView>
       <View style={styles.container}>

@@ -13,6 +13,8 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 
 import firebase from "../database/firebaseConnection";
 
+import { Video } from "expo-av";
+
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 
@@ -202,10 +204,27 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
     Sharing.shareAsync((await meme).uri, options); // And share your file !
   }
 
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
+        {postData.isVideo ? (
+          <Video
+            ref={video}
+            style={styles.memeUrl}
+            source={{
+              uri: postData.memeUrl,
+            }}
+            useNativeControls
+            resizeMode="contain"
+            isLooping
+            onPlaybackStatusUpdate={(status) => setStatus(() => status)}
+          />
+        ) : (
+          <Image style={styles.memeUrl} source={{ uri: postData.memeUrl }} />
+        )}
       </View>
 
       <View

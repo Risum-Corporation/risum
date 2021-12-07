@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect } from "react";
 
 import * as Google from "expo-google-app-auth";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import firebase from "../database/firebaseConnection";
 
 export interface User {
@@ -16,6 +15,7 @@ export interface User {
   following: string[]; // Array de IDs dos usuários seguidos
   likedMemes: string[]; // Array de IDs dos memes curtidos
   savedMemes: string[]; // Array de IDs dos memes salvos
+  likedComments: string[]; // Array de IDs dos comentários curtidos
 }
 
 interface AuthContextData {
@@ -28,7 +28,7 @@ interface AuthContextData {
   login(firebaseUser: any): void;
   loginAnonymously(): void;
   signOut(): void;
-  signInWithGoogleAsync(): void;
+  updateUser(newUser: User): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -87,6 +87,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         const followers = doc.data()?.followers;
         const likedMemes = doc.data()?.likedMemes;
         const savedMemes = doc.data()?.savedMemes;
+        const likedComments = doc.data()?.likedComments;
         const uid = firebaseUser.uid;
 
         setUser({
@@ -100,6 +101,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           followers,
           likedMemes,
           savedMemes,
+          likedComments,
         });
 
         // Se você vir essa mensagem no console, quer dizer que tudo deu certo
@@ -134,9 +136,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   async function signOut() {
-    AsyncStorage.clear().then(() => {
-      setUser(null);
-    });
+    setUser(null);
+
     //Ajusta as condições de estado do usuário
     setIsAnonymous(false);
     setIsEmailVerified(false);
@@ -150,25 +151,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     await firebase.auth().signOut();
   }
 
-  // Melhorar isso, ainda não funciona
-  async function signInWithGoogleAsync() {
-    try {
-      const result = await Google.logInAsync({
-        androidClientId:
-          "402831587288-o8sm81qel545r1oinhs21gvmgq5489fh.apps.googleusercontent.com",
-        iosClientId:
-          "402831587288-537l0p9v2r574up5tm49937c4bkqarru.apps.googleusercontent.com",
-        scopes: ["profile", "email"],
-      });
-
-      if (result.type === "success") {
-        return result.accessToken;
-      } else {
-        return { cancelled: true };
-      }
-    } catch (e) {
-      return { error: true };
-    }
+  function updateUser(newUser: User) {
+    setUser(newUser);
   }
 
   return (
@@ -182,7 +166,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         login,
         loginAnonymously,
         signOut,
-        signInWithGoogleAsync,
+        updateUser,
       }}
     >
       {children}

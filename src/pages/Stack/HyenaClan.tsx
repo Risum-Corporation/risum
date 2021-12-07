@@ -93,6 +93,8 @@ export function HyenaClan() {
     // Zera o Objeto com os memes
     setMemeList({});
 
+    loadHCMemes();
+
     setIsRefreshing(false);
     setLoading(false);
   }

@@ -189,7 +189,7 @@ export function AddMeme() {
                     if (memeTitle && tags) {
                       if (meme && user) {
                         uploadImage([meme, user?.uid, memeTitle, tags])
-                          .then((url) => {
+                          .then(async (url) => {
                             Alert.alert("Sucesso");
                             setMeme(undefined);
                             setMemeTitle(undefined);
@@ -201,7 +201,7 @@ export function AddMeme() {
                               Math.random().toString(36).substr(2, 9) +
                               Math.random().toString(36).substr(2, 9);
 
-                            firebase
+                            await firebase
                               .firestore()
                               .collection("memes")
                               .doc(memeId)

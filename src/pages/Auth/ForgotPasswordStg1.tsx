@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
-import { SafeAreaView, Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import colors from "../../styles/colors";
 import fonts from "../../styles/fonts";
 import { ConfirmButton } from "../../components/ConfirmButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import StackContext from "../../contexts/Stack";
 import { TextInput } from "react-native-paper";
@@ -34,7 +33,6 @@ export function ForgotPasswordStg1() {
       .auth()
       .sendPasswordResetEmail(email)
       .then(async () => {
-        await AsyncStorage.setItem("@risum:email", email);
         navigation.navigate("ForgotPasswordStg2");
       })
       .catch((error) => {
@@ -56,61 +54,61 @@ export function ForgotPasswordStg1() {
     <SafeZoneView
       theme={isWhiteMode}
       content={
-          <View style={styles.wrapper}>
-            <View style={styles.heading}>
-              <Text
-                style={[
-                  styles.title,
-                  { color: isWhiteMode ? colors.whiteLight : colors.white },
-                ]}
-              >
-                Digite seu{"\n"}Email
-              </Text>
-            </View>
+        <View style={styles.wrapper}>
+          <View style={styles.heading}>
+            <Text
+              style={[
+                styles.title,
+                { color: isWhiteMode ? colors.whiteLight : colors.white },
+              ]}
+            >
+              Digite seu{"\n"}Email
+            </Text>
+          </View>
 
-            <View style={styles.form}>
-              <TextInput
-                label="Email"
-                mode={"flat"}
-                onChangeText={handleEmailInputChange}
-                placeholder="usuario@mail.com"
-                placeholderTextColor={
-                  isWhiteMode
-                    ? colors.placeholderTextLight
-                    : colors.placeholderText
-                }
-                underlineColor={"transparent"}
-                style={[
-                  isWhiteMode
-                    ? { backgroundColor: colors.lightBackgroundLight }
-                    : {
-                        backgroundColor: colors.lightBackground,
-                        color: colors.white,
-                        textDecorationColor: colors.white,
-                      },
-                  styles.input,
-                ]}
-                selectionColor={colors.divider}
-                theme={{
-                  colors: {
-                    text: isWhiteMode ? colors.whiteLight : colors.white,
-                    primary: isWhiteMode ? colors.greenLight : colors.green,
-                    placeholder: isWhiteMode ? colors.whiteLight : colors.white,
-                  },
-                }}
-              />
+          <View style={styles.form}>
+            <TextInput
+              label="Email"
+              mode={"flat"}
+              onChangeText={handleEmailInputChange}
+              placeholder="usuario@mail.com"
+              placeholderTextColor={
+                isWhiteMode
+                  ? colors.placeholderTextLight
+                  : colors.placeholderText
+              }
+              underlineColor={"transparent"}
+              style={[
+                isWhiteMode
+                  ? { backgroundColor: colors.lightBackgroundLight }
+                  : {
+                      backgroundColor: colors.lightBackground,
+                      color: colors.white,
+                      textDecorationColor: colors.white,
+                    },
+                styles.input,
+              ]}
+              selectionColor={colors.divider}
+              theme={{
+                colors: {
+                  text: isWhiteMode ? colors.whiteLight : colors.white,
+                  primary: isWhiteMode ? colors.greenLight : colors.green,
+                  placeholder: isWhiteMode ? colors.whiteLight : colors.white,
+                },
+              }}
+            />
 
-              {isEmailOrUsernameInvalid && (
-                <Text style={styles.redAdvertisement}>{errorMessage}</Text>
-              )}
-            </View>
-            <View style={styles.buttonBox}>
-              <ConfirmButton
-                theme={isWhiteMode}
-                title="Confirmar"
-                onPress={handleConfirm}
-              />
-            </View>
+            {isEmailOrUsernameInvalid && (
+              <Text style={styles.redAdvertisement}>{errorMessage}</Text>
+            )}
+          </View>
+          <View style={styles.buttonBox}>
+            <ConfirmButton
+              theme={isWhiteMode}
+              title="Confirmar"
+              onPress={handleConfirm}
+            />
+          </View>
         </View>
       }
     />

@@ -12,14 +12,10 @@ import { ConfirmButton } from "../../../../components/ConfirmButton";
 import colors from "../..//../../styles/colors";
 import fonts from "../..//../../styles/fonts";
 
-import { TextInput } from "react-native-paper";
-
 import firebase from "../..//../../database/firebaseConnection";
 import { AddAvatar } from "../..//../../components/AddAvatar";
 import * as ImagePicker from "expo-image-picker";
 
-import { RegisterProgressBar } from "../..//../../components/RegisterProgressBar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 
 import StackContext from "../..//../../contexts/Stack";

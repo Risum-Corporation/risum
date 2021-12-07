@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, Platform, Animated } from "react-native";
+import { FlatList, StyleSheet, Platform, Animated, View } from "react-native";
 
 import { PostProps } from "../../database/interfaces";
 
@@ -107,7 +107,7 @@ export function HypeTrain() {
           <Animated.View
             style={{
               transform: [{ translateY }],
-              zIndex: 150,
+              zIndex: 100,
               position: "absolute",
               width: "100%",
               marginTop: Platform.OS === "ios" ? 47 : 0,
@@ -116,22 +116,24 @@ export function HypeTrain() {
             <TopBar name="HypeTrain" theme={isWhiteMode} />
           </Animated.View>
 
-          <FlatList
-            data={Object.values(memeList)}
-            keyExtractor={(post) => String(post.id)}
-            onEndReached={() => loadPage()}
-            onEndReachedThreshold={0.1}
-            onRefresh={refreshList}
-            showsVerticalScrollIndicator={false}
-            refreshing={isRefreshing}
-            renderItem={({ item }) => (
-              <MemeCard postData={item} theme={isWhiteMode} />
-            )}
-            maxToRenderPerBatch={5}
-            onScroll={(e) => {
-              scrollY.setValue(e.nativeEvent.contentOffset.y);
-            }}
-          />
+          <View style={styles.memeList}>
+            <FlatList
+              data={Object.values(memeList)}
+              keyExtractor={(post) => String(post.id)}
+              onEndReached={() => loadPage()}
+              onEndReachedThreshold={0.1}
+              onRefresh={refreshList}
+              showsVerticalScrollIndicator={false}
+              refreshing={isRefreshing}
+              renderItem={({ item }) => (
+                <MemeCard postData={item} theme={isWhiteMode} />
+              )}
+              maxToRenderPerBatch={5}
+              onScroll={(e) => {
+                scrollY.setValue(e.nativeEvent.contentOffset.y);
+              }}
+            />
+          </View>
         </>
       }
     />
@@ -139,7 +141,7 @@ export function HypeTrain() {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    marginBottom: 10,
+  memeList: {
+    marginTop: 120,
   },
 });
