@@ -30,7 +30,11 @@ export function Drawer({ theme, ...props }: DrawerProps) {
       <DrawerContentScrollView {...props}>
         <View>
           <Image
-            source={require("../assets/wallpaper.jpg")}
+            source={
+              user?.cover
+                ? { uri: user.cover }
+                : require("../assets/wallpaper.jpg")
+            }
             style={styles.userWallpaper}
           />
           <View style={styles.perfilInfo}>

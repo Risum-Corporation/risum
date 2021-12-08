@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
-import { FlatList, StyleSheet, View, SafeAreaView } from "react-native";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { FlatList, StyleSheet, View, SafeAreaView, Alert } from "react-native";
+
+import firebase from "../../database/firebaseConnection";
+
+import { CommentProps } from "../../database/interfaces";
 
 import StackContext from "../../contexts/Stack";
 import { CommentCard } from "../../components/CommentCard";
@@ -8,20 +12,71 @@ import { SafeZoneView } from "../../styles/Theme";
 import { TextInput } from "react-native-paper";
 import colors from "../../styles/colors";
 import { ConfirmButton } from "../../components/ConfirmButton";
+import AuthContext from "../../contexts/Auth";
 
-export function Comments() {
+// route.params.memeId para dinamizar a tela de comentários para vários memes diferentes
+export function Comments({ route }: any) {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [currentMemeId, setCurrentMemeId] = useState<string>(
+    route.params.memeId
+  );
 
   // Dados do comentário a ser digitado
   const [commentInput, setCommentInput] = useState<string>();
 
+  // Objeto de comentários recebidos do Firestore
+  const [commentList, setCommentList] = useState<Record<string, CommentProps>>(
+    {}
+  );
+
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  function loadPage(pageNumber = page) {}
+  const { user } = useContext(AuthContext);
+
+  async function loadPage(pageNumber = page) {
+    // Receber memes salvos pelo usuário
+    const docs = await firebase
+      .firestore()
+      .collection("comments")
+      .where("memeId", "==", currentMemeId)
+      .get();
+
+    // Verifica se existem de fato comentários para aquele meme
+    if (docs) {
+      let newComments = { ...commentList };
+
+      // Percorre os documentos (comentários) um a um
+      docs.forEach((doc) => {
+        // Recebe cada uma das informações do comentário no Firestore
+        const id = doc.data().id;
+        const memeId = doc.data().memeId;
+        const authorId = doc.data().authorId;
+        const likes = doc.data().likes;
+        const content = doc.data().content;
+
+        // Atualiza a lista de memes, acrescentando UM novo objeto referente a UM novo meme
+        newComments = {
+          ...newComments,
+          [id]: {
+            id,
+            memeId,
+            authorId,
+            likes,
+            content,
+          },
+        };
+      });
+
+      const totalItems = Object.keys(commentList).length;
+      setCommentList(newComments);
+      setTotal(Math.floor(totalItems / 5));
+      setPage(pageNumber + 1);
+    }
+  }
 
   useEffect(() => {
     loadPage();
@@ -31,21 +86,59 @@ export function Comments() {
     setRefreshing(true);
     setLoading(true);
 
+    setCommentList({});
     loadPage(1);
 
     setRefreshing(false);
     setLoading(false);
   }
 
-  function handlePostComment() {}
+  async function handlePostComment() {
+    // Verifica se o comentário é válido
+    if (
+      commentInput != "" &&
+      commentInput != null &&
+      commentInput.replace(/\s/g, "").length
+    ) {
+      // ID única do comentário com 27 caracteres (9 + 9 + 9)
+      const commentId =
+        Math.random().toString(36).substr(2, 9) +
+        Math.random().toString(36).substr(2, 9) +
+        Math.random().toString(36).substr(2, 9);
+
+      await firebase
+        .firestore()
+        .collection("comments")
+        .doc(commentId)
+        .set({
+          id: commentId,
+          memeId: currentMemeId,
+          authorId: user?.uid,
+          likes: 0,
+          content: commentInput,
+        })
+        .then(async () => {
+          await firebase
+            .firestore()
+            .collection("memes")
+            .doc(currentMemeId)
+            .update({ comments: firebase.firestore.FieldValue.increment(1) })
+            .then(() => {
+              Alert.alert("Comentário postado com sucesso!");
+              refreshList();
+              setCommentInput("");
+            });
+        });
+    }
+  }
 
   return (
     <SafeZoneView
       theme={isWhiteMode}
       content={
         <View style={styles.wrapper}>
-          {/* <FlatList
-            data={comments}
+          <FlatList
+            data={Object.values(commentList)}
             keyExtractor={(post) => String(post.id)}
             onEndReached={() => loadPage()}
             onEndReachedThreshold={0.1}
@@ -56,7 +149,7 @@ export function Comments() {
               <CommentCard postData={item} theme={isWhiteMode} />
             )}
             maxToRenderPerBatch={5}
-          /> */}
+          />
           <SafeAreaView style={styles.createCommentBox}>
             <TextInput
               mode={"flat"}
@@ -108,7 +201,7 @@ export function Comments() {
 const styles = StyleSheet.create({
   wrapper: {
     justifyContent: "center",
-    alignContent: "center",
+    alignContent: "space-between",
 
     maxWidth: "100%",
   },

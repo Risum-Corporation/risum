@@ -26,7 +26,7 @@ import AuthContext from "../../../../contexts/Auth";
 export function ChangeCover() {
   const [cover, setCover] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -93,9 +93,10 @@ export function ChangeCover() {
         })
         .then(() => {
           //Navega para a StackRoutes
-          Alert.alert(
-            "Sua foto de capa foi alterada com sucesso 😄\nPode ser necessário o app para que suas alterações surtam efeito"
-          );
+          Alert.alert("Sua foto de capa foi alterada com sucesso 😄");
+
+          updateUser({ ...user!, cover: userCover });
+
           navigation.navigate("Feed");
         });
     } else {

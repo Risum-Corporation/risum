@@ -1,7 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { SimpleText } from "../styles/Theme";
+import { SafeZoneView, SimpleText } from "../styles/Theme";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
@@ -10,6 +17,8 @@ import firebase from "../database/firebaseConnection";
 
 import { CommentProps } from "../database/interfaces";
 import AuthContext from "../contexts/Auth";
+import { useNavigation } from "@react-navigation/native";
+import StackContext from "../contexts/Stack";
 
 interface CommentCardProps {
   postData: CommentProps;
@@ -17,6 +26,7 @@ interface CommentCardProps {
 }
 
 export function CommentCard({ postData, theme }: CommentCardProps) {
+  const navigation = useNavigation();
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
 
   // Propriedades da pessoa que postou o comentário
@@ -25,13 +35,16 @@ export function CommentCard({ postData, theme }: CommentCardProps) {
 
   const [likes, setLikes] = useState<number>();
 
+  // Theme
+  const { isWhiteMode } = useContext(StackContext);
+
   const { user } = useContext(AuthContext);
 
   async function toggleLikePress() {
     setIsLikePressed(!isLikePressed);
 
     if (isLikePressed) {
-      // REMOVE um like no meme
+      // REMOVE um like do comentário
       await firebase
         .firestore()
         .collection("comments")
@@ -53,7 +66,7 @@ export function CommentCard({ postData, theme }: CommentCardProps) {
         .doc(user?.uid)
         .update({ likedComments: user?.likedComments });
     } else {
-      // ADICIONA um like no meme
+      // ADICIONA um like no comentário
       await firebase
         .firestore()
         .collection("comments")
@@ -64,7 +77,7 @@ export function CommentCard({ postData, theme }: CommentCardProps) {
           setLikes(postData.likes);
         });
 
-      // Atualiza a lista de memes curtidos em cache
+      // Atualiza a lista de comentários curtidos em cache
       user?.likedMemes.push(postData.id);
 
       await firebase
@@ -124,72 +137,127 @@ export function CommentCard({ postData, theme }: CommentCardProps) {
     verifyBehaviourOnComment();
   }, []);
 
-  return (
-    <View>
-      <View
-        style={
-          theme
-            ? [styles.wrapper, { backgroundColor: colors.lightBackgroundLight }]
-            : [styles.wrapper, { backgroundColor: colors.lightBackground }]
-        }
-      >
-        <View>
-          <SimpleText theme={theme} title={postData.content} />
-          <TouchableOpacity>
-            <Image
-              source={
-                avatar ? { uri: avatar } : require("../assets/risumDefault.png")
-              }
-              style={styles.authorImage}
-            />
-            <Text
-              style={
-                theme
-                  ? [styles.authorName, { color: colors.whiteLight }]
-                  : [styles.authorName, { color: colors.white }]
-              }
-            >
-              {author}
-            </Text>
-          </TouchableOpacity>
-        </View>
+  function deleteComment() {
+    Alert.alert(
+      "Você realmente deseja apagar este comentário?",
+      "Esta ação não poderá ser desfeita!",
+      [
+        {
+          text: "Não",
+          style: "cancel",
+        },
+        {
+          text: "Sim",
+          onPress: async () => {
+            await firebase
+              .firestore()
+              .collection("comments")
+              .doc(postData.id)
+              .delete()
+              .then(async () => {
+                await firebase
+                  .firestore()
+                  .collection("memes")
+                  .doc(postData.memeId)
+                  .update({
+                    comments: firebase.firestore.FieldValue.increment(-1),
+                  })
+                  .then(() => {
+                    Alert.alert("Comentário deletado com sucesso");
+                  });
+              });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }
 
-        <View style={styles.likeBox}>
-          <TouchableOpacity
-            style={{ marginHorizontal: 5 }}
-            onPress={toggleLikePress}
-          >
-            <AntDesign
-              name={isLikePressed ? "like1" : "like2"}
-              size={24}
-              color={isLikePressed ? colors.green : colors.white}
-            />
-          </TouchableOpacity>
-          <Text
+  return (
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <>
+          <View
             style={
-              theme ? { color: colors.whiteLight } : { color: colors.white }
+              theme
+                ? [
+                    styles.wrapper,
+                    { backgroundColor: colors.lightBackgroundLight },
+                  ]
+                : [styles.wrapper, { backgroundColor: colors.lightBackground }]
             }
           >
-            {likes}
-          </Text>
-        </View>
-      </View>
+            <View style={styles.content}>
+              <SimpleText theme={theme} title={postData.content} size={20} />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Profile", { userId: postData.authorId });
+                }}
+                style={styles.authorBox}
+              >
+                <Image
+                  source={
+                    avatar
+                      ? { uri: avatar }
+                      : require("../assets/risumDefault.png")
+                  }
+                  style={styles.authorImage}
+                />
+                <Text
+                  style={
+                    theme
+                      ? [styles.authorName, { color: colors.whiteLight }]
+                      : [styles.authorName, { color: colors.white }]
+                  }
+                >
+                  {author}
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-      <View // Divider between comments
-        style={[
-          {
-            borderBottomWidth: 1,
-            marginVertical: 10,
-            marginHorizontal: 15,
-          },
-          {
-            borderBottomColor: theme
-              ? colors.placeholderTextLight
-              : colors.divider,
-          },
-        ]}
-      />
-    </View>
+            <View style={styles.buttonsBox}>
+              <TouchableOpacity style={styles.button} onPress={toggleLikePress}>
+                <AntDesign
+                  name={isLikePressed ? "like1" : "like2"}
+                  size={24}
+                  color={isLikePressed ? colors.green : colors.white}
+                />
+              </TouchableOpacity>
+              <Text
+                style={
+                  theme ? { color: colors.whiteLight } : { color: colors.white }
+                }
+              >
+                {likes}
+              </Text>
+
+              {/* Exibe o botão de apagar caso o dono do comentário seja o usuário local */}
+              {postData.authorId == user?.uid && (
+                <TouchableOpacity style={styles.button} onPress={deleteComment}>
+                  <Ionicons name="trash" size={24} color={colors.pastelRed} />
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+
+          <View // Divider between comments
+            style={[
+              {
+                borderBottomWidth: 1,
+                marginVertical: 10,
+                marginHorizontal: 15,
+              },
+              {
+                borderBottomColor: theme
+                  ? colors.placeholderTextLight
+                  : colors.divider,
+              },
+            ]}
+          />
+        </>
+      }
+    ></SafeZoneView>
   );
 }
 
@@ -210,13 +278,26 @@ const styles = StyleSheet.create({
 
     maxWidth: 90,
   },
-  likeBox: {
+  buttonsBox: {
     flexDirection: "row",
     alignItems: "center",
   },
   authorImage: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
     borderRadius: 10,
+    marginRight: 5,
+  },
+  authorBox: {
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  content: {
+    padding: 2.5,
+    alignContent: "center",
+    maxWidth: 250,
+  },
+  button: {
+    marginHorizontal: 5,
   },
 });

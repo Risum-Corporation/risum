@@ -71,7 +71,6 @@ export function SavedMemes() {
     setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
-    setLoading(false);
   }
 
   function refreshList() {
@@ -89,7 +88,6 @@ export function SavedMemes() {
 
   useEffect(() => {
     if (user?.savedMemes) {
-      setSavedMemes(user.savedMemes);
       loadPage();
     }
   }, []);
@@ -136,7 +134,11 @@ export function SavedMemes() {
                 showsVerticalScrollIndicator={false}
                 maxToRenderPerBatch={5}
                 renderItem={({ item }) => (
-                  <MemeCardSecondary postData={item} theme={isWhiteMode} />
+                  <MemeCardSecondary
+                    postData={item}
+                    theme={isWhiteMode}
+                    isMemeAuthor={false}
+                  />
                 )}
               />
             </View>

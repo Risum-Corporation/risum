@@ -105,7 +105,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
     setIsLikePressed(!isLikePressed);
 
     if (isLikePressed) {
-      // REMOVE um like no meme
+      // REMOVE um like do meme
       await firebase
         .firestore()
         .collection("memes")
@@ -264,7 +264,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              navigation.navigate("Comments");
+              navigation.navigate("Comments", { memeId: postData.id });
             }}
           >
             <Ionicons
@@ -321,7 +321,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
               navigation.navigate("Profile", { userId: postData.authorId });
             }}
             onLongPress={() => {
-              Alert.alert(`ID do Meme: ${postData.id}}`);
+              Alert.alert(`ID do Meme: ${postData.id}`);
             }}
           >
             <Image

@@ -1,5 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import colors from "../../styles/colors";
 
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -37,7 +43,7 @@ export function Profile({ route }: any) {
     route.params.userId
   );
 
-  const { user, updateUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   // Objeto de memes recebidos do Firestore
   const [memeList, setMemeList] = useState<Record<string, ReducedPostProps>>(
@@ -420,7 +426,7 @@ export function Profile({ route }: any) {
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.content}>
+          <ScrollView style={styles.content}>
             {loading ? (
               <Loading />
             ) : (
@@ -438,11 +444,15 @@ export function Profile({ route }: any) {
                 showsVerticalScrollIndicator={false}
                 maxToRenderPerBatch={5}
                 renderItem={({ item }) => (
-                  <MemeCardSecondary postData={item} theme={isWhiteMode} />
+                  <MemeCardSecondary
+                    postData={item}
+                    theme={isWhiteMode}
+                    isMemeAuthor={!isForeignUser}
+                  />
                 )}
               />
             )}
-          </View>
+          </ScrollView>
           <GoBackButton
             theme={isWhiteMode}
             onPress={() => navigation.goBack()}

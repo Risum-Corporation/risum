@@ -26,48 +26,55 @@ export function ProfileSettings() {
   const { isWhiteMode } = useContext(StackContext);
 
   return (
-    <SafeZoneView theme={isWhiteMode} content={
-    <View>
-      <GoBackButton theme={isWhiteMode} onPress={() => navigation.goBack()} />
-      <View style={styles.heading}>
-        <Text
-          style={[
-            styles.title,
-            isWhiteMode
-              ? { color: colors.greenLight }
-              : { color: colors.green },
-          ]}
-        >
-          Perfil
-        </Text>
-        <View style={styles.options}>
-          <SettingsButton
+    <SafeZoneView
+      theme={isWhiteMode}
+      content={
+        <View>
+          <GoBackButton
             theme={isWhiteMode}
-            icon="input"
-            title="Trocar nome"
-            light={colors.greenLight}
-            dark={colors.green}
-            goTo=""
+            onPress={() => navigation.goBack()}
           />
-          <SettingsButton
-            theme={isWhiteMode}
-            icon="add-a-photo"
-            title="Mudar foto"
-            light={colors.yellowLight}
-            dark={colors.yellow}
-            goTo={!isAnonymous ? "ChangeAvatar" : "NoAccount"}
-          />
-          <SettingsButton
-            theme={isWhiteMode}
-            icon="photo-size-select-actual"
-            title="Alterar Capa"
-            light={colors.pinkLight}
-            dark={colors.pink}
-            goTo={!isAnonymous ? "ChangeCover" : "NoAccount"}
-          />
+          <View style={styles.heading}>
+            <Text
+              style={[
+                styles.title,
+                isWhiteMode
+                  ? { color: colors.greenLight }
+                  : { color: colors.green },
+              ]}
+            >
+              Perfil
+            </Text>
+            <View style={styles.options}>
+              <SettingsButton
+                theme={isWhiteMode}
+                icon="input"
+                title="Trocar nome"
+                light={colors.greenLight}
+                dark={colors.green}
+                goTo={!isAnonymous ? "ChangeUsername" : "NoAccount"}
+              />
+              <SettingsButton
+                theme={isWhiteMode}
+                icon="add-a-photo"
+                title="Mudar foto"
+                light={colors.yellowLight}
+                dark={colors.yellow}
+                goTo={!isAnonymous ? "ChangeAvatar" : "NoAccount"}
+              />
+              <SettingsButton
+                theme={isWhiteMode}
+                icon="photo-size-select-actual"
+                title="Alterar Capa"
+                light={colors.pinkLight}
+                dark={colors.pink}
+                goTo={!isAnonymous ? "ChangeCover" : "NoAccount"}
+              />
+            </View>
+          </View>
         </View>
-      </View>
-      </View>}/>
+      }
+    />
   );
 }
 

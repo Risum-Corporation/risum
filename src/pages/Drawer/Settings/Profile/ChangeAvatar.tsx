@@ -26,7 +26,7 @@ import AuthContext from "../../../../contexts/Auth";
 export function ChangeAvatar() {
   const [avatar, setAvatar] = useState<string>("");
   const { isWhiteMode } = useContext(StackContext);
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -94,6 +94,9 @@ export function ChangeAvatar() {
         .then(() => {
           //Navega para a StackRoutes
           Alert.alert("Sua foto foi alterada com sucesso 😄");
+
+          updateUser({ ...user!, avatar: userPicture });
+
           navigation.navigate("Feed");
         });
     } else {

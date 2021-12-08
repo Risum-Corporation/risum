@@ -119,7 +119,7 @@ export function Search() {
       docs.forEach(async (doc) => {
         const name = doc.data().name;
 
-        if (name.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1) {
+        if (name.toLowerCase().indexOf(hyenaClanQuery?.toLowerCase()) > -1) {
           // Informações do perfil
           const id = doc.data().id;
           const name = doc.data().name;

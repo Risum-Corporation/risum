@@ -31,7 +31,9 @@ export function HypeTrain() {
 
     // Receber memes de cada perfil seguido pelo usuário e salvar na memeList
     const docs = await firebase.firestore().collection("memes").get();
+
     let newMemes = { ...memeList };
+
     // Percorre os documentos (memes) um a um
     docs.forEach((doc) => {
       // Recebe cada uma das informações do meme no Firestore
@@ -81,10 +83,10 @@ export function HypeTrain() {
     setIsRefreshing(true);
     setLoading(true);
 
-    loadPage(1);
-
     // Zera o Objeto com os memes
     setMemeList({});
+
+    loadPage(1);
 
     setIsRefreshing(false);
     setLoading(false);
@@ -128,7 +130,7 @@ export function HypeTrain() {
               renderItem={({ item }) => (
                 <MemeCard postData={item} theme={isWhiteMode} />
               )}
-              maxToRenderPerBatch={5}
+              //maxToRenderPerBatch={5}
               onScroll={(e) => {
                 scrollY.setValue(e.nativeEvent.contentOffset.y);
               }}

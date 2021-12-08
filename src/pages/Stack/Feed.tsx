@@ -94,7 +94,6 @@ export function Feed() {
           if (shouldSet) {
             const followingList = [...doc.data()?.following];
             setFollowing(followingList);
-            console.log(`Deu boa: ${followingList}`);
             setNotFollowingUsers(false);
           }
         })

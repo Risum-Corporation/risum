@@ -80,6 +80,8 @@ export function AddMeme() {
       .child(`media/memes/${uid}/${fileName.concat(` - ${fileTags}`)}`); // User name + tag?
 
     await ref.put(blob);
+    setMemeTitle("");
+    setTags("");
     return await ref.getDownloadURL();
   }
 

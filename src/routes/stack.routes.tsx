@@ -25,6 +25,7 @@ import { AboutUsSettings } from "../pages/Drawer/Settings/AboutUsSettings";
 import { RisumPoliciesSettings } from "../pages/Drawer/Settings/RisumPoliciesSettings";
 import AuthContext from "../contexts/Auth";
 import { Search } from "../pages/Stack/Search";
+import { ChangeUsername } from "../pages/Drawer/Settings/Profile/ChangeUsername";
 import { ChangeAvatar } from "../pages/Drawer/Settings/Profile/ChangeAvatar";
 import { ForgotPasswordStg1 } from "../pages/Auth/ForgotPasswordStg1";
 import { ForgotPasswordStg2 } from "../pages/Auth/ForgotPasswordStg2";
@@ -216,6 +217,7 @@ const AppRoutes: React.FC = () => {
             component={ProfileSettings}
           />
         )}
+        <stackRoutes.Screen name="ChangeUsername" component={ChangeUsername} />
         <stackRoutes.Screen name="ChangeAvatar" component={ChangeAvatar} />
         <stackRoutes.Screen name="ChangeCover" component={ChangeCover} />
 

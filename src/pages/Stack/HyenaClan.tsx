@@ -149,6 +149,7 @@ export function HyenaClan() {
               <TopBar name={hyenaClan.name} theme={isWhiteMode} />
             </Animated.View>
 
+            <View style={styles.memeList}></View>
             <FlatList
               data={Object.values(memeList)}
               ListHeaderComponent={
@@ -166,7 +167,6 @@ export function HyenaClan() {
               onEndReachedThreshold={0.1}
               onRefresh={refreshList}
               showsVerticalScrollIndicator={false}
-              ListHeaderComponentStyle={styles.header}
               refreshing={isRefreshing}
               renderItem={({ item }) => (
                 <MemeCard postData={item} theme={isWhiteMode} />
@@ -187,14 +187,14 @@ export function HyenaClan() {
 
 const styles = StyleSheet.create({
   HCInfoContainer: {
-    marginTop: 15,
+    marginTop: 120,
   },
   text: {
     fontFamily: fonts.text,
     color: colors.white,
     fontSize: 32,
   },
-  header: {
-    marginBottom: 10,
+  memeList: {
+    marginTop: 120,
   },
 });

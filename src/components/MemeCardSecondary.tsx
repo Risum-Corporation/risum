@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Share,
   Alert,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -28,13 +27,17 @@ import AuthContext from "../contexts/Auth";
 interface MemeCardSecondaryProps {
   theme: boolean;
   postData: ReducedPostProps;
+  isMemeAuthor: boolean;
 }
 
-export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
+export function MemeCardSecondary({
+  theme,
+  postData,
+  isMemeAuthor,
+}: MemeCardSecondaryProps) {
   const [isLikePressed, setIsLikePressed] = useState<boolean>();
   const [isBookmarkPressed, setIsBookmarkPressed] = useState<boolean>();
   const [likes, setLikes] = useState<number>();
-  const [comments, setComments] = useState<number>();
 
   const navigation = useNavigation();
 
@@ -73,10 +76,8 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
         .get()
         .then((doc) => {
           const postLikes = Number(doc.data()?.likes);
-          const postComments = Number(doc.data()?.comments);
 
           setLikes(postLikes);
-          setComments(postComments);
         });
     }
 
@@ -176,15 +177,6 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
   }
 
   async function shareMeme() {
-    // const shareOptions = {
-    //   message: `Se liga nesse meme do Risum 😂: ${postData.memeUrl}`,
-    // };
-    // try {
-    //   await Share.share(shareOptions);
-    // } catch (error) {
-    //   console.log("Erro no compartilhamento => ", error);
-    // }
-
     let meme = FileSystem.downloadAsync(
       postData.memeUrl,
       FileSystem.documentDirectory + ".jpg"
@@ -202,6 +194,33 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
     };
 
     Sharing.shareAsync((await meme).uri, options); // And share your file !
+  }
+
+  function deleteMeme() {
+    Alert.alert(
+      "Você realmente deseja apagar este meme?",
+      "Esta ação não poderá ser desfeita!",
+      [
+        {
+          text: "Não",
+          style: "cancel",
+        },
+        {
+          text: "Sim",
+          onPress: async () => {
+            await firebase
+              .firestore()
+              .collection("memes")
+              .doc(postData.id)
+              .delete()
+              .then(() => {
+                Alert.alert("Meme deletado com sucesso");
+              });
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   }
 
   const video = React.useRef(null);
@@ -301,12 +320,18 @@ export function MemeCardSecondary({ theme, postData }: MemeCardSecondaryProps) {
               color={theme ? colors.whiteLight : colors.white}
             />
           </TouchableOpacity>
+
+          {isMemeAuthor && (
+            <TouchableOpacity style={styles.button} onPress={deleteMeme}>
+              <Ionicons name="trash" size={24} color={colors.pastelRed} />
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={styles.userInfoContainer}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Profile", { userId: postData.authorId });
+              navigation.navigate("Comments", { memeId: postData.id });
             }}
             onLongPress={() => {
               Alert.alert(`ID do Meme: ${postData.id}`);
