@@ -49,6 +49,9 @@ export function Login() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (cred) => {
+        // Inicia a persistência do usuário
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
         await firebase
           .firestore()
           .collection("users")
@@ -63,11 +66,6 @@ export function Login() {
               if (!userName || !tag) {
                 return navigation.navigate("RegisterStg2");
               } else {
-                // Inicia a persistência do usuário
-                firebase
-                  .auth()
-                  .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-
                 setIsEmailOrUsernameInvalid(false);
 
                 // Navega para Stack Routes

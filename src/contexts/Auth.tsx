@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 
-import * as Google from "expo-google-app-auth";
+import googleCloudStorage from "@google-cloud/storage";
 
 import firebase from "../database/firebaseConnection";
 
@@ -29,6 +29,7 @@ interface AuthContextData {
   loginAnonymously(): void;
   signOut(): void;
   updateUser(newUser: User): void;
+  deleteAccount(password: string): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -39,13 +40,20 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [signed, setSigned] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [isLoginFinished, setIsLoginFinished] = useState<boolean>();
+  const [shouldDeleteAccount, setShouldDeleteAccount] =
+    useState<boolean>(false);
 
   async function handleStateChanged(firebaseUser: any) {
-    //Verifica se o usuário é anônimo, de forma a escapar da requisição
-    if (isAnonymous) {
+    // Verifica se a conta deve ser deletada
+    if (shouldDeleteAccount) {
+      signOut();
+    }
+    // Verifica se o usuário é anônimo, de forma a escapar da requisição
+    else if (isAnonymous) {
       return setSigned(true);
-    } else if (firebaseUser) {
+    }
+    // Verifica se existe um usuário no Auth para realizar Login
+    else if (firebaseUser != null) {
       // Carregamento (deve esconder a tela de Welcome que aparece rapidão ao iniciar o app como já usuário)
       setLoading(true);
 
@@ -155,6 +163,98 @@ export const AuthProvider: React.FC = ({ children }) => {
     setUser(newUser);
   }
 
+  async function deleteAccount(password: string) {
+    const auth = firebase.auth().currentUser;
+    setShouldDeleteAccount(true);
+
+    // Gera a credencial para posteriormente apagar o usuário
+    const cred = firebase.auth.EmailAuthProvider.credential(
+      auth?.email!,
+      password
+    );
+
+    try {
+      await auth?.reauthenticateWithCredential(cred);
+    } catch (error) {
+      return console.log(error);
+    }
+
+    // Deleta os memes postados pelo usuário
+    await firebase
+      .firestore()
+      .collection("memes")
+      .where("authorId", "==", auth?.uid)
+      .get()
+      .then((docs) => {
+        docs.forEach(async (doc) => {
+          const url = doc.data().memeUrl;
+
+          // Deleta o meme do Storage
+          await firebase.storage().refFromURL(url).delete();
+
+          // Deleta o meme do Firestore
+          await doc.ref.delete();
+        });
+      });
+
+    // Deleta os arquivos (foto de perfil e cover) do usuário presentes no Storage
+    if (user?.avatar) {
+      await firebase.storage().refFromURL(user.avatar).delete();
+    }
+    if (user?.cover) {
+      await firebase.storage().refFromURL(user.cover).delete();
+    }
+
+    // Deleta os comentários feitos pelo usuário
+    await firebase
+      .firestore()
+      .collection("comments")
+      .where("authorId", "==", auth?.uid)
+      .get()
+      .then((docs) => {
+        docs.forEach(async (doc) => {
+          // Atualiza o número de comentários
+          const memeId = doc.data().memeId;
+
+          await firebase
+            .firestore()
+            .collection("memes")
+            .doc(memeId)
+            .update({ comments: firebase.firestore.FieldValue.increment(-1) });
+
+          await doc.ref.delete();
+        });
+      });
+
+    // Deleta os likes dados pelo usuário
+    if (user?.likedMemes) {
+      await firebase
+        .firestore()
+        .collection("memes")
+        .where("id", "in", user.likedMemes)
+        .get()
+        .then((docs) => {
+          docs.forEach(async (doc) => {
+            await doc.ref.update({
+              likes: firebase.firestore.FieldValue.increment(-1),
+            });
+          });
+        });
+    }
+
+    // Deleta o usuário do Firestore e do Authentication
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(auth?.uid)
+      .delete()
+      .then(() => {
+        // Authentication
+        auth?.delete;
+        signOut();
+      });
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -167,6 +267,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         loginAnonymously,
         signOut,
         updateUser,
+        deleteAccount,
       }}
     >
       {children}

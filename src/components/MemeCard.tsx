@@ -37,7 +37,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
 
   const navigation = useNavigation();
 
-  const { user } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
 
   // Propriedades da pessoa que postou o meme
   const [author, setAuthor] = useState<string>();

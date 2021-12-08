@@ -89,6 +89,7 @@ export function RegisterStg2() {
       .substring(1);
 
     const auth = firebase.auth().currentUser;
+
     // Usuário sem foto de perfil
     if (auth && !avatar) {
       await firebase
@@ -139,15 +140,13 @@ export function RegisterStg2() {
           followers: [],
           likedMemes: [],
           savedMemes: [],
+          likedComments: [],
           hyenaClanId: null,
         })
         .then(() => {
           //Navega para a StackRoutes
           return login(auth);
         });
-    } else {
-      signOut();
-      navigation.navigate("Welcome");
     }
   }
 

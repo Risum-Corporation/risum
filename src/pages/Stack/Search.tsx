@@ -75,7 +75,11 @@ export function Search() {
       setProfileList({});
       // Dizer para o usuário pesquisar algo
     } else {
-      const docs = await firebase.firestore().collection("users").get();
+      const docs = await firebase
+        .firestore()
+        .collection("users")
+        .where("userName", ">=", profileQuery)
+        .get();
 
       let newProfile = profileList;
 
@@ -112,7 +116,12 @@ export function Search() {
       setHyenaClanList({});
       // Dizer para o usuário pesquisar algo
     } else {
-      const docs = await firebase.firestore().collection("hyenaClans").get();
+      const docs = await firebase
+        .firestore()
+        .collection("hyenaClans")
+        .where("name", ">=", hyenaClanQuery)
+        .limit(10)
+        .get();
 
       let newHyenaClan = hyenaClanList;
 
@@ -274,6 +283,7 @@ export function Search() {
           </View>
           {isProfilePressed && (
             <FlatList
+              inverted
               data={Object.values(profileList)}
               style={styles.profileList}
               renderItem={({ item }) => (
@@ -284,6 +294,7 @@ export function Search() {
           )}
           {isHyenaClanPressed && (
             <FlatList
+              inverted
               data={Object.values(hyenaClanList)}
               style={styles.profileList}
               renderItem={({ item }) => (

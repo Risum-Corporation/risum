@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { FlatList, StyleSheet, View, SafeAreaView, Alert } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Alert,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 
 import firebase from "../../database/firebaseConnection";
 
@@ -13,6 +21,7 @@ import { TextInput } from "react-native-paper";
 import colors from "../../styles/colors";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import AuthContext from "../../contexts/Auth";
+import fonts from "../../styles/fonts";
 
 // route.params.memeId para dinamizar a tela de comentários para vários memes diferentes
 export function Comments({ route }: any) {
@@ -124,7 +133,6 @@ export function Comments({ route }: any) {
             .doc(currentMemeId)
             .update({ comments: firebase.firestore.FieldValue.increment(1) })
             .then(() => {
-              Alert.alert("Comentário postado com sucesso!");
               refreshList();
               setCommentInput("");
             });
@@ -137,19 +145,22 @@ export function Comments({ route }: any) {
       theme={isWhiteMode}
       content={
         <View style={styles.wrapper}>
-          <FlatList
-            data={Object.values(commentList)}
-            keyExtractor={(post) => String(post.id)}
-            onEndReached={() => loadPage()}
-            onEndReachedThreshold={0.1}
-            onRefresh={refreshList}
-            showsVerticalScrollIndicator={false}
-            refreshing={refreshing}
-            renderItem={({ item }) => (
-              <CommentCard postData={item} theme={isWhiteMode} />
-            )}
-            maxToRenderPerBatch={5}
-          />
+          <View style={styles.commentList}>
+            <FlatList
+              data={Object.values(commentList)}
+              keyExtractor={(post) => String(post.id)}
+              onEndReached={() => loadPage()}
+              onEndReachedThreshold={0.1}
+              onRefresh={refreshList}
+              showsVerticalScrollIndicator={false}
+              refreshing={refreshing}
+              renderItem={({ item }) => (
+                <CommentCard postData={item} theme={isWhiteMode} />
+              )}
+              maxToRenderPerBatch={5}
+            />
+          </View>
+
           <SafeAreaView style={styles.createCommentBox}>
             <TextInput
               mode={"flat"}
@@ -167,12 +178,18 @@ export function Comments({ route }: any) {
               underlineColor={"transparent"}
               style={
                 isWhiteMode
-                  ? { backgroundColor: colors.lightBackgroundLight }
-                  : {
-                      backgroundColor: colors.lightBackground,
-                      color: colors.white,
-                      textDecorationColor: colors.white,
-                    }
+                  ? [
+                      styles.input,
+                      { backgroundColor: colors.lightBackgroundLight },
+                    ]
+                  : [
+                      styles.input,
+                      {
+                        backgroundColor: colors.lightBackground,
+                        color: colors.white,
+                        textDecorationColor: colors.white,
+                      },
+                    ]
               }
               selectionColor={colors.divider}
               theme={{
@@ -184,13 +201,26 @@ export function Comments({ route }: any) {
               }}
               maxLength={140}
             />
-            <ConfirmButton
-              title="Enviar"
-              theme={isWhiteMode}
+            <TouchableOpacity
+              style={
+                isWhiteMode
+                  ? [styles.button, { backgroundColor: colors.greenLight }]
+                  : [styles.button, { backgroundColor: colors.green }]
+              }
               onPress={() => {
                 handlePostComment();
               }}
-            />
+            >
+              <Text
+                style={
+                  isWhiteMode
+                    ? [styles.text, { color: colors.backgroundLight }]
+                    : [styles.text, { color: colors.background }]
+                }
+              >
+                Enviar
+              </Text>
+            </TouchableOpacity>
           </SafeAreaView>
         </View>
       }
@@ -201,12 +231,35 @@ export function Comments({ route }: any) {
 const styles = StyleSheet.create({
   wrapper: {
     justifyContent: "center",
-    alignContent: "space-between",
 
     maxWidth: "100%",
   },
   createCommentBox: {
     flexDirection: "row",
-    width: 200,
+
+    width: "100%",
+    height: "10%",
+  },
+  button: {
+    width: "20%",
+
+    justifyContent: "center",
+    alignItems: "center",
+
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+  },
+  input: {
+    width: "80%",
+
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+  },
+  commentList: {
+    height: "90%",
+  },
+  text: {
+    fontSize: 16,
+    fontFamily: fonts.heading,
   },
 });

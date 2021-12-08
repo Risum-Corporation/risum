@@ -70,6 +70,14 @@ export function ProfileSettings() {
                 dark={colors.pink}
                 goTo={!isAnonymous ? "ChangeCover" : "NoAccount"}
               />
+              <SettingsButton
+                theme={isWhiteMode}
+                icon="remove-circle"
+                title="Excluir conta"
+                light={colors.pastelRedLight}
+                dark={colors.pastelRed}
+                goTo={!isAnonymous ? "DeleteAccount" : "NoAccount"}
+              />
             </View>
           </View>
         </View>

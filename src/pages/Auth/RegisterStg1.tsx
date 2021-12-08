@@ -48,12 +48,12 @@ export function RegisterStg1() {
       return setIsEmailOrPasswordInvalid(true);
     }
 
-    return await firebase
+    await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((cred) => {
+      .then(async (cred) => {
         // Envia um email de verificação
-        cred.user?.sendEmailVerification();
+        await cred.user?.sendEmailVerification();
         navigation.navigate("RegisterStg2");
       })
       .catch((error) => {

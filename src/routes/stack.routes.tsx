@@ -30,6 +30,8 @@ import { ChangeAvatar } from "../pages/Drawer/Settings/Profile/ChangeAvatar";
 import { ForgotPasswordStg1 } from "../pages/Auth/ForgotPasswordStg1";
 import { ForgotPasswordStg2 } from "../pages/Auth/ForgotPasswordStg2";
 import { ChangeCover } from "../pages/Drawer/Settings/Profile/ChangeCover";
+import { DeleteAccount } from "../pages/Drawer/Settings/Profile/DeleteAccount";
+import { ConfirmPassword } from "../pages/Drawer/Settings/Security/ConfirmPassword";
 
 const stackRoutes = createStackNavigator();
 const drawerRoutes = createDrawerNavigator();
@@ -220,6 +222,11 @@ const AppRoutes: React.FC = () => {
         <stackRoutes.Screen name="ChangeUsername" component={ChangeUsername} />
         <stackRoutes.Screen name="ChangeAvatar" component={ChangeAvatar} />
         <stackRoutes.Screen name="ChangeCover" component={ChangeCover} />
+        <stackRoutes.Screen name="DeleteAccount" component={DeleteAccount} />
+        <stackRoutes.Screen
+          name="ConfirmPassword"
+          component={ConfirmPassword}
+        />
 
         <stackRoutes.Screen
           name="SecuritySettings"
