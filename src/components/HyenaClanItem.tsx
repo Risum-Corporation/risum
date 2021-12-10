@@ -29,7 +29,7 @@ const HyenaClanItem = ({ hyenaClanData, theme }: HyenaClanItemProps) => {
             : colors.divider,
         },
       ]}
-      onPress={() => navigation.navigate("HyenaClan")}
+      onPress={() => navigation.navigate("HyenaClan", { id: hyenaClanData.id })}
     >
       {hyenaClanData.shield ? (
         <Avatar.Image

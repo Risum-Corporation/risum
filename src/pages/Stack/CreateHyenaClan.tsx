@@ -119,8 +119,8 @@ export function CreateHyenaClan() {
 
               updateUser(newUser);
 
-              //Navega para o HyenaClan
-              return navigation.navigate("HyenaClan");
+              //Navega para o HypeTrain
+              return navigation.navigate("HypeTrain");
             })
             .catch((error) => {
               console.log(`Ocorreu um erro: ${error.code}`);
@@ -145,7 +145,7 @@ export function CreateHyenaClan() {
           name: hyenaClanName,
           shield: shieldPicture,
           cover: null,
-          members: 1, // Primeiro usuário
+          members: [auth.uid],
         })
         .then(async () => {
           // Coloca o ID da Alcateia no perfil de quem criou
@@ -161,8 +161,8 @@ export function CreateHyenaClan() {
 
               updateUser(newUser);
 
-              //Navega para o HyenaClan
-              return navigation.navigate("HyenaClan");
+              //Navega para o HypeTrain
+              return navigation.navigate("HypeTrain");
             });
         });
     }

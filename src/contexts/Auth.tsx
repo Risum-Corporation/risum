@@ -16,6 +16,7 @@ export interface User {
   likedMemes: string[]; // Array de IDs dos memes curtidos
   savedMemes: string[]; // Array de IDs dos memes salvos
   likedComments: string[]; // Array de IDs dos comentários curtidos
+  whiteMode: boolean; // true = White Mode; false = Dark Mode
 }
 
 interface AuthContextData {
@@ -96,6 +97,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         const likedMemes = doc.data()?.likedMemes;
         const savedMemes = doc.data()?.savedMemes;
         const likedComments = doc.data()?.likedComments;
+        const whiteMode = doc.data()?.whiteMode;
         const uid = firebaseUser.uid;
 
         setUser({
@@ -110,6 +112,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           likedMemes,
           savedMemes,
           likedComments,
+          whiteMode,
         });
 
         // Se você vir essa mensagem no console, quer dizer que tudo deu certo

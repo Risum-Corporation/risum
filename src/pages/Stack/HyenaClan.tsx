@@ -25,15 +25,20 @@ import { HyenaClanProps, PostProps } from "../../database/interfaces";
 import firebase from "../../database/firebaseConnection";
 import { MemeCard } from "../../components/MemeCard";
 
-export function HyenaClan() {
+// route.params.id para dinamizar a tela de alcateia para várias alcateias diferentes
+export function HyenaClan({ route }: any) {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
   const { user } = useContext(AuthContext);
 
   const [hyenaClan, setHyenaClan] = useState<HyenaClanProps>();
-  const [isInHyenaClan, setIsInHyenaClan] = useState<boolean>();
+  const [isInHyenaClan, setIsInHyenaClan] = useState<boolean>(false);
+  const [hyenaClanExists, setHyenaClanExists] = useState<boolean>();
   const [loading, setLoading] = useState(true);
+  const [currentHyenaClanId, setCurrentHyenaClanId] = useState<string>(
+    route.params.id
+  );
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -99,16 +104,65 @@ export function HyenaClan() {
     setLoading(false);
   }
 
+  async function handleFollowHyenaClan() {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user?.uid)
+      .update({
+        hyenaClanId: currentHyenaClanId,
+      })
+      .then(() => {
+        setIsInHyenaClan(true);
+        setHyenaClanExists(true);
+      })
+      .catch((error) => {
+        console.log(`Ops! Algo deu errado: ${error.code}`);
+      });
+
+    await firebase
+      .firestore()
+      .collection("hyenaClans")
+      .doc(currentHyenaClanId)
+      .update({
+        members: firebase.firestore.FieldValue.arrayUnion(user?.uid),
+      });
+  }
+
+  async function handleUnfollowHyenaClan() {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user?.uid)
+      .update({
+        hyenaClanId: null,
+      })
+      .then(() => {
+        setIsInHyenaClan(false);
+      })
+      .catch((error) => {
+        console.log(`Ops! Algo deu errado: ${error.code}`);
+      });
+
+    await firebase
+      .firestore()
+      .collection("hyenaClans")
+      .doc(currentHyenaClanId)
+      .update({
+        members: firebase.firestore.FieldValue.arrayRemove(user?.uid),
+      });
+  }
+
   useEffect(() => {
     async function verifyHyenaClan() {
-      if (user?.hyenaClanId) {
+      if (currentHyenaClanId != null) {
         await firebase
           .firestore()
           .collection("hyenaClans")
-          .doc(user.hyenaClanId)
+          .doc(currentHyenaClanId)
           .get()
           .then((doc) => {
-            const id = user.hyenaClanId!;
+            const id = currentHyenaClanId;
             const name = doc.data()?.name;
             const shield = doc.data()?.shield;
             const cover = doc.data()?.cover;
@@ -116,9 +170,17 @@ export function HyenaClan() {
 
             setHyenaClan({ id, name, shield, cover, members });
           });
-        setIsInHyenaClan(true);
+
+        if (currentHyenaClanId == user?.hyenaClanId) {
+          setIsInHyenaClan(true);
+          setHyenaClanExists(true);
+        } else {
+          setIsInHyenaClan(false);
+          setHyenaClanExists(true);
+        }
       } else {
         setIsInHyenaClan(false);
+        setHyenaClanExists(false);
       }
     }
 
@@ -135,7 +197,7 @@ export function HyenaClan() {
     <SafeZoneView
       theme={isWhiteMode}
       content={
-        isInHyenaClan && hyenaClan ? (
+        hyenaClanExists && hyenaClan ? (
           <>
             <Animated.View
               style={{
@@ -160,6 +222,13 @@ export function HyenaClan() {
                   members={hyenaClan.members.length}
                   adms={0}
                   memeRank={9}
+                  isMember={isInHyenaClan}
+                  whenFollow={() => {
+                    handleFollowHyenaClan();
+                  }}
+                  whenUnfollow={() => {
+                    handleUnfollowHyenaClan();
+                  }}
                 />
               }
               keyExtractor={(post) => String(post.id)}

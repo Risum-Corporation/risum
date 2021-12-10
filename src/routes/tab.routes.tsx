@@ -19,7 +19,9 @@ export default function BottomTabNavigator() {
   // Theme
   const { isWhiteMode } = useContext(StackContext);
 
-  const { isAnonymous } = useContext(AuthContext);
+  const { isAnonymous, user } = useContext(AuthContext);
+
+  const id = user?.hyenaClanId;
 
   return (
     <BottomTab.Navigator
@@ -79,6 +81,7 @@ export default function BottomTabNavigator() {
         <BottomTab.Screen
           name="Alcateia"
           component={HyenaClan}
+          initialParams={id ? { id } : {}}
           options={{
             tabBarIcon: ({ color }) => (
               <TabBarIcon name="ios-people" color={color} />

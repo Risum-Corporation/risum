@@ -268,5 +268,4 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     top: -37,
   },
-  unFollowButton: {},
 });

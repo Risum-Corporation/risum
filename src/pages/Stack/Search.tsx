@@ -12,7 +12,7 @@ import StackContext from "../../contexts/Stack";
 
 import firebase from "../../database/firebaseConnection";
 
-import { PostProps } from "../../database/interfaces";
+import { ReducedPostProps } from "../../database/interfaces";
 import { SafeZoneView } from "../../styles/Theme";
 import { Searchbar, Button } from "react-native-paper";
 import colors from "../../styles/colors";
@@ -20,6 +20,7 @@ import fonts from "../../styles/fonts";
 import { GoBackButton } from "../../components/GoBackButton";
 import { useNavigation } from "@react-navigation/native";
 import HyenaClanItem from "../../components/HyenaClanItem";
+import { MemeCard } from "../../components/MemeCard";
 
 interface ProfileProps {
   uid: string;
@@ -56,7 +57,9 @@ export function Search() {
   >({}); // Tipagem <HyenaClan[]>
 
   // Lista de memes pesquisados
-  const [memeList, setMemeList] = useState<PostProps[]>();
+  const [memeList, setMemeList] = useState<Record<string, ReducedPostProps>>(
+    {}
+  );
 
   function setSearchFalse() {
     setProfilePressed(false);
@@ -78,17 +81,22 @@ export function Search() {
       const docs = await firebase
         .firestore()
         .collection("users")
-        .where("userName", ">=", profileQuery)
+        //.where("userName", ">=", profileQuery)
+        .limit(10)
         .get();
 
       let newProfile = profileList;
 
       docs.forEach(async (doc) => {
         const userName = doc.data().userName;
+        const uid = doc.data().uid;
 
-        if (userName.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1) {
+        // Caso o userName do perfil seja equivalente ao Query e o uid já não esteja presente na lista
+        if (
+          userName.toLowerCase().indexOf(profileQuery?.toLowerCase()) > -1 &&
+          !Object.keys(profileList).includes(uid)
+        ) {
           // Informações do perfil
-          const uid = doc.data().uid;
           const userName = doc.data().userName;
           const tag = doc.data().tag;
           const avatar = doc.data().avatar;
@@ -119,7 +127,7 @@ export function Search() {
       const docs = await firebase
         .firestore()
         .collection("hyenaClans")
-        .where("name", ">=", hyenaClanQuery)
+        //.where("name", ">=", hyenaClanQuery)
         .limit(10)
         .get();
 
@@ -127,10 +135,14 @@ export function Search() {
 
       docs.forEach(async (doc) => {
         const name = doc.data().name;
+        const id = doc.data().id;
 
-        if (name.toLowerCase().indexOf(hyenaClanQuery?.toLowerCase()) > -1) {
-          // Informações do perfil
-          const id = doc.data().id;
+        // Caso o nome da alcateia seja equivalente ao Query e o seu id já não esteja presente na lista
+        if (
+          name.toLowerCase().indexOf(hyenaClanQuery?.toLowerCase()) > -1 &&
+          !Object.keys(hyenaClanList).includes(id)
+        ) {
+          // Informações da alcateia
           const name = doc.data().name;
           const shield = doc.data().shield;
           const members = doc.data().members;
@@ -153,6 +165,58 @@ export function Search() {
     }
   }
 
+  async function searchMeme() {
+    if (memeQuery === "") {
+      console.log("Query vazia");
+      setMemeList({});
+      // Dizer para o usuário pesquisar algo
+    } else {
+      const docs = await firebase
+        .firestore()
+        .collection("memes")
+        //.where("memeTitle", ">=", memeQuery)
+        .limit(10)
+        .get();
+
+      let newMemes = memeList;
+
+      docs.forEach(async (doc) => {
+        const memeTitle = doc.data().memeTitle;
+        const memeTags = doc.data().tags;
+        const id = doc.data().id;
+
+        // Caso o nome do meme seja equivalente ao Query e o seu id já não esteja presente na lista
+        if (
+          (memeTitle.toLowerCase().indexOf(memeQuery?.toLowerCase()) > -1 ||
+            memeTags.toLowerCase().indexOf(memeQuery?.toLowerCase()) > -1) &&
+          !Object.keys(memeList).includes(id)
+        ) {
+          // Informações do meme
+          const authorId = doc.data().authorId;
+          const memeUrl = doc.data().memeUrl;
+          const likes = doc.data().likes;
+          const comments = doc.data().comments;
+          const isVideo = doc.data().isVideo;
+
+          newMemes = {
+            ...newMemes,
+            [id]: {
+              id,
+              authorId,
+              memeUrl,
+              likes,
+              comments,
+              isVideo,
+            },
+          };
+
+          // Atualiza a lista de perfis
+          setMemeList(newMemes);
+        }
+      });
+    }
+  }
+
   // Executada quando o usuário digitar alguma coisa no text input de usuários
   useEffect(() => {
     searchProfile();
@@ -162,6 +226,11 @@ export function Search() {
   useEffect(() => {
     searchHyenaClan();
   }, [hyenaClanQuery]);
+
+  // Executada quando o usuário digitar alguma coisa no text input de memes
+  useEffect(() => {
+    searchMeme();
+  }, [memeQuery]);
 
   return (
     <SafeZoneView
@@ -285,7 +354,7 @@ export function Search() {
             <FlatList
               inverted
               data={Object.values(profileList)}
-              style={styles.profileList}
+              style={styles.list}
               renderItem={({ item }) => (
                 <ProfileItem theme={isWhiteMode} profileData={item} />
               )}
@@ -296,9 +365,20 @@ export function Search() {
             <FlatList
               inverted
               data={Object.values(hyenaClanList)}
-              style={styles.profileList}
+              style={styles.list}
               renderItem={({ item }) => (
                 <HyenaClanItem theme={isWhiteMode} hyenaClanData={item} />
+              )}
+              keyExtractor={(item) => String(item.id)}
+            />
+          )}
+          {isMemePressed && (
+            <FlatList
+              inverted
+              data={Object.values(memeList)}
+              style={styles.list}
+              renderItem={({ item }) => (
+                <MemeCard theme={isWhiteMode} postData={item} />
               )}
               keyExtractor={(item) => String(item.id)}
             />
@@ -341,7 +421,7 @@ const styles = StyleSheet.create({
     width: 32,
     marginRight: 30,
   },
-  profileList: {
+  list: {
     flex: 1,
   },
   sselectSearch: {

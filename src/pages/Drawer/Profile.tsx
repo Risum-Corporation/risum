@@ -38,7 +38,7 @@ export function Profile({ route }: any) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [likedMemesSet, setLikedMemesSet] = useState<string[]>(); // Set de IDs dos memes curtidos do perfil exibido
+  const [likedMemes, setLikedMemes] = useState<string[]>(); // Set de IDs dos memes curtidos do perfil exibido
   const [currentUserId, setCurrentUserId] = useState<string>(
     route.params.userId
   );
@@ -83,6 +83,7 @@ export function Profile({ route }: any) {
             const followers = Number(doc.data()?.followers.length);
             const followingList = [...doc.data()?.following];
             const following = Number(followingList.length);
+            const likedMemes = [...doc.data()?.likedMemes];
 
             // Verifica se o perfil já está sendo seguido
             if (followingList.indexOf(currentUserId) >= 0) {
@@ -97,6 +98,7 @@ export function Profile({ route }: any) {
             setUserTag(tag);
             setFollowers(followers);
             setFollowing(following);
+            setLikedMemes(likedMemes);
             setIsForeignUser(true);
             setLoading(false);
           })
@@ -112,6 +114,7 @@ export function Profile({ route }: any) {
         setUserTag(user.tag);
         setFollowers(user.followers.length);
         setFollowing(user.following.length);
+        setLikedMemes(user.likedMemes);
         setIsForeignUser(false);
         setCurrentUserId(user.uid);
         setLoading(false);
@@ -155,7 +158,7 @@ export function Profile({ route }: any) {
     await firebase
       .firestore()
       .collection("memes")
-      .where("id", "in", likedMemesSet)
+      .where("id", "in", likedMemes)
       .get()
       .then((docs) => {
         let newMemes = { ...memeList };

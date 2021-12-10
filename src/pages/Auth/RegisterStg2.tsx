@@ -108,6 +108,7 @@ export function RegisterStg2() {
           savedMemes: [],
           likedComments: [],
           hyenaClanId: null,
+          whiteMode: isWhiteMode,
         })
         .then(() => {
           // Inicia a persistência do usuário
@@ -142,6 +143,7 @@ export function RegisterStg2() {
           savedMemes: [],
           likedComments: [],
           hyenaClanId: null,
+          whiteMode: isWhiteMode,
         })
         .then(() => {
           //Navega para a StackRoutes

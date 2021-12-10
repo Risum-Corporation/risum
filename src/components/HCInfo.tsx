@@ -11,6 +11,9 @@ interface HCProps {
   members: number;
   adms: number;
   memeRank?: number;
+  isMember: boolean;
+  whenFollow: any;
+  whenUnfollow: any;
 }
 
 export function HCInfo({
@@ -20,6 +23,9 @@ export function HCInfo({
   members,
   adms,
   memeRank,
+  isMember,
+  whenFollow,
+  whenUnfollow,
 }: HCProps) {
   return (
     <>
@@ -28,6 +34,49 @@ export function HCInfo({
           source={cover ? { uri: cover } : require("../assets/wpWallpaper.jpg")}
           style={styles.wallpaper}
         />
+      </View>
+
+      <View style={styles.membershipButtonContainer}>
+        {isMember ? (
+          <TouchableOpacity
+            onPress={whenUnfollow}
+            style={[
+              styles.membershipButton,
+              {
+                backgroundColor: theme ? colors.purpleLight : colors.purple,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.text,
+                { color: theme ? colors.whiteLight : colors.white },
+              ]}
+            >
+              Sair da Alcateia
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          // Exibe o botão de SEGUIR caso o usuário seja diferente do local
+          <TouchableOpacity
+            onPress={whenFollow}
+            style={[
+              styles.membershipButton,
+              {
+                backgroundColor: theme ? colors.greenLight : colors.green,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.text,
+                { color: theme ? colors.whiteLight : colors.white },
+              ]}
+            >
+              Seguir
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.headerContainer}>
         <Image
@@ -146,5 +195,16 @@ const styles = StyleSheet.create({
   lineText: {
     marginHorizontal: 5,
     flexDirection: "row",
+  },
+  membershipButtonContainer: {
+    alignSelf: "flex-end",
+    position: "absolute",
+    top: 120,
+    right: 1,
+  },
+  membershipButton: {
+    backgroundColor: colors.purple,
+    padding: 10,
+    borderTopLeftRadius: 8,
   },
 });
