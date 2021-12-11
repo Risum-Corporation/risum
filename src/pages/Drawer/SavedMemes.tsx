@@ -70,6 +70,7 @@ export function SavedMemes() {
     setMemeList(newMemes);
     setTotal(Math.floor(totalItems / 5));
     setPage(pageNumber + 1);
+    setLoading(false);
   }
 
   function refreshList() {
