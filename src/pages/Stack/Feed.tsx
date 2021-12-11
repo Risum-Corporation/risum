@@ -114,7 +114,6 @@ export function Feed() {
     if (following?.length) {
       loadPage();
     } else {
-      console.log("Sem seguidores");
       setLoading(false);
       setNotFollowingUsers(true);
     }

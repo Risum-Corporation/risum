@@ -74,7 +74,6 @@ export function Search() {
 
   async function searchProfile() {
     if (profileQuery === "") {
-      console.log("Query vazia");
       setProfileList({});
       // Dizer para o usuário pesquisar algo
     } else {
@@ -120,7 +119,6 @@ export function Search() {
 
   async function searchHyenaClan() {
     if (hyenaClanQuery === "") {
-      console.log("Query vazia");
       setHyenaClanList({});
       // Dizer para o usuário pesquisar algo
     } else {
@@ -159,7 +157,6 @@ export function Search() {
 
           // Atualiza a lista de perfis
           setHyenaClanList(newHyenaClan);
-          console.log(hyenaClanList);
         }
       });
     }
@@ -167,7 +164,6 @@ export function Search() {
 
   async function searchMeme() {
     if (memeQuery === "") {
-      console.log("Query vazia");
       setMemeList({});
       // Dizer para o usuário pesquisar algo
     } else {

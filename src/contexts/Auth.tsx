@@ -115,9 +115,6 @@ export const AuthProvider: React.FC = ({ children }) => {
           whiteMode,
         });
 
-        // Se você vir essa mensagem no console, quer dizer que tudo deu certo
-        console.log("Fé na sogrinha login");
-
         // Navega para o StackRoutes
         setSigned(true);
       });
@@ -159,7 +156,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     // Remoção da persistência
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 
-    await firebase.auth().signOut();
+    const auth = firebase.auth().currentUser;
+    if (auth) await firebase.auth().signOut();
   }
 
   function updateUser(newUser: User) {

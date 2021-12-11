@@ -103,7 +103,7 @@ export function Profile({ route }: any) {
             setLoading(false);
           })
           .catch((error) => {
-            console.log(`Deu ruim: ${error}`);
+            console.log(`Ocorreu um erro: ${error}`);
           });
       }
       // Caso seja o usuário local
@@ -340,6 +340,7 @@ export function Profile({ route }: any) {
               onPress={() => {
                 setIconsFalse();
                 setIsPostPressed(true);
+                setMemeList({});
                 loadPostsPage();
               }}
             >
@@ -361,6 +362,7 @@ export function Profile({ route }: any) {
               onPress={() => {
                 setIconsFalse();
                 setIsSmilePressed(true);
+                setMemeList({});
                 loadSmilesPage();
               }}
             >
@@ -382,6 +384,7 @@ export function Profile({ route }: any) {
               onPress={() => {
                 setIconsFalse();
                 setIsCommentPressed(true);
+                setMemeList({});
                 // loadCommentsPage()
               }}
             >
@@ -407,6 +410,7 @@ export function Profile({ route }: any) {
               onPress={() => {
                 setIconsFalse();
                 setIsInfoPressed(true);
+                setMemeList({});
                 // loadInfoPage()
               }}
             >
@@ -450,7 +454,7 @@ export function Profile({ route }: any) {
                   <MemeCardSecondary
                     postData={item}
                     theme={isWhiteMode}
-                    isMemeAuthor={!isForeignUser}
+                    isMemeAuthor={!isForeignUser && isPostPressed}
                   />
                 )}
               />

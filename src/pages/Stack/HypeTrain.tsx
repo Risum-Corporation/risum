@@ -116,10 +116,10 @@ export function HypeTrain() {
                 marginTop: 0,
               }}
             >
-              <TopBar name="Feed" theme={isWhiteMode} />
+              <TopBar name="HypeTrain" theme={isWhiteMode} />
             </Animated.View>
           ) : (
-            <TopBar name="Feed" theme={isWhiteMode} />
+            <TopBar name="HypeTrain" theme={isWhiteMode} />
           )}
 
           <View style={styles.memeList}>
