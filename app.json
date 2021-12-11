@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "risum",
+    "name": "Risum",
+    "description": "Your best meme App :D",
     "slug": "risum",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1F1F1F"
       },
-      "package": "host.exp.exponent"
+      "package": "com.risumcorporation.risum"
     },
     "web": {
       "favicon": "./assets/favicon.png"
