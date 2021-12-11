@@ -18,7 +18,6 @@ export function SavedMemes() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [savedMemes, setSavedMemes] = useState<string[]>();
   const navigation = useNavigation();
 
   // Objeto de memes recebidos do Firestore
@@ -36,7 +35,7 @@ export function SavedMemes() {
     const docs = await firebase
       .firestore()
       .collection("memes")
-      .where("id", "in", savedMemes)
+      .where("id", "in", user?.savedMemes)
       .get();
     let newMemes = { ...memeList };
     // Percorre os documentos (memes) um a um
@@ -93,13 +92,13 @@ export function SavedMemes() {
   }, []);
 
   useEffect(() => {
-    if (savedMemes?.length) {
+    if (user?.savedMemes?.length) {
       loadPage();
     } else {
       setLoading(false);
       console.log("Sem memes salvos");
     }
-  }, [savedMemes]);
+  }, [user?.savedMemes]);
 
   return loading ? (
     <Loading />
