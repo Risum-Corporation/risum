@@ -32,7 +32,28 @@ export function RisumPoliciesSettings() {
                   : { color: colors.green },
               ]}
             >
-              Sobre nós
+              Políticas Risum
+            </Text>
+          </View>
+          <View style={styles.text}>
+            <Text
+              style={{
+                color: isWhiteMode ? colors.whiteLight : colors.white,
+                textAlign: "center",
+                fontFamily: fonts.subtitle,
+                lineHeight: 30,
+              }}
+            >
+              1. Não terás outros deuses além de mim {"\n"}
+              2. Não farás para ti nenhum ídolo {"\n"}
+              3. Não tomarás em vão o nome do Senhor {"\n"}
+              4. Lembra-te do dia de sábado, para santificá-lo {"\n"}
+              5. Honra teu pai e tua mãe. {"\n"}
+              6. Não matarás {"\n"}
+              7. Não adulterarás {"\n"}
+              8. Não furtarás {"\n"}
+              9. Não darás falso testemunho contra o teu próximo {"\n"}
+              10. Não cobiçarás
             </Text>
           </View>
         </View>
@@ -65,5 +86,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 50,
+  },
+  photo: {
+    width: 300,
+    height: 190,
+    borderRadius: 10,
+  },
+  photoContainer: {
+    alignItems: "center",
+    marginTop: 20,
+  },
+  text: {
+    marginHorizontal: 50,
+    marginTop: 30,
   },
 });
