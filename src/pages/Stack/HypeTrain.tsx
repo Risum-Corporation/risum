@@ -106,17 +106,21 @@ export function HypeTrain() {
       theme={isWhiteMode}
       content={
         <>
-          <Animated.View
-            style={{
-              transform: [{ translateY }],
-              zIndex: 100,
-              position: "absolute",
-              width: "100%",
-              marginTop: Platform.OS === "ios" ? 47 : 0,
-            }}
-          >
-            <TopBar name="HypeTrain" theme={isWhiteMode} />
-          </Animated.View>
+          {Platform.OS === "android" ? (
+            <Animated.View
+              style={{
+                transform: [{ translateY }],
+                zIndex: 150,
+                position: "absolute",
+                width: "100%",
+                marginTop: 0,
+              }}
+            >
+              <TopBar name="Feed" theme={isWhiteMode} />
+            </Animated.View>
+          ) : (
+            <TopBar name="Feed" theme={isWhiteMode} />
+          )}
 
           <View style={styles.memeList}>
             <FlatList
@@ -144,6 +148,6 @@ export function HypeTrain() {
 
 const styles = StyleSheet.create({
   memeList: {
-    marginTop: 120,
+    marginTop: Platform.OS === "android" ? 120 : 0,
   },
 });

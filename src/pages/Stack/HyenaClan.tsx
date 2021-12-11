@@ -199,17 +199,20 @@ export function HyenaClan({ route }: any) {
       content={
         hyenaClanExists && hyenaClan ? (
           <>
-            <Animated.View
-              style={{
-                transform: [{ translateY }],
-                zIndex: 150,
-                position: "absolute",
-                width: "100%",
-                marginTop: Platform.OS === "ios" ? 47 : 0,
-              }}
-            >
-              <TopBar name={hyenaClan.name} theme={isWhiteMode} />
-            </Animated.View>
+            {Platform.OS === "android" ? (
+              <Animated.View
+                style={{
+                  transform: [{ translateY }],
+                  zIndex: 150,
+                  position: "absolute",
+                  width: "100%",
+                }}
+              >
+                <TopBar name="Feed" theme={isWhiteMode} />
+              </Animated.View>
+            ) : (
+              <TopBar name="Feed" theme={isWhiteMode} />
+            )}
 
             <View style={styles.memeList}></View>
             <FlatList
@@ -264,6 +267,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   memeList: {
-    marginTop: 120,
+    marginTop: Platform.OS === "android" ? 120 : 0,
   },
 });

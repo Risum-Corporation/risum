@@ -203,6 +203,9 @@ export function Login() {
                 onPress={handleConfirm}
               />
             </View>
+
+            {/* Implementar em futuras atualizações
+            
             <View style={styles.orBox}>
               <Text
                 style={[
@@ -238,7 +241,7 @@ export function Login() {
                   color={isWhiteMode ? colors.whiteLight : colors.white}
                 />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       }

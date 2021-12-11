@@ -169,7 +169,7 @@ export function RegisterStg1() {
               />
             </View>
 
-            <View style={styles.orBox}>
+            {/* <View style={styles.orBox}>
               <Text
                 style={[
                   styles.subtitle,
@@ -204,7 +204,7 @@ export function RegisterStg1() {
                   color={isWhiteMode ? colors.whiteLight : colors.white}
                 />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       }

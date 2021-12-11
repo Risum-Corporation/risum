@@ -383,10 +383,10 @@ export function Search() {
               keyExtractor={(item) => String(item.id)}
             />
           )}
-          <GoBackButton
+          {/* <GoBackButton
             theme={isWhiteMode}
             onPress={() => navigation.goBack()}
-          />
+          /> */}
         </SafeAreaView>
       }
     />
@@ -423,9 +423,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-  },
-  sselectSearch: {
-    width: 120,
   },
   labelSelectSearchType: {
     fontWeight: "bold",

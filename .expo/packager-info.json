@@ -6,5 +6,5 @@
   "expoServerNgrokUrl": "https://8g-97q.anonymous.risum.exp.direct",
   "packagerNgrokUrl": "https://packager.8g-97q.anonymous.risum.exp.direct",
   "ngrokPid": 6192,
-  "webpackServerPort": null
+  "webpackServerPort": 19006
 }

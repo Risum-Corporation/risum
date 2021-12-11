@@ -217,7 +217,7 @@ export function MemeCard({ theme, postData }: MemeCardProps) {
               uri: postData.memeUrl,
             }}
             useNativeControls
-            resizeMode="contain"
+            resizeMode="cover"
             isLooping
             onPlaybackStatusUpdate={(status) => setStatus(() => status)}
           />

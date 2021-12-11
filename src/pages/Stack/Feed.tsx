@@ -153,17 +153,21 @@ export function Feed() {
       theme={isWhiteMode}
       content={
         <>
-          <Animated.View
-            style={{
-              transform: [{ translateY }],
-              zIndex: 150,
-              position: "absolute",
-              width: "100%",
-              marginTop: Platform.OS === "ios" ? 47 : 0,
-            }}
-          >
+          {Platform.OS === "android" ? (
+            <Animated.View
+              style={{
+                transform: [{ translateY }],
+                zIndex: 150,
+                position: "absolute",
+                width: "100%",
+                marginTop: 0,
+              }}
+            >
+              <TopBar name="Feed" theme={isWhiteMode} />
+            </Animated.View>
+          ) : (
             <TopBar name="Feed" theme={isWhiteMode} />
-          </Animated.View>
+          )}
           {!auth?.emailVerified && <EmailVerify theme={isWhiteMode} />}
 
           {notFollowingUsers ? (
@@ -196,6 +200,6 @@ export function Feed() {
 
 const styles = StyleSheet.create({
   memeList: {
-    marginTop: 120,
+    marginTop: Platform.OS === "android" ? 120 : 0,
   },
 });
