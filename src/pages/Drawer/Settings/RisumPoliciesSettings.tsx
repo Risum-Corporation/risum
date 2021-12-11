@@ -44,16 +44,16 @@ export function RisumPoliciesSettings() {
                 lineHeight: 30,
               }}
             >
-              1. Não terás outros deuses além de mim {"\n"}
-              2. Não farás para ti nenhum ídolo {"\n"}
-              3. Não tomarás em vão o nome do Senhor {"\n"}
-              4. Lembra-te do dia de sábado, para santificá-lo {"\n"}
-              5. Honra teu pai e tua mãe. {"\n"}
-              6. Não matarás {"\n"}
-              7. Não adulterarás {"\n"}
-              8. Não furtarás {"\n"}
-              9. Não darás falso testemunho contra o teu próximo {"\n"}
-              10. Não cobiçarás
+              1. Não terás outros deuses além de mim; {"\n"}
+              2. Não farás para ti nenhum ídolo; {"\n"}
+              3. Não tomarás em vão o nome do Senhor; {"\n"}
+              4. Lembra-te do dia de sábado, para santificá-lo; {"\n"}
+              5. Honra teu pai e tua mãe; {"\n"}
+              6. Não matarás; {"\n"}
+              7. Não adulterarás; {"\n"}
+              8. Não furtarás; {"\n"}
+              9. Não darás falso testemunho contra o teu próximo; {"\n"}
+              10. Não cobiçarás.
             </Text>
           </View>
         </View>

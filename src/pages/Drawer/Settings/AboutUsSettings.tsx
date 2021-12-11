@@ -52,21 +52,22 @@ export function AboutUsSettings() {
             <Text
               style={{
                 color: isWhiteMode ? colors.whiteLight : colors.white,
-                textAlign: "center",
+                textAlign: "justify",
                 fontFamily: fonts.subtitle,
                 lineHeight: 20,
               }}
             >
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              {"  "}Tivemos a ideia do Risum no ano de 2020, durante a pandemia,
+              na tentativa de encontrar uma maneira de entreter os usuários
+              online.{"\n "}O design do aplicativo e as suas funcionalidades
+              oferecidas sofreram diversas alterações ao longo do tempo, até que
+              a sua atual aparência e interface foram finalizadas com a
+              conclusão do PDTCC em dezembro de 2021.{"\n   "}Foi uma longa
+              jornada até descobrirmos o potencial que a hiena poderia
+              demonstrar aos seus usuários e desenvolvedores.{"\n   "}
+              Esperamos que gostem do Apps, o grupo Risum agradece pelo seu
+              apoio ;){"\n   "}O grupo: Camilly Rosaboni, Eduardo Guedes,
+              Gabriel Kato, Luiz Felipe e Rodrigo Marcato (3ºDS - 2021)
             </Text>
           </View>
         </View>
