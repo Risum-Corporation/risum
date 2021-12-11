@@ -37,7 +37,7 @@ export function HCInfo({
       </View>
 
       <View style={styles.membershipButtonContainer}>
-        {isMember ? (
+        {isMember && (
           <TouchableOpacity
             onPress={whenUnfollow}
             style={[
@@ -56,7 +56,10 @@ export function HCInfo({
               Sair da Alcateia
             </Text>
           </TouchableOpacity>
-        ) : (
+        )}
+      </View>
+      <View style={styles.membershipGreenButtonContainer}>
+        {!isMember && (
           // Exibe o botão de SEGUIR caso o usuário seja diferente do local
           <TouchableOpacity
             onPress={whenFollow}
@@ -70,7 +73,7 @@ export function HCInfo({
             <Text
               style={[
                 styles.text,
-                { color: theme ? colors.whiteLight : colors.white },
+                { color: theme ? colors.whiteLight : colors.whiteLight },
               ]}
             >
               Seguir
@@ -132,7 +135,9 @@ export function HCInfo({
             </View>
           </View>
           <View style={styles.lineText}>
-            <Text
+            {
+              // Futuras implementações
+              /* <Text
               style={
                 theme
                   ? [styles.text, { color: colors.greenLight }]
@@ -149,7 +154,8 @@ export function HCInfo({
               }
             >
               no MemeRank
-            </Text>
+            </Text> */
+            }
           </View>
         </View>
       </View>
@@ -199,12 +205,17 @@ const styles = StyleSheet.create({
   membershipButtonContainer: {
     alignSelf: "flex-end",
     position: "absolute",
-    top: 120,
-    right: 1,
+    top: 173,
+    paddingRight: 10,
+  },
+  membershipGreenButtonContainer: {
+    alignSelf: "flex-end",
+    position: "absolute",
+    top: 173,
+    paddingRight: 35,
   },
   membershipButton: {
-    backgroundColor: colors.purple,
-    padding: 10,
-    borderTopLeftRadius: 8,
+    padding: 8,
+    borderRadius: 8,
   },
 });

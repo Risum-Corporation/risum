@@ -199,20 +199,7 @@ export function HyenaClan({ route }: any) {
       content={
         hyenaClanExists && hyenaClan ? (
           <>
-            {Platform.OS === "android" ? (
-              <Animated.View
-                style={{
-                  transform: [{ translateY }],
-                  zIndex: 150,
-                  position: "absolute",
-                  width: "100%",
-                }}
-              >
-                <TopBar name="Feed" theme={isWhiteMode} />
-              </Animated.View>
-            ) : (
-              <TopBar name="Feed" theme={isWhiteMode} />
-            )}
+            <TopBar name="Feed" theme={isWhiteMode} />
 
             <View style={styles.memeList}></View>
             <FlatList

@@ -152,6 +152,9 @@ export function Feed() {
       theme={isWhiteMode}
       content={
         <>
+          <TopBar name="Feed" theme={isWhiteMode} />
+          {/* //Precisa de alguns ajustes
+          
           {Platform.OS === "android" ? (
             <Animated.View
               style={{
@@ -166,7 +169,7 @@ export function Feed() {
             </Animated.View>
           ) : (
             <TopBar name="Feed" theme={isWhiteMode} />
-          )}
+          )} */}
           {!auth?.emailVerified && <EmailVerify theme={isWhiteMode} />}
 
           {notFollowingUsers ? (

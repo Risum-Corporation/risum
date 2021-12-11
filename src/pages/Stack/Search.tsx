@@ -419,6 +419,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+    marginTop: 20,
   },
   labelSelectSearchType: {
     fontWeight: "bold",

@@ -106,6 +106,9 @@ export function HypeTrain() {
       theme={isWhiteMode}
       content={
         <>
+          <TopBar name="Feed" theme={isWhiteMode} />
+          {/* //Precisa de alguns ajustes
+          
           {Platform.OS === "android" ? (
             <Animated.View
               style={{
@@ -116,11 +119,11 @@ export function HypeTrain() {
                 marginTop: 0,
               }}
             >
-              <TopBar name="HypeTrain" theme={isWhiteMode} />
+              <TopBar name="Feed" theme={isWhiteMode} />
             </Animated.View>
           ) : (
-            <TopBar name="HypeTrain" theme={isWhiteMode} />
-          )}
+            <TopBar name="Feed" theme={isWhiteMode} />
+          )} */}
 
           <View style={styles.memeList}>
             <FlatList
