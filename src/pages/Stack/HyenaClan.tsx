@@ -199,7 +199,7 @@ export function HyenaClan({ route }: any) {
       content={
         hyenaClanExists && hyenaClan ? (
           <>
-            <TopBar name="Feed" theme={isWhiteMode} />
+            <TopBar name={hyenaClan.name} theme={isWhiteMode} />
 
             <View style={styles.memeList}></View>
             <FlatList

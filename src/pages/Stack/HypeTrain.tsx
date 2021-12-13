@@ -106,7 +106,7 @@ export function HypeTrain() {
       theme={isWhiteMode}
       content={
         <>
-          <TopBar name="Feed" theme={isWhiteMode} />
+          <TopBar name="HypeTrain" theme={isWhiteMode} />
           {/* //Precisa de alguns ajustes
           
           {Platform.OS === "android" ? (
