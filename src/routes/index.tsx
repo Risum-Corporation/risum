@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import AuthContext from "../contexts/Auth";
 
@@ -9,11 +9,7 @@ import { Loading } from "../components/Loading";
 const Routes = () => {
   const { signed, loading } = useContext(AuthContext);
 
-  // if (loading) {
-  //   return <Loading />;
-  // } else {
-  return signed ? <StackRoutes /> : <AuthRoutes />;
-  //}
+  return loading ? <Loading /> : signed ? <StackRoutes /> : <AuthRoutes />;
 };
 
 export default Routes;

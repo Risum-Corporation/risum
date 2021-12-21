@@ -4,7 +4,6 @@ import Routes from "./src/routes";
 import AppLoading from "expo-app-loading";
 import AuthContext, { AuthProvider } from "./src/contexts/Auth";
 import { StackProvider } from "./src/contexts/Stack";
-import StackContext from "./src/contexts/Stack";
 
 import {
   useFonts,
@@ -28,21 +27,22 @@ export default function App() {
     Roboto_400Regular,
     Poppins_600SemiBold,
   });
-  const { loading } = useContext(AuthContext);
-  if (!fontsLoaded || loading) {
-    return <AppLoading />;
-  }
 
   // Remove a Yellow Box do App
   LogBox.ignoreAllLogs(true);
 
-  return (
-    <NavigationContainer>
-      <AuthProvider>
-        <StackProvider>
-          <Routes />
-        </StackProvider>
-      </AuthProvider>
-    </NavigationContainer>
-  );
+  const { loading } = useContext(AuthContext);
+  if (!fontsLoaded || loading) {
+    return <AppLoading />;
+  } else {
+    return (
+      <NavigationContainer>
+        <AuthProvider>
+          <StackProvider>
+            <Routes />
+          </StackProvider>
+        </AuthProvider>
+      </NavigationContainer>
+    );
+  }
 }

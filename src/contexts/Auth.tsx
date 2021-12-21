@@ -1,7 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
 
-import googleCloudStorage from "@google-cloud/storage";
-
 import firebase from "../database/firebaseConnection";
 
 export interface User {
@@ -45,19 +43,20 @@ export const AuthProvider: React.FC = ({ children }) => {
     useState<boolean>(false);
 
   async function handleStateChanged(firebaseUser: any) {
+    // Carregamento (deve esconder a tela de Welcome que aparece rapidão ao iniciar o app como já usuário)
+    setLoading(true);
+
     // Verifica se a conta deve ser deletada
     if (shouldDeleteAccount) {
       signOut();
     }
     // Verifica se o usuário é anônimo, de forma a escapar da requisição
     else if (isAnonymous) {
-      return setSigned(true);
+      setSigned(true);
+      return setLoading(false);
     }
     // Verifica se existe um usuário no Auth para realizar Login
     else if (firebaseUser != null) {
-      // Carregamento (deve esconder a tela de Welcome que aparece rapidão ao iniciar o app como já usuário)
-      setLoading(true);
-
       // Faz login se o usuário já estiver conectado através da persistência
       login(firebaseUser);
 
@@ -70,6 +69,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   async function login(firebaseUser: any) {
+    setLoading(true);
+
     if (firebaseUser.isAnonymous || isAnonymous) {
       return setSigned(true);
     }
@@ -117,9 +118,11 @@ export const AuthProvider: React.FC = ({ children }) => {
 
         // Navega para o StackRoutes
         setSigned(true);
+        setLoading(false);
       });
     } else {
-      return setSigned(false);
+      setSigned(false);
+      setLoading(false);
     }
   }
 
@@ -144,6 +147,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   async function signOut() {
+    setLoading(true);
+
     setUser(null);
 
     //Ajusta as condições de estado do usuário
@@ -158,6 +163,8 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     const auth = firebase.auth().currentUser;
     if (auth) await firebase.auth().signOut();
+
+    setLoading(false);
   }
 
   function updateUser(newUser: User) {
