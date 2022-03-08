@@ -1,8 +1,7 @@
-# Risum
-### Risum App made with React Native ⚛️ and Firebase 🔥
-
+# Risum - A social network focused on memes
+  <h3 align="center" >Risum App made with React Native ⚛️ and Firebase 🔥</h3>
 <p align="center">
-  <img src="assets/mockup-screen-1.png" width=1000 height=1000 />
+  <img src="assets/mockup-screen-1.png"/>
 </p>
 
 ## Setup project for coding
